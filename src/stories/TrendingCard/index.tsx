@@ -45,7 +45,7 @@ const UserImages = ({ children }: { children: string[] }) => {
  * Component
  */
 
-const Heading = ({
+const TrendingCard = ({
   image,
   title,
   value,
@@ -79,4 +79,4 @@ const Heading = ({
   )
 }
 
-export default Heading
+export default TrendingCard
