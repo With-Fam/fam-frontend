@@ -15,16 +15,17 @@ interface EProps {
 
 const Heading = ({ children, as }: EProps) => {
   const classNames = {
-    h1: 'text-h1 font-medium leading-h1 text-black',
-    h2: 'text-h2 font-medium leading-h2 text-black',
-    h3: 'text-h3 font-medium leading-h3 text-black',
-    h4: 'text-h4 font-medium leading-h4 text-black',
-    h5: 'text-h5 font-medium leading-h5 text-black',
-  }
+    h1: 'text-h1 leading-h1',
+    h2: 'text-h2 leading-h2',
+    h3: 'text-h3 leading-h3',
+    h4: 'text-h4 leading-h4',
+    h5: 'text-h5 leading-h5',
+  };
 
-  const className = classNames[as]
+  const commonClasses = 'font-medium';
+  const className = `${commonClasses} ${classNames[as]}`;
 
-  return createElement(as, { className }, children)
-}
+  return createElement(as, { className }, children);
+};
 
 export default Heading
