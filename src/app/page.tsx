@@ -1,6 +1,9 @@
 // Framework
 import type { Metadata } from 'next'
 
+// Local Component
+import Heading from '@/stories/Heading'
+
 /*--------------------------------------------------------------------*/
 
 /**
@@ -25,7 +28,7 @@ export default function Home() {
   return (
     <>
       <div>
-        <h1 className="text-3xl font-bold underline">This is the HomePage</h1>
+        <Heading as="h1">This is the HomePage</Heading>
       </div>
     </>
   )
