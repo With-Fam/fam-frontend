@@ -27,6 +27,6 @@ export const Default: Story = {
       '/assets/images/users/u3.jpeg',
       '/assets/images/users/u4.jpeg',
     ],
-    userQuantity: 230,
+    userQuantity: '230',
   },
 }

@@ -1,0 +1,88 @@
+const TRENDING_DATA = [
+  {
+    image: '/assets/images/trending/t1.jpeg',
+    imageAlt: '',
+    title: 'Soulection',
+    value: '135 ETH',
+    href: '#',
+    users: [
+      '/assets/images/users/u1.jpeg',
+      '/assets/images/users/u2.jpeg',
+      '/assets/images/users/u3.jpeg',
+      '/assets/images/users/u4.jpeg',
+    ],
+    userQuantity: '230',
+  },
+  {
+    image: '/assets/images/trending/t2.png',
+    imageAlt: '',
+    title: 'Warp Records',
+    value: '2,530 ETH',
+    href: '#',
+    users: [
+      '/assets/images/users/u1.jpeg',
+      '/assets/images/users/u2.jpeg',
+      '/assets/images/users/u3.jpeg',
+      '/assets/images/users/u4.jpeg',
+    ],
+    userQuantity: '6,480',
+  },
+  {
+    image: '/assets/images/trending/t3.png',
+    imageAlt: '',
+    title: 'Trance Party',
+    value: '180 ETH',
+    href: '#',
+    users: [
+      '/assets/images/users/u1.jpeg',
+      '/assets/images/users/u2.jpeg',
+      '/assets/images/users/u3.jpeg',
+      '/assets/images/users/u4.jpeg',
+    ],
+    userQuantity: '380',
+  },
+  {
+    image: '/assets/images/trending/t4.jpeg',
+    imageAlt: '',
+    title: 'Ezra Collective',
+    value: '22 ETH',
+    href: '#',
+    users: [
+      '/assets/images/users/u1.jpeg',
+      '/assets/images/users/u2.jpeg',
+      '/assets/images/users/u3.jpeg',
+      '/assets/images/users/u4.jpeg',
+    ],
+    userQuantity: '125',
+  },
+  {
+    image: '/assets/images/trending/t5.png',
+    imageAlt: '',
+    title: 'NVSHU',
+    value: '58 ETH',
+    href: '#',
+    users: [
+      '/assets/images/users/u1.jpeg',
+      '/assets/images/users/u2.jpeg',
+      '/assets/images/users/u3.jpeg',
+      '/assets/images/users/u4.jpeg',
+    ],
+    userQuantity: '230',
+  },
+  {
+    image: '/assets/images/trending/t6.jpeg',
+    imageAlt: '',
+    title: 'CHAOS',
+    value: '856 ETH',
+    href: '#',
+    users: [
+      '/assets/images/users/u1.jpeg',
+      '/assets/images/users/u2.jpeg',
+      '/assets/images/users/u3.jpeg',
+      '/assets/images/users/u4.jpeg',
+    ],
+    userQuantity: '77',
+  },
+]
+
+export default TRENDING_DATA

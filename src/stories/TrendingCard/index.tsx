@@ -9,7 +9,7 @@ interface CProps {
   title: string
   value: string
   users: string[]
-  userQuantity: number
+  userQuantity: string
   href: string
 }
 
@@ -55,9 +55,9 @@ const TrendingCard = ({
   href,
 }: CProps) => {
   return (
-    <Link className="block w-max rounded-lg bg-white p-2" href={href} passHref>
+    <Link className="block w-max" href={href} passHref>
       <Image
-        className="mx-auto h-[224px] w-[240px] overflow-hidden rounded-lg"
+        className="mx-auto h-[224px] w-[240px] overflow-hidden rounded-lg object-cover"
         src={image}
         alt={imageAlt}
         width={240}

@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 
 // Local Component
 import AboveTheFold from '@/components/home/AboveTheFold'
+import TrendingSection from '@/components/home/TrendingSection'
 
 /*--------------------------------------------------------------------*/
 
@@ -28,6 +29,7 @@ export default function Home() {
   return (
     <>
       <AboveTheFold />
+      <TrendingSection />
     </>
   )
 }
