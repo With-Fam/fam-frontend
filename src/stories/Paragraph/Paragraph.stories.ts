@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import Paragraph from '.'
 
 const meta: Meta<typeof Paragraph> = {
-  title: 'Shared/Paragraph',
+  title: 'Paragraph',
   component: Paragraph,
   tags: ['autodocs'],
   args: {
@@ -15,6 +15,7 @@ const meta: Meta<typeof Paragraph> = {
   argTypes: {
     as: {
       options: ['p1', 'p2', 'p3', 'p4', 'p5'],
+      description: 'p1: 32px, p2: 24px, p3: 18px, p4: 16px, p5: 14px',
     },
   },
 }

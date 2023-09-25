@@ -3,11 +3,16 @@ import type { Meta, StoryObj } from '@storybook/react'
 import Heading from '.'
 
 const meta: Meta<typeof Heading> = {
-  title: 'Shared/Heading',
+  title: 'Heading',
   component: Heading,
   tags: ['autodocs'],
   args: {
     children: 'This is a heading',
+  },
+  argTypes: {
+    as: {
+      description: 'h1: 80px, h2: 64px, h3: 40px, h4: 32px, h5: 24px',
+    },
   },
   parameters: {
     tags: ['autodocs'],

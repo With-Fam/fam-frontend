@@ -5,6 +5,7 @@ import { createElement, ReactNode } from 'react'
 interface EProps {
   children: ReactNode
   as: 'p1' | 'p2' | 'p3' | 'p4' | 'p5'
+  className?: string
 }
 
 /*--------------------------------------------------------------------*/
@@ -13,7 +14,7 @@ interface EProps {
  * Component
  */
 
-const Heading = ({ children, as }: EProps) => {
+const Paragraph = ({ children, as, className }: EProps) => {
   const classNames = {
     p1: 'text-p1 leading-10',
     p2: 'text-2xl leading-8',
@@ -22,9 +23,9 @@ const Heading = ({ children, as }: EProps) => {
     p5: 'text-sm leading-4',
   }
 
-  const className = classNames[as]
+  className = `${classNames[as]} ${className}`
 
   return createElement('p', { className }, children)
 }
 
-export default Heading
+export default Paragraph
