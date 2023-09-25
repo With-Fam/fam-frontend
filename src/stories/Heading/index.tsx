@@ -15,10 +15,10 @@ interface EProps {
  */
 
 const Heading = ({ children, as, className }: EProps) => {
-  const commonClasses = 'font-medium';
-  className = `${commonClasses} ${className}`;
+  const commonClasses = 'font-medium'
+  className = `${commonClasses} ${className}`
 
-  return createElement(as, { className }, children);
-};
+  return createElement(as, { className }, children)
+}
 
 export default Heading
