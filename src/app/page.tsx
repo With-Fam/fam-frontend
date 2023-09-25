@@ -2,7 +2,7 @@
 import type { Metadata } from 'next'
 
 // Local Component
-import Heading from '@/stories/Heading'
+import AboveTheFold from '@/components/home/AboveTheFold'
 
 /*--------------------------------------------------------------------*/
 
@@ -27,9 +27,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <div>
-        <Heading as="h1">This is the HomePage</Heading>
-      </div>
+      <AboveTheFold />
     </>
   )
 }

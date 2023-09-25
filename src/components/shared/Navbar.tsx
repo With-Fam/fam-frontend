@@ -13,11 +13,11 @@ import Paragraph from '@/stories/Paragraph'
 
 const Navbar = () => {
   return (
-    <nav className="fixed left-0 top-0 flex justify-between px-10 py-8">
+    <nav className="fixed left-0 top-0 flex justify-between p-4 sm:px-10 sm:py-8 w-full">
       <Logo />
       <Link href="/">
         <Paragraph
-          className="rounded-3xl bg-black px-6 py-2.5 text-white"
+          className="rounded-3xl bg-black py-2 px-4 sm:px-6 sm:py-2.5 text-white"
           as="p2"
         >
           Connect

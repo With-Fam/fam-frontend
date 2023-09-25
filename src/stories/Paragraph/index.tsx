@@ -15,17 +15,33 @@ interface EProps {
  */
 
 const Paragraph = ({ children, as, className }: EProps) => {
-  const classNames = {
-    p1: 'text-p1 leading-10',
-    p2: 'text-2xl leading-8',
-    p3: 'text-lg leading-p3',
-    p4: 'text-base leading-p4',
-    p5: 'text-sm leading-4',
+  const componentConfig = {
+    p1: {
+      class: 'leading-10',
+      style: { fontSize: '32px' },
+    },
+    p2: {
+      class: 'text-lg sm:text-2xl leading-8',
+      style: {},
+    },
+    p3: {
+      class: 'text-lg',
+      style: { lineHeight: '22px' },
+    },
+    p4: {
+      class: 'text-base',
+      style: { lineHeight: '20px' },
+    },
+    p5: {
+      class: 'text-sm leading-4',
+      style: {},
+    },
   }
 
-  className = `${classNames[as]} ${className}`
+  className = `${componentConfig[as].class} ${className}`
+  const style = componentConfig[as].style
 
-  return createElement('p', { className }, children)
+  return createElement('p', { className, style }, children)
 }
 
 export default Paragraph
