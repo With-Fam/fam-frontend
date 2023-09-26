@@ -6,6 +6,7 @@ import Hero from '@/components/home/Hero'
 import TrendingSection from '@/components/home/TrendingSection'
 import CollectiveCulture from '@/components/home/CollectiveCulture'
 import FeatureWidgets from '@/components/home/FeatureWidgets'
+import FAQ from '@/components/home/FAQ'
 
 /*--------------------------------------------------------------------*/
 
@@ -49,6 +50,7 @@ export default function Home() {
       <TrendingSection />
       <CollectiveCulture />
       <FeatureWidgets />
+      <FAQ />
     </>
   )
 }
