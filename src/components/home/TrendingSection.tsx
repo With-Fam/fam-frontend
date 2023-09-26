@@ -83,7 +83,7 @@ const TrendingSection = () => {
     return () => {
       window.removeEventListener('resize', updateSlidesPerView)
     }
-  }, [swiper])
+  }, [])
 
   return (
     <section
