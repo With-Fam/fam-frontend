@@ -11,7 +11,7 @@ const TRENDING_DATA = [
       '/assets/images/users/u3.jpeg',
       '/assets/images/users/u4.jpeg',
     ],
-    userQuantity: '230',
+    text: '+ 230 others',
   },
   {
     image: '/assets/images/trending/t2.png',
@@ -25,7 +25,7 @@ const TRENDING_DATA = [
       '/assets/images/users/u3.jpeg',
       '/assets/images/users/u4.jpeg',
     ],
-    userQuantity: '6,480',
+    text: '+ 6,480 others',
   },
   {
     image: '/assets/images/trending/t3.png',
@@ -39,7 +39,7 @@ const TRENDING_DATA = [
       '/assets/images/users/u3.jpeg',
       '/assets/images/users/u4.jpeg',
     ],
-    userQuantity: '380',
+    text: '+ 380 others',
   },
   {
     image: '/assets/images/trending/t4.jpeg',
@@ -53,7 +53,7 @@ const TRENDING_DATA = [
       '/assets/images/users/u3.jpeg',
       '/assets/images/users/u4.jpeg',
     ],
-    userQuantity: '125',
+    text: '+ 125 others',
   },
   {
     image: '/assets/images/trending/t5.png',
@@ -67,7 +67,7 @@ const TRENDING_DATA = [
       '/assets/images/users/u3.jpeg',
       '/assets/images/users/u4.jpeg',
     ],
-    userQuantity: '230',
+    text: '+ 230 others',
   },
   {
     image: '/assets/images/trending/t6.jpeg',
@@ -81,7 +81,7 @@ const TRENDING_DATA = [
       '/assets/images/users/u3.jpeg',
       '/assets/images/users/u4.jpeg',
     ],
-    userQuantity: '77',
+    text: '+ 77 others',
   },
 ]
 

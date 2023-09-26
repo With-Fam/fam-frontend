@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import Hero from '@/components/home/Hero'
 import TrendingSection from '@/components/home/TrendingSection'
 import CollectiveCulture from '@/components/home/CollectiveCulture'
+import FeatureWidgets from '@/components/home/FeatureWidgets'
 
 /*--------------------------------------------------------------------*/
 
@@ -47,6 +48,7 @@ export default function Home() {
       <Hero />
       <TrendingSection />
       <CollectiveCulture />
+      <FeatureWidgets />
     </>
   )
 }

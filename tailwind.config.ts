@@ -37,6 +37,9 @@ const config: Config = {
           purple: '#8146FF',
         },
       },
+      boxShadow: {
+        card: '0px 0px 16.625px 0px rgba(0, 0, 0, 0.10);',
+      },
     },
   },
 }

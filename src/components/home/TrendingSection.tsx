@@ -122,7 +122,7 @@ const TrendingSection = () => {
                 title,
                 value,
                 users,
-                userQuantity,
+                text,
                 imageAlt,
                 href,
               } = data
@@ -133,7 +133,7 @@ const TrendingSection = () => {
                     title={title}
                     value={value}
                     users={users}
-                    userQuantity={userQuantity}
+                    text={text}
                     imageAlt={imageAlt}
                     href={href}
                   />
