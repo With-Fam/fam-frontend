@@ -2,13 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 @import './fonts.scss';
-// Custom
 
-.trending {
-  .swiper {
-    overflow: visible;
-  }
-}
+// Custom
 
 h1 {
   font-size: 64px;
