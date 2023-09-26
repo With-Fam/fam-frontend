@@ -87,11 +87,11 @@ const TrendingSection = () => {
 
   return (
     <section
-      className="trending relative mx-auto max-w-[830px]
+      className="relative mx-auto max-w-[830px]
       px-4 py-12 sm:py-24"
     >
       <div className="flex w-full items-center justify-between">
-        <Heading as="h2" className="mb-4 text-3xl text-orange">
+        <Heading as="h3" className="mb-4 text-orange">
           Trending
         </Heading>
         <Paragraph as="p2" className="text-orange">
