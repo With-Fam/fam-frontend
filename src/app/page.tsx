@@ -2,7 +2,7 @@
 import type { Metadata } from 'next'
 
 // Local Component
-import AboveTheFold from '@/components/home/AboveTheFold'
+import Hero from '@/components/home/Hero'
 
 /*--------------------------------------------------------------------*/
 
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <AboveTheFold />
+      <Hero />
     </>
   )
 }

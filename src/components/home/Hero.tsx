@@ -1,8 +1,4 @@
-// Framework
-import Link from 'next/link'
-
 // Local Components
-import Logo from '@/components/shared/Logo'
 import Heading from '@/stories/Heading'
 import Icons from '@/components/home/Icons'
 
@@ -12,7 +8,7 @@ import Icons from '@/components/home/Icons'
  * Component
  */
 
-const AboveTheFold = () => {
+const Hero = () => {
   return (
     <section className="bg-orange pb-20 pt-32 px-4 text-center sm:pb-44 sm:pt-44">
       <Heading as="h1" className="mb-4 text-yellow">
@@ -30,4 +26,4 @@ const AboveTheFold = () => {
   )
 }
 
-export default AboveTheFold
+export default Hero
