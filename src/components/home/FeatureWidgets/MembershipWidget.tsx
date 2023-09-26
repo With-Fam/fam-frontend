@@ -16,8 +16,8 @@ interface EProps {
  * Component
  */
 
-const MembershipWidget = ({ title, image }: EProps) => (
-  <div className="shadow-card mx-auto my-12 flex w-72 gap-2 p-3.5">
+const MembershipWidget = ({ title = '', image }: EProps): JSX.Element => (
+  <div className="mx-auto my-12 flex w-72 gap-2 p-3.5 shadow-card">
     <div className="flex w-full flex-col items-center justify-between gap-2">
       <Paragraph as="p5" className="mb-4">
         {title}

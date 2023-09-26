@@ -8,13 +8,12 @@ import Paragraph from '@/stories/Paragraph'
  * Component
  */
 
-const WidgetInfo = ({
-  title,
-  children,
-}: {
+interface Props {
   title: string
   children: string
-}) => {
+}
+
+const WidgetInfo = ({ title, children }: Props): JSX.Element => {
   return (
     <div>
       <Heading as="h5">{title}</Heading>

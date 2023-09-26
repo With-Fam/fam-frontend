@@ -2,11 +2,13 @@
 import type { Metadata } from 'next'
 
 // Local Component
-import Hero from '@/components/home/Hero'
-import TrendingSection from '@/components/home/TrendingSection'
-import CollectiveCulture from '@/components/home/CollectiveCulture'
-import FeatureWidgets from '@/components/home/FeatureWidgets'
-import FAQ from '@/components/home/FAQ'
+import {
+  CollectiveCulture,
+  FAQ,
+  FeatureWidgets,
+  Hero,
+  TrendingSection,
+} from '@/components/home'
 
 /*--------------------------------------------------------------------*/
 

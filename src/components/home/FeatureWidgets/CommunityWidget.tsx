@@ -19,9 +19,14 @@ interface EProps {
  * Component
  */
 
-const CommunityWidget = ({ text, image, title, users }: EProps) => {
+const CommunityWidget = ({
+  text,
+  image,
+  title = '',
+  users,
+}: EProps): JSX.Element => {
   return (
-    <div className="shadow-card mx-auto my-12 flex w-72 gap-2 p-3.5">
+    <div className="mx-auto my-12 flex w-72 gap-2 p-3.5 shadow-card">
       {image && (
         <Image
           src={image}

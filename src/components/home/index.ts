@@ -1,0 +1,6 @@
+export { default as CollectiveCulture } from './CollectiveCulture'
+export { default as FAQ } from './FAQ'
+export { default as FeatureWidgets } from './FeatureWidgets'
+export { default as Hero } from './Hero'
+export { default as Icons } from './Icons'
+export { default as TrendingSection } from './TrendingSection'
