@@ -1,6 +1,9 @@
 // Framework
 import { createElement, ReactNode } from 'react'
 
+// Third Parties
+import { twMerge } from 'tailwind-merge'
+
 // Types
 interface EProps {
   children: ReactNode
@@ -15,8 +18,8 @@ interface EProps {
  */
 
 const Heading = ({ children, as, className }: EProps) => {
-  const commonClasses = 'font-medium'
-  className = `${commonClasses} ${className}`
+  const commonClasses = 'font-abcMedium'
+  className = twMerge(commonClasses, className)
 
   return createElement(as, { className }, children)
 }

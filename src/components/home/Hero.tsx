@@ -16,7 +16,7 @@ const Hero = () => {
       </Heading>
       <Heading
         as="h2"
-        className="mx-auto text-2xl font-normal leading-8 text-yellow max-w-xs sm:text-3xl sm:leading-10 sm:max-w-4xl"
+        className="mx-auto text-2xl font-abc leading-8 text-yellow max-w-xs sm:text-3xl sm:leading-10 sm:max-w-4xl"
       >
         Fam is a space for music communities to grow, collaborate and
         collectively fund creative projects
