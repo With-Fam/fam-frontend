@@ -8,6 +8,11 @@ const config: Config = {
   theme: {
     ...defaultTheme,
     extend: {
+      fontFamily: {
+        abc: ['ABCROM Regular', 'sans'],
+        abcMedium: ['ABCROM Medium', 'sans'],
+        abcWide: ['ABCROM Wide Medium', 'sans'],
+      },
       colors: {
         orange: {
           DEFAULT: '#F54D18',
@@ -34,7 +39,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
 }
 
 export default config
