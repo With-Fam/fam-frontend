@@ -9,12 +9,13 @@ interface CProps {
   title: string
   value: string
   users: string[]
-  userQuantity: string
+  text: string
   href: string
 }
 
 // Components
 import Paragraph from '@/stories/Paragraph'
+import UsersRow from '@/stories/UsersRow'
 
 // Component Prep
 
@@ -50,7 +51,7 @@ const TrendingCard = ({
   title,
   value,
   users,
-  userQuantity,
+  text,
   imageAlt,
   href,
 }: CProps) => {
@@ -68,12 +69,7 @@ const TrendingCard = ({
           <Paragraph as="p3">{title}</Paragraph>
           <Paragraph as="p3">{value}</Paragraph>
         </div>
-        <div className="flex justify-between">
-          <UserImages>{users}</UserImages>
-          <Paragraph as="p4" className="text-grey-dark">
-            + {userQuantity} others
-          </Paragraph>
-        </div>
+        <UsersRow users={users} text={text} />
       </div>
     </Link>
   )
