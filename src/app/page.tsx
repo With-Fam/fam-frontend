@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 
 // Local Component
 import Hero from '@/components/home/Hero'
+import TrendingSection from '@/components/home/TrendingSection'
 
 /*--------------------------------------------------------------------*/
 
@@ -32,7 +33,8 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://todo.dev',
     title: 'todo.dev',
-    description: 'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
+    description:
+      'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
     siteName: 'todo.dev',
     images: [{ url: '/img/favicon.png', width: 128, height: 128 }],
   },
@@ -42,6 +44,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <TrendingSection />
     </>
   )
 }

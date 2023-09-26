@@ -16,7 +16,7 @@ import Navbar from '@/components/shared/Navbar'
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className='font-abc'>
         <Navbar />
         <main>{children}</main>
       </body>

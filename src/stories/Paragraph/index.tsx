@@ -1,6 +1,9 @@
 // Framework
 import { createElement, ReactNode } from 'react'
 
+// Third Parties
+import { twMerge } from 'tailwind-merge'
+
 // Types
 interface EProps {
   children: ReactNode
@@ -38,7 +41,7 @@ const Paragraph = ({ children, as, className }: EProps) => {
     },
   }
 
-  className = `${componentConfig[as].class} ${className}`
+  className = twMerge(componentConfig[as].class, className)
   const style = componentConfig[as].style
 
   return createElement('p', { className, style }, children)
