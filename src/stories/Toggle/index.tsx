@@ -6,8 +6,8 @@ import ToggleButton from '@/stories/Toggle/ToggleButton'
 // Types
 interface ToggleProps {
   type: string
-  center: boolean
-  defaultType: string
+  center?: boolean
+  defaultType?: string
   items: {
     id: string
     title: string
@@ -24,7 +24,7 @@ interface ToggleProps {
 const Toggle = ({
   type,
   items,
-  center,
+  center = false,
   defaultType,
 }: ToggleProps): JSX.Element => {
   return (
