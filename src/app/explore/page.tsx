@@ -1,5 +1,5 @@
 // Framework
-import { Communities } from '@/components/explore'
+import { Communities, Filter } from '@/components/explore'
 
 // Types
 import type { Metadata } from 'next'
@@ -48,6 +48,7 @@ export default async function Explore({ searchParams }: ExploreProps) {
 
   return (
     <>
+      <Filter type={type}/>
       <Communities type={type} search={search} />
     </>
   )
