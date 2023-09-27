@@ -41,10 +41,10 @@ const DropDown = ({ children, question }: DropDownProps): JSX.Element => {
       <div
         className={`
     overflow-hidden duration-300 ease-in-out
-    ${open ? 'mt-8 max-h-screen' : 'max-h-0'}
+    ${open ? 'mt-6 max-h-screen' : 'max-h-0'}
   `}
       >
-        <Paragraph as="p2" className="text-left text-grey">
+        <Paragraph as="p3" className="text-left text-grey">
           {children}
         </Paragraph>
       </div>
