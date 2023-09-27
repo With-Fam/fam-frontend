@@ -16,9 +16,9 @@ import { Navbar, Footer } from '@/components/shared'
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className="font-abc">
+      <body className="flex min-h-screen flex-col bg-background font-abc">
         <Navbar />
-        <main>{children}</main>
+        <main className="grow">{children}</main>
         <Footer />
       </body>
     </html>
