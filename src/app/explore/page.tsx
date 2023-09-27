@@ -1,5 +1,6 @@
 // Framework
-import { Communities, Filter, CommunitySearch } from '@/components/explore'
+import { Communities, CommunitySearch } from '@/components/explore'
+import { Toggle } from '@/stories'
 
 // Types
 import type { Metadata } from 'next'
@@ -9,6 +10,9 @@ interface ExploreProps {
     search: string
   }
 }
+
+// Content
+import TOGGLE_DATA from '@/content/explore/toggle'
 
 /*--------------------------------------------------------------------*/
 
@@ -49,7 +53,7 @@ export default async function Explore({ searchParams }: ExploreProps) {
   return (
     <>
       <CommunitySearch type={type} search={search} />
-      <Filter type={type}/>
+      <Toggle type={type} items={TOGGLE_DATA} />
       <Communities type={type} search={search} />
     </>
   )
