@@ -6,6 +6,8 @@ import ToggleButton from '@/stories/Toggle/ToggleButton'
 // Types
 interface ToggleProps {
   type: string
+  center: boolean
+  defaultType: string
   items: {
     id: string
     title: string
@@ -19,13 +21,24 @@ interface ToggleProps {
  * Component
  */
 
-const Toggle = ({ type = 'trending', items }: ToggleProps): JSX.Element => {
+const Toggle = ({
+  type,
+  items,
+  center,
+  defaultType,
+}: ToggleProps): JSX.Element => {
   return (
-    <section className="mx-0 sm:mx-auto my-4 block w-max px-4 sm:my-10">
+    <section
+      className={`
+      my-4 block w-max sm:my-10
+      ${center ? 'mx-auto' : 'mx-0 sm:mx-auto'}
+    `}
+    >
       {items.map((item, index) => {
         const { title, href, id } = item
+        const resultType = type || defaultType
         return (
-          <ToggleButton key={index} href={href} active={type === id}>
+          <ToggleButton key={index} href={href} active={resultType === id}>
             {title}
           </ToggleButton>
         )
