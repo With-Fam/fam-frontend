@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 
 export default async function CommunityProfile({
   searchParams,
-}: CommunityProfileProps) {
+}: CommunityProfileProps): Promise<JSX.Element> {
   const { type } = searchParams
 
   return (
@@ -60,11 +60,7 @@ export default async function CommunityProfile({
         type={type}
         items={DATA_COMMUNITY_TOGGLE}
       />
-      {(type === 'home' || !type) && (
-        <>
-          <BidComponent />
-        </>
-      )}
+      {(type === 'home' || !type) && <BidComponent />}
     </>
   )
 }
