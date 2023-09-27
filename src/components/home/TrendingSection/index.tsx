@@ -98,18 +98,18 @@ const TrendingSection = (): JSX.Element => {
           })}
         </Swiper>
       </div>
-      {activeSlide < TRENDING_DATA.length - maxSlidesShowing && (
-        <NavigationButton
-          onClick={() => swiper?.slideNext()}
-          direction="next"
-        />
-      )}
-      {activeSlide > 0 && (
-        <NavigationButton
-          onClick={() => swiper?.slidePrev()}
-          direction="prev"
-        />
-      )}
+      <NavigationButton
+        onClick={() => swiper?.slideNext()}
+        direction="next"
+        className={
+          activeSlide < TRENDING_DATA.length - maxSlidesShowing ? 'hidden' : ''
+        }
+      />
+      <NavigationButton
+        onClick={() => swiper?.slidePrev()}
+        direction="prev"
+        className={activeSlide > 0 ? 'hidden' : ''}
+      />
     </section>
   )
 }

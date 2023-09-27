@@ -1,24 +1,29 @@
 // Local Components
 import { Arrow } from '@/components/icons'
+import { twMerge } from 'tailwind-merge'
 
 // Types
 interface NavigationProps {
+  className?: string
   direction: string
   onClick: () => void
 }
 
 // Prep Component
 const NavigationButton = ({
+  className,
   onClick,
   direction,
 }: NavigationProps): JSX.Element => (
   <div
-    className={`
+    className={twMerge(
+      `
     absolute top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 transform
     cursor-pointer items-center justify-center rounded-full bg-grey-light
-    lg:flex
-    ${direction === 'prev' ? '-scale-x-100' : 'scale-x-100'}
-    ${direction === 'prev' ? '-left-10' : '-right-10'}`}
+    lg:flex`,
+      direction === 'prev' ? '-left-10 -scale-x-100' : '-right-10 scale-x-100',
+      className
+    )}
     aria-label={`${direction} slide`}
     onClick={onClick}
   >
