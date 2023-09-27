@@ -18,7 +18,7 @@ interface DropDownProps {
 /**
  * Component
  */
-const DropDown = ({ children, question }: DropDownProps) => {
+const DropDown = ({ children, question }: DropDownProps): JSX.Element => {
   const [open, setOpen] = useState(false)
 
   return (
