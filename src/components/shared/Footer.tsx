@@ -1,5 +1,5 @@
 // Local Components
-import Logo from '@/components/shared/Logo'
+import { Logo } from '@/components/shared'
 import Paragraph from '@/stories/Paragraph'
 
 // Content

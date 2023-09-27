@@ -5,8 +5,7 @@ import { ReactNode } from 'react'
 import './global.scss'
 
 // Local Components
-import Navbar from '@/components/shared/Navbar'
-import Footer from '@/components/shared/Footer'
+import { Navbar, Footer } from '@/components/shared'
 
 /*--------------------------------------------------------------------*/
 
@@ -17,7 +16,7 @@ import Footer from '@/components/shared/Footer'
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className='font-abc'>
+      <body className="font-abc">
         <Navbar />
         <main>{children}</main>
         <Footer />

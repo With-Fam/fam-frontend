@@ -1,6 +1,6 @@
 // Local Components
 import Heading from '@/stories/Heading'
-import Icons from '@/components/home/Icons'
+import { Icons } from '@/components/home'
 
 /*--------------------------------------------------------------------*/
 

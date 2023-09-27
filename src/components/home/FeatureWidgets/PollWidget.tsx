@@ -2,7 +2,7 @@
 import UsersRow from '@/stories/UsersRow'
 
 // Content
-import Poll from '@/components/icons/Poll'
+import { Poll } from '@/components/icons'
 
 // Types
 interface EProps {
