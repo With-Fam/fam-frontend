@@ -1,6 +1,6 @@
 // Local Components
-import { Heading, Paragraph } from '@/stories'
-import { ChevronDown } from '@/components/icons'
+import { Heading } from '@/stories'
+import DropDown from '@/components/home/FAQ/DropDown'
 
 // Content
 import FAQ_DATA from '@/content/home/faq'
@@ -17,17 +17,9 @@ const FAQ = () => (
     </Heading>
     <div className="mx-auto max-w-6xl">
       {FAQ_DATA.map((item, index) => (
-        <div key={index} className="mt-2 rounded-lg bg-white p-8">
-          <Paragraph
-            as="p2"
-            className="flex items-center justify-between text-left"
-          >
-            {item}{' '}
-            <span>
-              <ChevronDown className="ml-2" />
-            </span>
-          </Paragraph>
-        </div>
+        <DropDown key={index} question={item.question}>
+          {item.answer}
+        </DropDown>
       ))}
     </div>
   </section>
