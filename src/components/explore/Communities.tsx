@@ -24,11 +24,11 @@ const Communities = ({
 
   return (
     <section className="block px-4">
-      <div className="mx-auto flex w-full max-w-4xl flex-wrap justify-center">
+      <div className="mx-auto grid w-full max-w-4xl grid-cols-2 justify-center gap-8 md:grid-cols-3">
         {communities.map((community, index) => {
           const { image, title, value, users, text, imageAlt, href } = community
           return (
-            <div key={index} className="rounder-2xl w-min bg-white p-3">
+            <div key={index} className="rounder-2xl w-auto bg-white p-3">
               <TrendingCard
                 image={image}
                 title={title}
