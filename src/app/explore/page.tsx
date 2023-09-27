@@ -45,9 +45,10 @@ export const metadata: Metadata = {
 
 export default async function Explore({ searchParams }: ExploreProps) {
   const { type, search } = searchParams
+
   return (
     <>
-      <Communities />
+      <Communities type={type} search={search} />
     </>
   )
 }
