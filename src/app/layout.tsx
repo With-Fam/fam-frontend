@@ -4,6 +4,10 @@ import { ReactNode } from 'react'
 // Styles
 import './global.scss'
 
+// Local Components
+import Navbar from '@/components/shared/Navbar'
+import Footer from '@/components/shared/Footer'
+
 /*--------------------------------------------------------------------*/
 
 /**
@@ -13,8 +17,10 @@ import './global.scss'
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className='font-abc'>
+        <Navbar />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   )
