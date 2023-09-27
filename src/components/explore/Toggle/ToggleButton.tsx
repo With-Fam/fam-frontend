@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Paragraph } from '@/stories'
 
 // Types
-interface FilterProps {
+interface ToggleButtonProps {
   active: boolean
   href: string
   children: string
@@ -19,11 +19,11 @@ interface FilterProps {
  * Component
  */
 
-const FilterButton = ({
+const ToggleButton = ({
   href = 'trending',
   children,
   active,
-}: FilterProps): JSX.Element => {
+}: ToggleButtonProps): JSX.Element => {
   const router = useRouter()
   return (
     <button
@@ -31,7 +31,7 @@ const FilterButton = ({
           w-min rounded-3xl px-4 py-2
           ${active ? 'bg-grey-light' : ''}
         `}
-      aria-label={`filter comunnities to ${children} type`}
+      aria-label={`Toggle comunnities to ${children} type`}
       onClick={() => router.push(href)}
       type="button"
     >
@@ -39,4 +39,4 @@ const FilterButton = ({
     </button>
   )
 }
-export default FilterButton
+export default ToggleButton
