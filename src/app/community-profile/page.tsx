@@ -14,6 +14,9 @@ interface CommunityProfileProps {
   }
 }
 
+// Local Components
+import AllDrops from '@/components/community-profile/AllDrops'
+
 // Content
 import DATA_COMMUNITY_TOGGLE from '@/content/community-profile/toggle'
 
@@ -69,6 +72,11 @@ export default async function CommunityProfile({
           <BidComponent />
           <FoundersComponent />
           <RecentDrops />
+        </>
+      )}
+      {(type === 'drops' || !type) && (
+        <>
+          <AllDrops />
         </>
       )}
     </>
