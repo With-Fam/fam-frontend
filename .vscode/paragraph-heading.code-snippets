@@ -5,9 +5,9 @@
 			"paragraph-heading"
 		],
 		"body": [
-			"<Paragraph as='${1:p1}' className='${2:}'>"
+			"<Heading as='${1:h1}' className='${2:}'>"
 			"\t${3}",
-      "</Paragraph>"
+      "</Heading>"
 		],
 		"description": "Creates a quick styled component"
 	}
