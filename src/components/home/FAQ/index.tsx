@@ -1,6 +1,6 @@
 // Local Components
 import { Heading } from '@/stories'
-import DropDown from '@/components/home/FAQ/DropDown'
+import DropDown from '@/stories/Dropdown'
 
 // Content
 import FAQ_DATA from '@/content/home/faq'
