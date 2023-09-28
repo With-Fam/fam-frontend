@@ -13,6 +13,7 @@ interface CommunityProfileProps {
 import {
   AllDrops,
   BidComponent,
+  CommunityMembers,
   FoundersComponent,
   RecentDrops,
 } from '@/components/community-profile'
@@ -74,11 +75,8 @@ export default async function CommunityProfile({
           <RecentDrops />
         </>
       )}
-      {(type === 'drops' || !type) && (
-        <>
-          <AllDrops />
-        </>
-      )}
+      {(type === 'drops' || !type) && <AllDrops />}
+      {(type === 'members' || !type) && <CommunityMembers />}
     </>
   )
 }
