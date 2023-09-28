@@ -9,11 +9,7 @@ interface NavigationProps {
   onClick: () => void
 }
 
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
+// Prep Component
 const NavigationButton = ({
   className,
   onClick,
