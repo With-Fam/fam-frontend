@@ -1,5 +1,6 @@
 // Framework
 import { Toggle } from '@/stories'
+import { BidComponent } from '@/components/community-profile'
 
 // Types
 import type { Metadata } from 'next'
@@ -9,18 +10,8 @@ interface CommunityProfileProps {
   }
 }
 
-// Local Components
-import {
-  AllDrops,
-  BidComponent,
-  CommunityActions,
-  CommunityMembers,
-  FoundersComponent,
-  RecentDrops,
-} from '@/components/community-profile'
-
 // Content
-import { TOGGLE_DATA } from '@/content/community-profile'
+import DATA_COMMUNITY_TOGGLE from '@/content/community-profile/toggle'
 
 /*--------------------------------------------------------------------*/
 
@@ -67,18 +58,9 @@ export default async function CommunityProfile({
         defaultType="home"
         center={true}
         type={type}
-        items={TOGGLE_DATA}
+        items={DATA_COMMUNITY_TOGGLE}
       />
-      {(type === 'home' || !type) && (
-        <>
-          <BidComponent />
-          <FoundersComponent />
-          <RecentDrops />
-        </>
-      )}
-      {(type === 'drops' || !type) && <AllDrops />}
-      {(type === 'members' || !type) && <CommunityMembers />}
-      {(type === 'actions' || !type) && <CommunityActions />}
+      {(type === 'home' || !type) && <BidComponent />}
     </>
   )
 }

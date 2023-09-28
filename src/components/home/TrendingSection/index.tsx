@@ -1,15 +1,19 @@
 'use client'
 
 // Framework
+import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
 
 // Third Parties
-import { Swiper, SwiperSlide, type SwiperClass } from 'swiper/react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import type { SwiperClass } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 
 // Local Components
-import { ExploreAll, TrendingCard, NavigationButton } from '@/stories'
+import { Heading, Paragraph, TrendingCard } from '@/stories'
+import { ChevronDown } from '@/components/icons'
+import NavigationButton from './NavigationButton'
 
 // Content
 import TRENDING_DATA from '@/content/home/trendingSection'
@@ -53,8 +57,22 @@ const TrendingSection = (): JSX.Element => {
       className="relative mx-auto max-w-[830px]
       px-4 py-12 sm:py-24"
     >
-      <ExploreAll href="/explore">Trending</ExploreAll>
-      <div ref={slidesElement} className="mt-4 overflow-hidden sm:mt-4">
+      <div className="flex w-full items-center justify-between">
+        <Heading as="h3" className="mb-4 text-orange">
+          Trending
+        </Heading>
+        <Paragraph as="p2" className="text-orange">
+          <Link
+            href="/"
+            className="flex items-center"
+            aria-label="explore all trending"
+          >
+            <span className="hidden sm:inline-block">Explore all</span>
+            <ChevronDown className="ml-2" />
+          </Link>
+        </Paragraph>
+      </div>
+      <div ref={slidesElement} className="overflow-hidden">
         <Swiper
           modules={[Navigation]}
           spaceBetween={38}
