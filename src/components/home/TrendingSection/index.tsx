@@ -63,7 +63,7 @@ const TrendingSection = (): JSX.Element => {
         </Heading>
         <Paragraph as="p2" className="text-orange">
           <Link
-            href="/"
+            href="/explore"
             className="flex items-center"
             aria-label="explore all trending"
           >
