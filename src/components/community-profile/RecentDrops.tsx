@@ -13,7 +13,7 @@ import { NavigationButton, ExploreAll } from '@/stories'
 import DropCard from '@/components/community-profile/DropCard'
 
 // Content
-import DROPS_DATA from '@/content/community-profile/drops'
+import { DROPS_DATA } from '@/content/community-profile'
 
 /*--------------------------------------------------------------------*/
 

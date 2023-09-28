@@ -2,7 +2,7 @@
 import CustomLink from '@/components/community-profile/BidComponent/CustomLink'
 
 // Content
-import LINKS_DATA from '@/content/community-profile/links'
+import { LINKS_DATA } from '@/content/community-profile'
 
 /*--------------------------------------------------------------------*/
 

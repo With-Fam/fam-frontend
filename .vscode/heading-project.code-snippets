@@ -2,7 +2,7 @@
 	"Styled Component": {
 		"scope": "javascript, typescript, typescriptreact, javascriptreact",
 		"prefix": [
-			"paragraph-heading"
+			"heading-project"
 		],
 		"body": [
 			"<Heading as='${1:h1}' className='${2:}'>"

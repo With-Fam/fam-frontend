@@ -8,7 +8,7 @@ import ExternalLink from '@/components/icons/ExternalLink'
 import InfoMark from '@/components/icons/InfoMark'
 
 // Content
-import FOUNDERS_DATA from '@/content/community-profile/founders'
+import { FOUNDERS_DATA } from '@/content/community-profile'
 
 /*--------------------------------------------------------------------*/
 
@@ -17,7 +17,7 @@ import FOUNDERS_DATA from '@/content/community-profile/founders'
  */
 
 const FoundersComponent = (): JSX.Element => (
-  <section className="mt-12 px-4 mx-auto max-w-[936px]">
+  <section className="mx-auto mt-12 max-w-[936px] px-4">
     <Heading as="h5" className="mb-8 font-abcWide text-orange">
       Founders
     </Heading>

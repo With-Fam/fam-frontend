@@ -13,13 +13,14 @@ interface CommunityProfileProps {
 import {
   AllDrops,
   BidComponent,
+  CommunityActions,
   CommunityMembers,
   FoundersComponent,
   RecentDrops,
 } from '@/components/community-profile'
 
 // Content
-import DATA_COMMUNITY_TOGGLE from '@/content/community-profile/toggle'
+import { TOGGLE_DATA } from '@/content/community-profile'
 
 /*--------------------------------------------------------------------*/
 
@@ -66,7 +67,7 @@ export default async function CommunityProfile({
         defaultType="home"
         center={true}
         type={type}
-        items={DATA_COMMUNITY_TOGGLE}
+        items={TOGGLE_DATA}
       />
       {(type === 'home' || !type) && (
         <>
@@ -77,6 +78,7 @@ export default async function CommunityProfile({
       )}
       {(type === 'drops' || !type) && <AllDrops />}
       {(type === 'members' || !type) && <CommunityMembers />}
+      {(type === 'actions' || !type) && <CommunityActions />}
     </>
   )
 }

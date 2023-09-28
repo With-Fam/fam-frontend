@@ -1,8 +1,5 @@
 // Local Components
-import UsersRow from '@/stories/UsersRow'
-
-// Content
-import { Poll } from '@/components/icons'
+import { UsersRow, PoolComponent } from '@/stories'
 
 // Types
 interface EProps {
@@ -19,10 +16,7 @@ interface EProps {
 const PollWidget = ({ text, users }: EProps): JSX.Element => (
   <div className="mx-auto my-12 flex w-72 gap-2 p-3.5 shadow-card">
     <div>{users && text && <UsersRow users={users} text={text} />}</div>
-    <div className="flex items-center justify-center">
-      <Poll />
-      <span className="ml-1.5 text-status-purple">Voting</span>
-    </div>
+    <PoolComponent />
   </div>
 )
 

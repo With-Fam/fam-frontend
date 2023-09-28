@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { Paragraph } from '@/stories'
 
 // Content
-import MEMBERS_DATA from '@/content/community-profile/members'
+import { MEMBERS_DATA } from '@/content/community-profile'
 
 // Utils
 import { formatDate } from '@/utils/community-profile'
@@ -21,12 +21,15 @@ const CommunityMembers = (): JSX.Element => {
   return (
     <section
       className="relative mx-auto max-w-[936px]
-      px-4 py-4 sm:py-10"
+      px-4 pb-4 sm:pb-10"
     >
       {sortedFounders.map((member, index) => {
         return (
-          <div key={index} className="mb-2 rounded-lg bg-white p-4 block sm:flex sm:justify-between sm:items-center">
-            <div className="mb-4 sm:mb-0 flex items-center justify-start gap-2">
+          <div
+            key={index}
+            className="mb-2 block rounded-lg bg-white p-4 sm:flex sm:items-center sm:justify-between"
+          >
+            <div className="mb-4 flex items-center justify-start gap-2 sm:mb-0">
               <Image
                 src={member.image.href}
                 alt={member.image.alt}
@@ -46,11 +49,14 @@ const CommunityMembers = (): JSX.Element => {
                 </p>
               )}
             </div>
-            <div className="flex items-center justify-between flex-1 pl-0 sm:pl-6">
+            <div className="flex flex-1 items-center justify-between pl-0 sm:pl-6">
               <Paragraph as="p4" className="text-grey">
                 Joined {formatDate(member.joinedDate)}
               </Paragraph>
-              <Paragraph as="p4" className="text-grey flex-0 sm:flex-1 text-center sm:text-right px-0 sm:px-8">
+              <Paragraph
+                as="p4"
+                className="flex-0 px-0 text-center text-grey sm:flex-1 sm:px-8 sm:text-right"
+              >
                 {member.votes} votes
               </Paragraph>
               <Paragraph as="p4" className="text-grey">
