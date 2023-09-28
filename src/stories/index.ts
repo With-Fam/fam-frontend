@@ -1,5 +1,6 @@
+export { default as Dropdown } from './Dropdown'
 export { default as Heading } from './Heading'
 export { default as Paragraph } from './Paragraph'
+export { default as Toggle } from './Toggle'
 export { default as TrendingCard } from './TrendingCard'
 export { default as UsersRow } from './UsersRow'
-export { default as Toggle } from './Toggle'
