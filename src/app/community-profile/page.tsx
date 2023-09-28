@@ -1,6 +1,6 @@
 // Framework
 import { Toggle } from '@/stories'
-import { BidComponent } from '@/components/community-profile'
+import { BidComponent, FoundersComponent } from '@/components/community-profile'
 
 // Types
 import type { Metadata } from 'next'
@@ -60,7 +60,12 @@ export default async function CommunityProfile({
         type={type}
         items={DATA_COMMUNITY_TOGGLE}
       />
-      {(type === 'home' || !type) && <BidComponent />}
+      {(type === 'home' || !type) && (
+        <>
+          <BidComponent />
+          <FoundersComponent />
+        </>
+      )}
     </>
   )
 }
