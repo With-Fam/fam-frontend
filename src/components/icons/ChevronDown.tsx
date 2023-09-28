@@ -4,7 +4,7 @@
  * Component
  */
 
-const Arrow = ({ className }: { className?: string }) => {
+const Arrow = ({ className }: { className?: string }): JSX.Element => {
   return (
     <svg
       className={className}

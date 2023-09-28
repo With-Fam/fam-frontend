@@ -17,29 +17,6 @@ interface CProps {
 import Paragraph from '@/stories/Paragraph'
 import UsersRow from '@/stories/UsersRow'
 
-// Component Prep
-
-const UserImages = ({ children }: { children: string[] }) => {
-  return (
-    <div className="flex">
-      {children.map((user, index) => {
-        const marginLeft = `relative h-6 w-6 ${index > 0 ? '-ml-2' : ''}`
-        return (
-          <div key={user} className={marginLeft}>
-            <Image
-              src={user}
-              alt=""
-              width={24}
-              height={24}
-              className="h-full w-full overflow-hidden rounded-full object-cover"
-            />
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
 /*--------------------------------------------------------------------*/
 
 /**

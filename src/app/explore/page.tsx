@@ -47,7 +47,9 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function Explore({ searchParams }: ExploreProps) {
+export default async function Explore({
+  searchParams,
+}: ExploreProps): Promise<JSX.Element> {
   const { type, search } = searchParams
 
   return (

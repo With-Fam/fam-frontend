@@ -13,7 +13,7 @@ import WIDGET_DATA from '@/content/home/widgetsSection'
  * Component
  */
 
-const FeatureWidgets = () => (
+const FeatureWidgets = (): JSX.Element => (
   <section className="bg-background px-4 py-16 sm:py-24">
     <div className="mx-auto flex max-w-screen-2xl flex-col items-center justify-center gap-6 xl:flex-row">
       {WIDGET_DATA.map((widget, index) => {
