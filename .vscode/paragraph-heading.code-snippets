@@ -1,0 +1,14 @@
+{
+	"Styled Component": {
+		"scope": "javascript, typescript, typescriptreact, javascriptreact",
+		"prefix": [
+			"paragraph-heading"
+		],
+		"body": [
+			"<Paragraph as='${1:p1}' className='${2:}'>"
+			"\t${3}",
+      "</Paragraph>"
+		],
+		"description": "Creates a quick styled component"
+	}
+}
