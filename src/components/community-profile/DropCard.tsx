@@ -20,6 +20,7 @@ interface DropProps {
       alt: string
     }
   }
+  priority?: boolean
 }
 
 /*--------------------------------------------------------------------*/
@@ -28,7 +29,7 @@ interface DropProps {
  * Component
  */
 
-const RecentDrops = ({ drop }: DropProps): JSX.Element => {
+const RecentDrops = ({ drop, priority }: DropProps): JSX.Element => {
   const { href, image, title, value, community } = drop
 
   return (
@@ -40,6 +41,7 @@ const RecentDrops = ({ drop }: DropProps): JSX.Element => {
           width={340}
           height={224}
           className="h-56 w-full object-cover object-left"
+          priority={priority}
         />
         <Paragraph as="p3" className="whitespace-no-wrap truncate pb-2 pt-3">
           {title}
@@ -51,9 +53,10 @@ const RecentDrops = ({ drop }: DropProps): JSX.Element => {
           <Image
             src={community.image}
             alt=""
-            className="h-4 w-4 rounded-full"
+            className="rounded-full"
             width={16}
             height={16}
+            priority={priority}
           />
           <Paragraph as="p5" className="text-xs leading-3">
             {community.name}
