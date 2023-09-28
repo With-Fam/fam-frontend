@@ -24,7 +24,7 @@ interface ToggleProps {
 const Toggle = ({
   type,
   items,
-  center,
+  center = false,
   defaultType,
 }: ToggleProps): JSX.Element => {
   return (
