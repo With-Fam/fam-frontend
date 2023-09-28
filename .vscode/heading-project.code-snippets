@@ -1,5 +1,5 @@
 {
-	"Styled Component": {
+	"Heading Component": {
 		"scope": "javascript, typescript, typescriptreact, javascriptreact",
 		"prefix": [
 			"heading-project"
@@ -9,6 +9,6 @@
 			"\t${3}",
       "</Heading>"
 		],
-		"description": "Creates a quick styled component"
+		"description": "Creates a quick heanding component"
 	}
 }

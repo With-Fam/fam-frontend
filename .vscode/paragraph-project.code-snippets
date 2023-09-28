@@ -1,5 +1,5 @@
 {
-	"Styled Component": {
+	"Paragraph Component": {
 		"scope": "javascript, typescript, typescriptreact, javascriptreact",
 		"prefix": [
 			"paragraph-project"
@@ -9,6 +9,6 @@
 			"\t${3}",
       "</Paragraph>"
 		],
-		"description": "Creates a quick styled component"
+		"description": "Creates a quick paragraph component"
 	}
 }
