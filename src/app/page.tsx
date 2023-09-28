@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function Home() {
+export default function Home(): JSX.Element {
   return (
     <>
       <Hero />

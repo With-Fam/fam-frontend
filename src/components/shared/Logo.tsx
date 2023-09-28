@@ -7,7 +7,7 @@ import Link from 'next/link'
  * Component
  */
 
-const Logo = ({ color = 'black' }: { color?: string }) => {
+const Logo = ({ color = 'black' }: { color?: string }): JSX.Element => {
   return (
     <Link href="/" passHref>
       <svg

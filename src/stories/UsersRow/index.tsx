@@ -18,7 +18,7 @@ import Paragraph from '@/stories/Paragraph'
  * Component
  */
 
-const UsersRow = ({ users, text }: CProps) => {
+const UsersRow = ({ users, text }: CProps): JSX.Element => {
   return (
     <div className="flex w-full items-center">
       {users.map((user, index) => {
