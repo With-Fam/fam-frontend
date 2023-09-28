@@ -1,4 +1,4 @@
-const TOGGLE_DATA = [
+const EXPLORE_TOGGLE_DATA = [
   {
     id: 'trending',
     title: 'Trending',
@@ -11,4 +11,4 @@ const TOGGLE_DATA = [
   },
 ]
 
-export default TOGGLE_DATA
+export default EXPLORE_TOGGLE_DATA
