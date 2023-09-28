@@ -9,10 +9,11 @@ import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 
 // Local Components
-import { ExploreAll, TrendingCard, NavigationButton } from '@/stories'
+import { NavigationButton, ExploreAll } from '@/stories'
+import DropCard from '@/components/community-profile/DropCard'
 
 // Content
-import TRENDING_DATA from '@/content/home/trendingSection'
+import DROPS_DATA from '@/content/community-profile/drops'
 
 /*--------------------------------------------------------------------*/
 
@@ -20,13 +21,14 @@ import TRENDING_DATA from '@/content/home/trendingSection'
  * Component
  */
 
-const TrendingSection = (): JSX.Element => {
+const RecentDrops = (): JSX.Element => {
   const [swiper, setSwiper] = useState<SwiperClass | null>(null)
   const [activeSlide, setActiveSlide] = useState(0)
   const [slidesPerView, setSlidesPerView] = useState(1.3)
   const slidesElement = useRef<HTMLDivElement>(null)
   const slideWidth = 240
   const maxSlidesShowing = 3
+  const RECENT_DROPS_DATA = DROPS_DATA.slice(0, 4)
 
   useEffect(() => {
     const updateSlidesPerView = () => {
@@ -50,31 +52,22 @@ const TrendingSection = (): JSX.Element => {
 
   return (
     <section
-      className="relative mx-auto max-w-[830px]
-      px-4 py-12 sm:py-24"
+      className="relative mx-auto max-w-[936px]
+      px-4 py-8 sm:py-12"
     >
-      <ExploreAll href="/explore">Trending</ExploreAll>
-      <div ref={slidesElement} className="mt-4 overflow-hidden sm:mt-4">
+      <ExploreAll href="/community-profile?type=drops">Recent Drops</ExploreAll>
+      <div ref={slidesElement} className="mt-6 overflow-hidden">
         <Swiper
           modules={[Navigation]}
-          spaceBetween={38}
+          spaceBetween={8}
           slidesPerView={slidesPerView}
           onSlideChange={() => setActiveSlide(swiper?.activeIndex ?? 0)}
           onSwiper={(swiper) => setSwiper(swiper)}
         >
-          {TRENDING_DATA.map((data, index) => {
-            const { image, title, value, users, text, imageAlt, href } = data
+          {RECENT_DROPS_DATA.map((drop, index) => {
             return (
               <SwiperSlide key={index}>
-                <TrendingCard
-                  image={image}
-                  title={title}
-                  value={value}
-                  users={users}
-                  text={text}
-                  imageAlt={imageAlt}
-                  href={href}
-                />
+                <DropCard drop={drop} />
               </SwiperSlide>
             )
           })}
@@ -84,7 +77,9 @@ const TrendingSection = (): JSX.Element => {
         onClick={() => swiper?.slideNext()}
         direction="next"
         className={
-          activeSlide < TRENDING_DATA.length - maxSlidesShowing ? 'hidden' : ''
+          activeSlide < RECENT_DROPS_DATA.length - maxSlidesShowing
+            ? 'hidden'
+            : ''
         }
       />
       <NavigationButton
@@ -96,4 +91,4 @@ const TrendingSection = (): JSX.Element => {
   )
 }
 
-export default TrendingSection
+export default RecentDrops

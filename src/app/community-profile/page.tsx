@@ -1,6 +1,10 @@
 // Framework
 import { Toggle } from '@/stories'
-import { BidComponent, FoundersComponent } from '@/components/community-profile'
+import {
+  BidComponent,
+  FoundersComponent,
+  RecentDrops,
+} from '@/components/community-profile'
 
 // Types
 import type { Metadata } from 'next'
@@ -64,6 +68,7 @@ export default async function CommunityProfile({
         <>
           <BidComponent />
           <FoundersComponent />
+          <RecentDrops />
         </>
       )}
     </>
