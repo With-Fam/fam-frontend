@@ -1,5 +1,8 @@
 export { default as Arrow } from './Arrow'
 export { default as ChevronDown } from './ChevronDown'
+export { default as Discord } from './Discord'
+export { default as Globe } from './Globe'
 export { default as QuestionMark } from './QuestionMark'
 export { default as Poll } from './Poll'
 export { default as Search } from './Search'
+export { default as Twitter } from './Twitter'
