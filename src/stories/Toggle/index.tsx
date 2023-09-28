@@ -6,8 +6,8 @@ import ToggleButton from '@/stories/Toggle/ToggleButton'
 // Types
 interface ToggleProps {
   type: string
-  center: boolean
-  defaultType: string
+  center?: boolean
+  defaultType?: string
   items: {
     id: string
     title: string
