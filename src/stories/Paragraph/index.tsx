@@ -17,7 +17,7 @@ interface EProps {
  * Component
  */
 
-const Paragraph = ({ children, as, className }: EProps) => {
+const Paragraph = ({ children, as, className }: EProps): JSX.Element => {
   const componentConfig = {
     p1: {
       class: 'leading-10 abc',

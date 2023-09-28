@@ -28,7 +28,7 @@ const ToggleButton = ({
   return (
     <button
       className={`
-          w-min rounded-3xl py-2 px-3 sm:px-4
+          w-min rounded-3xl px-3 py-2 sm:px-4
           ${active ? 'bg-grey-light' : ''}
         `}
       aria-label={`Toggle comunnities to ${children} type`}

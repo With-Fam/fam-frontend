@@ -4,7 +4,7 @@
  * Component
  */
 
-const Icons = () => {
+const Icons = (): JSX.Element => {
   return (
     <div className="flex h-full justify-center gap-x-8 pt-11 sm:pt-24">
       <svg

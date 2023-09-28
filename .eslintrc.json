@@ -1,6 +1,18 @@
 {
   "extends": [
     "next/core-web-vitals",
-    "plugin:storybook/recommended"
-  ]
+    "plugin:storybook/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": [
+      "error",
+      {
+        "allowHigherOrderFunctions": true
+      }
+    ]
+  }
 }

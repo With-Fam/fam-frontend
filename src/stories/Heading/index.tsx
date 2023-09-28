@@ -17,7 +17,7 @@ interface EProps {
  * Component
  */
 
-const Heading = ({ children, as, className }: EProps) => {
+const Heading = ({ children, as, className }: EProps): JSX.Element => {
   const commonClasses = 'font-abcMedium'
   className = twMerge(commonClasses, className)
 

@@ -11,7 +11,7 @@ const FOOTER_DATA = ['Twitter', 'Blog', 'Discord', 'Docs', 'Privacy']
  * Component
  */
 
-const Footer = () => {
+const Footer = (): JSX.Element => {
   return (
     <footer className="flex flex-col sm:flex-row items-center justify-center pb-20 pt-14 sm:pb-10 sm:pt-10 sm:px-10">
       <Logo color="#F54D18" />
