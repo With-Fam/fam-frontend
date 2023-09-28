@@ -1,10 +1,5 @@
 // Framework
 import { Toggle } from '@/stories'
-import {
-  BidComponent,
-  FoundersComponent,
-  RecentDrops,
-} from '@/components/community-profile'
 
 // Types
 import type { Metadata } from 'next'
@@ -15,7 +10,12 @@ interface CommunityProfileProps {
 }
 
 // Local Components
-import AllDrops from '@/components/community-profile/AllDrops'
+import {
+  AllDrops,
+  BidComponent,
+  FoundersComponent,
+  RecentDrops,
+} from '@/components/community-profile'
 
 // Content
 import DATA_COMMUNITY_TOGGLE from '@/content/community-profile/toggle'
