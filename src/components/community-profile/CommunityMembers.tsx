@@ -8,7 +8,7 @@ import { Paragraph } from '@/stories'
 import { MEMBERS_DATA } from '@/content/community-profile'
 
 // Utils
-import { formatDate } from '@/utils/community-profile'
+import { formatDate } from '@/utils/shared'
 
 /*--------------------------------------------------------------------*/
 

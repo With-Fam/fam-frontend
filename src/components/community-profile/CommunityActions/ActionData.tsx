@@ -24,7 +24,7 @@ interface DataProps {
 }
 
 // Utils
-import { formatDate } from '@/utils/community-profile'
+import { formatDate } from '@/utils/shared'
 
 /*--------------------------------------------------------------------*/
 
