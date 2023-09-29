@@ -1,0 +1,14 @@
+{
+	"Paragraph Component": {
+		"scope": "javascript, typescript, typescriptreact, javascriptreact",
+		"prefix": [
+			"paragraph-project"
+		],
+		"body": [
+			"<Paragraph as='${1:p1}' className='${2:}'>"
+			"\t${3}",
+      "</Paragraph>"
+		],
+		"description": "Creates a quick paragraph component"
+	}
+}
