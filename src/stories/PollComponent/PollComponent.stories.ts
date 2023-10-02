@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import PoolComponent from '.'
+import PollComponent from '.'
 
-const meta: Meta<typeof PoolComponent> = {
-  title: 'PoolComponent',
-  component: PoolComponent,
+const meta: Meta<typeof PollComponent> = {
+  title: 'PollComponent',
+  component: PollComponent,
   tags: ['autodocs'],
   parameters: {
     tags: ['autodocs'],
@@ -12,6 +12,6 @@ const meta: Meta<typeof PoolComponent> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PoolComponent>
+type Story = StoryObj<typeof PollComponent>
 
 export const Default: Story = {}

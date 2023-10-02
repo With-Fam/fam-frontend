@@ -2,7 +2,7 @@
 import Image from 'next/image'
 
 // Local Components
-import { Paragraph, PoolComponent, UsersRow } from '@/stories'
+import { Paragraph, PollComponent, UsersRow } from '@/stories'
 
 // Types
 interface DataProps {
@@ -11,8 +11,7 @@ interface DataProps {
     date: string
     title: string
     votes: number
-    rejected: boolean
-    passed: boolean
+    status: null | 'passed' | 'rejected'
     description: string
     users: string[]
     creator: {
@@ -33,7 +32,7 @@ import { formatDate } from '@/utils/shared'
  */
 
 const ActionData = ({ item }: DataProps): JSX.Element => {
-  const { creator, title, date, users, votes, passed, rejected } = item
+  const { creator, title, date, users, votes, status } = item
 
   return (
     <>
@@ -60,7 +59,7 @@ const ActionData = ({ item }: DataProps): JSX.Element => {
           <UsersRow users={users} text={`${votes} Votes`} />
         </div>
         <div className="relative right-0 top-0 flex flex-1 justify-end sm:absolute sm:right-4 sm:top-4">
-          <PoolComponent passed={passed} rejected={rejected} />
+          <PollComponent status={status} />
         </div>
       </div>
     </>

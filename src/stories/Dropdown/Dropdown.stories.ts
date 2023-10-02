@@ -21,6 +21,6 @@ export const Default: Story = {
   args: {
     question: 'Daily auctions',
     children:
-      'Each day a new community membership is auctioned, forever. 100%* of the auction proceeds go into a shared pool and each membership equals 1 vote. The winning bidder will be able to join the community, propose new projects and vote on which ideas to fund.',
+      'Each day a new community membership is auctioned, forever. 100%* of the auction proceeds go into a shared poll and each membership equals 1 vote. The winning bidder will be able to join the community, propose new projects and vote on which ideas to fund.',
   },
 }
