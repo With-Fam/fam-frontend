@@ -1,0 +1,14 @@
+{
+	"Heading Component": {
+		"scope": "javascript, typescript, typescriptreact, javascriptreact",
+		"prefix": [
+			"heading-project"
+		],
+		"body": [
+			"<Heading as='${1:h1}' className='${2:}'>"
+			"\t${3}",
+      "</Heading>"
+		],
+		"description": "Creates a quick heanding component"
+	}
+}
