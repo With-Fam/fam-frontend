@@ -1,4 +1,5 @@
 export { default as Arrow } from './Arrow'
+export { default as Close } from './Close'
 export { default as ChevronDown } from './ChevronDown'
 export { default as Copy } from './Copy'
 export { default as QuestionMark } from './QuestionMark'
