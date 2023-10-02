@@ -1,13 +1,18 @@
 // Framework
 import Link from 'next/link'
 
+// Types
+interface LogoProps {
+  color?: string
+}
+
 /*--------------------------------------------------------------------*/
 
 /**
  * Component
  */
 
-const Logo = ({ color = 'black' }: { color?: string }): JSX.Element => {
+const Logo = ({ color = 'black' }: LogoProps): JSX.Element => {
   return (
     <Link href="/" passHref>
       <svg
