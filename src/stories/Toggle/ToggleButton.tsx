@@ -3,6 +3,9 @@
 // Framework
 import { useRouter } from 'next/navigation'
 
+// Third Parties
+import { twMerge } from 'tailwind-merge'
+
 // Local Components
 import { Paragraph } from '@/stories'
 
@@ -27,10 +30,10 @@ const ToggleButton = ({
   const router = useRouter()
   return (
     <button
-      className={`
-          w-min rounded-3xl px-3 py-2 sm:px-4
-          ${active ? 'bg-grey-light' : ''}
-        `}
+      className={twMerge(
+        'w-min rounded-3xl px-3 py-2 sm:px-4',
+        active ? 'bg-grey-light' : ''
+      )}
       aria-label={`Toggle to ${children} type`}
       onClick={() => router.push(href)}
       type="button"

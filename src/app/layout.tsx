@@ -1,5 +1,5 @@
-// Framework
-import { ReactNode } from 'react'
+// Types
+import type { PropsWithChildren } from 'react'
 
 // Styles
 import './global.scss'
@@ -15,9 +15,7 @@ import { Navbar, Footer } from '@/components/shared'
 
 export default function RootLayout({
   children,
-}: {
-  children: ReactNode
-}): JSX.Element {
+}: PropsWithChildren): JSX.Element {
   return (
     <html lang="en">
       <body className="flex min-h-screen flex-col bg-background font-abc">

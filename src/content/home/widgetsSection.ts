@@ -31,7 +31,7 @@ const WIDGET_DATA = [
     title: 'Collective decisions',
     description: 'Members propose ideas and vote on which activities to fund',
     service: {
-      type: 'pool',
+      type: 'poll',
       text: '23 votes',
       users: [
         '/assets/images/users/u1.jpeg',

@@ -31,25 +31,23 @@ const TrendingCard = ({
   text,
   imageAlt,
   href,
-}: CProps): JSX.Element => {
-  return (
-    <Link className="col-span-1 block w-auto" href={href} passHref>
-      <div className="relative aspect-square w-full">
-        <Image
-          className="mx-auto h-auto w-full overflow-hidden rounded-lg object-cover"
-          fill
-          src={image}
-          alt={imageAlt}
-          sizes="50vw"
-        />
-      </div>
-      <div className="flex justify-between py-3">
-        <Paragraph as="p3">{title}</Paragraph>
-        <Paragraph as="p3">{value}</Paragraph>
-      </div>
-      <UsersRow users={users} text={text} />
-    </Link>
-  )
-}
+}: CProps): JSX.Element => (
+  <Link className="col-span-1 block w-auto" href={href} passHref>
+    <div className="relative aspect-square w-full">
+      <Image
+        className="mx-auto h-auto w-full overflow-hidden rounded-lg object-cover"
+        fill
+        src={image}
+        alt={imageAlt}
+        sizes="50vw"
+      />
+    </div>
+    <div className="flex justify-between py-3">
+      <Paragraph as="p3">{title}</Paragraph>
+      <Paragraph as="p3">{value}</Paragraph>
+    </div>
+    <UsersRow users={users} text={text} />
+  </Link>
+)
 
 export default TrendingCard

@@ -1,4 +1,4 @@
-const DATA_COMMUNITY_TOGGLE = [
+const TOGGLE_DATA = [
   {
     id: 'home',
     title: 'Home',
@@ -21,4 +21,4 @@ const DATA_COMMUNITY_TOGGLE = [
   },
 ]
 
-export default DATA_COMMUNITY_TOGGLE
+export default TOGGLE_DATA
