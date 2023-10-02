@@ -12,7 +12,7 @@ interface ExploreProps {
 }
 
 // Content
-import TOGGLE_DATA from '@/content/explore/toggle'
+import { EXPLORE_TOGGLE_DATA } from '@/content/explore'
 
 /*--------------------------------------------------------------------*/
 
@@ -55,7 +55,7 @@ export default async function Explore({
   return (
     <>
       <CommunitySearch type={type} search={search} />
-      <Toggle type={type} items={TOGGLE_DATA} />
+      <Toggle type={type} items={EXPLORE_TOGGLE_DATA} />
       <Communities type={type} search={search} />
     </>
   )

@@ -3,6 +3,9 @@
 // Framework
 import { useState } from 'react'
 
+// Third Parties
+import { twMerge } from 'tailwind-merge'
+
 // Local Components
 import { Paragraph } from '@/stories'
 import { ChevronDown } from '@/components/icons'
@@ -39,10 +42,10 @@ const DropDown = ({ children, question }: DropDownProps): JSX.Element => {
         </span>
       </Paragraph>
       <div
-        className={`
-    overflow-hidden duration-300 ease-in-out
-    ${open ? 'mt-6 max-h-screen' : 'max-h-0'}
-  `}
+        className={twMerge(
+          'overflow-hidden duration-300 ease-in-out',
+          open ? 'mt-6 max-h-screen' : 'max-h-0'
+        )}
       >
         <Paragraph as="p3" className="text-left text-grey">
           {children}

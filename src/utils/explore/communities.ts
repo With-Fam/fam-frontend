@@ -5,18 +5,18 @@ interface FilterProps {
 }
 
 interface CommunityProps {
-  image: string;
-  imageAlt: string;
-  title: string;
-  value: string;
-  href: string;
-  users: string[];
-  text: string;
-  type: string;
-};
+  image: string
+  imageAlt: string
+  title: string
+  value: string
+  href: string
+  users: string[]
+  text: string
+  type: string
+}
 
 // Content
-import COMMUNITIES_DATA from '@/content/explore/communities'
+import { COMMUNITIES_DATA } from '@/content/explore'
 
 /*--------------------------------------------------------------------*/
 
@@ -28,19 +28,19 @@ export const filterCommunities = ({
   type,
   search,
 }: FilterProps): CommunityProps[] => {
-  let filteredCommunities = COMMUNITIES_DATA;
+  let filteredCommunities = COMMUNITIES_DATA
 
   filteredCommunities = filteredCommunities.filter((community) => {
-    return community.type === type;
-  });
+    return community.type === type
+  })
 
   if (search.length > 0) {
     filteredCommunities = filteredCommunities.filter((community) => {
-      return community.title.toLowerCase().includes(search.toLowerCase());
-    });
+      return community.title.toLowerCase().includes(search.toLowerCase())
+    })
   }
 
-  return filteredCommunities;
-};
+  return filteredCommunities
+}
 
 export default filterCommunities
