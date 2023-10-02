@@ -1,7 +1,7 @@
 // Types
-interface LinkProps {
+import type { PropsWithChildren } from 'react'
+interface LinkProps extends PropsWithChildren {
   href: string
-  children: React.ReactNode
 }
 
 /*--------------------------------------------------------------------*/
@@ -10,12 +10,10 @@ interface LinkProps {
  * Component
  */
 
-const CustomLink = ({ href, children }: LinkProps): JSX.Element => {
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer">
-      {children}
-    </a>
-  )
-}
+const CustomLink = ({ href, children }: LinkProps): JSX.Element => (
+  <a href={href} target="_blank" rel="noopener noreferrer">
+    {children}
+  </a>
+)
 
 export default CustomLink

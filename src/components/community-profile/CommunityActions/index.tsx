@@ -13,31 +13,26 @@ import { ACTIONS_DATA } from '@/content/community-profile'
  * Component
  */
 
-const CommunityActions = (): JSX.Element => {
-  return (
-    <section
-      className="relative mx-auto max-w-[936px]
-      px-4 pb-4 sm:pb-10"
-    >
-      {ACTIONS_DATA.map((item, index) => {
-        return (
-          <div
-            key={index}
-            className="relative z-0 mb-2 rounded-lg bg-white p-4"
-          >
-            <div className="flex gap-4">
-              <VotingComponent votes={item.votes} />
-              <div className="w-full">
-                <ActionData item={item} />
-                <ActionDescription>{item.description}</ActionDescription>
-                <ActionsComments comments={item.comments} />
-              </div>
+const CommunityActions = (): JSX.Element => (
+  <section
+    className="relative mx-auto max-w-[936px]
+px-4 pb-4 sm:pb-10"
+  >
+    {ACTIONS_DATA.map((item, index) => {
+      return (
+        <div key={index} className="relative z-0 mb-2 rounded-lg bg-white p-4">
+          <div className="flex gap-4">
+            <VotingComponent votes={item.votes} />
+            <div className="w-full">
+              <ActionData item={item} />
+              <ActionDescription>{item.description}</ActionDescription>
+              <ActionsComments comments={item.comments} />
             </div>
           </div>
-        )
-      })}
-    </section>
-  )
-}
+        </div>
+      )
+    })}
+  </section>
+)
 
 export default CommunityActions

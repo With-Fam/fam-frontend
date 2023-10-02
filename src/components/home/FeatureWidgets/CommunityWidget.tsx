@@ -24,26 +24,24 @@ const CommunityWidget = ({
   image,
   title = '',
   users,
-}: EProps): JSX.Element => {
-  return (
-    <div className="mx-auto my-12 flex w-72 gap-2 p-3.5 shadow-card">
-      {image && (
-        <Image
-          src={image}
-          alt=""
-          width={40}
-          height={40}
-          className="h-14 w-14 overflow-hidden rounded-lg object-cover"
-        />
-      )}
-      <div>
-        <Paragraph as="p3" className="mb-2">
-          {title}
-        </Paragraph>
-        {users && text && <UsersRow users={users} text={text} />}
-      </div>
+}: EProps): JSX.Element => (
+  <div className="mx-auto my-12 flex w-72 gap-2 p-3.5 shadow-card">
+    {image && (
+      <Image
+        src={image}
+        alt=""
+        width={40}
+        height={40}
+        className="h-14 w-14 overflow-hidden rounded-lg object-cover"
+      />
+    )}
+    <div>
+      <Paragraph as="p3" className="mb-2">
+        {title}
+      </Paragraph>
+      {users && text && <UsersRow users={users} text={text} />}
     </div>
-  )
-}
+  </div>
+)
 
 export default CommunityWidget
