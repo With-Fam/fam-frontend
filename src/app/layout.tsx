@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex min-h-screen flex-col bg-background font-abc">
-        <Navbar />
+        <Navbar logged={Math.random() < 0.5} />
         <main className="grow">{children}</main>
         <Footer />
       </body>
