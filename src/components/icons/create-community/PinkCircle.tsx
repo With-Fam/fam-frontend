@@ -1,10 +1,15 @@
+// Types
+interface PinkCircleProps {
+  className?: string
+}
+
 /*--------------------------------------------------------------------*/
 
 /**
  * Component
  */
 
-const PinkCircle = (): JSX.Element => {
+const PinkCircle = ({ className }: PinkCircleProps): JSX.Element => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -12,6 +17,7 @@ const PinkCircle = (): JSX.Element => {
       height="48"
       viewBox="0 0 48 48"
       fill="none"
+      className={className}
     >
       <ellipse
         cx="24"

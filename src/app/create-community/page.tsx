@@ -39,8 +39,8 @@ export const metadata: Metadata = {
 
 export default async function CommunityProfile(): Promise<JSX.Element> {
   return (
-    <>
+    <div className="px-4">
       <NewCommunity />
-    </>
+    </div>
   )
 }
