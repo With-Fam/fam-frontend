@@ -1,0 +1,24 @@
+/* styles/fonts.css */
+@font-face {
+    font-family: 'ABCROM Medium';
+    src: url('/assets/fonts/ABCROM-Medium.woff2') format('woff2'),
+        url('/assets/fonts/ABCROM-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'ABCROM Regular';
+    src: url('/assets/fonts/ABCROM-Regular.woff2') format('woff2'),
+        url('/assets/fonts/ABCROM-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'ABCROM Wide Medium';
+    src: url('/assets/fonts/ABCROMWide-Medium.woff2') format('woff2'),
+        url('/assets/fonts/ABCROMWide-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
