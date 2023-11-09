@@ -34,6 +34,13 @@ export const metadata: Metadata = {
     'Innovative Music Community',
     'Music Community Building',
   ],
+  openGraph: {
+    url: 'https://withfam.xyz',
+    title: 'Your fam, onchain',
+    description:
+      'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
+    images: ['/opengraph-image.png'],
+  },
 }
 
 export default function RootLayout({
