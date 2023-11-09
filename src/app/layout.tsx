@@ -34,14 +34,12 @@ export const metadata: Metadata = {
     'Innovative Music Community',
     'Music Community Building',
   ],
-  // openGraph: {
-  //   type: 'website',
-  //   url: 'https://todo.dev',
-  //   title: 'todo.dev',
-  //   description:
-  //     'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
-  //   images: [{ url: '/img/favicon.png', width: 128, height: 128 }],
-  // },
+  openGraph: {
+    url: 'https://withfam.xyz/opengraph.png',
+    title: 'Your fam, onchain',
+    description:
+      'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
+  },
 }
 
 export default function RootLayout({
