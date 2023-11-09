@@ -35,11 +35,11 @@ export const metadata: Metadata = {
     'Music Community Building',
   ],
   openGraph: {
-    url: 'https://withfam.xyz/opengraph.png',
+    url: 'https://withfam.xyz',
     title: 'Your fam, onchain',
     description:
       'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
-    images: ['/opengraph.png'],
+    images: ['/assets/images/opengraph.png'],
   },
 }
 
