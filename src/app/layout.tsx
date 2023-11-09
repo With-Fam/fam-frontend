@@ -39,6 +39,7 @@ export const metadata: Metadata = {
     title: 'Your fam, onchain',
     description:
       'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
+    images: ['/opengraph.png'],
   },
 }
 
