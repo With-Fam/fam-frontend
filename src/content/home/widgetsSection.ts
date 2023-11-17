@@ -5,25 +5,15 @@ const WIDGET_DATA = [
     description: 'Create a community for your collective, label or fan club',
     service: {
       type: 'community',
-      cards: [
-        {
-          title: 'Create a label',
-          image: '/assets/images/widgets/wc1.png',
-          description:
-            'Start an onchain record label that all members can contribute to',
-        },
-        {
-          title: 'Build a fan club',
-          image: '/assets/images/widgets/wc2.png',
-          description: 'A community for your favourite artist, band or genre',
-        },
-        {
-          title: 'Start a collective',
-          image: '/assets/images/widgets/wc3.png',
-          description:
-            'Collaborate with likeminded people and release music together',
-        },
+      title: 'LuckyMe Records',
+      image: '/assets/images/widgets/w1.jpeg',
+      users: [
+        '/assets/images/users/u1.jpeg',
+        '/assets/images/users/u2.jpeg',
+        '/assets/images/users/u3.jpeg',
+        '/assets/images/users/u4.jpeg',
       ],
+      text: '+ 200 others',
     },
   },
   {

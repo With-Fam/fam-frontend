@@ -2,9 +2,19 @@
 
 import type { Config } from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
+import plugin from 'tailwindcss/plugin'
 
 const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.capitalize-first::first-letter': {
+          'text-transform': 'uppercase',
+        },
+      })
+    }),
+  ],
   theme: {
     ...defaultTheme,
     extend: {
@@ -12,6 +22,9 @@ const config: Config = {
         abc: ['ABCROM Regular', 'sans'],
         abcMedium: ['ABCROM Medium', 'sans'],
         abcWide: ['ABCROM Wide Medium', 'sans'],
+      },
+      transitionProperty: {
+        height: 'height',
       },
       colors: {
         orange: {
@@ -23,6 +36,9 @@ const config: Config = {
         pink: {
           DEFAULT: '#FDA4FF',
         },
+        blue: {
+          DEFAULT: '#2E6CE4',
+        },
         grey: {
           light: '#EBEBEB',
           DEFAULT: '#A7A7A7',
@@ -30,6 +46,8 @@ const config: Config = {
         },
         background: {
           DEFAULT: '#F7F7F7',
+          secondary: '#F3F3F3',
+          tertiary: '#F8F8F8',
         },
         status: {
           red: '#F00',
@@ -39,7 +57,6 @@ const config: Config = {
       },
       boxShadow: {
         card: '0px 0px 16.625px 0px rgba(0, 0, 0, 0.10);',
-        row: '0px 0px 9.57213px 0px rgba(0, 0, 0, 0.10)',
       },
     },
   },

@@ -1,29 +1,18 @@
 const FAQ_DATA = [
   {
-    question: 'Daily membership auctions',
-    answer: [
-      `Every day a new community membership is auctioned, forever. The proceeds from each auction go into a shared community pool which can be used to fund projects and ideas that members are passionate about.`,
-      `A percentage of membership tokens can be reserved for the community founder(s) so that they can ensure decisions are being made that align with the communities best interests.`,
-      `Each membership equals one vote.`,
-    ],
+    question: 'Daily auctions',
+    answer:
+      'Each day a new community membership is auctioned, forever. 100%* of the auction proceeds go into a shared poll and each membership equals 1 vote. The winning bidder will be able to join the community, propose new projects and vote on which ideas to fund.',
   },
   {
-    question: 'Shared community pools',
-    answer: [
-      `As more members join the community the proceeds from auctions help to grow the shared pool which can be used to fund new projects and ideas. Think of it like a shared bank account that no one person controls.`,
-    ],
+    question: 'Community Polls',
+    answer:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate odit omnis iusto repellendus sint! Quae voluptatibus laudantium hic est saepe.',
   },
   {
-    question: 'Create in multiplayer',
-    answer: [
-      `When members propose new ideas they can add an onchain action which will trigger if the vote is successful. This allows communities to create and collaborate as a collective.`,
-      `Some examples of actions communities can do are:`,
-    ],
-    bullets: [
-      `Mint an song, album or video with built-in splits that can flow back to the individual contributors and the community pool.`,
-      `Send funds to contributors to put on an IRL event, show or festival.`,
-      `(Coming Soon) Connect to web3 apps like Mirror, Kits, Sound and more to drop onchain content as a group or collective.`,
-    ],
+    question: 'FAM DAO',
+    answer:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint eligendi voluptas quos explicabo obcaecati quasi sit possimus eius minima corporis dignissimos maxime, voluptate quidem incidunt suscipit soluta doloremque?',
   },
 ]
 

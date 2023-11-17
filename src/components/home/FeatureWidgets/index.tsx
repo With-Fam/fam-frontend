@@ -1,7 +1,7 @@
 // Local Components
 import WidgetInfo from '@/components/home/FeatureWidgets/WidgetInfo'
 import MembershipWidget from '@/components/home/FeatureWidgets/MembershipWidget'
-import CollaborateWidget from '@/components/home/FeatureWidgets/CollaborateWidget'
+import CommunityWidget from '@/components/home/FeatureWidgets/CommunityWidget'
 import PollWidget from '@/components/home/FeatureWidgets/PollWidget'
 
 // Content
@@ -23,9 +23,12 @@ const FeatureWidgets = (): JSX.Element => (
           switch (service.type) {
             case 'community':
               return (
-                <CollaborateWidget
+                <CommunityWidget
                   key={index}
-                  cards={service.cards}
+                  text={service.text}
+                  image={service.image}
+                  title={service.title}
+                  users={service.users}
                 />
               )
 
@@ -38,7 +41,7 @@ const FeatureWidgets = (): JSX.Element => (
                 />
               )
 
-            case 'poll':
+            case 'Poll':
               return (
                 <PollWidget
                   key={index}
@@ -55,7 +58,7 @@ const FeatureWidgets = (): JSX.Element => (
         return (
           <div
             key={index}
-            className="h-[266px] w-full max-w-md overflow-hidden rounded-3xl bg-white p-6"
+            className="h-80 w-full max-w-md overflow-hidden rounded-3xl bg-white p-6"
           >
             <WidgetInfo title={title}>{description}</WidgetInfo>
             {renderServiceContent()}

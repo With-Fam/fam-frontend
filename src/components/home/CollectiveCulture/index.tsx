@@ -9,7 +9,7 @@ import TextLine from './TextLine'
  */
 
 const CollectiveCulture = (): JSX.Element => (
-  <section className="bg-white px-4 py-16 text-left text-orange sm:py-24 sm:text-center">
+  <section className="bg-pink px-4 py-16 text-left text-orange sm:py-24 sm:text-center">
     <Heading as="h3" className="mb-4">
       Collective culture creation
     </Heading>

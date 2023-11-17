@@ -3,10 +3,7 @@ import { Logo } from '@/components/shared'
 import Paragraph from '@/stories/Paragraph'
 
 // Content
-const FOOTER_DATA = [
-  { name: 'Twitter', url: 'https://twitter.com/withfam_' },
-  { name: 'Discord', url: 'https://http://discord.gg/nuYwCzDjpc' },
-]
+const FOOTER_DATA = ['Twitter', 'Blog', 'Discord', 'Docs', 'Privacy']
 
 /*--------------------------------------------------------------------*/
 
@@ -19,14 +16,9 @@ const Footer = (): JSX.Element => (
     <Logo color="#F54D18" />
     <div className="mx-auto mt-8 flex w-60 flex-wrap justify-center gap-6 sm:mt-0 sm:w-full sm:justify-end">
       {FOOTER_DATA.map((item, index) => (
-        <a
-          key={index}
-          href={item.url}
-          target="_black"
-          rel="noopener noreferrer"
-        >
+        <a key={index} href="/" target="_black" rel="noopener noreferrer">
           <Paragraph as="p3" className="text-orange">
-            {item.name}
+            {item}
           </Paragraph>
         </a>
       ))}

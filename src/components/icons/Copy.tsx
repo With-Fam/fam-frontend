@@ -1,16 +1,19 @@
+import type { SVGProps } from './types'
+
 /*--------------------------------------------------------------------*/
 
 /**
  * Component
  */
 
-const Copy = (): JSX.Element => (
+const Copy = ({ className }: SVGProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
     height="16"
     viewBox="0 0 16 16"
     fill="none"
+    className={className}
   >
     <g clipPath="url(#clip0_104_50)">
       <path

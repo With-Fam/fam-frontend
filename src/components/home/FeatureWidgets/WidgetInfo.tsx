@@ -15,9 +15,7 @@ interface Props {
 
 const WidgetInfo = ({ title, children }: Props): JSX.Element => (
   <div>
-    <Heading as="h5" className="font-abcWide">
-      {title}
-    </Heading>
+    <Heading as="h5">{title}</Heading>
     <Paragraph as="p3" className="pb-6 pt-2 text-grey">
       {children}
     </Paragraph>

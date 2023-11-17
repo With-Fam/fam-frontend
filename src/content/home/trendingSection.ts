@@ -4,7 +4,7 @@ const TRENDING_DATA = [
     imageAlt: '',
     title: 'Soulection',
     value: '135 ETH',
-    href: '#',
+    slug: 'soulection',
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',
@@ -18,7 +18,7 @@ const TRENDING_DATA = [
     imageAlt: '',
     title: 'Warp Records',
     value: '2,530 ETH',
-    href: '#',
+    slug: 'warp',
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',
@@ -32,7 +32,7 @@ const TRENDING_DATA = [
     imageAlt: '',
     title: 'Trance Party',
     value: '180 ETH',
-    href: '#',
+    slug: 'trance',
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',
@@ -46,7 +46,7 @@ const TRENDING_DATA = [
     imageAlt: '',
     title: 'Ezra Collective',
     value: '22 ETH',
-    href: '#',
+    slug: 'ezra',
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',
@@ -60,7 +60,7 @@ const TRENDING_DATA = [
     imageAlt: '',
     title: 'NVSHU',
     value: '58 ETH',
-    href: '#',
+    slug: 'nvshu',
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',
@@ -74,7 +74,7 @@ const TRENDING_DATA = [
     imageAlt: '',
     title: 'CHAOS',
     value: '856 ETH',
-    href: '#',
+    slug: 'chaos',
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',

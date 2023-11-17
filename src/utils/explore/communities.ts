@@ -4,15 +4,15 @@ interface FilterProps {
   search: string
 }
 
-interface CommunityProps {
+export interface CommunityProps {
   image: string
   imageAlt: string
   title: string
   value: string
-  href: string
   users: string[]
+  slug: string
   text: string
-  type: string
+  type?: string
 }
 
 // Content

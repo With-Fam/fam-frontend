@@ -12,7 +12,7 @@ import { ChevronDown } from '@/components/icons'
 
 // Type
 interface DropDownProps {
-  children: React.ReactNode
+  children: string
   question: string
 }
 
@@ -26,7 +26,7 @@ const DropDown = ({ children, question }: DropDownProps): JSX.Element => {
 
   return (
     <div
-      className="mt-2 cursor-pointer rounded-lg bg-white p-8"
+      className="mt-2 rounded-lg bg-white p-8 cursor-pointer"
       onClick={() => setOpen(!open)}
     >
       <Paragraph
@@ -34,7 +34,7 @@ const DropDown = ({ children, question }: DropDownProps): JSX.Element => {
         className="flex items-center justify-between text-left"
       >
         {question}
-        <span className="ml-2 cursor-pointer">
+        <span className="ml-2">
           <ChevronDown
             className={`
             transform-gpu transition-transform duration-300
@@ -50,7 +50,9 @@ const DropDown = ({ children, question }: DropDownProps): JSX.Element => {
           open ? 'mt-6 max-h-screen' : 'max-h-0'
         )}
       >
-        {children}
+        <Paragraph as="p3" className="text-left text-grey">
+          {children}
+        </Paragraph>
       </div>
     </div>
   )
