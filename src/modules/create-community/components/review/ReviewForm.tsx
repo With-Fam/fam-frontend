@@ -13,6 +13,7 @@ import { useFormStore } from '@/modules/create-community'
 import { transformFileProperties } from '@/utils/transformFileProperties'
 import { metadataAbi, tokenAbi } from '@/data/contract/abis'
 import { useDaoStore } from '@/modules/dao'
+import { useRouter } from 'next/router'
 
 import schema, { type ReviewFormValues } from './schema'
 
@@ -24,13 +25,14 @@ const DEPLOYMENT_ERROR = {
 }
 
 export function ReviewForm(): JSX.Element {
+  const router = useRouter()
   const {
     deployedDao,
     // general,
     ipfsUpload,
     orderedLayers,
     setFulfilledSections,
-    // resetForm,
+    resetForm,
   } = useFormStore()
 
   const methods = useForm<ReviewFormValues>({
@@ -109,9 +111,12 @@ export function ReviewForm(): JSX.Element {
     console.log('BIG Success')
     console.log('WE DONE.')
 
-    // router.push(`/dao/${chain.slug}/${token}`).then(() => {
-    //   resetForm()
-    // })
+    // MODIFY CHAIN TO BE DYNAMIC....!!!!
+    router
+      .push(`/community/${addresses?.token?.toLowerCase()}/goerli`)
+      .then(() => {
+        resetForm()
+      })
   }
 
   // const onSubmit = (values: ReviewFormValues) => {

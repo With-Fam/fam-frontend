@@ -169,6 +169,7 @@ export function ConfirmForm(): JSX.Element {
     }
 
     if (founderParams[0].wallet !== address) {
+      console.log('WHOS WHO::', founderParams[0].wallet, address)
       setDeploymentError(DEPLOYMENT_ERROR.MISMATCHING_SIGNER)
       return
     }
@@ -211,6 +212,8 @@ export function ConfirmForm(): JSX.Element {
         '0x456d2baf5a87d70e586ec06fb91c2d7849778dd41d80fa826a6ea5bf8d28e3a6'
     )
 
+    console.log('deployEvent:::', deployEvent)
+
     let parsedEvent
     try {
       parsedEvent = managerInterface.parseLog({
@@ -220,6 +223,8 @@ export function ConfirmForm(): JSX.Element {
     } catch {}
 
     const deployedAddresses = parsedEvent?.args
+
+    console.log('deployedAddresses:::', deployedAddresses)
 
     if (!deployedAddresses) {
       setDeploymentError(DEPLOYMENT_ERROR.GENERIC)
