@@ -3,6 +3,7 @@ import { PropsWithChildren } from 'react'
 import { PrivyProvider } from '@privy-io/react-auth'
 import { PrivyWagmiConnector } from '@privy-io/wagmi-connector'
 import { goerli } from '@wagmi/chains'
+import { WagmiConfig } from 'wagmi'
 import { configureChains } from 'wagmi'
 import { Toaster } from 'react-hot-toast'
 

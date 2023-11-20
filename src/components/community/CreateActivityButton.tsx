@@ -20,7 +20,7 @@ const CreateActivityButton = (): JSX.Element => {
     <div
       className="float-right mt-4 flex cursor-pointer items-center justify-center rounded-full bg-orange px-0 py-0 sm:px-4 sm:py-2"
       onClick={() => {
-        router.push('/create-activity')
+        router.push('create-activity')
       }}
     >
       <span className="flex h-14 w-14 items-center justify-center sm:h-6 sm:w-6">

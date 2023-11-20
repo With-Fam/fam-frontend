@@ -1,14 +1,14 @@
 // Framework
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // Third Parties
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AbiCoder, hexlify, Interface } from 'ethers'
 import { getAddress, parseEther } from 'viem'
-import { useAccount } from 'wagmi'
+import { usePrivyWagmi } from '@privy-io/wagmi-connector'
 import toast from 'react-hot-toast'
 import {
   WriteContractUnpreparedArgs,
@@ -69,20 +69,21 @@ export function ConfirmForm(): JSX.Element {
     setUpArtwork,
     setActiveSection,
     activeSection,
-    // fulfilledSections,
     setDeployedDao,
     ipfsUpload,
     setFulfilledSections,
     vetoPower,
     vetoerAddress,
-    // orderedLayers,
   } = useFormStore()
 
   const [isPendingTransaction, setIsPendingTransaction] =
     useState<boolean>(false)
   const [deploymentError, setDeploymentError] = useState<string | undefined>()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const chain = 5 //useChainStore((x) => x.chain) - TODO: get chain from store???
-  const { address } = useAccount()
+  const { wallet: activeWallet } = usePrivyWagmi()
+
+  console.log('activeWallet::', activeWallet)
 
   const methods = useForm<ConfirmFormValues>({
     defaultValues: {
@@ -92,14 +93,6 @@ export function ConfirmForm(): JSX.Element {
   })
 
   const { handleSubmit } = methods
-
-  // const onSubmit = (values: ConfirmFormValues) => {
-  //   console.log('ConfirmForm::', values)
-  // }
-
-  // const handlePrev = () => {
-  //   setActiveSection(activeSection - 1)
-  // }
 
   const founderParams: FounderParameters = [
     ...founderAllocation,
@@ -157,6 +150,7 @@ export function ConfirmForm(): JSX.Element {
   }
 
   const handleDeploy = async () => {
+    setIsLoading(true)
     setDeploymentError(undefined)
 
     if (
@@ -168,8 +162,8 @@ export function ConfirmForm(): JSX.Element {
       return
     }
 
-    if (founderParams[0].wallet !== address) {
-      console.log('WHOS WHO::', founderParams[0].wallet, address)
+    if (founderParams[0].wallet !== activeWallet?.address) {
+      console.log('WHOS WHO::', founderParams[0].wallet, activeWallet?.address)
       setDeploymentError(DEPLOYMENT_ERROR.MISMATCHING_SIGNER)
       return
     }
@@ -239,18 +233,26 @@ export function ConfirmForm(): JSX.Element {
       treasury: deployedAddresses[3],
       governor: deployedAddresses[4],
     })
+
+    if (deployedAddresses) {
+      toast.remove()
+      toast.success('DAO Deployed!')
+    }
+
     setIsPendingTransaction(false)
+    setIsLoading(false)
     setFulfilledSections('DAO DONE') // TODO:: remove hardcode or edit?
     console.log('big success...')
     setActiveSection(activeSection + 1)
   }
 
-  if (deploymentError) toast.error(deploymentError)
-  if (isPendingTransaction) toast.loading('Deploying DAO...')
-  if (!isPendingTransaction && !deploymentError) {
-    toast.remove()
-    toast.success('DAO Deployed!')
-  }
+  useEffect(() => {
+    if (isPendingTransaction) toast.loading('Deploying DAO...')
+    if (deploymentError) {
+      toast.error(deploymentError)
+      setIsLoading(false)
+    }
+  }, [isPendingTransaction, deploymentError])
 
   return (
     <FormProvider {...methods}>
@@ -343,7 +345,7 @@ export function ConfirmForm(): JSX.Element {
             </Link>
           </ConfirmCheckbox>
         </div>
-        <ContinueButton />
+        <ContinueButton title="Confirm 1/2" loading={isLoading} />
       </form>
     </FormProvider>
   )

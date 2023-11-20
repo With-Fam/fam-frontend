@@ -50,7 +50,9 @@ const ImageUpload = ({ formId, ..._props }: ImageUploadProps): JSX.Element => {
 
     const file = files[0]
     const urlImage = URL.createObjectURL(file)
+
     setPreviewImage(urlImage)
+    console.log('URL IMAGE::', urlImage)
     setValue(formId, urlImage)
   }
 

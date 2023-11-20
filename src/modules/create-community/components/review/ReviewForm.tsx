@@ -1,21 +1,18 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useAccount, useContractRead } from 'wagmi'
+import { useContractRead } from 'wagmi'
 import {
   prepareWriteContract,
   waitForTransaction,
   writeContract,
 } from 'wagmi/actions'
+import { usePrivyWagmi } from '@privy-io/wagmi-connector'
 import toast from 'react-hot-toast'
-import { zodResolver } from '@hookform/resolvers/zod'
 import ContinueButton from '@/modules/ContinueButton'
 import { useFormStore } from '@/modules/create-community'
 import { transformFileProperties } from '@/utils/transformFileProperties'
 import { metadataAbi, tokenAbi } from '@/data/contract/abis'
-import { useDaoStore } from '@/modules/dao'
-import { useRouter } from 'next/router'
-
-import schema, { type ReviewFormValues } from './schema'
+import { useRouter } from 'next/navigation'
 
 const DEPLOYMENT_ERROR = {
   MISMATCHING_SIGNER:
@@ -28,20 +25,15 @@ export function ReviewForm(): JSX.Element {
   const router = useRouter()
   const {
     deployedDao,
-    // general,
     ipfsUpload,
     orderedLayers,
     setFulfilledSections,
     resetForm,
   } = useFormStore()
 
-  const methods = useForm<ReviewFormValues>({
-    resolver: zodResolver(schema),
-  })
+  const methods = useForm()
 
   const chain = 5 //useChainStore((x) => x.chain) - TODO: get chain from store???
-
-  console.log('ReviewForm::', deployedDao.token)
 
   const { data: tokenOwner } = useContractRead({
     enabled: !!deployedDao.token,
@@ -51,43 +43,35 @@ export function ReviewForm(): JSX.Element {
     functionName: 'owner',
   })
 
-  console.log('deployedDao.token', deployedDao)
-
   const { handleSubmit } = methods
 
   const [deploymentError, setDeploymentError] = useState<string | undefined>()
   const [isPendingTransaction, setIsPendingTransaction] =
     useState<boolean>(false)
-  const { addresses } = useDaoStore()
-  const { address } = useAccount()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { wallet: activeWallet } = usePrivyWagmi()
 
   const transactions = useMemo(() => {
     if (!orderedLayers || !ipfsUpload) return []
     return transformFileProperties(orderedLayers, ipfsUpload, 500)
   }, [orderedLayers, ipfsUpload])
 
-  console.log('what is transactions', transactions)
-
   const handleDeployMetadata = async () => {
-    console.log('HIT')
+    setIsLoading(true)
     setDeploymentError(undefined)
 
     if (!transactions || !deployedDao.metadata) {
-      console.log('error::', transactions, addresses.metadata)
       setDeploymentError(DEPLOYMENT_ERROR.GENERIC)
       return
     }
 
-    if (tokenOwner !== address) {
-      console.log('MISMATCHING_SIGNER', tokenOwner, address)
+    if (tokenOwner !== activeWallet?.address) {
       setDeploymentError(DEPLOYMENT_ERROR.MISMATCHING_SIGNER)
       return
     }
 
     setIsPendingTransaction(true)
-    console.log('pre loop')
     for await (const transaction of transactions) {
-      console.log('inside map function')
       try {
         const config = await prepareWriteContract({
           abi: metadataAbi,
@@ -108,29 +92,30 @@ export function ReviewForm(): JSX.Element {
     setIsPendingTransaction(false)
     setFulfilledSections('Deployed')
 
-    console.log('BIG Success')
-    console.log('WE DONE.')
-
     // MODIFY CHAIN TO BE DYNAMIC....!!!!
-    router
-      .push(`/community/${addresses?.token?.toLowerCase()}/goerli`)
-      .then(() => {
+    // Pushes users to commyunity token address
+    try {
+      toast.remove()
+      toast.success('DAO Deployed!')
+      setIsLoading(false)
+      console.log('ADDRESSES::', deployedDao.token)
+      router.push(`/community/goerli/${deployedDao.token}/`)
+      setTimeout(() => {
         resetForm()
-      })
+      }, 200)
+    } catch {
+      setIsLoading(false)
+      toast.error('Deployment error, try again!')
+    }
   }
 
-  // const onSubmit = (values: ReviewFormValues) => {
-  //   console.log('whats good.')
-  //   console.log('ReviewForm::', values)
-  //   handleDeployMetadata()
-  // }
-
-  if (deploymentError) toast.error(deploymentError)
-  if (isPendingTransaction) toast.loading('Deploying DAO...')
-  if (!isPendingTransaction && !deploymentError) {
-    toast.remove()
-    toast.success('DAO Deployed!')
-  }
+  useEffect(() => {
+    if (isPendingTransaction) toast.loading('Deploying DAO...')
+    if (deploymentError) {
+      toast.error(deploymentError)
+      setIsLoading(false)
+    }
+  }, [isPendingTransaction, deploymentError])
 
   return (
     <FormProvider {...methods}>
@@ -186,8 +171,7 @@ export function ReviewForm(): JSX.Element {
             ))}
           </div>
         </div>
-        <button onClick={() => handleDeployMetadata()}>Deploy yo</button>
-        <ContinueButton />
+        <ContinueButton title="Confirm 2/2" loading={isLoading} />
       </form>
     </FormProvider>
   )
