@@ -1,18 +1,25 @@
 // Framework
-import Image from 'next/image'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 
 // Local Components
-import { Paragraph, PollComponent, UsersRow } from '@/stories'
+import { Paragraph, PollComponent } from '@/stories'
+const ActivityCreator = dynamic(
+  () => import('@/components/community/CommunityActivity/ActivityCreator'),
+  {
+    ssr: false,
+  }
+)
 
 // Types
-import { ActionsDataProps } from '@/types/create-community'
-interface DataProps {
-  item: ActionsDataProps
+import { ProposalFragment } from '@/data/subgraph/sdk.generated'
+interface ActivityDataProps {
+  proposal: ProposalFragment
 }
 
 // Utils
-import { formatDate } from '@/utils/shared'
+import { formatUnixTimestampDate, isDateExpired } from '@/utils/helpers'
+import UsersRowDynamic from '@/components/community/UsersRowDynamic'
 
 /*--------------------------------------------------------------------*/
 
@@ -20,34 +27,50 @@ import { formatDate } from '@/utils/shared'
  * Component
  */
 
-const ActivityData = ({ item }: DataProps): JSX.Element => {
-  const { id, creator, title, date, users, votes, status } = item
+const ActivityData = ({ proposal }: ActivityDataProps): JSX.Element => {
+  const {
+    title,
+    proposer,
+    proposalId,
+    timeCreated,
+    votes,
+    quorumVotes,
+    forVotes,
+    againstVotes,
+    abstainVotes,
+    voteEnd,
+  } = proposal
+  const sumOfVotes = forVotes + againstVotes + abstainVotes
+
+  let status: null | 'passed' | 'rejected' | 'expired' = null
+
+  if (isDateExpired(voteEnd)) {
+    if (sumOfVotes < Number(quorumVotes)) {
+      status = 'expired'
+    } else if (forVotes > againstVotes) {
+      status = 'passed'
+    } else {
+      status = 'rejected'
+    }
+  }
+
   return (
     <>
-      <div className="mb-2 hidden items-center gap-2 sm:flex">
-        <div className="relative h-4 w-4">
-          <Image
-            src={creator.image}
-            alt=""
-            fill
-            className="h-4 w-4 rounded-full object-cover"
-          />
-        </div>
-        <Paragraph as="p5" className="text-grey">
-          by {creator.name}
-        </Paragraph>
-      </div>
-      <Link href={`/community/activity/${id}`} passHref>
+      <ActivityCreator proposer={proposer} />
+      <Link href={`activity/${proposalId}`} passHref>
         <Paragraph as="p3" className="mb-1">
           {title}
         </Paragraph>
       </Link>
       <Paragraph as="p5" className="mb-4 text-grey">
-        {formatDate(date)}
+        {formatUnixTimestampDate(timeCreated)}
       </Paragraph>
       <div className="flex">
         <div className="w-max">
-          <UsersRow users={users} text={`${votes} Votes`} />
+          <UsersRowDynamic
+            votes={votes.slice(0, 5)}
+            text={`${sumOfVotes} Votes`}
+          />
         </div>
         <div className="relative right-0 top-0 flex flex-1 justify-end sm:absolute sm:right-4 sm:top-4">
           <PollComponent status={status} />

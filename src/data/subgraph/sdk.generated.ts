@@ -1845,15 +1845,7 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny',
 }
 
-export type AuctionFragment = {
-  __typename?: 'Auction'
-  dao: {
-    __typename?: 'DAO'
-    name: string
-    auctionAddress: any
-    tokenAddress: any
-  }
-}
+export type AuctionFragment = Partial<Auction>
 
 export type AuctionBidFragment = {
   __typename?: 'AuctionBid'
@@ -1862,12 +1854,7 @@ export type AuctionBidFragment = {
   bidder: any
 }
 
-export type DaoFragment = {
-  __typename?: 'DAO'
-  name: string
-  tokenAddress: any
-  auctionAddress: any
-}
+export type DaoFragment = Partial<Dao>
 
 export type ExploreDaoFragment = {
   __typename?: 'Auction'
@@ -1901,6 +1888,13 @@ export type ProposalFragment = {
   snapshotBlockNumber: any
   transactionHash: any
   dao: { __typename?: 'DAO'; governorAddress: any; tokenAddress: any }
+  votes: Array<{
+    __typename?: 'ProposalVote'
+    voter: string
+    support: ProposalVoteSupport
+    weight: number
+    reason?: string | null
+  }>
 }
 
 export type ProposalVoteFragment = {
@@ -1911,16 +1905,7 @@ export type ProposalVoteFragment = {
   reason?: string | null
 }
 
-export type TokenFragment = {
-  __typename?: 'Token'
-  tokenId: any
-  tokenContract: any
-  name: string
-  image: string
-  owner: any
-  mintedAt: any
-  dao: { __typename?: 'DAO'; description: string }
-}
+export type TokenFragment = Partial<Token>
 
 export type ActiveAuctionsQueryVariables = Exact<{
   first: Scalars['Int']

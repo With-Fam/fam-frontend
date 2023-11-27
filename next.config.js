@@ -12,6 +12,10 @@ const nextConfig = {
       'zora-dev.mypinata.cloud',
       'ipfs.zora.co',
       'ipfs.decentralized-content.com',
+      'ipfs.io',
+      'nouns.build',
+      'i.ibb.co',
+      'euc.li',
     ],
   },
   webpack(config) {

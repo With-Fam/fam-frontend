@@ -3,23 +3,32 @@
 // Framework
 import Image from 'next/image'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 
 // Local Components
 import { Paragraph, PollComponent } from '@/stories'
 import { Button } from '@/components/shared'
 import { VoteBlock } from '@/components/community/activity'
-import { ExternalLink, LongArrow } from '@/components/icons'
+import { ExternalLink } from '@/components/icons'
+import BackActivityButton from '@/components/community/activity/BackActivityButton'
+const ActivityCreator = dynamic(
+  () => import('@/components/community/CommunityActivity/ActivityCreator'),
+  {
+    ssr: false,
+  }
+)
+
+// Utils
+import { formatUnixTimestampDate, isDateExpired } from '@/utils/helpers'
+
+// Types
+import { ProposalFragment } from '@/data/subgraph/sdk.generated'
+type ActivitySectionProps = {
+  proposal: ProposalFragment | null
+}
 
 // Context
 import { useMockStoreContext } from '@/contexts/mock-store'
-
-// Utils
-import { formatDate } from '@/utils/shared'
-
-// Types
-type ActivitySectionProps = {
-  activityId: string
-}
 
 /*--------------------------------------------------------------------*/
 
@@ -27,12 +36,10 @@ type ActivitySectionProps = {
  * Component
  */
 
-const ActivitySection = ({ activityId }: ActivitySectionProps): JSX.Element => {
-  const { actions, widgets } = useMockStoreContext()
-  const action = actions.find((action) => action.id === activityId)
-  const widget = widgets.find((widget) => widget.id === activityId)
+const ActivitySection = ({ proposal }: ActivitySectionProps): JSX.Element => {
+  const { widgets } = useMockStoreContext()
 
-  if (!action) {
+  if (!proposal) {
     return (
       <section className="p-4">
         <Paragraph as="p3">No action found</Paragraph>
@@ -40,40 +47,53 @@ const ActivitySection = ({ activityId }: ActivitySectionProps): JSX.Element => {
     )
   }
 
+  const {
+    proposer,
+    quorumVotes,
+    forVotes,
+    againstVotes,
+    abstainVotes,
+    voteEnd,
+    timeCreated,
+    title,
+  } = proposal
+  const sumOfVotes = forVotes + againstVotes + abstainVotes
+
+  let status: null | 'passed' | 'rejected' | 'expired' = null
+
+  if (isDateExpired(voteEnd)) {
+    if (sumOfVotes < Number(quorumVotes)) {
+      status = 'expired'
+    } else if (forVotes > againstVotes) {
+      status = 'passed'
+    } else {
+      status = 'rejected'
+    }
+  }
+
+  const widget = widgets.find((widget) => widget.id === proposal.proposalId)
+
   return (
     <section className="mx-auto max-w-2xl p-5">
-      <div className="flex h-8 w-8 cursor-pointer flex-col items-center justify-center rounded-full bg-grey-light">
-        <Link href="/community/activity" passHref>
-          <LongArrow />
-        </Link>
-      </div>
+      <BackActivityButton />
       <div className="flex flex-col gap-6">
         <div>
           <div className="flex justify-between pb-2 pt-5">
-            <div className="mb-2 flex items-center gap-2 md:mb-0">
-              <div className="relative h-4 w-4">
-                <Image
-                  src={action.creator.image}
-                  alt=""
-                  fill
-                  className="h-4 w-4 rounded-full object-cover"
-                />
-              </div>
-              <Paragraph as="p5" className="text-grey">
-                by {action.creator.name}
-              </Paragraph>
-            </div>
+            <ActivityCreator
+              proposer={proposer}
+              className="mb-2 flex items-center gap-2 md:mb-0"
+            />
             <Paragraph as="p5" className="mb-4 text-grey">
-              {formatDate(action.date)}
+              {formatUnixTimestampDate(timeCreated)}
             </Paragraph>
           </div>
           <div className="flex justify-between">
             <div>
               <Paragraph as="p3" className="mb-1">
-                {action.title}
+                {title}
               </Paragraph>
               <div className="flex flex-1 justify-start">
-                <PollComponent status={action.status} />
+                <PollComponent status={status} />
               </div>
             </div>
             <div>
@@ -84,17 +104,18 @@ const ActivitySection = ({ activityId }: ActivitySectionProps): JSX.Element => {
           </div>
         </div>
         <div className="flex w-full gap-2">
-          <VoteBlock votes={0} direction="Yes" />
-          <VoteBlock votes={0} direction="No" />
+          <VoteBlock votes={proposal.forVotes} direction="Yes" />
+          <VoteBlock votes={proposal.againstVotes} direction="No" />
         </div>
-        <div>
-          <Paragraph as="p4">
-            <span
-              className="editor-content"
-              dangerouslySetInnerHTML={{ __html: action.description }} // WARNING: This neeeds to be cleaned here and before saved!
-            />
-          </Paragraph>
-        </div>
+        {proposal.description && (
+          <div>
+            {proposal.description.split('\\n').map((paragraph, index) => (
+              <Paragraph key={index} as="p4" className="mb-2">
+                {paragraph}
+              </Paragraph>
+            ))}
+          </div>
+        )}
         <div>
           <Link
             className="flex text-orange"
@@ -116,7 +137,7 @@ const ActivitySection = ({ activityId }: ActivitySectionProps): JSX.Element => {
                     src={widget.image}
                     fill
                     className="rounded-md object-cover"
-                    alt={action.title}
+                    alt=""
                   />
                 )}
               </div>

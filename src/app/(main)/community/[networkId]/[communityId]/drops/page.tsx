@@ -1,14 +1,13 @@
 // Local Components
-import { CommunityMembers } from '@/components/community'
+import { AllDrops } from '@/components/community'
+import { SDK } from '@/data/subgraph/client'
 
-// Types
-type CommunityProfileProps = {
+/*--------------------------------------------------------------------*/
+
+type Props = {
   params: { communityId: string; networkSlug: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
-
-// API
-import { SDK } from '@/data/subgraph/client'
 
 async function getMemberData(chainId: number, collection: string) {
   const dao = await SDK.connect(chainId).daoMembersList({
@@ -19,15 +18,9 @@ async function getMemberData(chainId: number, collection: string) {
   return dao
 }
 
-/*--------------------------------------------------------------------*/
-
-/**
- * Page
- */
-
-export default async function CommunityProfile(_props: CommunityProfileProps) {
+export default async function CommunityProfile(_props: Props) {
   const chainId = 5 // Hardcoded. Should be passed in from the router
   const { communityId } = _props.params
   const data: any = await getMemberData(chainId, communityId)
-  return <CommunityMembers data={data as any} />
+  return <AllDrops />
 }

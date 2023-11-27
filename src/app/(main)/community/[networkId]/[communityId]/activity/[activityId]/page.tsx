@@ -1,6 +1,7 @@
 // Types
+import { ProposalFragment } from '@/data/subgraph/sdk.generated'
 import type { Metadata } from 'next'
-interface CommunityProfileProps {
+interface ActivityProfileProps {
   params: {
     activityId: string
   }
@@ -9,6 +10,21 @@ interface CommunityProfileProps {
 // Local Components
 import { ActivitySection } from '@/components/community/activity'
 
+// API
+import { SDK } from '@/data/subgraph/client'
+
+async function getProposalData(chainId: number, proposalId: string) {
+  const { proposal } = await SDK.connect(chainId).proposal({
+    proposalId,
+  })
+
+  if (typeof proposal?.proposalId === 'string') {
+    return proposal
+  } else {
+    return null
+  }
+}
+
 /*--------------------------------------------------------------------*/
 
 /**
@@ -16,17 +32,25 @@ import { ActivitySection } from '@/components/community/activity'
  */
 
 export const metadata: Metadata = {
-  title: 'Community Profile',
+  title: 'Activity Profile',
   description: 'to do',
 }
-const CommunityProfile = ({ params }: CommunityProfileProps): JSX.Element => {
+const ActivityProfile = async ({
+  params,
+}: ActivityProfileProps): Promise<JSX.Element> => {
   const { activityId } = params
+  const chainId = 5 // Hardcoded. Should be passed in from the router
+  const proposal: ProposalFragment | null = await getProposalData(
+    chainId,
+    activityId
+  )
+
   return (
     <>
       <div className="h-20" />
-      <ActivitySection activityId={activityId} />
+      <ActivitySection proposal={proposal} />
     </>
   )
 }
 
-export default CommunityProfile
+export default ActivityProfile

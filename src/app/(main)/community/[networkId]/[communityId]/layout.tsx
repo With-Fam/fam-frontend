@@ -1,20 +1,32 @@
+// Types
 import { PropsWithChildren } from 'react'
-
-// Data
-import { TOGGLE_DATA } from '@/content/community'
-import { TabProvider } from '@/contexts/tabs'
-
-type Props = PropsWithChildren<{
+type CommunityLayoutProps = PropsWithChildren<{
   params: {
     communityId: string
   }
   search: { [key: string]: string }
 }>
+// Data
+import { TOGGLE_DATA } from '@/content/community'
+
+// Components
+import { TabList } from '@/components/community'
+
+/*--------------------------------------------------------------------*/
+
+/**
+ * Component
+ */
 
 export default function CommunityLayout({
   children,
   params,
-}: Props): JSX.Element {
+}: CommunityLayoutProps): JSX.Element {
   console.log('_params:', params)
-  return <TabProvider items={TOGGLE_DATA}>{children}</TabProvider>
+  return (
+    <>
+      <TabList items={TOGGLE_DATA} />
+      {children}
+    </>
+  )
 }

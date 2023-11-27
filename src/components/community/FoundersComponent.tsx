@@ -1,14 +1,23 @@
-// Framework
-import Image from 'next/image'
-import Link from 'next/link'
+'use client'
+
+// Third Parties
+import { useContractReads } from 'wagmi'
+import { tokenAbi } from '@/data/contract/abis'
 
 // Local Components
-import { Paragraph, Heading } from '@/stories'
-import ExternalLink from '@/components/icons/ExternalLink'
-import InfoMark from '@/components/icons/InfoMark'
+import { Heading } from '@/stories'
 
-// Content
-import { FOUNDERS_DATA } from '@/content/community'
+// Types
+import {
+  TokenFragment,
+} from '@/data/subgraph/sdk.generated'
+type FoundersComponentProps = {
+  token: TokenFragment
+}
+
+// Utils
+import { unpackOptionalArray } from '@/utils/helpers'
+import RenderFounder from '@/components/community/RenderFounder'
 
 /*--------------------------------------------------------------------*/
 
@@ -16,39 +25,43 @@ import { FOUNDERS_DATA } from '@/content/community'
  * Component
  */
 
-const FoundersComponent = (): JSX.Element => (
-  <section className="mx-auto mt-12 max-w-[936px] px-4">
-    <Heading as="h5" className="mb-8 font-abcWide text-orange">
-      Founders
-    </Heading>
-    {FOUNDERS_DATA.map((founder) => {
-      return (
-        <div
-          key={founder.name}
-          className="mb-4 flex items-center justify-between"
-        >
-          <div className="flex items-center justify-start gap-2">
-            <Image
-              src={founder.image.href}
-              alt={founder.image.alt}
-              width={32}
-              height={32}
-              className="h-8 w-8 rounded-full"
+const FoundersComponent = ({ token }: FoundersComponentProps): JSX.Element => {
+  const tokenContractParams = {
+    abi: tokenAbi,
+    address: token.tokenContract,
+    chainId: 5,
+  }
+
+  const { data: contractData } = useContractReads({
+    allowFailure: false,
+    contracts: [
+      { ...tokenContractParams, functionName: 'getFounders' },
+    ] as const,
+  })
+
+  const [founders] = unpackOptionalArray(contractData, 1)
+
+  if (!contractData) {
+    return <></>
+  }
+
+  return (
+    <section className="mx-auto mt-12 max-w-[936px] px-4">
+      <Heading as="h5" className="mb-8 font-abcWide text-orange">
+        Founders
+      </Heading>
+      {founders &&
+        founders.map((founder, index) => {
+          return (
+            <RenderFounder
+              founderAddress={founder.wallet}
+              ownershipPct={founder.ownershipPct}
+              key={index}
             />
-            <Paragraph as="p3" className="flex items-center gap-1">
-              {founder.name}
-              <Link href={founder.href}>
-                <ExternalLink />
-              </Link>
-            </Paragraph>
-          </div>
-          <Paragraph as="p3" className="flex items-center gap-1">
-            {founder.status} <InfoMark />
-          </Paragraph>
-        </div>
-      )
-    })}
-  </section>
-)
+          )
+        })}
+    </section>
+  )
+}
 
 export default FoundersComponent

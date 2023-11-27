@@ -21,7 +21,7 @@ const PlaceBid = (): JSX.Element => (
     </div>
     <button
       type="button"
-      className="mx-auto mb-10 block w-full rounded-full bg-black py-4 text-white md:max-w-xs"
+      className="mx-auto h-16 block w-full rounded-full bg-black py-4 text-white md:max-w-xs self-center"
     >
       Place Bid
     </button>

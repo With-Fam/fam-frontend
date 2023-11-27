@@ -6,53 +6,67 @@ import { useState, useEffect } from 'react'
 // Local Components
 import { Paragraph } from '@/stories'
 
+// Types
+import {
+  AuctionFragment,
+} from '@/data/subgraph/sdk.generated'
+import { Duration } from '@/typings'
+type CountDownProps = {
+  page: AuctionFragment
+}
+
+// Utils
+import { getTimeDifference, decrementTimeByOneSecond } from '@/utils/helpers'
+const zeroTime = {
+  days: 0,
+  hours: 0,
+  minutes: 0,
+  seconds: 0,
+}
+
 /*--------------------------------------------------------------------*/
 
 /**
  * Component
  */
 
-const CountDown = (): JSX.Element => {
-  const initialTime = { hours: 22, minutes: 13, seconds: 14 }
-  const [time, setTime] = useState(initialTime)
+const CountDown = ({ page }: CountDownProps): JSX.Element => {
+  const [ended, setEnded] = useState(false)
+  const [time, setTime] = useState<Duration>(zeroTime)
 
   useEffect(() => {
-    const countdownInterval = setInterval(() => {
-      if (time.seconds > 0) {
-        setTime((prevTime) => ({
-          ...prevTime,
-          seconds: prevTime.seconds - 1,
-        }))
-      } else if (time.minutes > 0) {
-        setTime((prevTime) => ({
-          ...prevTime,
-          minutes: prevTime.minutes - 1,
-          seconds: 59,
-        }))
-      } else if (time.hours > 0) {
-        setTime((prevTime) => ({
-          ...prevTime,
-          hours: prevTime.hours - 1,
-          minutes: 59,
-          seconds: 59,
-        }))
-      } else {
+    const initialTime = getTimeDifference(page.endTime)
+    setTime(initialTime)
+  }, [page.endTime])
+
+  useEffect(() => {
+    if (!ended) {
+      const countdownInterval = setInterval(() => {
+        const { ended, ...updatedTime } = decrementTimeByOneSecond(time)
+
+        if (ended) {
+          clearInterval(countdownInterval)
+          setEnded(true)
+          return zeroTime
+        }
+
+        setTime(updatedTime)
+      }, 1000)
+
+      return () => {
         clearInterval(countdownInterval)
       }
-    }, 1000)
-
-    return () => {
-      clearInterval(countdownInterval)
     }
-  }, [time])
+  }, [time, ended])
 
-  const formattedTime = `${String(time.hours).padStart(2, '0')}h
-  ${String(time.minutes).padStart(2, '0')}m ${String(time.seconds).padStart(
-    2,
-    '0'
-  )}s`
+  const formattedTime = `
+    ${String(time.days).padStart(2, '0')}d
+    ${String(time.hours).padStart(2, '0')}h
+    ${String(time.minutes).padStart(2, '0')}m
+    ${String(time.seconds).padStart(2, '0')}s
+  `
 
-  return <Paragraph as="p2">{formattedTime}</Paragraph>
+  return <Paragraph as="p2">{ended ? 'Ended' : formattedTime}</Paragraph>
 }
 
 export default CountDown

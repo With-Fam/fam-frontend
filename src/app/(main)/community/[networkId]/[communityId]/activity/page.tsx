@@ -1,9 +1,14 @@
-// Types
+// Framework
 import type { Metadata } from 'next'
-// import { SDK } from '@/data/subgraph/client'
+
+// Third Parties
+import { SDK } from '@/data/subgraph/client'
 
 // Local Components
 import { CommunityActivity } from '@/components/community'
+
+// Types
+import type { ProposalFragment } from '@/data/subgraph/sdk.generated'
 
 /*--------------------------------------------------------------------*/
 
@@ -16,14 +21,23 @@ export const metadata: Metadata = {
   description: 'to do',
 }
 
-// async function getActivityData(chainId: number, collection: string) {
-//   const dao = await SDK.connect(chainId).proposals()
-//   return dao
-// }
+async function getActivityData(chainId: number, collection: string) {
+  const { proposals } = await SDK.connect(chainId).proposals({
+    first: 5,
+    where: {
+      dao: collection.toLowerCase(),
+    },
+  })
+  return proposals
+}
 
 export default async function CommunityProfile(_props: any) {
   const chainId = 5 // Hardcoded. Should be passed in from the router
   const { communityId } = _props.params
-  // const data: any = await getActivityData(chainId, communityId)
-  return <CommunityActivity />
+  const proposals: ProposalFragment[] = await getActivityData(
+    chainId,
+    communityId
+  )
+  // Dont forget when there is none proposals
+  return <CommunityActivity proposals={proposals} />
 }

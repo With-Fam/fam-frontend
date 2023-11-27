@@ -287,3 +287,93 @@ export function unpackOptionalArray<T = []>(
   }
   return array
 }
+
+/**
+ * Takes a string and returns the difference from now
+ * If time is negative, returns zero
+ *
+ */
+export function getTimeDifference(timestamp: string): Duration {
+  const now = new Date()
+  const targetDate = new Date(Number(timestamp) * 1000)
+  const timeDifference = Number(targetDate) - Number(now)
+
+  if (timeDifference < 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 }
+  }
+
+  return fromSeconds(timeDifference)
+}
+
+/**
+ * Takes an onject with time like so { days, hours, minutes, seconds }
+ * and returns the same object with one second less if it's above zero
+ *
+ */
+
+export function decrementTimeByOneSecond(
+  time: Duration & { ended?: boolean }
+): Duration & { ended?: boolean } {
+  const m = 60
+  const h = m * 60
+  const d = h * 24
+
+  const remainingSeconds =
+    (time.days || 0) * d +
+    (time.hours || 0) * h +
+    (time.minutes || 0) * m +
+    (time.seconds || 0)
+
+  const newTime = remainingSeconds - 1
+  const { days, hours, minutes, seconds } = fromSeconds(newTime)
+  const sumOfTime =
+    Number(days) + Number(hours) + Number(minutes) + Number(seconds)
+
+  if (sumOfTime <= 0) {
+    return {
+      ended: true,
+    }
+  }
+
+  return { days, hours, minutes, seconds }
+}
+
+/**
+ * Takes a ipfs image url and returns an image
+ * available source from ipfs.io
+ *
+ */
+export function convertIpfsUrl(ipfsUrl: string): string {
+  const lastSlashIndex = ipfsUrl.lastIndexOf('/')
+  const hash = ipfsUrl.substring(lastSlashIndex + 1)
+
+  return `https://ipfs.io/ipfs/${hash}`
+}
+
+/**
+ * Takes a date in a string returns a boolean
+ * saying if the date is expired or not
+ *
+ */
+export function isDateExpired(timestampString: string): boolean {
+  const timestamp = parseInt(timestampString, 10);
+  const currentTimestamp = Math.floor(Date.now() / 1000);
+  return timestamp < currentTimestamp;
+}
+
+/**
+ * Takes a date in a string returns a date
+ * in the following example format: July 23, 2023
+ *
+ */
+export function formatUnixTimestampDate(timestampString: string): string {
+  const timestamp = parseInt(timestampString, 10);
+  const date = new Date(timestamp * 1000);
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  return date.toLocaleDateString('en-US', options);
+}
+

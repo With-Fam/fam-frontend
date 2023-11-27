@@ -1,5 +1,3 @@
-'use client'
-
 // Local Components
 import ActivitysComments from '@/components/community/CommunityActivity/ActivityComments'
 import ActivityDescription from '@/components/community/CommunityActivity/ActivityDescription'
@@ -7,8 +5,14 @@ import VotingComponent from '@/components/community/CommunityActivity/VotingComp
 import ActivityData from '@/components/community/CommunityActivity/ActivityData'
 import { CreateActivityButton } from '@/components/community'
 
-// Contenxt
-import { useMockStoreContext } from '@/contexts/mock-store'
+// Types
+import type { ProposalFragment } from '@/data/subgraph/sdk.generated'
+type CommunityActivityProps = {
+  proposals: ProposalFragment[]
+}
+
+// Utils
+import { isDateExpired } from '@/utils/helpers'
 
 /*--------------------------------------------------------------------*/
 
@@ -16,36 +20,29 @@ import { useMockStoreContext } from '@/contexts/mock-store'
  * Component
  */
 
-const CommunityActivity = (): JSX.Element => {
-  const { actions } = useMockStoreContext()
-  return (
-    <section
-      className="relative mx-auto max-w-[936px]
-px-4 pb-4 sm:pb-10"
-    >
-      {actions.map((item, index) => {
-        return (
-          <div
-            key={index}
-            className="relative z-0 mb-2 rounded-lg bg-white p-4"
-          >
-            <div className="flex gap-4">
-              <VotingComponent
-                votes={item.votes}
-                active={!Boolean(item.status)}
-              />
-              <div className="w-full">
-                <ActivityData item={item} />
-                <ActivityDescription>{item.description}</ActivityDescription>
-                <ActivitysComments comments={item.comments} />
-              </div>
+const CommunityActivity = ({
+  proposals,
+}: CommunityActivityProps): JSX.Element => (
+  <section className="relative mx-auto max-w-[936px] px-4 pb-4 sm:pb-10">
+    {proposals.map((proposal, index) => {
+      return (
+        <div key={index} className="relative z-0 mb-2 rounded-lg bg-white p-4">
+          <div className="flex gap-4">
+            <VotingComponent
+              proposal={proposal}
+              active={isDateExpired(proposal.expiresAt)}
+            />
+            <div className="w-full">
+              <ActivityData proposal={proposal} />
+              <ActivityDescription>{proposal.description}</ActivityDescription>
+              <ActivitysComments comments={[]} />
             </div>
           </div>
-        )
-      })}
-      <CreateActivityButton />
-    </section>
-  )
-}
+        </div>
+      )
+    })}
+    <CreateActivityButton />
+  </section>
+)
 
 export default CommunityActivity

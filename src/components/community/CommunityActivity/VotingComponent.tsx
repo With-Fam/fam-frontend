@@ -9,8 +9,9 @@ import { CheckMark, XMark } from '@/components/icons'
 import VoteButton from '@/components/community/CommunityActivity/VoteButton'
 
 // Types
+import { ProposalFragment } from '@/data/subgraph/sdk.generated'
 interface VotingProps {
-  votes: number
+  proposal: ProposalFragment
   active: boolean
 }
 
@@ -20,12 +21,9 @@ interface VotingProps {
  * Component
  */
 
-const VotingComponent = ({ votes, active }: VotingProps): JSX.Element => {
-  const halfVotes = Math.floor(votes / 2)
-  const isEven = votes % 2 === 0
-
-  const [downVotes, setDownVotes] = useState(halfVotes)
-  const [upVotes, setUpVotes] = useState(isEven ? halfVotes : halfVotes + 1)
+const VotingComponent = ({ proposal, active }: VotingProps): JSX.Element => {
+  const [downVotes, setDownVotes] = useState(proposal.againstVotes)
+  const [upVotes, setUpVotes] = useState(proposal.forVotes)
 
   const handleUpVote = () => {
     active && setUpVotes(upVotes + 1)
