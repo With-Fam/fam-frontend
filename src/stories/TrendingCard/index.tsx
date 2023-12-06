@@ -2,16 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-// Types
-interface CProps {
-  image: string
-  imageAlt: string
-  title: string
-  value: string
-  users: string[]
-  text: string
-  href: string
-}
+import { type CommunityProps } from '@/utils/explore/communities'
 
 // Components
 import Paragraph from '@/stories/Paragraph'
@@ -30,9 +21,13 @@ const TrendingCard = ({
   users,
   text,
   imageAlt,
-  href,
-}: CProps): JSX.Element => (
-  <Link className="col-span-1 block w-auto" href={href} passHref>
+  slug,
+}: CommunityProps): JSX.Element => (
+  <Link
+    className="col-span-1 block w-auto"
+    href={`/community/${slug}`}
+    passHref
+  >
     <div className="relative aspect-square w-full">
       <Image
         className="mx-auto h-auto w-full overflow-hidden rounded-lg object-cover"

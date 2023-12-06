@@ -3,7 +3,7 @@ import { CheckMark, Poll, XMark } from '@/components/icons'
 
 // Types
 interface PollProps {
-  status?: null | 'passed' | 'rejected'
+  status?: null | 'passed' | 'rejected' | 'expired'
 }
 
 /*--------------------------------------------------------------------*/
@@ -25,6 +25,12 @@ const PollComponent = ({ status }: PollProps): JSX.Element => {
         <div className="flex items-center justify-center">
           <XMark />
           <span className="ml-1.5 text-status-red">Rejected</span>
+        </div>
+      )
+    case 'expired':
+      return (
+        <div className="flex items-center justify-center">
+          <span className="ml-1.5 text-grey-dark">Expired</span>
         </div>
       )
 

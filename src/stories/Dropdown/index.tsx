@@ -25,13 +25,16 @@ const DropDown = ({ children, question }: DropDownProps): JSX.Element => {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="mt-2 rounded-lg bg-white p-8">
+    <div
+      className="mt-2 rounded-lg bg-white p-8 cursor-pointer"
+      onClick={() => setOpen(!open)}
+    >
       <Paragraph
         as="p2"
         className="flex items-center justify-between text-left"
       >
         {question}
-        <span className="ml-2 cursor-pointer" onClick={() => setOpen(!open)}>
+        <span className="ml-2">
           <ChevronDown
             className={`
             transform-gpu transition-transform duration-300

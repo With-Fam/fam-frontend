@@ -6,9 +6,6 @@ import Image from 'next/image'
 import Paragraph from '@/stories/Paragraph'
 
 // Types
-interface NavProps {
-  user: string
-}
 
 /*--------------------------------------------------------------------*/
 
@@ -16,10 +13,10 @@ interface NavProps {
  * Component
  */
 
-const LoggedItems = ({ user }: NavProps): JSX.Element => {
+const LoggedItems = (): JSX.Element => {
   return (
     <>
-      <Link href="/" passHref>
+      <Link href="/create-community" passHref>
         <Paragraph
           className="rounded-3xl bg-black px-4 py-2 text-white sm:px-6 sm:py-2.5"
           as="p2"
@@ -27,7 +24,7 @@ const LoggedItems = ({ user }: NavProps): JSX.Element => {
           Create
         </Paragraph>
       </Link>
-      <Link href={user} aria-label="Go to user profile" passHref>
+      <Link href={'/'} aria-label="Go to user profile" passHref>
         <Image
           src="/assets/images/navbar/n1.jpeg"
           alt=""

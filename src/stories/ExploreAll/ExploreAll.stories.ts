@@ -8,7 +8,7 @@ const meta: Meta<typeof ExploreAll> = {
   tags: ['autodocs'],
   args: {
     children: 'Recent drops',
-    href: "/community-profile?type=drops"
+    href: '/community/drops',
   },
   parameters: {
     tags: ['autodocs'],
