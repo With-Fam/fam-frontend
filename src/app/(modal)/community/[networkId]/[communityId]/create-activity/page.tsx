@@ -10,6 +10,7 @@ type CreateActivityPageProps = {
   params: {
     communityId: string
     activityId: string
+    networkId: string
   }
 }
 

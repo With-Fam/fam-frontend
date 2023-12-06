@@ -53,6 +53,7 @@ const CreateActivityContext = createContext<CreateActivityContextType>({
 type Props = PropsWithChildren<{
   params: {
     communityId: string
+    networkId: string
   }
 }>
 
