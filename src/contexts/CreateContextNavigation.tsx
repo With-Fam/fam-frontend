@@ -26,7 +26,6 @@ export const CreateContextNavigation = ({
   exitPath,
 }: CreateContextNavigationProps): Maybe<JSX.Element> => {
   const router = useRouter()
-
   return (
     <div className="h-18 flex w-full shrink flex-row items-center justify-between py-2">
       <div className="flex h-8 w-8 cursor-pointer flex-col items-center justify-center rounded-full bg-grey-light">

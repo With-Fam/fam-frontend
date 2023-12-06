@@ -24,7 +24,10 @@ import {
   GeneralForm,
 } from '@/modules/create-activity/components'
 import { GeneralActivityValues } from '@/modules/create-activity/components/general/schema'
-import { TRANSACTION_TYPES, TransactionType } from '@/modules/create-activity/types'
+import {
+  TRANSACTION_TYPES,
+  TransactionType,
+} from '@/modules/create-activity/types'
 import { AddressType } from '@/types'
 
 export interface CreateActivityContextType {
@@ -55,7 +58,7 @@ type Props = PropsWithChildren<{
 
 // IMPORTANT: Create loading component
 const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
-  const { communityId } = params
+  const { networkId, communityId } = params
   const [loading, setLoading] = useState<boolean>(true)
   const {
     activeSection,
@@ -142,7 +145,7 @@ const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
       }}
     >
       <CreateContextNavigation
-        exitPath={`/community/${communityId}`}
+        exitPath={`/community/${networkId}/${communityId}/activity`}
         step={activeSection}
         prev={prev}
         title={sections[activeSection]?.title}
