@@ -4,7 +4,6 @@
 import { useState } from 'react'
 
 // Third Parties
-import { useEnsData } from '@/hooks/useEnsData'
 
 // Local Components'
 import { useDaoStore } from '@/modules/dao'
@@ -15,6 +14,8 @@ import {
   useContractWrite,
   usePrepareContractWrite,
 } from 'wagmi'
+import { TransactionExecutionError } from 'viem'
+import toast from 'react-hot-toast'
 import { waitForTransaction } from 'wagmi/actions'
 
 // Types
@@ -52,17 +53,19 @@ const StartNextAuction = ({ page }: BidStatusProps): JSX.Element => {
   const { writeAsync } = useContractWrite(config)
 
   const handleSettle = async () => {
-    console.log('error::', error)
-    console.log('handle settle hit')
     if (!!error) return
-
+    console.log('ERROR!!!')
     setSettling(true)
+    toast.loading('Loading...')
     try {
       const tx = await writeAsync?.()
       if (tx?.hash) await waitForTransaction({ hash: tx.hash })
       setSettling(false)
-    } catch (error) {
-      console.log('error::', error)
+      toast.dismiss()
+      toast.success('Auction settled successfully')
+    } catch (error: any) {
+      toast.dismiss()
+      toast.error('Something went wrong. Try Again.')
       setSettling(false)
     }
   }

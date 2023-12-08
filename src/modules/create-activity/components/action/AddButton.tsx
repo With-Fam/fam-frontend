@@ -16,6 +16,11 @@ import { Cross, ThreeDots, Trash, EditPen, Close } from '@/components/icons'
 // Content
 import ACTIONS_DATA from '@/content/create-activity/actions'
 import POPULAR_ACTIONS_DATA from '@/content/create-activity/apps'
+import {
+  TRANSACTION_TYPES,
+  TransactionType,
+} from '@/modules/create-activity/types'
+import { useProposalStore } from '@/modules/create-activity/stores'
 
 /*--------------------------------------------------------------------*/
 
@@ -23,44 +28,21 @@ import POPULAR_ACTIONS_DATA from '@/content/create-activity/apps'
  * Component
  */
 
-export function AddButton(): JSX.Element {
+type ActionButtonProps = {
+  activityType: TransactionType
+  prev: () => void
+}
+
+export function AddButton({
+  activityType,
+  prev,
+}: ActionButtonProps): JSX.Element {
+  const { removeAllTransactions } = useProposalStore()
   const [optionsOpen, setOptionsOpen] = useState(false)
-  const [image, setImage] = useState('')
-  const [title, setTitle] = useState('')
-  const { unregister, setValue, getValues } = useFormContext()
-  const params = useSearchParams()
   const router = useRouter()
-  const activityId = params.get('id')
-  const action = [...ACTIONS_DATA, ...POPULAR_ACTIONS_DATA].find(
-    (actionItem) => activityId === actionItem.id
-  )
+  const action = TRANSACTION_TYPES[activityType]
 
-  // This prevents that a reload will keep an action selected
-  useEffect(() => {
-    // before implementing all to handle all apps, this control is disabled
-    console.log(getValues())
-  }, [])
-
-  // This populates the action selected
-  useEffect(() => {
-    setValue('id', activityId)
-    const selectedImage = getValues('image')
-    const selectedTitle = getValues('action-title')
-    setImage(selectedImage)
-    setTitle(selectedTitle)
-  }, [activityId, getValues, setValue])
-
-  // This resets data, but keeps the title and description
-  const handleRemoveAction = () => {
-    unregister('duration')
-    unregister('goal')
-    unregister('action-title')
-    unregister('image')
-    router.push('/create-activity')
-    setOptionsOpen(false)
-  }
-
-  if (activityId && action) {
+  if (activityType && action) {
     return (
       <div className="absolute bottom-16 left-1/2 box-content w-full -translate-x-1/2 px-4 sm:w-[322px]">
         <div className="relative flex gap-4 rounded-2xl bg-white p-4">
@@ -76,7 +58,7 @@ export function AddButton(): JSX.Element {
               <button
                 type="button"
                 className="flex items-center gap-1"
-                onClick={handleRemoveAction}
+                onClick={removeAllTransactions}
               >
                 <Trash className="h-5" />
                 <span className="pt-1 text-grey">Remove</span>
@@ -85,7 +67,7 @@ export function AddButton(): JSX.Element {
                 type="button"
                 className="flex items-center gap-1"
                 onClick={() => {
-                  router.push(action.href)
+                  prev()
                 }}
               >
                 <EditPen className="h-4" />
@@ -102,9 +84,9 @@ export function AddButton(): JSX.Element {
             </div>
           )}
           <div className="relative flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-md bg-grey-light">
-            {image && (
+            {action.image && (
               <Image
-                src={image}
+                src={action.image}
                 fill
                 className="rounded-md object-cover"
                 alt={action.title}
@@ -115,9 +97,9 @@ export function AddButton(): JSX.Element {
             <Paragraph as="p3" className="mb-2">
               {action.title}
             </Paragraph>
-            {title && (
+            {action.subTitle && (
               <Paragraph as="p5" className="text-grey">
-                {title}
+                {action.subTitle}
               </Paragraph>
             )}
           </div>

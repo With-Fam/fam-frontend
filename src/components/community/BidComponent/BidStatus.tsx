@@ -24,7 +24,6 @@ type BidStatusProps = {
 
 const BidStatus = ({ page }: BidStatusProps): JSX.Element => {
   const { displayName, ensAvatar } = useEnsData(page?.highestBid?.bidder)
-  console.log('PAGE:', page)
   return (
     <div className="flex w-full flex-col">
       <div className="mb-4 flex items-center justify-between">
@@ -45,7 +44,9 @@ const BidStatus = ({ page }: BidStatusProps): JSX.Element => {
       </div>
       <div className="mb-4 flex items-center justify-between">
         <Paragraph as="p2">
-          {Number(page?.highestBid?.amount) / 1e18} ETH
+          {page?.highestBid?.amount
+            ? `${Number(page?.highestBid?.amount) / 1e18} ETH`
+            : 'NONE'}
         </Paragraph>
         <CountDown page={page} />
       </div>

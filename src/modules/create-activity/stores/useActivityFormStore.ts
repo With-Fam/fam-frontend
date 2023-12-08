@@ -3,6 +3,8 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
 import { GeneralActivityValues } from '@/modules/create-activity/components/general/schema'
+import { TransactionType } from '@/modules/create-activity/types'
+import { Maybe } from '@/types'
 
 export type FundraisingTargetValues = {
   amount: number
@@ -33,7 +35,7 @@ const initialState = {
     activityName: '',
     activityDescription: '',
   },
-  activityType: '',
+  activityType: null,
   fundraising: {
     amount: 0,
     votingPeriod: 7,
@@ -44,8 +46,8 @@ const initialState = {
 export interface ActivityFormStoreState {
   activeSection: number
   setActiveSection: (activeSection: number) => void
-  activityType: string
-  setActivityType: (activity: string) => void
+  activityType: Maybe<TransactionType>
+  setActivityType: (activity: Maybe<TransactionType>) => void
   fulfilledSections: string[]
   setFulfilledSections: (section: string) => void
   fundraising: FundraisingTargetValues
@@ -70,7 +72,9 @@ export const useActivityFormStore = ({ communityId }: Params) =>
           const activeSection = next < 0 ? 0 : next
           return set({ activeSection })
         },
-        setActivityType: (activityType) => set({ activityType }),
+        setActivityType: (
+          activityType: ActivityFormStoreState['activityType']
+        ) => set({ activityType: activityType }),
         setFulfilledSections: (section) => {
           set((state) => ({
             fulfilledSections: !state.fulfilledSections.includes(section)

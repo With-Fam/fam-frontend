@@ -1,6 +1,7 @@
 // Local Components
 'use client'
 import { usePrivy } from '@privy-io/react-auth'
+import { usePathname } from 'next/navigation'
 import { Logo } from '@/components/shared'
 import LoggedItems from '@/components/shared/Navbar/LoggedItems'
 import NotLoggedItems from '@/components/shared/Navbar/NotLoggedItems'
@@ -13,8 +14,14 @@ import NotLoggedItems from '@/components/shared/Navbar/NotLoggedItems'
 
 const Navbar = (): JSX.Element => {
   const { user } = usePrivy()
+  const path = usePathname()
+  const isHome = path === '/'
   return (
-    <nav className="fixed left-0 top-0 z-30 flex w-full justify-between p-4 sm:px-10 sm:py-8">
+    <nav
+      className={`fixed left-0 top-0 z-30 flex w-full justify-between p-4 sm:px-10 sm:py-8 ${
+        isHome ? 'bg-orange' : 'bg-transparent'
+      }`}
+    >
       <Logo />
       <div className="flex items-center justify-end gap-3">
         {user ? <LoggedItems /> : <NotLoggedItems />}

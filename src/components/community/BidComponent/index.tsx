@@ -81,13 +81,17 @@ const BidComponent = ({
           )}
         </div>
         {isOver || isOver ? (
-          <StartNextAuction page={page} />
+          <>
+            <BidStatus page={page} />
+            <StartNextAuction page={page} />
+          </>
         ) : (
           <>
             <BidStatus page={page} />
             <PlaceBid token={token} />
           </>
         )}
+        <br />
         <div>
           <BidDescription page={page} token={token} metaData={metaData} />
           <SocialMediaItems metadataAddress={metaData?.metadataAddress} />

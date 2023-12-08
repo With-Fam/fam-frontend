@@ -22,7 +22,6 @@ export default function CommunityLayout({
   children,
   params,
 }: CommunityLayoutProps): JSX.Element {
-  console.log('_params:', params)
   return (
     <>
       <TabList items={TOGGLE_DATA} />

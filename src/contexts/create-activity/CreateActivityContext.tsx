@@ -106,7 +106,7 @@ const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
       ),
     }
 
-    const actionSubmit = (a: string) => {
+    const actionSubmit = (a: TransactionType) => {
       setActivityType(a)
       navigate(2)
     }
@@ -115,23 +115,25 @@ const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
       order: 1,
       title: 'All actions',
       key: 'action',
-      content: <ActionSection onClick={actionSubmit} />,
+      content: <ActionSection onClick={actionSubmit as any} />,
     }
 
-    const transaction = TRANSACTION_TYPES[activityType as TransactionType]
+    const activityTransaction =
+      TRANSACTION_TYPES[activityType as TransactionType]
 
-    const nft: CreateSection = {
+    const transaction: CreateSection = {
       order: 2,
-      title: transaction?.title ?? '',
-      key: activityType,
+      title: activityTransaction?.title ?? '',
+      key: activityType as string,
       content: (
         <ActionForm
+          callback={next}
           action={activityType as TransactionType}
           collectionAddress={communityId as AddressType}
         />
       ),
     }
-    return [general, action, nft]
+    return [general, action, transaction, general]
   }, [generalDefault, setGeneral, navigate])
 
   return (
@@ -145,19 +147,21 @@ const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
         title: sections[activeSection]?.title,
       }}
     >
-      <CreateContextNavigation
-        exitPath={`/community/${networkId}/${communityId}/activity`}
-        step={activeSection}
-        prev={prev}
-        title={sections[activeSection]?.title}
-      />
       {loading ? (
         <Loading
           title="Setting the vibes"
           description="Put your feet up and enjoy the tunes"
         />
       ) : (
-        children
+        <>
+          <CreateContextNavigation
+            exitPath={`/community/${networkId}/${communityId}/activity`}
+            step={activeSection}
+            prev={prev}
+            title={sections[activeSection]?.title}
+          />
+          {children}
+        </>
       )}
     </CreateActivityContext.Provider>
   )

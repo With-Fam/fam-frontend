@@ -3,14 +3,22 @@
 // Framework
 import Image from 'next/image'
 import { useMemo } from 'react'
-import { Popover } from '@headlessui/react'
 
 // Local Components
 import { Paragraph } from '@/stories'
-import { Cross, ThreeDots } from '@/components/icons'
-import ACTIONS_DATA from '@/content/create-activity/actions'
-import { ActionItemProps } from '@/types/create-activity'
+import { Cross } from '@/components/icons'
 import { Maybe } from '@/types'
+import {
+  TRANSACTION_TYPES,
+  TransactionType,
+} from '@/modules/create-activity/types'
+
+import { ActionsPanel } from './ActionsPanel'
+import { useParams } from 'next/navigation'
+import {
+  useActivityFormStore,
+  useProposalStore,
+} from '@/modules/create-activity/stores'
 
 /*--------------------------------------------------------------------*/
 
@@ -18,16 +26,20 @@ import { Maybe } from '@/types'
  * Component
  */
 
-type Props = {
-  activityType?: string
-}
+export function AddButton(): JSX.Element {
+  const { communityId } = useParams()
+  const { removeAllTransactions } = useProposalStore()
+  const { activityType, setActivityType, setActiveSection } =
+    useActivityFormStore({ communityId: communityId as string })()
 
-export function AddButton({ activityType }: Props): JSX.Element {
-  const action = useMemo((): Maybe<ActionItemProps> => {
+  const action = useMemo((): Maybe<
+    (typeof TRANSACTION_TYPES)[TransactionType]
+  > => {
     if (!activityType) return null
-    const current = ACTIONS_DATA.find(({ id }) => id === activityType)
-    return current ?? null
+    return TRANSACTION_TYPES[activityType]
   }, [activityType])
+
+  console.log('action::', action)
 
   if (activityType && action) {
     return (
@@ -36,16 +48,14 @@ export function AddButton({ activityType }: Props): JSX.Element {
         sm:w-[322px]"
       >
         <div className="relative flex gap-4 rounded-2xl bg-white p-4">
-          <div className="absolute right-10 top-1 z-10 w-auto">
-            <Popover className="relative w-auto">
-              <Popover.Button className="absolute cursor-pointer p-2">
-                <ThreeDots />
-              </Popover.Button>
-
-              <Popover.Panel className="absolute left-8 z-10 h-auto rounded-md bg-white p-4 shadow-md">
-                Let&apos;s have a think about using this popover
-              </Popover.Panel>
-            </Popover>
+          <div className="absolute right-1 top-1 z-10 w-auto">
+            <ActionsPanel
+              onEdit={() => setActiveSection(2)}
+              onDelete={() => {
+                setActivityType(null)
+                removeAllTransactions()
+              }}
+            />
           </div>
           <div className="relative flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-clip rounded-md bg-grey-light">
             <Image
@@ -61,7 +71,7 @@ export function AddButton({ activityType }: Props): JSX.Element {
               {action.title}
             </Paragraph>
             <Paragraph as="p5" className="text-grey">
-              {action.description}
+              {action.subTitle}
             </Paragraph>
           </div>
         </div>

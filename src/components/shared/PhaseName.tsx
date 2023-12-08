@@ -1,9 +1,10 @@
 // Local Components
 import { Paragraph } from '@/stories'
+import { Maybe } from '@/types'
 
 // Types
 interface PhaseNameProps {
-  children: string
+  children: Maybe<string>
 }
 
 /*--------------------------------------------------------------------*/
@@ -15,7 +16,7 @@ interface PhaseNameProps {
 const PhaseName = ({ children }: PhaseNameProps): JSX.Element => (
   <Paragraph
     as="p3"
-    className="capitalize-first text-center font-abc text-lg font-normal text-orange"
+    className="text-center font-abc text-lg font-normal text-orange capitalize-first"
   >
     {children}
   </Paragraph>

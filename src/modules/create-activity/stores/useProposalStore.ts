@@ -3,6 +3,7 @@ import { create } from 'zustand'
 import { AddressType } from '@/types'
 
 import { TransactionType } from '../types'
+import { Builder } from 'postcss'
 
 export type Transaction = {
   functionSignature: string
@@ -27,6 +28,10 @@ interface State {
 interface Actions {
   addTransaction: (builderTransaction: BuilderTransaction) => void
   addTransactions: (builderTransactions: BuilderTransaction[]) => void
+  editTransaction: (
+    index: number,
+    builderTransaction: BuilderTransaction
+  ) => void
   removeTransaction: (index: number) => void
   removeAllTransactions: () => void
   createProposal: ({
@@ -56,6 +61,15 @@ export const useProposalStore = create<State & Actions>((set) => ({
     set((state) => ({
       transactions: [...state.transactions, ...transaction],
     }))
+  },
+  editTransaction: (indexOf: number, transaction: BuilderTransaction) => {
+    set((state) => {
+      const nextTransactions = [...state.transactions]
+      nextTransactions[indexOf] = transaction
+      return {
+        transactions: nextTransactions,
+      }
+    })
   },
   removeTransaction: (index) => {
     set((state) => ({

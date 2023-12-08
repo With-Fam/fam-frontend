@@ -1,18 +1,18 @@
 export enum TransactionType {
   NFT = 'nft',
+  MERCH = 'merch',
   SEND_ETH = 'send-eth',
   CROWD_FUND = 'crowd-fund',
   AIRDROP = 'airdrop',
+  UPDATE_COMMUNITY = 'update-community',
   CUSTOM = 'custom',
-  UPDATE_SETTINGS = 'update-community',
-  // UPDATE_MINTER = 'update-minter',
-  REPLACE_ARTWORK = 'replace-artwork',
+  // REPLACE_ARTWORK = 'replace-artwork',
 }
 
 export interface TransactionTypeProps {
   title: string
   subTitle: string
-  icon: string
+  image: string
 }
 
 export interface TransactionTypesPropsMap
@@ -20,35 +20,45 @@ export interface TransactionTypesPropsMap
 
 export const TRANSACTION_TYPES = {
   [TransactionType.NFT]: {
-    title: 'Create an NFT',
+    title: 'Create NFT',
     subTitle:
       'Mint a song, album or video and split the proceeds with your fam',
-    icon: 'collection',
+    image: '/assets/images/create-activity/donut.jpg',
+  },
+  [TransactionType.MERCH]: {
+    title: 'Merch drop',
+    subTitle: 'Digi-physical merch collections for your fans',
+    image: '/assets/images/create-activity/pyramid.jpg',
   },
   [TransactionType.SEND_ETH]: {
     title: 'Send funds',
     subTitle: 'Send ETH to any address',
-    icon: 'eth',
+    image: '/assets/images/create-activity/cylinder.jpg',
+  },
+  [TransactionType.CROWD_FUND]: {
+    title: 'Start a crowdfund',
+    subTitle: 'Fund your communities ideas and projects',
+    image: '/assets/images/create-activity/spring.jpg',
   },
   [TransactionType.AIRDROP]: {
     title: 'Gift a membership',
     subTitle: 'Airdrop a membership to any address',
-    icon: 'airdrop',
+    image: '/assets/images/create-activity/cube.jpg',
   },
-  [TransactionType.UPDATE_SETTINGS]: {
-    title: 'Update settings',
-    subTitle: 'Edit your community settings',
-    icon: 'plus',
+  [TransactionType.UPDATE_COMMUNITY]: {
+    title: 'Update community',
+    subTitle: 'Edit your settings and artwork',
+    image: '/assets/images/create-activity/tube.jpg',
   },
-  [TransactionType.REPLACE_ARTWORK]: {
-    title: 'Change artwork',
-    subTitle: 'Update the artwork for your memberships',
-    icon: 'brush',
-  },
+  // [TransactionType.REPLACE_ARTWORK]: {
+  //   title: 'Change artwork',
+  //   subTitle: 'Update the artwork for your memberships',
+  //   image: '',
+  // },
   [TransactionType.CUSTOM]: {
     title: 'Execute custom on chain functions',
     subTitle:
       'Perform other functions that are available on the current contract',
-    icon: 'plus',
+    image: '/assets/images/create-activity/tube.jpg',
   },
 } as TransactionTypesPropsMap

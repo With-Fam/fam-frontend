@@ -1,26 +1,38 @@
-import { TransactionType } from "@/modules/create-activity/types"
+import { TransactionType } from '@/modules/create-activity/types'
 
-import { Crowdfund, SendEth, UpdateCommunityForm, CreateNFT } from "@/modules/create-activity"
-import { AddressType } from "@/types"
+import {
+  Crowdfund,
+  SendEth,
+  UpdateCommunityForm,
+  CreateNFT,
+} from '@/modules/create-activity'
+import { AddressType } from '@/types'
 
-type ActionFormProps = {
+export type ActionFormProps = {
   action: TransactionType
+  callback: () => void
   collectionAddress: AddressType
 }
 
 export function ActionForm({
   action,
-  collectionAddress
+  callback,
+  collectionAddress,
 }: ActionFormProps): JSX.Element {
   switch (action) {
     case 'crowd-fund':
-      return <Crowdfund onSubmit={(a) => console.log('Crowdfund::', a)} />
+      return <Crowdfund callback={callback} />
     case 'send-eth':
-      return <SendEth />
+      return <SendEth callback={callback} />
     case 'update-community':
-      return <UpdateCommunityForm collectionAddress={collectionAddress} />
+      return (
+        <UpdateCommunityForm
+          callback={callback}
+          collectionAddress={collectionAddress}
+        />
+      )
     case 'nft':
-      return <CreateNFT onSubmit={(a) => console.log('CreateNFT::', a)} />
+      return <CreateNFT callback={callback} />
     default:
       return <div>Not found!</div>
   }

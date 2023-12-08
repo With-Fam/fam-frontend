@@ -1,3 +1,5 @@
+'use client'
+
 import type { SVGProps } from './types'
 
 // Types
@@ -13,7 +15,6 @@ type CloseProps = {
 
 const Close = ({ color = '#A7A7A7', className }: CloseProps): JSX.Element => (
   <svg
-    xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"

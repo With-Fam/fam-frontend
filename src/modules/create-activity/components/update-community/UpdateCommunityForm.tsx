@@ -44,10 +44,12 @@ import { Paragraph } from '@/stories'
 import { Alert, Sliders } from '@/components/icons'
 
 interface UpdateCommunityFormProps {
+  callback: () => void
   collectionAddress: string
 }
 
 export function UpdateCommunityForm({
+  callback,
   collectionAddress,
 }: UpdateCommunityFormProps): JSX.Element {
   const { address } = useAccount()
@@ -318,17 +320,17 @@ export function UpdateCommunityForm({
       summary: undefined,
       transactions: transactionsWithPauseUnpause,
     })
-
-    router.push(
-      `/dao/${chain?.slug}/${collectionAddress as string}/proposal/review`
-    )
+    callback()
   }
 
   const { control, handleSubmit } = methods
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-[668px] w-full">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mx-auto w-full max-w-[668px]"
+      >
         <Controller
           name="daoAvatar"
           control={control}

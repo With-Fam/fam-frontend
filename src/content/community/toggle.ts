@@ -4,10 +4,6 @@ const TOGGLE_DATA = [
     label: 'Home',
   },
   {
-    id: 'drops',
-    label: 'Drops',
-  },
-  {
     id: 'members',
     label: 'Members',
   },

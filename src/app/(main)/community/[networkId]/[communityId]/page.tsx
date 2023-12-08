@@ -70,7 +70,7 @@ export default async function CommunityProfile(
     <>
       <BidComponent token={token} page={page} metaData={metaData} />
       <FoundersComponent token={token} />
-      <RecentDrops />
+      {/* <RecentDrops /> */}
     </>
   )
 }

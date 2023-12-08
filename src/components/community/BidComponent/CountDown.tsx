@@ -34,6 +34,7 @@ const CountDown = ({ page }: CountDownProps): JSX.Element => {
 
   useEffect(() => {
     const initialTime = getTimeDifference(page.endTime)
+
     setTime(initialTime)
   }, [page?.endTime])
 
@@ -58,7 +59,7 @@ const CountDown = ({ page }: CountDownProps): JSX.Element => {
   }, [time, ended])
 
   const formattedTime = `
-    ${String(time.days).padStart(2, '0')}d
+    ${time.days ? `${String(time.days).padStart(2, '0')}d` : ''}
     ${String(time.hours).padStart(2, '0')}h
     ${String(time.minutes).padStart(2, '0')}m
     ${String(time.seconds).padStart(2, '0')}s

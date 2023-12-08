@@ -12,33 +12,32 @@ import {
 import { Button } from '@/components/shared'
 
 type CreateNFTFormProps = {
-  defaultValues?: CreateNFTFormValues
-  onSubmit: (values: CreateNFTFormValues) => void
+  callback: () => void
 }
 
-export function CreateNFT({
-  defaultValues,
-  onSubmit,
-}: CreateNFTFormProps): JSX.Element {
+export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
   const methods = useForm<CreateNFTFormValues>({
     defaultValues: {
       // duration: 7,
       maxSupply: 10,
       maxPerAddress: 1,
       royaltyPercentage: 5,
-      ...defaultValues,
+      // ...defaultValues,
     },
     resolver: yupResolver(schema) as any,
   })
 
   const { control, formState, handleSubmit } = methods
+  const onSubmit = (a: CreateNFTFormValues) => {
+    console.log('CreateNFTFormValues::', a)
+    callback()
+  }
   return (
     <FormProvider {...methods}>
       <form
         id="__create_nft"
         onSubmit={handleSubmit(onSubmit as any)}
-        className="mx-auto max-w-[668px] w-full"
-
+        className="mx-auto w-full max-w-[668px]"
       >
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2">

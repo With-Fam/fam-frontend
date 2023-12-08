@@ -17,16 +17,12 @@ import TitleInput from '@/modules/create-activity/components/general/TitleInput'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AddButton } from './AddButton'
 
-// Types
-
 type GeneralFormProps = {
-  activityType?: string
   defaultValues: GeneralActivityValues
   onSubmit: (_a: GeneralActivityValues) => void
 }
 
 export function GeneralForm({
-  activityType,
   defaultValues,
   onSubmit,
 }: GeneralFormProps): JSX.Element {
@@ -55,7 +51,7 @@ export function GeneralForm({
             placeholder="Description"
           />
         </div>
-        <AddButton activityType={activityType} />
+        <AddButton />
       </form>
     </FormProvider>
   )

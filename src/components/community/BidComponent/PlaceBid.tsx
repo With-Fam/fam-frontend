@@ -3,8 +3,9 @@ import { useState } from 'react'
 
 import { useAccount, useContractReads, useContractWrite } from 'wagmi'
 import { prepareWriteContract, writeContract } from 'wagmi/actions'
-import { parseEther } from 'viem'
+import { parseEther, etherUnits, formatEther } from 'viem'
 import { waitForTransaction } from 'wagmi/actions'
+import toast from 'react-hot-toast'
 
 import { QuestionMark } from '@/components/icons'
 import { useDaoStore } from '@/modules/dao'
@@ -27,29 +28,33 @@ const PlaceBid = ({ token }: any): JSX.Element => {
   const addresses = useDaoStore((state) => state.addresses)
   const { tokenId } = token
 
-  const auctionContractParams = {
-    abi: auctionAbi,
-    address: addresses.auction as AddressType,
-    chainId: chain,
-  }
+  // const auctionContractParams = {
+  //   abi: auctionAbi,
+  //   address: addresses.auction as AddressType,
+  //   chainId: chain,
+  // }
 
-  const { data } = useContractReads({
-    allowFailure: false,
-    contracts: [
-      { ...auctionContractParams, functionName: 'reservePrice' },
-      { ...auctionContractParams, functionName: 'minBidIncrement' },
-    ] as const,
-  })
+  // const { data } = useContractReads({
+  //   allowFailure: false,
+  //   contracts: [
+  //     { ...auctionContractParams, functionName: 'reservePrice' },
+  //     { ...auctionContractParams, functionName: 'minBidIncrement' },
+  //   ] as const,
+  // })
 
-  const reservePrice = data?.[0]
-  const minBidIncrement = data?.[1]
+  // const reservePrice = data?.[0]
+  // const minBidIncrement = data?.[1]
 
-  console.log('data::', reservePrice)
-  console.log('data::', minBidIncrement)
+  // console.log('reservePrice::', formatEther(reservePrice))
+  // console.log('minBidIncrement::', minBidIncrement)
+
+  // console.log('RESERVE PRICE::', Number(formatEther(reservePrice as any)))
+  // console.log('minBidIncrement::', Number(formatEther(minBidIncrement as any)))
 
   const placeBid = async () => {
     setSettling(true)
     try {
+      toast.loading('Loading...')
       const config = await prepareWriteContract({
         abi: auctionAbi,
         address: addresses.auction as AddressType,
@@ -61,50 +66,32 @@ const PlaceBid = ({ token }: any): JSX.Element => {
       const tx = await writeContract(config)
       if (tx?.hash) await waitForTransaction({ hash: tx.hash })
       setSettling(false)
+      toast.dismiss()
+      toast.success('Bid succesfully placed!')
     } catch (error) {
+      toast.dismiss()
+      toast.error('Error placing bid')
       console.log('error::', error)
       setSettling(false)
     }
   }
 
-  // const { minBidAmount } = useMinBidIncrement({
-  //   highestBid: '0.001', // Pass in current highest bid
-  //   reservePrice: reservePrice,
-  //   minBidIncrement,
-  // })
-
-  // const formattedMinBid = formatCryptoVal(minBidAmount)
-
   return (
     <>
-      <div className="mx-auto mb-4 mt-5 flex h-14 w-full max-w-2xl items-center gap-2 rounded-lg bg-grey-light px-4 py-2">
-        <div className="flex items-center">
-          <button
-            className="bg-transparent outline-0"
-            onClick={() => setBidAmount(bidAmount - 1)}
-          >
-            -
-          </button>
-          <input
-            className="mx-2 flex-1 bg-transparent text-center outline-0"
-            type="number"
-            name="bid-community"
-            id="bid-community"
-            placeholder="0.05 ETH or more"
-            value={bidAmount}
-            onChange={(e) => {
-              e.preventDefault()
-              console.log('e.target.value::', e.target.value)
-              setBidAmount(Number(e.target.value))
-            }}
-          />
-          <button
-            className="bg-transparent outline-0"
-            onClick={() => setBidAmount(bidAmount + 1)}
-          >
-            +
-          </button>
-        </div>
+      <div className="mx-auto mb-4 mt-5 flex h-14 w-full max-w-2xl items-center justify-between gap-2 rounded-lg bg-grey-light px-4 py-2">
+        <input
+          className="mx-2 flex-1 bg-transparent text-center outline-0"
+          type="number"
+          name="bid-community"
+          id="bid-community"
+          placeholder="0.05 ETH or more"
+          value={bidAmount}
+          onChange={(e) => {
+            e.preventDefault()
+            console.log('e.target.value::', e.target.value)
+            setBidAmount(Number(e.target.value))
+          }}
+        />
         <QuestionMark />
       </div>
       <button

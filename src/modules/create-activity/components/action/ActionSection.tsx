@@ -3,6 +3,7 @@ import { ActivityFormStoreState } from '@/modules/create-activity/stores'
 import { ActionItemProps } from '@/types/create-activity'
 
 import { default as ACTIONS } from '@/content/create-activity/actions'
+import { TransactionType } from '@/modules/create-activity/types'
 
 interface ActionSectionProps {
   onClick: ActivityFormStoreState['setActivityType']
@@ -17,7 +18,7 @@ export function ActionSection({ onClick }: ActionSectionProps): JSX.Element {
           <ActionCard
             key={_action.id}
             {..._action}
-            onClick={() => onClick(_action.id)}
+            onClick={() => onClick(_action.id as TransactionType)}
           />
         ))}
       </div>

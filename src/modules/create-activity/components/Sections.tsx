@@ -15,7 +15,6 @@ export function Sections(): JSX.Element {
     <AnimatePresence mode="wait">
       <motion.div
         key={section.key}
-        className="flex grow flex-col"
         variants={{
           exit: {
             y: 10,
@@ -37,7 +36,7 @@ export function Sections(): JSX.Element {
         animate="open"
         exit="exit"
       >
-        {section?.content}
+        <div className="flex grow flex-col">{section?.content}</div>
       </motion.div>
     </AnimatePresence>
   )

@@ -20,18 +20,20 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 type CrowdfundProps = {
   defaultValues?: CrowdfundValues
-  onSubmit: (a: CrowdfundValues) => void
+  callback: () => void
 }
 
 export function Crowdfund({
-  defaultValues,
-  onSubmit,
+  defaultValues, // onSubmit,
 }: CrowdfundProps): JSX.Element {
   const methods = useForm<CrowdfundValues>({
     resolver: zodResolver(schema),
     defaultValues,
   })
   const { control, handleSubmit } = methods
+  const onSubmit = (a: CrowdfundValues) => {
+    console.log('Crowdfund::', a)
+  }
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>

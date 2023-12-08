@@ -28,7 +28,7 @@ export const auctionSettingsDefaultValues: AuctionSettingsFormValues = {
     hours: 0,
     minutes: 0,
   },
-  votingDelay: { seconds: 0, days: 0, hours: 0, minutes: 9 },
+  votingDelay: { seconds: 1, days: 0, hours: 0, minutes: 9 },
 }
 
 export const initialState = {
