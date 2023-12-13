@@ -1,5 +1,6 @@
 // Local Components
-import { CommunityMembers } from '@/components/community'
+import { CommunityMembers, TabList } from '@/components/community'
+import { TOGGLE_DATA } from '@/content/community'
 
 // Types
 type CommunityProfileProps = {
@@ -31,5 +32,10 @@ export default async function CommunityProfile(
   const chainId = 5 // Hardcoded. Should be passed in from the router
   const { communityId } = _props.params
   const data: any = await getMemberData(chainId, communityId)
-  return <CommunityMembers data={data as any} />
+  return (
+    <>
+      <TabList items={TOGGLE_DATA} />
+      <CommunityMembers data={data as any} />
+    </>
+  )
 }

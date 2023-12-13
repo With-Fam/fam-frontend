@@ -116,7 +116,7 @@ export function SendEth({
   return (
     <FormProvider {...methods}>
       <form
-        id="__create_nft"
+        id="__send_eth"
         onSubmit={handleSubmit(onSubmit)}
         className="mx-auto w-full max-w-[668px]"
       >
@@ -140,13 +140,6 @@ export function SendEth({
             className="block w-full text-lg outline-0"
           />
         </div>
-        {/* <div className="flex w-full justify-center">
-          <Button type="button" variant="secondary" className="mt-6 px-3 py-2">
-            <Paragraph as="p5" className="">
-              Add recipient
-            </Paragraph>
-          </Button>
-        </div> */}
         <AddActionButton />
       </form>
     </FormProvider>

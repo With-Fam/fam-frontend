@@ -27,12 +27,13 @@ export type TraitProps = Trait & {
 function getLayer(idx: number) {
   switch (idx) {
     case 0:
-      return 'Base Layer'
+      return 'Top Layer'
     case 1:
     case 2:
-      return `Layer #${idx}`
     case 3:
-      return 'Top Layer'
+      return `Layer #${idx}`
+    case 4:
+      return 'Base Layer'
     default:
       return 'Out of Range'
   }

@@ -45,7 +45,10 @@ function TextInput({
           type={type}
           onBlur={() => clearErrors(name)}
           id={name}
-          className="block w-full text-lg outline-0"
+          className={twMerge(
+            "block w-full text-lg outline-0 bg-white",
+            _props.disabled ? 'opacity-30 cursor-not-allowed' : '',
+          )}
         />
       </div>
       <ErrorMessage name={name} />

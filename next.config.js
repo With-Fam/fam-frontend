@@ -17,9 +17,17 @@ const nextConfig = {
       'i.ibb.co',
       'euc.li',
     ],
+    // remotePatterns: [
+    //   {
+    //     protocol: 'ipfs',
+    //     hostname: '*',
+    //     port: '',
+    //     pathname: '',
+    //   },
+    // ],
   },
   experimental: {
-    webpackBuildWorker: true
+    webpackBuildWorker: true,
   },
   webpack(config) {
     // Grab the existing rule that handles SVG imports

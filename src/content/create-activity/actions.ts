@@ -31,7 +31,7 @@ const ACTIONS_DATA = [
     href: '/create-activity/add/crowdfund',
   },
   {
-    id: 'membership',
+    id: 'airdrop',
     title: 'Gift a membership',
     description: 'Airdrop a membership to any address',
     image: '/assets/images/create-activity/cube.jpg',

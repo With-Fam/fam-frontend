@@ -1,5 +1,4 @@
 // Framework
-import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
 // Local Components
@@ -25,7 +24,6 @@ interface ActivityDataProps {
 // Utils
 import { formatUnixTimestampDate, isDateExpired } from '@/utils/helpers'
 import UsersRowDynamic from '@/components/community/UsersRowDynamic'
-import { AddressType } from '@/types'
 
 /*--------------------------------------------------------------------*/
 
@@ -37,7 +35,6 @@ const ActivityData = ({ proposal }: ActivityDataProps): JSX.Element => {
   const {
     title,
     proposer,
-    proposalId,
     timeCreated,
     votes,
     quorumVotes,
@@ -63,11 +60,9 @@ const ActivityData = ({ proposal }: ActivityDataProps): JSX.Element => {
   return (
     <>
       <ActivityCreator proposer={proposer} />
-      <Link href={`activity/${proposalId}`} passHref>
-        <Paragraph as="p3" className="mb-1">
-          {title}
-        </Paragraph>
-      </Link>
+      <Paragraph as="p3" className="mb-1">
+        {title}
+      </Paragraph>
       <Paragraph as="p5" className="mb-4 text-grey">
         {formatUnixTimestampDate(timeCreated)}
       </Paragraph>

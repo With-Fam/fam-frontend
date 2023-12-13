@@ -33,7 +33,7 @@ const CountDown = ({ page }: CountDownProps): JSX.Element => {
   const [time, setTime] = useState<Duration>(zeroTime)
 
   useEffect(() => {
-    const initialTime = getTimeDifference(page.endTime)
+    const initialTime = getTimeDifference(page?.endTime)
 
     setTime(initialTime)
   }, [page?.endTime])

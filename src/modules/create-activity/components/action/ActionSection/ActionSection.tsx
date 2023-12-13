@@ -1,9 +1,10 @@
-import { ActionCard } from './ActionCard'
 import { ActivityFormStoreState } from '@/modules/create-activity/stores'
 import { ActionItemProps } from '@/types/create-activity'
 
 import { default as ACTIONS } from '@/content/create-activity/actions'
 import { TransactionType } from '@/modules/create-activity/types'
+
+import { ActionCard } from './ActionCard'
 
 interface ActionSectionProps {
   onClick: ActivityFormStoreState['setActivityType']

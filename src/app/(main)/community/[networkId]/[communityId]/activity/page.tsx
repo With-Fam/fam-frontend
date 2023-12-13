@@ -5,7 +5,8 @@ import type { Metadata } from 'next'
 import { SDK } from '@/data/subgraph/client'
 
 // Local Components
-import { CommunityActivity } from '@/components/community'
+import { CommunityActivity, TabList } from '@/components/community'
+import { TOGGLE_DATA } from '@/content/community'
 
 // Types
 import type { ProposalFragment } from '@/data/subgraph/sdk.generated'
@@ -39,9 +40,10 @@ export default async function CommunityProfile(_props: any) {
     communityId
   )
 
-  
-
-
-  // Dont forget when there is none proposals
-  return <CommunityActivity proposals={proposals} />
+  return (
+    <>
+      <TabList items={TOGGLE_DATA} />
+      <CommunityActivity proposals={proposals} />
+    </>
+  )
 }

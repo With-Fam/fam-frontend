@@ -13,6 +13,8 @@ import { useFormStore } from '@/modules/create-community'
 import { transformFileProperties } from '@/utils/transformFileProperties'
 import { metadataAbi, tokenAbi } from '@/data/contract/abis'
 import { useRouter } from 'next/navigation'
+import { CheckMark, Copy } from '@/components/icons'
+import { Paragraph } from '@/stories'
 
 const DEPLOYMENT_ERROR = {
   MISMATCHING_SIGNER:
@@ -38,7 +40,7 @@ export function ReviewForm(): JSX.Element {
   const { data: tokenOwner } = useContractRead({
     enabled: !!deployedDao.token,
     abi: tokenAbi,
-    address: deployedDao.token,
+    address: deployedDao.token as `0x${string}`,
     chainId: chain,
     functionName: 'owner',
   })
@@ -75,7 +77,7 @@ export function ReviewForm(): JSX.Element {
       try {
         const config = await prepareWriteContract({
           abi: metadataAbi,
-          address: deployedDao.metadata,
+          address: deployedDao.metadata as `0x${string}`,
           functionName: 'addProperties',
           chainId: chain,
           args: [transaction.names, transaction.items, transaction.data],
@@ -119,22 +121,13 @@ export function ReviewForm(): JSX.Element {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(handleDeployMetadata)}>
-        <div className="mx-auto max-w-md rounded-lg p-6">
-          <div className="mb-4 flex items-center text-green-600">
-            <svg
-              className="mr-2 h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+      <form
+        onSubmit={handleSubmit(handleDeployMetadata)}
+        className="mt-2 md:mt-10"
+      >
+        <div className="mx-auto max-w-[636px] rounded-lg">
+          <div className="mb-5 flex items-center text-green-600">
+            <CheckMark className="mr-2 h-6 w-6" />
             <span className="font-bold text-black">
               Successfully deployed contracts
             </span>
@@ -142,36 +135,32 @@ export function ReviewForm(): JSX.Element {
 
           <div className="space-y-2">
             {Object.keys(deployedDao).map((key: string) => (
-              <div
-                className="shadow-xs mx-auto flex max-w-xl items-center justify-between rounded-lg bg-white p-4"
-                key={key}
-              >
-                <span className="font-semibold">{key}</span>
-                <br />
-                <span className="truncate text-sm text-gray-500">
-                  {deployedDao[key as keyof typeof deployedDao]}
-                </span>
-                <button className="rounded border border-gray-400 bg-transparent px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100">
-                  {/* <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+              <div className="w-full rounded-2xl bg-white p-4" key={key}>
+                <Paragraph as="p5" className="w-full text-left font-semibold">
+                  {key}
+                </Paragraph>
+                <div className="flex w-full justify-between truncate">
+                  <Paragraph as="p3" className="max-w-[270px]">
+                    {deployedDao[key as keyof typeof deployedDao]}
+                  </Paragraph>
+                  <button
+                    type="button"
+                    className=""
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        deployedDao[key as keyof typeof deployedDao] as string
+                      )
+                      toast.success('Address copied to clipboard!')
+                    }}
                   >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M3 10h2a2 2 0 0 1 2 2v10m0-12v-2a2 2 0 0 1 2-2h12"
-                    ></path>
-                  </svg> */}
-                </button>
+                    <Copy />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
+          <ContinueButton title="Confirm 2/2" loading={isLoading} />
         </div>
-        <ContinueButton title="Confirm 2/2" loading={isLoading} />
       </form>
     </FormProvider>
   )

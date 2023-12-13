@@ -1,4 +1,5 @@
-'use client'
+// Framework
+import Link from 'next/link'
 
 // Third Parties
 import { twMerge } from 'tailwind-merge'
@@ -9,10 +10,11 @@ import { Paragraph } from '@/stories'
 // Types
 interface VoteButtonProps {
   count: number
-  handleClick: () => void
   icon: JSX.Element
   textColor: string
   active: boolean
+  title?: string | null
+  voteType: string
 }
 
 /*--------------------------------------------------------------------*/
@@ -23,26 +25,35 @@ interface VoteButtonProps {
 
 const VoteButton = ({
   count,
-  handleClick,
   icon,
   textColor,
   active,
+  title,
+  voteType,
 }: VoteButtonProps): JSX.Element => (
-  <div
-    className={`
-      ${active ? 'cursor-pointer' : ''}
-      relative z-0 h-6 w-6 rounded-full bg-background p-1
-    `}
-    onClick={handleClick}
+  <Link
+    aria-label={`Vote ${voteType}`}
+    href={{
+      pathname: null,
+      query: {
+        voting: true,
+        title,
+        voteYes: voteType === 'for' ? 'true' : 'false',
+      },
+    }}
+    className={twMerge(
+      active ? 'cursor-pointer' : '',
+      'relative z-0 h-6 w-6 rounded-full bg-background p-1'
+    )}
   >
-    <div
+    <span
       className={twMerge(
         'absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-background p-1 hover:opacity-0',
         !active && 'opacity-0'
       )}
     >
       {icon}
-    </div>
+    </span>
     <Paragraph
       as="p5"
       className={twMerge(
@@ -52,7 +63,7 @@ const VoteButton = ({
     >
       {count}
     </Paragraph>
-  </div>
+  </Link>
 )
 
 export default VoteButton

@@ -1,8 +1,16 @@
 // Framework
 import dynamic from 'next/dynamic'
+import _get from 'lodash.get'
 
 // Local Components
-import { BidComponent, RecentDrops } from '@/components/community'
+import {
+  BidComponent,
+  // RecentDrops,
+  TabList,
+} from '@/components/community'
+
+import { TOGGLE_DATA } from '@/content/community'
+
 const FoundersComponent = dynamic(
   () => import('@/components/community/FoundersComponent'),
   {
@@ -15,8 +23,9 @@ type CommunityProfileProps = {
   params: { communityId: string; networkSlug: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
+
 import {
-  AuctionFragment,
+  // AuctionFragment,
   DaoFragment,
   TokenFragment,
 } from '@/data/subgraph/sdk.generated'
@@ -33,12 +42,20 @@ async function getCommunityData(chainId: number, collection: string) {
     daos: [collection.toLowerCase()],
   })
 
+  console.log('AUCTIOKNS::', auctions)
+
   const { tokens } = await SDK.connect(chainId).tokens({
     where: {
       dao: collection.toLowerCase(),
-      tokenId: auctions[0].token.tokenId,
+      tokenId: _get(auctions, '0.token.tokenId'),
     },
   })
+
+  console.log('-------OUTPUT DATA-------')
+  console.log('dao::', dao)
+  console.log('auctions::', auctions)
+  console.log('tokens::', tokens)
+  console.log('-------END OUTPUT-------')
 
   return {
     metaData: dao as DaoFragment,
@@ -60,7 +77,14 @@ export default async function CommunityProfile(
 
   const chainId = 5 // Hardcoded. Should be passed in from the router
   const { communityId } = _props.params
-  const { page, token, metaData } = await getCommunityData(chainId, communityId)
+  const { page, token, metaData } = await getCommunityData(
+    chainId,
+    communityId.toLowerCase()
+  )
+
+  console.log('communityId::', communityId)
+  console.log('page::', page)
+  console.log('token::', token)
 
   if (!page && token && metaData) {
     return <></>
@@ -68,9 +92,8 @@ export default async function CommunityProfile(
 
   return (
     <>
+      <TabList items={TOGGLE_DATA} />
       <BidComponent token={token} page={page} metaData={metaData} />
-      <FoundersComponent token={token} />
-      {/* <RecentDrops /> */}
     </>
   )
 }

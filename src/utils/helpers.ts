@@ -392,3 +392,24 @@ export function formatUnixTimestampDate(timestampString: string): string {
   }
   return date.toLocaleDateString('en-US', options)
 }
+
+/**
+ * This function calculates a date that is a certain number of years from the current date,
+ * and returns it as a formatted string.
+ *
+ * @param {number} years - The number of years to add to the current date.
+ * @param {boolean} readable - Optional. If true, the returned date string is in the format: "Month Day, Year".
+ *                             If false or omitted, the returned date string is in the format: "YYYY-MM-DD".
+ *
+ * @returns {string} A string representing a date that is the specified number of years from the current date.
+ *
+ * For example, if the current date is "2022-01-01" and `years` is 1, the returned string will be "2023-01-01".
+ */
+export const getDateYearsFromNow = (
+  years: number,
+  readable: boolean = false
+): string => {
+  const date = new Date()
+  date.setFullYear(date.getFullYear() + years)
+  return formatDate(date, readable)
+}

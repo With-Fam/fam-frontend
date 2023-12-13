@@ -8,9 +8,7 @@ import { tokenAbi } from '@/data/contract/abis'
 import { Heading } from '@/stories'
 
 // Types
-import {
-  TokenFragment,
-} from '@/data/subgraph/sdk.generated'
+import { TokenFragment } from '@/data/subgraph/sdk.generated'
 type FoundersComponentProps = {
   token: TokenFragment
 }
@@ -28,7 +26,7 @@ import RenderFounder from '@/components/community/RenderFounder'
 const FoundersComponent = ({ token }: FoundersComponentProps): JSX.Element => {
   const tokenContractParams = {
     abi: tokenAbi,
-    address: token.tokenContract,
+    address: token?.tokenContract,
     chainId: 5,
   }
 
@@ -46,7 +44,7 @@ const FoundersComponent = ({ token }: FoundersComponentProps): JSX.Element => {
   }
 
   return (
-    <section className="mx-auto mt-12 max-w-[936px] px-4">
+    <section className="mx-auto mt-4 md:mt-12 max-w-[936px] px-4">
       <Heading as="h5" className="mb-8 font-abcWide text-orange">
         Founders
       </Heading>

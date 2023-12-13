@@ -1,5 +1,4 @@
 // Framework
-import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -22,14 +21,14 @@ import schema, { type ConfirmFormValues } from './schema'
 
 // Components
 import { useFormStore } from '@/modules/create-community'
-import { Button } from '@/components/shared'
-import DropDown from './Dropdown'
+// import { Button } from '@/components/shared'
+import ConfirmDropDown from './ConfirmDropDown'
 import ConfirmItem from './ConfirmItem'
 import ConfirmTitle from './ConfirmTitle'
 import ConfirmCheckbox from './ConfirmCheckbox'
 import ContinueButton from '@/modules/ContinueButton'
 import { sanitizeStringForJSON } from '@/utils/sanitize'
-import { toSeconds } from '@/utils/helpers'
+import { toSeconds, walletSnippet } from '@/utils/helpers'
 
 // Constants
 import { PUBLIC_MANAGER_ADDRESS } from '@/constants/addresses'
@@ -37,6 +36,8 @@ import { NULL_ADDRESS } from '@/constants/addresses'
 import { managerAbi } from '@/data/contract/abis'
 
 import type { AddressType } from '@/types'
+import { IPFSImage } from '@/components/ipfs/IPFSImage'
+// import { RandomPreview } from '@/components/create-community/artwork/RandomPreview'
 
 /*--------------------------------------------------------------------*/
 
@@ -82,8 +83,6 @@ export function ConfirmForm(): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const chain = 5 //useChainStore((x) => x.chain) - TODO: get chain from store???
   const { wallet: activeWallet } = usePrivyWagmi()
-
-  console.log('activeWallet::', activeWallet)
 
   const methods = useForm<ConfirmFormValues>({
     defaultValues: {
@@ -256,20 +255,17 @@ export function ConfirmForm(): JSX.Element {
 
   return (
     <FormProvider {...methods}>
-      <div className="mt-4 text-left">
-        <ConfirmTitle>CREATE A DAO</ConfirmTitle>
-        <h2 className="mb-4 mt-2 text-2xl">Deploy</h2>
-        <p className="mb-4 text-xs text-grey">
-          Confirm your contract settings before deploying your DAO
-        </p>
-      </div>
+      <p className="mb-6 mt-4 text-left text-grey md:mt-16">
+        Make sure your community details are correct before approving. These can
+        only be changed later via a community vote.
+      </p>
       <form onSubmit={handleSubmit(handleDeploy)}>
-        <DropDown text="General Info">
+        <ConfirmDropDown text="General Info">
           <div className="px-4 py-6 ">
             <div>
               <ConfirmTitle>DAO AVATAR</ConfirmTitle>
               <div className="mt-2">
-                <Image
+                <IPFSImage
                   src={general.daoAvatar as any}
                   alt="dao avatar"
                   width={80}
@@ -282,8 +278,8 @@ export function ConfirmForm(): JSX.Element {
             <ConfirmItem label="DAO SYMBOL">{general.daoSymbol}</ConfirmItem>
             <ConfirmItem label="DAO WEBSITE">{general.daoWebsite}</ConfirmItem>
           </div>
-        </DropDown>
-        <DropDown text="Auction Settings">
+        </ConfirmDropDown>
+        <ConfirmDropDown text="Auction Settings">
           <div className="px-4 py-6 ">
             <ConfirmItem label="Auction Durantion">
               {`
@@ -302,45 +298,47 @@ export function ConfirmForm(): JSX.Element {
               {auctionSettings.quorumThreshold} %
             </ConfirmItem>
           </div>
-        </DropDown>
-        <DropDown text="Allocation">
+        </ConfirmDropDown>
+        <ConfirmDropDown text="Allocation">
           <div className="px-4 py-6 ">
             <ConfirmItem label="FOUNDER ALLOCATION">
               {`
-                ${founderAllocation[0].founderAddress} will receive
+                ${walletSnippet(
+                  founderAllocation[0].founderAddress
+                )} will receive
                 ${founderAllocation[0].allocationPercentage} % of Tokens, until
                 ${founderAllocation[0].endDate}.
               `}
             </ConfirmItem>
           </div>
-        </DropDown>
-        <DropDown text="Set Up Artwork">
+        </ConfirmDropDown>
+        {/* <ConfirmDropDown text="Set Up Artwork">
           <div className="px-4 py-6">
             <ConfirmItem label="Project Description">
               {general.projectDescription}
             </ConfirmItem>
             <div className="mt-2">
-              <p className="text-xs uppercase text-grey">ARTWORK</p>
-              <Button className="mx-auto w-full rounded-lg p-4 text-base ">
+              <p className="text-xs uppercase text-grey">ARTWORK</p> */}
+        {/* <Button className="mx-auto w-full rounded-lg p-4 text-base ">
                 Preview Artwork
-              </Button>
-            </div>
+              </Button> */}
+        {/* <RandomPreview images={setUpArtwork.artwork} isEmpty={false} /> */}
+        {/* </div>
             <ConfirmItem label="Files Length">
               {setUpArtwork.filesLength}
             </ConfirmItem>
           </div>
-        </DropDown>
-        <div className="mt-6 rounded-xl border border-solid border-grey-light bg-background px-4 py-6">
-          <ConfirmCheckbox>
+        </ConfirmDropDown> */}
+        <div className="mt-10">
+          <ConfirmCheckbox name="termsAcceptance">
             I have reviewed and acknowledge and agree to the{' '}
-            <Link href="#" className="text-grey-dark">
+            <Link href="#" className="text-orange">
               FAM Terms of Service
             </Link>
           </ConfirmCheckbox>
-
-          <ConfirmCheckbox>
+          <ConfirmCheckbox name="deployDaoAcceptance">
             I am deploying my DAO on{' '}
-            <Link href="#" className="text-grey-dark">
+            <Link href="#" className="text-orange">
               Goerli
             </Link>
           </ConfirmCheckbox>

@@ -3,7 +3,6 @@ import { create } from 'zustand'
 import { AddressType } from '@/types'
 
 import { TransactionType } from '../types'
-import { Builder } from 'postcss'
 
 export type Transaction = {
   functionSignature: string

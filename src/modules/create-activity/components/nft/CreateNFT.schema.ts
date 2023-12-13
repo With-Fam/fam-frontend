@@ -2,6 +2,8 @@ import * as yup from 'yup'
 
 import { addressValidationSchema } from '@/utils/yup'
 
+export type EditionType = 'fixed' | 'open'
+
 export interface CreateNFTFormValues {
   name: string
   symbol: string
@@ -11,7 +13,7 @@ export interface CreateNFTFormValues {
   coverUrl: string
   pricePerMint: number
   maxPerAddress?: number
-  maxSupply: number
+  maxSupply?: number
   royaltyPercentage: number
   fundsRecipient: string
   defaultAdmin: string
@@ -28,7 +30,7 @@ const createNFTFormSchema = yup.object({
   coverUrl: yup.string(),
   pricePerMint: yup.number().required('*'),
   maxPerAddress: yup.number().integer('Must be whole number'),
-  maxSupply: yup.number().required('*').integer('Must be whole number'),
+  maxSupply: yup.number().optional().integer('Must be whole number'),
   royaltyPercentage: yup.number().required('*'),
   defaultAdmin: addressValidationSchema,
   fundsRecipient: addressValidationSchema,

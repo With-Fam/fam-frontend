@@ -96,7 +96,7 @@ const PlaceBid = ({ token }: any): JSX.Element => {
       </div>
       <button
         type="button"
-        className="mx-auto block h-16 w-full self-center rounded-full bg-black py-4 text-white md:max-w-xs"
+        className="mx-auto block h-16 w-full self-center rounded-full bg-black py-4 text-white mt-8"
         onClick={placeBid}
       >
         Place Bid

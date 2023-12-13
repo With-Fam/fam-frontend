@@ -1,28 +1,17 @@
 'use client'
+
 // Framework
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
-import {
-  useAccount,
-  useContractRead,
-  useContractWrite,
-  usePrepareContractWrite,
-} from 'wagmi'
+
+// Third Parties
 import dayjs from 'dayjs'
 
 // Local Components
 import StartNextAuction from './StartNextAuction'
-import { Button } from '@/components/shared'
 import PlaceBid from '@/components/community/BidComponent/PlaceBid'
 import BidDescription from '@/components/community/BidComponent/BidDescription'
-import { useDaoStore } from '@/modules/dao'
-// import { useChainStore } from '@/stores/useChainStore'
-const BidStatus = dynamic(
-  () => import('@/components/community/BidComponent/BidStatus'),
-  {
-    ssr: false,
-  }
-)
+import BidStatus from '@/components/community/BidComponent/BidStatus'
 const SocialMediaItems = dynamic(
   () => import('@/components/community/BidComponent/SocialMediaItems'),
   {
@@ -31,16 +20,12 @@ const SocialMediaItems = dynamic(
 )
 
 // Types
-import {
-  // CurrentAuctionFragment,
-  // DaoFragment,
-  TokenFragment,
-} from '@/data/subgraph/sdk.generated'
+import TotalAmountBox from '@/components/community/BidComponent/TotalAmountBox'
+import { TokenFragment } from '@/data/subgraph/sdk.generated'
 type BidComponentProps = {
   token: TokenFragment
   page: any
   metaData: any
-  // DaoFragment
 }
 
 /*--------------------------------------------------------------------*/
@@ -54,25 +39,18 @@ const BidComponent = ({
   page,
   metaData,
 }: BidComponentProps): JSX.Element => {
-  const chain = 5
-  const addresses = useDaoStore((state) => state.addresses)
-  // const isWinner = owner != undefined && address == owner
-  const { address } = useAccount()
-
   const { endTime } = page
-
   const isOver = !!endTime
     ? dayjs.unix(Date.now() / 1000) >= dayjs.unix(endTime)
     : true
-  // const formattedBid = bid ? formatEther(bid) : ''
 
   return (
     <section className="px-4">
-      <div className="gid-cols-1 m-auto grid w-full max-w-4xl gap-8 md:grid-cols-2">
-        <div className="relative col-span-1 aspect-square w-full rounded-lg">
+      <div className="m-auto grid w-full max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="relative col-span-1 row-span-1 aspect-square w-full rounded-lg">
           {token.image && (
             <Image
-              src={token.image}
+              src={token?.image}
               alt=""
               fill
               sizes="100vw; md:50vw"
@@ -80,21 +58,29 @@ const BidComponent = ({
             />
           )}
         </div>
-        {isOver || isOver ? (
-          <>
-            <BidStatus page={page} />
+        <div className="col-span-1 row-span-1">
+          <BidStatus page={page} />
+          {isOver ? (
             <StartNextAuction page={page} />
-          </>
-        ) : (
-          <>
-            <BidStatus page={page} />
+          ) : (
             <PlaceBid token={token} />
-          </>
-        )}
-        <br />
-        <div>
+          )}
+        </div>
+        <div className="col-span-1">
           <BidDescription page={page} token={token} metaData={metaData} />
           <SocialMediaItems metadataAddress={metaData?.metadataAddress} />
+        </div>
+        <div className="col-span-1">
+          <TotalAmountBox
+            title="Total Raised"
+            valueEth="477.54"
+            valueCurrency="883,449"
+          />
+          <TotalAmountBox
+            title="Community pool"
+            valueEth="477.54"
+            valueCurrency="883,449"
+          />
         </div>
       </div>
     </section>

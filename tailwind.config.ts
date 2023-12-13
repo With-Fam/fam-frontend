@@ -48,6 +48,7 @@ const config: Config = {
           DEFAULT: '#F7F7F7',
           secondary: '#F3F3F3',
           tertiary: '#F8F8F8',
+          icon: '#ECECEC',
         },
         status: {
           red: '#F00',

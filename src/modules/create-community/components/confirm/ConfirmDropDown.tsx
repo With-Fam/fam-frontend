@@ -11,7 +11,7 @@ import { Paragraph } from '@/stories'
 import { ChevronDown } from '@/components/icons'
 
 // Type
-interface DropDownProps {
+interface ConfirmDropDownProps {
   children: React.ReactNode
   text: string
 }
@@ -21,25 +21,28 @@ interface DropDownProps {
 /**
  * Component
  */
-const DropDown = ({ children, text }: DropDownProps): JSX.Element => {
+const ConfirmDropDown = ({
+  children,
+  text,
+}: ConfirmDropDownProps): JSX.Element => {
   const [open, setOpen] = useState(false)
 
   return (
     <div
-      className="my-2 cursor-pointer overflow-hidden text-left"
+      className={twMerge(
+        'my-2 cursor-pointer overflow-hidden bg-white text-left',
+        open ? 'rounded-t-lg' : 'rounded-lg'
+      )}
       onClick={() => setOpen(!open)}
     >
       <Paragraph
-        as="p2"
-        className={twMerge(
-          "flex items-center justify-between px-4 py-2 text-left text-white r bg-black duration-300 ease-in-out",
-          open ? 'rounded-t-lg' : 'rounded-lg'
-        )}
+        as="p3"
+        className="flex items-center justify-between p-5 text-left duration-300 ease-in-out"
       >
         {text}
         <span className="ml-2">
           <ChevronDown
-            stroke="#fff"
+            stroke="#000"
             className={`
             transform-gpu transition-transform duration-300
             ease-in-out
@@ -50,7 +53,7 @@ const DropDown = ({ children, text }: DropDownProps): JSX.Element => {
       </Paragraph>
       <div
         className={twMerge(
-          'bg-background-secondary overflow-hidden duration-300 ease-in-out rounded-lg',
+          'overflow-hidden rounded-lg bg-background-secondary duration-300 ease-in-out',
           open ? 'max-h-screen' : 'max-h-0'
         )}
       >
@@ -60,4 +63,4 @@ const DropDown = ({ children, text }: DropDownProps): JSX.Element => {
   )
 }
 
-export default DropDown
+export default ConfirmDropDown

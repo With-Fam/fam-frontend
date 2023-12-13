@@ -12,6 +12,7 @@ export interface DaoContractAddresses {
 
 // We're going to clone the nouns-builder format
 export interface CreateSection {
+  action?: React.ReactElement
   order: number
   title: string
   key: string

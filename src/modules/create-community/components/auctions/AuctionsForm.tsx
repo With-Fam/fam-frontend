@@ -60,7 +60,7 @@ export function AuctionsForm({
             type="number"
             step="0.01"
             label="Reserve price"
-            placeholder="0.05 ETH"
+            placeholder="0.01 ETH"
           />
           <div className="absolute right-4 top-4 z-10 cursor-pointer">
             <Sliders />

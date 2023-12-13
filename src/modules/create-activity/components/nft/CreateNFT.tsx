@@ -1,8 +1,14 @@
 'use client'
 
+// Framework
+import { useCallback, useState } from 'react'
+import { useAccount } from 'wagmi'
+
+// Forms
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import schema, { CreateNFTFormValues } from './CreateNFT.schema'
+
+// Components
 import { UploadIPFSImage } from '@/components/ipfs/UploadIPFSImage'
 import {
   TextArea,
@@ -10,36 +16,69 @@ import {
   // InputSlider
 } from '@/components/forms'
 import { Button } from '@/components/shared'
+import { EditionTypeRadio } from './EditionTypeRadio'
+
+// Chain
+import { useDaoStore } from '@/modules/dao'
+
+// Schema
+import schema, {
+  type CreateNFTFormValues,
+  type EditionType,
+} from './CreateNFT.schema'
+import { InputENSAddress } from '@/components/ipfs'
 
 type CreateNFTFormProps = {
   callback: () => void
 }
 
 export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
+  const [editionType, setEditionType] = useState<EditionType>('fixed')
+  const [isIPFSUploading, setIsIPFSUploading] = useState(false)
+  const { address: user } = useAccount()
+  const { treasury } = useDaoStore((x) => x.addresses)
+  const initialValues: CreateNFTFormValues = {
+    name: '',
+    symbol: '',
+    description: '',
+    mediaUrl: '',
+    coverUrl: '',
+    fundsRecipient: treasury || '',
+    defaultAdmin: user || '',
+    publicSaleStart: '',
+    publicSaleEnd: '',
+    royaltyPercentage: 5,
+    pricePerMint: 0,
+    maxSupply: 10,
+  }
   const methods = useForm<CreateNFTFormValues>({
-    defaultValues: {
-      // duration: 7,
-      maxSupply: 10,
-      maxPerAddress: 1,
-      royaltyPercentage: 5,
-      // ...defaultValues,
-    },
+    defaultValues: initialValues,
     resolver: yupResolver(schema) as any,
   })
+  const { control, formState, handleSubmit, setValue } = methods
 
-  const { control, formState, handleSubmit } = methods
-  const onSubmit = (a: CreateNFTFormValues) => {
-    console.log('CreateNFTFormValues::', a)
-    callback()
-  }
+  const handleEditionTypeChanged = useCallback(
+    (value: EditionType) => {
+      setValue('maxSupply', value === 'open' ? 0 : undefined)
+      setEditionType(value)
+    },
+    [setEditionType, setValue]
+  )
+
+  console.log('address::', user, initialValues.defaultAdmin)
+
   return (
     <FormProvider {...methods}>
       <form
         id="__create_nft"
-        onSubmit={handleSubmit(onSubmit as any)}
+        onSubmit={handleSubmit(callback as any)}
         className="mx-auto w-full max-w-[668px]"
       >
         <div className="grid grid-cols-2 gap-4">
+          <EditionTypeRadio
+            editionType={editionType}
+            onChange={handleEditionTypeChanged}
+          />
           <div className="col-span-2">
             <Controller
               control={control}
@@ -101,19 +140,34 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
             type="text"
           />
           <TextInput name="royaltyPercentage" label="Royalty" type="number" />
-          <TextInput
+          <Controller
+            control={control}
             name="fundsRecipient"
-            className="col-span-2"
-            label="Payout address"
-            placeholder="payout address"
-            type="text"
+            defaultValue={initialValues.fundsRecipient}
+            render={({ field }) => (
+              <InputENSAddress
+                value={field.value}
+                onChange={field.onChange}
+                name={field.name}
+                className="col-span-2"
+                label="Payout address"
+                placeholder="payout address"
+              />
+            )}
           />
-          <TextInput
-            className="col-span-2"
+          <Controller
+            control={control}
             name="defaultAdmin"
-            label="Admin address"
-            placeholder="admin address"
-            type="text"
+            render={({ field }) => (
+              <InputENSAddress
+                value={field.value}
+                onChange={field.onChange}
+                name={field.name}
+                className="col-span-2"
+                label="Admin address"
+                placeholder="admin address"
+              />
+            )}
           />
         </div>
         <Button

@@ -72,22 +72,18 @@ const StartNextAuction = ({ page }: BidStatusProps): JSX.Element => {
 
   if (settling) {
     return (
-      <div>
-        <button className="disabled mx-auto block h-16 w-full self-center rounded-full bg-black py-4 text-white md:max-w-xs">
-          Start next auction
-        </button>
-      </div>
+      <button className="disabled mx-auto block h-16 w-full self-center rounded-full bg-black py-4 text-white mt-8">
+        Start next auction
+      </button>
     )
   }
   return (
-    <div>
-      <button
-        className="mx-auto block h-16 w-full self-center rounded-full bg-black py-4 text-white md:max-w-xs"
-        onClick={handleSettle}
-      >
-        Start next auction
-      </button>
-    </div>
+    <button
+      className="mx-auto block h-16 w-full self-center rounded-full bg-black py-4 text-white mt-8"
+      onClick={handleSettle}
+    >
+      Start next auction
+    </button>
   )
 }
 

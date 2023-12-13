@@ -7,6 +7,7 @@ export enum TransactionType {
   UPDATE_COMMUNITY = 'update-community',
   CUSTOM = 'custom',
   // REPLACE_ARTWORK = 'replace-artwork',
+  UPDATE_MINTER = 'update-minter',
 }
 
 export interface TransactionTypeProps {
@@ -55,10 +56,10 @@ export const TRANSACTION_TYPES = {
   //   subTitle: 'Update the artwork for your memberships',
   //   image: '',
   // },
-  [TransactionType.CUSTOM]: {
-    title: 'Execute custom on chain functions',
-    subTitle:
-      'Perform other functions that are available on the current contract',
-    image: '/assets/images/create-activity/tube.jpg',
-  },
+  // [TransactionType.CUSTOM]: {
+  //   title: 'Execute custom on chain functions',
+  //   subTitle:
+  //     'Perform other functions that are available on the current contract',
+  //   image: '/assets/images/create-activity/tube.jpg',
+  // },
 } as TransactionTypesPropsMap

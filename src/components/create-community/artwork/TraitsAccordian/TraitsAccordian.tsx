@@ -22,6 +22,8 @@ export function TraitsAccordian({
     if (artwork && orderedLayers.length < 1) setOrderedLayers(artwork)
   }, [artwork, orderedLayers, setOrderedLayers])
 
+  console.log(orderedLayers)
+
   return (
     <div className="col-span-1 space-y-2">
       <DNDList

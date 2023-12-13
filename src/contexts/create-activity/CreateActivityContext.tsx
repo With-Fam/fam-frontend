@@ -9,6 +9,7 @@ import {
   useState,
   useContext,
   useEffect,
+  useRef,
 } from 'react'
 
 import type { CreateSection } from '@/modules/create-community/types'
@@ -21,14 +22,15 @@ import { useActivityFormStore } from '@/modules/create-activity/stores'
 import {
   ActionForm,
   ActionSection,
-  GeneralForm,
+  ReviewProposalForm,
+  SubmitProposal,
 } from '@/modules/create-activity/components'
-import { GeneralActivityValues } from '@/modules/create-activity/components/general/schema'
+import { ReviewProposalFormValues } from '@/modules/create-activity/components/review-proposal/schema'
 import {
   TRANSACTION_TYPES,
   TransactionType,
 } from '@/modules/create-activity/types'
-import { AddressType } from '@/types'
+import { AddressType, Maybe } from '@/types'
 
 export interface CreateActivityContextType {
   loading: boolean
@@ -61,15 +63,15 @@ type Props = PropsWithChildren<{
 const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
   const { networkId, communityId } = params
   const [loading, setLoading] = useState<boolean>(true)
+  const reviewFormRef = useRef<Maybe<HTMLFormElement>>(null)
   const {
     activeSection,
     setActiveSection,
     setFulfilledSections,
-    general: generalDefault,
-    setGeneral,
+    proposal: proposalDefault,
     activityType,
     setActivityType,
-  } = useActivityFormStore(params)()
+  } = useActivityFormStore()
 
   useEffect(() => {
     setLoading(false)
@@ -85,34 +87,22 @@ const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
     [activeSection, setActiveSection, setFulfilledSections]
   )
 
-  const next = () => {
+  const next = useCallback(() => {
     navigate(activeSection + 1)
-  }
-  const prev = () => {
+  }, [activeSection, navigate])
+
+  const prev = useCallback(() => {
     navigate(activeSection - 1)
-  }
+  }, [navigate, activeSection])
 
   sections = useMemo(() => {
-    const generalSubmit = (a: GeneralActivityValues) => {
-      setGeneral(a)
-      navigate(1)
-    }
-    const general: CreateSection = {
-      order: 0,
-      title: 'New activity',
-      key: 'general',
-      content: (
-        <GeneralForm defaultValues={generalDefault} onSubmit={generalSubmit} />
-      ),
-    }
-
     const actionSubmit = (a: TransactionType) => {
       setActivityType(a)
-      navigate(2)
+      next()
     }
 
     const action: CreateSection = {
-      order: 1,
+      order: 0,
       title: 'All actions',
       key: 'action',
       content: <ActionSection onClick={actionSubmit as any} />,
@@ -122,7 +112,7 @@ const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
       TRANSACTION_TYPES[activityType as TransactionType]
 
     const transaction: CreateSection = {
-      order: 2,
+      order: 1,
       title: activityTransaction?.title ?? '',
       key: activityType as string,
       content: (
@@ -133,8 +123,28 @@ const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
         />
       ),
     }
-    return [general, action, transaction, general]
-  }, [generalDefault, setGeneral, navigate])
+
+    const proposal: CreateSection = {
+      action: <SubmitProposal formRef={reviewFormRef} />,
+      order: 2,
+      title: 'New activity',
+      key: 'proposal',
+      content: (
+        <ReviewProposalForm
+          formRef={reviewFormRef}
+          defaultValues={proposalDefault}
+        />
+      ),
+    }
+    return [action, transaction, proposal]
+  }, [
+    proposalDefault,
+    // setProposal,
+    activityType,
+    communityId,
+    next,
+    setActivityType,
+  ])
 
   return (
     <CreateActivityContext.Provider
@@ -155,6 +165,7 @@ const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
       ) : (
         <>
           <CreateContextNavigation
+            action={sections[activeSection]?.action}
             exitPath={`/community/${networkId}/${communityId}/activity`}
             step={activeSection}
             prev={prev}

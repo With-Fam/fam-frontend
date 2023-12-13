@@ -39,7 +39,6 @@ export function AddButton({
 }: ActionButtonProps): JSX.Element {
   const { removeAllTransactions } = useProposalStore()
   const [optionsOpen, setOptionsOpen] = useState(false)
-  const router = useRouter()
   const action = TRANSACTION_TYPES[activityType]
 
   if (activityType && action) {

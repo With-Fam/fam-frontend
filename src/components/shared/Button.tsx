@@ -18,7 +18,6 @@ export const Button = ({
     disabled={disabled}
     className={twMerge(
       'w-auto rounded-full px-10 py-4 text-2xl',
-      className,
       disabled && 'cursor-not-allowed opacity-20',
       (() => {
         switch (variant) {
@@ -30,7 +29,8 @@ export const Button = ({
           case 'tertiary':
             return 'text-black'
         }
-      })()
+      })(),
+      className
     )}
     {..._rest}
   />

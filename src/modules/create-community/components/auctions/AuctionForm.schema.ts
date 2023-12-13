@@ -99,30 +99,30 @@ export const auctionSettingsValidationSchema = (
   signerAddress?: string | null
 ): any =>
   Yup.object({
-    auctionDuration: durationValidationSchema(),
+    // auctionDuration: durationValidationSchema(),
     auctionReservePrice: auctionReservePriceValidationSchema,
-    proposalThreshold: Yup.number()
-      .transform((value) => (isNaN(value) ? undefined : value))
-      .required('*')
-      .min(0.01, '>= 0.01%')
-      .max(10, '<= 10%'),
-    quorumThreshold: Yup.number()
-      .transform((value) => (isNaN(value) ? undefined : value))
-      .required('*')
-      .test('greaterThanMin', '>= 2%', (value) => (value ? value >= 2 : false))
-      .moreThan(
-        Yup.ref('proposalThreshold'),
-        'Quorum threshold must be greater than proposal threshold'
-      )
-      .max(20, '<= 20%'),
-    votingDelay: durationValidationSchema(
-      { value: 1, description: '1 second' },
-      { value: twentyFourWeeks, description: '24 weeks' }
-    ),
-    votingPeriod: durationValidationSchema(
-      { value: tenMinutes, description: '10 minutes' },
-      { value: twentyFourWeeks, description: '24 weeks' }
-    ),
+    // proposalThreshold: Yup.number()
+    //   .transform((value) => (isNaN(value) ? undefined : value))
+    //   .required('*')
+    //   .min(0.01, '>= 0.01%')
+    //   .max(10, '<= 10%'),
+    // quorumThreshold: Yup.number()
+    //   .transform((value) => (isNaN(value) ? undefined : value))
+    //   .required('*')
+    //   .test('greaterThanMin', '>= 2%', (value) => (value ? value >= 2 : false))
+    //   .moreThan(
+    //     Yup.ref('proposalThreshold'),
+    //     'Quorum threshold must be greater than proposal threshold'
+    //   )
+    //   .max(20, '<= 20%'),
+    // votingDelay: durationValidationSchema(
+    //   { value: 1, description: '1 second' },
+    //   { value: twentyFourWeeks, description: '24 weeks' }
+    // ),
+    // votingPeriod: durationValidationSchema(
+    //   { value: tenMinutes, description: '10 minutes' },
+    //   { value: twentyFourWeeks, description: '24 weeks' }
+    // ),
   })
     .concat(vetoValidationSchema)
     .concat(validationSchemaFounderAllocation(signerAddress))

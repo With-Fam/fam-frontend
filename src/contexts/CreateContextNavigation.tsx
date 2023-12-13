@@ -20,6 +20,7 @@ type CreateContextNavigationProps = {
   exitPath: string
   prev: () => void
   title: Maybe<string>
+  action?: React.ReactElement
 }
 
 const variants = {
@@ -48,6 +49,7 @@ const MotionSVG = ({ children }: PropsWithChildren): JSX.Element => {
 }
 
 export const CreateContextNavigation = ({
+  action,
   step,
   prev,
   title,
@@ -75,7 +77,7 @@ export const CreateContextNavigation = ({
         </AnimatePresence>
       </div>
       <PhaseName>{title}</PhaseName>
-      <div className="w-8">&nbsp;</div>
+      {action ?? <div className="w-8">&nbsp;</div>}
     </div>
   )
 }

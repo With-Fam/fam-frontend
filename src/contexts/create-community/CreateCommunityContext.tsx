@@ -11,15 +11,8 @@ import {
   useEffect,
 } from 'react'
 
-import type { CreateSection } from '@/modules/create-community/types'
-import {
-  Artwork,
-  AuctionsForm,
-  GeneralForm,
-  GeneralFormValues,
-  MembershipForm,
-} from '@/modules/create-community/components'
-import { StartPhase } from '@/components/create-community'
+// Third Parties
+import { usePrivy } from '@privy-io/react-auth'
 
 // Components
 import { Loading } from '@/components/shared'
@@ -28,7 +21,19 @@ import { useFormStore } from '@/modules/create-community'
 import { AuctionSettingsFormValues } from '@/modules/create-community/components/auctions/AuctionForm.schema'
 import { ConfirmForm } from '@/modules/create-community/components/confirm'
 import { ReviewForm } from '@/modules/create-community/components/review'
+import {
+  Artwork,
+  AuctionsForm,
+  GeneralForm,
+  GeneralFormValues,
+} from '@/modules/create-community/components'
 
+// Utils
+import { getDateYearsFromNow } from '@/utils/helpers'
+
+// Types
+import type { CreateSection } from '@/modules/create-community/types'
+let sections: CreateSection[] = []
 export interface CreateCommunityContextType {
   loading: boolean
   section: CreateSection
@@ -37,8 +42,6 @@ export interface CreateCommunityContextType {
   prev: () => void
   title: string
 }
-
-let sections: CreateSection[] = []
 
 const CreateCommunityContext = createContext<CreateCommunityContextType>({
   loading: false,
@@ -53,6 +56,7 @@ const CreateCommunityContext = createContext<CreateCommunityContextType>({
 const CreateCommunityProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
+  const { user } = usePrivy()
   const [loading, setLoading] = useState<boolean>(true)
   const {
     activeSection,
@@ -92,32 +96,18 @@ const CreateCommunityProvider = ({
   }
 
   sections = useMemo(() => {
-    const start: CreateSection = {
-      order: 0,
-      title: 'New Community',
-      key: 'start',
-      content: <StartPhase />,
-    }
-
     const generalSubmit = (_values: GeneralFormValues): void => {
       setGeneral(_values)
-      navigate(2)
+      navigate(1)
     }
 
     const general: CreateSection = {
-      order: 1,
+      order: 0,
       title: 'Community profile',
       key: 'general',
       content: (
         <GeneralForm defaultValues={gDefault} onSubmit={generalSubmit} />
       ),
-    }
-
-    const membership: CreateSection = {
-      order: 2,
-      title: 'Membership',
-      key: 'membership',
-      content: <MembershipForm />,
     }
 
     const auctionSubmit = ({
@@ -132,18 +122,18 @@ const CreateCommunityProvider = ({
       }
       setFounderAllocation(founderAllocation)
       setReservePrice(auctionReservePrice)
-      navigate(4)
+      navigate(2)
     }
 
     const auctions: CreateSection = {
-      order: 3,
+      order: 1,
       title: 'Auctions',
       key: 'auctions',
       content: (
         <AuctionsForm
           defaultValues={{
-            vetoPower,
-            vetoerAddress,
+            vetoPower: vetoPower || true,
+            vetoerAddress: vetoerAddress || user?.wallet?.address || '0x',
             auctionDuration: {
               minutes: 0,
               hours: 0,
@@ -155,13 +145,13 @@ const CreateCommunityProvider = ({
                 ? founderAllocation
                 : [
                     {
-                      founderAddress: '',
-                      allocationPercentage: 0,
-                      endDate: '',
+                      founderAddress: user?.wallet?.address || '0x',
+                      allocationPercentage: 10,
+                      endDate: getDateYearsFromNow(1),
                       admin: true,
                     },
                   ],
-            auctionReservePrice: auctionSettings.auctionReservePrice,
+            auctionReservePrice: auctionSettings.auctionReservePrice || 0.05,
           }}
           onSubmit={auctionSubmit}
         />
@@ -170,27 +160,39 @@ const CreateCommunityProvider = ({
 
     // Artwork self handles state directly through the useFormStoreState hook
     const artwork: CreateSection = {
-      order: 4,
+      order: 2,
       title: 'Artwork',
       key: 'artwork',
       content: <Artwork />,
     }
     const review: CreateSection = {
-      order: 5,
+      order: 3,
       title: 'Confirm',
       key: 'review',
       content: <ConfirmForm />,
     }
 
     const deploy: CreateSection = {
-      order: 6,
+      order: 4,
       title: 'Confirm',
       key: 'deploy',
       content: <ReviewForm />,
     }
 
-    return [start, general, membership, auctions, artwork, review, deploy]
-  }, [auctionSettings, vetoPower, vetoerAddress, gDefault])
+    return [general, auctions, artwork, review, deploy]
+  }, [
+    auctionSettings,
+    vetoPower,
+    vetoerAddress,
+    gDefault,
+    founderAllocation,
+    navigate,
+    setGeneral,
+    setReservePrice,
+    setFounderAllocation,
+    setVetoPower,
+    setVetoerAddress,
+  ])
 
   return (
     <CreateCommunityContext.Provider

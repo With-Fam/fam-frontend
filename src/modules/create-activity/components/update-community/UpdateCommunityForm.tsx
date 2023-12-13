@@ -50,8 +50,8 @@ interface UpdateCommunityFormProps {
 
 export function UpdateCommunityForm({
   callback,
-  collectionAddress,
-}: UpdateCommunityFormProps): JSX.Element {
+} // collectionAddress,
+: UpdateCommunityFormProps): JSX.Element {
   const { address } = useAccount()
 
   // Access local stores
@@ -59,7 +59,7 @@ export function UpdateCommunityForm({
   const createProposal = useProposalStore((state) => state.createProposal)
   const addresses = useDaoStore((state) => state.addresses)
 
-  const router = useRouter()
+  // const router = useRouter()
 
   const auctionContractParams = {
     abi: auctionAbi,

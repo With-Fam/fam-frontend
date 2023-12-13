@@ -11,6 +11,7 @@ import {
 import { TextArea, TextInput } from '@/components/forms'
 import { UploadIPFSImage } from '@/components/ipfs/UploadIPFSImage'
 import ContinueButton from '../../../ContinueButton'
+import { useEffect } from 'react'
 
 type GeneralFormProps = {
   defaultValues?: GeneralFormValues
@@ -33,7 +34,18 @@ export function GeneralForm({
     mode: 'onBlur',
   })
 
-  const { control, handleSubmit } = methods
+  const { control, handleSubmit, watch, getValues, setValue } = methods
+  const currentDaoName = watch('daoName')
+
+  useEffect(() => {
+    if (currentDaoName) {
+      const currentSymbol = `$${currentDaoName
+        .toUpperCase()
+        .replace(/[AEIOU\s]/g, '')
+        .slice(0, 4)}`
+      setValue('daoSymbol', currentSymbol)
+    }
+  }, [currentDaoName, setValue, getValues])
 
   return (
     <FormProvider {...methods}>
@@ -61,11 +73,11 @@ export function GeneralForm({
             placeholder="Tell the world about your project"
           />
           <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-            {/** Thoughts on having a smart input like Nouns? */}
             <TextInput
               name="daoSymbol"
               placeholder="$COMMUNITY"
               label="Symbol"
+              disabled
             />
             <TextInput
               name="daoWebsite"

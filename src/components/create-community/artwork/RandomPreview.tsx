@@ -34,6 +34,7 @@ export function RandomPreview({
     images,
     orderedLayers,
   })
+  const organisedTraits = [...(selectedTraits ?? [])].reverse()
   return (
     <div
       className={twMerge('space-y-4', isEmpty ? 'col-span-2' : 'col-span-1')}
@@ -45,10 +46,11 @@ export function RandomPreview({
         )}
       >
         {children}
-        {selectedTraits?.map((_i: SelectedTraitsProps, _idx: number) => (
+        {organisedTraits?.map((_i: SelectedTraitsProps, _idx: number) => (
           <img
             className={twMerge('absolute top-0 h-full w-full', `z-[1${_idx}]`)}
             key={`layer ${_idx}`}
+            alt={_i.trait}
             height="100%"
             width="100%"
             src={_i.url}

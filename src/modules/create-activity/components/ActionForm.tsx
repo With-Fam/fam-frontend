@@ -1,6 +1,7 @@
 import { TransactionType } from '@/modules/create-activity/types'
 
 import {
+  Airdrop,
   Crowdfund,
   SendEth,
   UpdateCommunityForm,
@@ -20,6 +21,8 @@ export function ActionForm({
   collectionAddress,
 }: ActionFormProps): JSX.Element {
   switch (action) {
+    case 'airdrop':
+      return <Airdrop callback={callback} />
     case 'crowd-fund':
       return <Crowdfund callback={callback} />
     case 'send-eth':

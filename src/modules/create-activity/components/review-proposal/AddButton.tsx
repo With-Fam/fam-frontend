@@ -30,7 +30,7 @@ export function AddButton(): JSX.Element {
   const { communityId } = useParams()
   const { removeAllTransactions } = useProposalStore()
   const { activityType, setActivityType, setActiveSection } =
-    useActivityFormStore({ communityId: communityId as string })()
+    useActivityFormStore()
 
   const action = useMemo((): Maybe<
     (typeof TRANSACTION_TYPES)[TransactionType]
