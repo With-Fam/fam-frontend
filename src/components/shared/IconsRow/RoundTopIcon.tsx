@@ -12,7 +12,6 @@ type RoundTopIconProps = {
 
 const RoundTopIcon = ({ color = '#8146FF' }: RoundTopIconProps): JSX.Element => (
   <svg
-    className="h-16 w-16 sm:h-24 sm:w-24"
     xmlns="http://www.w3.org/2000/svg"
     width="67"
     height="99"

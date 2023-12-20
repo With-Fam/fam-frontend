@@ -17,7 +17,7 @@ type CommunityActivityProps = {
 
 // Utils
 import { isDateExpired } from '@/utils/helpers'
-import PointyTopIcon from '@/components/home/HeroIcons/PointyTopIcon'
+import PointyTopIcon from '@/components/shared/IconsRow/PointyTopIcon'
 import VoteButtonHandle from '@/components/community/activity/ActivitySection/VoteButtonHandle'
 
 /*--------------------------------------------------------------------*/

@@ -12,7 +12,6 @@ type StarIconProps = {
 
 const StarIcon = ({ color = '#477443' }: StarIconProps): JSX.Element => (
   <svg
-    className="h-16 w-16 sm:h-24 sm:w-24"
     xmlns="http://www.w3.org/2000/svg"
     width="121"
     height="120"

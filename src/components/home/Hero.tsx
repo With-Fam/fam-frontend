@@ -1,6 +1,6 @@
 // Local Components
+import { IconsRow } from '@/components/shared'
 import Heading from '@/stories/Heading'
-import { Icons } from '@/components/home'
 
 /*--------------------------------------------------------------------*/
 
@@ -20,7 +20,9 @@ const Hero = (): JSX.Element => (
       Fam is a space for music communities to grow, collaborate and collectively
       fund creative projects
     </Heading>
-    <Icons />
+    <div className="pt-11 sm:pt-24">
+      <IconsRow />
+    </div>
   </section>
 )
 

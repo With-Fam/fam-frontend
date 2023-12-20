@@ -1,6 +1,6 @@
-// Framework
-import { Communities, CommunitySearch } from '@/components/explore'
+// Components
 import { Toggle } from '@/stories'
+import { Communities, ExploreHeader, ExploreHeaderMobile } from '@/components/explore'
 
 // Types
 import type { Metadata } from 'next'
@@ -52,8 +52,9 @@ const Explore = ({ searchParams }: ExploreProps): JSX.Element => {
 
   return (
     <>
-      <CommunitySearch type={type} search={search} />
-      <Toggle type={type} items={EXPLORE_TOGGLE_DATA} />
+      <ExploreHeader />
+      <ExploreHeaderMobile />
+      <Toggle type={type} items={EXPLORE_TOGGLE_DATA} defaultType="all" />
       <Communities type={type} search={search} />
     </>
   )

@@ -33,7 +33,7 @@ const Toggle = ({
 }: ToggleProps): JSX.Element => (
   <section
     className={`my-4 block w-max sm:my-10 ${
-      center ? 'mx-auto' : 'mx-0 sm:mx-auto'
+      center ? 'mx-auto' : 'px-4 mx-0 sm:mx-auto'
     }`}
   >
     {items.map((item, index) => {

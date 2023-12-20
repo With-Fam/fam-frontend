@@ -44,7 +44,8 @@ const ActivitySectionInfo = ({
     title,
   } = proposal
   const sumOfVotes = forVotes + againstVotes + abstainVotes
-
+  const rateFor = forVotes / sumOfVotes
+  const rateAgainst = againstVotes / sumOfVotes
   let status: null | 'passed' | 'rejected' | 'expired' = null
 
   if (isDateExpired(voteEnd)) {
@@ -91,8 +92,12 @@ const ActivitySectionInfo = ({
         </div>
       </div>
       <div className="flex w-full gap-2">
-        <VoteBlock votes={proposal.forVotes} direction="Yes" />
-        <VoteBlock votes={proposal.againstVotes} direction="No" />
+        <VoteBlock votes={proposal.forVotes} rate={rateFor} direction="Yes" />
+        <VoteBlock
+          votes={proposal.againstVotes}
+          rate={rateAgainst}
+          direction="No"
+        />
       </div>
     </>
   )

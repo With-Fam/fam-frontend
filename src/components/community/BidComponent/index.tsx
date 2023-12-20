@@ -39,7 +39,7 @@ const BidComponent = ({
   page,
   metaData,
 }: BidComponentProps): JSX.Element => {
-  const { endTime } = page
+  const endTime = page?.endTime
   const isOver = !!endTime
     ? dayjs.unix(Date.now() / 1000) >= dayjs.unix(endTime)
     : true

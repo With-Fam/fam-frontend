@@ -17,7 +17,6 @@ const PointyTopIcon = ({
   ..._props
 }: PointyTopIconProps): JSX.Element => (
   <svg
-    className="h-16 w-16 sm:h-24 sm:w-24"
     xmlns="http://www.w3.org/2000/svg"
     width="89"
     height="101"

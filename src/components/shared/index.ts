@@ -1,6 +1,7 @@
 export * from './Button'
 export { default as Footer } from './Footer'
 export * from './Loading'
+export { default as IconsRow } from './IconsRow'
 export { default as ImageUpload } from './ImageUpload'
 export { default as Logo } from './Logo'
 export { default as MediaUpload } from './MediaUpload'

@@ -4,6 +4,7 @@ import { Paragraph } from '@/stories'
 type VoteBlockProps = {
   votes: number
   direction: 'Yes' | 'No'
+  rate: number
 }
 
 /*--------------------------------------------------------------------*/
@@ -12,7 +13,7 @@ type VoteBlockProps = {
  * Component
  */
 
-const VoteBlock = ({ votes, direction }: VoteBlockProps): JSX.Element => (
+const VoteBlock = ({ votes, direction, rate }: VoteBlockProps): JSX.Element => (
   <div className="flex-1 rounded-lg border border-solid border-grey-light px-4 py-5">
     <div className="mb-4 flex justify-between">
       <Paragraph
@@ -27,7 +28,20 @@ const VoteBlock = ({ votes, direction }: VoteBlockProps): JSX.Element => (
         {votes}
       </Paragraph>
     </div>
-    <div className="h-2 w-full rounded-lg bg-grey-light" />
+    <div className="h-2 w-full rounded-lg bg-grey-light">
+      {direction === 'Yes' && rate > 0 && (
+        <div
+          className="h-2 w-full rounded-lg bg-status-green"
+          style={{ width: `${rate * 100}%` }}
+        />
+      )}
+      {direction === 'No' && rate > 0 && (
+        <div
+          className="h-2 w-full rounded-lg bg-status-red"
+          style={{ width: `${rate * 100}%` }}
+        />
+      )}
+    </div>
   </div>
 )
 

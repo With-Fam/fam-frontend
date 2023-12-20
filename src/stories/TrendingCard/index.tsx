@@ -6,7 +6,7 @@ import { type CommunityProps } from '@/utils/explore/communities'
 
 // Components
 import Paragraph from '@/stories/Paragraph'
-import UsersRow from '@/stories/UsersRow'
+import { MemberIcon } from '@/components/icons'
 
 /*--------------------------------------------------------------------*/
 
@@ -41,7 +41,14 @@ const TrendingCard = ({
       <Paragraph as="p3">{title}</Paragraph>
       <Paragraph as="p3">{value}</Paragraph>
     </div>
-    <UsersRow users={users} text={text} />
+    <div className="flex">
+      <div className=''>
+        <MemberIcon />
+      </div>
+      <Paragraph as="p4" className="text-grey-dark">
+        {users.length} members
+      </Paragraph>
+    </div>
   </Link>
 )
 
