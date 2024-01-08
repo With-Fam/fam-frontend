@@ -5,7 +5,7 @@ import { Paragraph } from '@/stories'
 type TotalAmountBoxProps = {
   title: string
   valueEth: string
-  valueCurrency: string
+  valueCurrency: string | number
 }
 
 /*--------------------------------------------------------------------*/

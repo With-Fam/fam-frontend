@@ -1,8 +1,4 @@
 import type { SVGProps } from './types'
-// Types
-type ExternalLinkProps = {
-  color?: string
-} & SVGProps
 
 /*--------------------------------------------------------------------*/
 
@@ -13,7 +9,7 @@ type ExternalLinkProps = {
 const ExternalLink = ({
   color = '#A7A7A7',
   className,
-}: ExternalLinkProps): JSX.Element => (
+}: SVGProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"

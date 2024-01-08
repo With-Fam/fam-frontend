@@ -1,17 +1,23 @@
+import type { SVGProps } from './types'
+
 /*--------------------------------------------------------------------*/
 
 /**
  * Component
  */
 
-const LinearGradient = (): JSX.Element => (
+const LinearGradient = ({
+  className = 'h-auto w-full',
+  ..._props
+}: SVGProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="942"
     height="34"
     viewBox="0 0 942 34"
     fill="none"
-    className="h-auto w-full"
+    className={className}
+    {..._props}
   >
     <path d="M0 0H942V34H0V0Z" fill="url(#paint0_linear_107_436)" />
     <defs>

@@ -20,12 +20,13 @@ const SocialMediaItems = dynamic(
 )
 
 // Types
-import TotalAmountBox from '@/components/community/BidComponent/TotalAmountBox'
-import { TokenFragment } from '@/data/subgraph/sdk.generated'
+import { AuctionBid, TokenFragment } from '@/data/subgraph/sdk.generated'
+import AllBids from '@/components/community/BidComponent/AllBids'
 type BidComponentProps = {
   token: TokenFragment
   page: any
   metaData: any
+  bids: AuctionBid[]
 }
 
 /*--------------------------------------------------------------------*/
@@ -38,6 +39,7 @@ const BidComponent = ({
   token,
   page,
   metaData,
+  bids,
 }: BidComponentProps): JSX.Element => {
   const endTime = page?.endTime
   const isOver = !!endTime
@@ -48,7 +50,7 @@ const BidComponent = ({
     <section className="px-4">
       <div className="m-auto grid w-full max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
         <div className="relative col-span-1 row-span-1 aspect-square w-full rounded-lg">
-          {token.image && (
+          {token?.image && (
             <Image
               src={token?.image}
               alt=""
@@ -59,29 +61,23 @@ const BidComponent = ({
           )}
         </div>
         <div className="col-span-1 row-span-1">
-          <BidStatus page={page} />
+          <div className="flex w-full flex-col">
+            <BidStatus page={page} />
+            <AllBids page={page} bids={bids} />
+          </div>
           {isOver ? (
             <StartNextAuction page={page} />
           ) : (
             <PlaceBid token={token} />
           )}
         </div>
-        <div className="col-span-1">
-          <BidDescription page={page} token={token} metaData={metaData} />
-          <SocialMediaItems metadataAddress={metaData?.metadataAddress} />
-        </div>
-        <div className="col-span-1">
-          <TotalAmountBox
-            title="Total Raised"
-            valueEth="477.54"
-            valueCurrency="883,449"
-          />
-          <TotalAmountBox
-            title="Community pool"
-            valueEth="477.54"
-            valueCurrency="883,449"
-          />
-        </div>
+        <>
+          <div className="col-span-1">
+            <BidDescription page={page} token={token} metaData={metaData} />
+            <SocialMediaItems metadataAddress={metaData?.metadataAddress} />
+          </div>
+          {/* <RaisedComponent /> */}
+        </>
       </div>
     </section>
   )

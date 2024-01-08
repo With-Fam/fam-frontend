@@ -8,7 +8,7 @@ import type { SVGProps } from './types'
 
 const ChevronDown = ({
   className,
-  stroke = '#F54D18',
+  color = '#F54D18',
 }: SVGProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +20,7 @@ const ChevronDown = ({
   >
     <path
       d="M9 18L15 12L9 6"
-      stroke={stroke}
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"

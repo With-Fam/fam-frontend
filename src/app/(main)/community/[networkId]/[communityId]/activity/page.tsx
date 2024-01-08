@@ -10,6 +10,15 @@ import { TOGGLE_DATA } from '@/content/community'
 
 // Types
 import type { ProposalFragment } from '@/data/subgraph/sdk.generated'
+type CommunityProfileProps = {
+  params: {
+    networkId: string
+    communityId: `0x${string}`
+  }
+}
+
+// Actions
+import { getCommunityData } from '@/app/(main)/community/[networkId]/[communityId]/actions'
 
 /*--------------------------------------------------------------------*/
 
@@ -32,18 +41,24 @@ async function getActivityData(chainId: number, collection: string) {
   return proposals
 }
 
-export default async function CommunityProfile(_props: any) {
+export default async function CommunityProfile(
+  _props: CommunityProfileProps
+): Promise<JSX.Element> {
   const chainId = 5 // Hardcoded. Should be passed in from the router
   const { communityId } = _props.params
   const proposals: ProposalFragment[] = await getActivityData(
     chainId,
     communityId
   )
+  const { metaData } = await getCommunityData(
+    chainId,
+    communityId.toLowerCase()
+  )
 
   return (
     <>
       <TabList items={TOGGLE_DATA} />
-      <CommunityActivity proposals={proposals} />
+      <CommunityActivity proposals={proposals} communityName={metaData.name} />
     </>
   )
 }

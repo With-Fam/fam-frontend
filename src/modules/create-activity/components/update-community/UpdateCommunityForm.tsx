@@ -49,9 +49,8 @@ interface UpdateCommunityFormProps {
 }
 
 export function UpdateCommunityForm({
-  callback,
-} // collectionAddress,
-: UpdateCommunityFormProps): JSX.Element {
+  callback, // collectionAddress,
+}: UpdateCommunityFormProps): JSX.Element {
   const { address } = useAccount()
 
   // Access local stores
@@ -394,6 +393,7 @@ export function UpdateCommunityForm({
         <FounderFieldArray />
         <VetoManagement />
         <ContinueButton />
+        <span className="hidden h-6 md:block" />
       </form>
     </FormProvider>
   )

@@ -11,7 +11,7 @@ type CrossProps = {
  * Component
  */
 
-const Cross = ({ color, className }: CrossProps): JSX.Element => (
+const Cross = ({ color = '#ffffff', className }: CrossProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="32"
@@ -22,14 +22,14 @@ const Cross = ({ color, className }: CrossProps): JSX.Element => (
   >
     <path
       d="M16 6.66699V25.3334"
-      stroke={color ? color : 'white'}
+      stroke={color}
       strokeWidth="2.66663"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M6.66797 16H25.3344"
-      stroke={color ? color : 'white'}
+      stroke={color}
       strokeWidth="2.66663"
       strokeLinecap="round"
       strokeLinejoin="round"

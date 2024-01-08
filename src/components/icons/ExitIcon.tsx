@@ -1,4 +1,8 @@
 import type { SVGProps } from './types'
+// Types
+type ExitIconProps = {
+  color?: string
+} & SVGProps
 
 /*--------------------------------------------------------------------*/
 
@@ -6,11 +10,10 @@ import type { SVGProps } from './types'
  * Component
  */
 
-const Alert = ({
+const ExitIcon = ({
+  color = '#000000',
   className,
-  color = "#A7A7A7",
-  ..._props
-}: SVGProps): JSX.Element => (
+}: ExitIconProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -18,24 +21,23 @@ const Alert = ({
     viewBox="0 0 24 24"
     fill="none"
     className={className}
-    {..._props}
   >
     <path
-      d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+      d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9"
       stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
-      d="M12 8V12"
+      d="M16 17L21 12L16 7"
       stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
-      d="M12 16H12.01"
+      d="M21 12H9"
       stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
@@ -44,4 +46,4 @@ const Alert = ({
   </svg>
 )
 
-export default Alert
+export default ExitIcon

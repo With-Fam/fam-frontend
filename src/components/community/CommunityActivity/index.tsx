@@ -13,6 +13,7 @@ import { Paragraph } from '@/stories'
 import type { ProposalFragment } from '@/data/subgraph/sdk.generated'
 type CommunityActivityProps = {
   proposals: ProposalFragment[]
+  communityName: string
 }
 
 // Utils
@@ -28,6 +29,7 @@ import VoteButtonHandle from '@/components/community/activity/ActivitySection/Vo
 
 const CommunityActivity = ({
   proposals,
+  communityName,
 }: CommunityActivityProps): JSX.Element => (
   <section className="relative mx-auto max-w-[936px] px-4 pb-4 sm:pb-10">
     {proposals.length > 0 &&
@@ -63,7 +65,7 @@ const CommunityActivity = ({
           <PointyTopIcon color="#F54D18" className="h-8 w-8" />
         </div>
         <Paragraph as="p3" className="text-center text-grey-dark">
-          PC Music Club hasn&apos;t posted any activities yet
+          {communityName} hasn&apos;t posted any activities yet
         </Paragraph>
       </div>
     )}
