@@ -4,13 +4,13 @@ import _get from 'lodash.get'
 // Types
 import {
   AuctionBid,
-  AuctionBidsQuery,
   DaoFragment,
   TokenFragment,
+  Auction,
 } from '@/data/subgraph/sdk.generated'
 type CommunityDataResponse = {
   metaData: DaoFragment
-  page: AuctionBidsQuery
+  page: Auction
   token: TokenFragment
   bids: AuctionBid[]
 }
@@ -57,7 +57,7 @@ export async function getCommunityData(
 
   return {
     metaData: dao as DaoFragment,
-    page: auctions[0] as AuctionBidsQuery,
+    page: auctions[0] as Auction,
     token: tokens[0] as TokenFragment,
     bids: auction?.bids as AuctionBid[],
   }

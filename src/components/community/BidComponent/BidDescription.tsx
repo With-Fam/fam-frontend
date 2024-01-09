@@ -1,5 +1,6 @@
 // Framework
 import Image from 'next/image'
+import { useState } from 'react'
 
 // Local Components
 import { Paragraph } from '@/stories'
@@ -31,18 +32,23 @@ const BidDescription = ({
   token,
   metaData,
 }: BidDescriptionProps): JSX.Element => {
+  const [imageError, setImageError] = useState(false)
   const imageSrc = convertIpfsUrl(metaData.contractImage || '')
 
   return (
     <div className="col-span-1 flex w-full flex-col">
       <div className="mb-4 flex items-center">
-        <Image
-          src={imageSrc}
-          width={40}
-          height={40}
-          alt=""
-          className="mr-3 h-10 w-10 rounded-full object-cover"
-        />
+        {!imageError && (
+          <Image
+            src={imageSrc}
+            width={40}
+            height={40}
+            alt=""
+            className="mr-3 h-10 w-10 rounded-full object-cover"
+            onError={() => setImageError(true)}
+            onErrorCapture={() => setImageError(true)}
+          />
+        )}
         <Paragraph as="p2">{page?.dao?.name}</Paragraph>
       </div>
       <div>

@@ -1874,6 +1874,9 @@ export type DaoFragment = {
   tokenAddress: any
   auctionAddress: any
   contractImage?: string
+  totalSupply: number
+  ownerCount: number
+  proposalCount: number
 }
 
 export type ExploreDaoFragment = {

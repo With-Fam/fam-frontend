@@ -22,6 +22,8 @@ type AllBidsProps = {
 
 // Helpers
 import { walletSnippet } from '@/utils/helpers'
+import { UserAvatar } from '@/components/shared'
+import RenderBidders from '@/components/community/BidComponent/RenderBidders'
 
 /*--------------------------------------------------------------------*/
 
@@ -42,15 +44,13 @@ const AllBids = ({ page, bids }: AllBidsProps): JSX.Element => {
     <>
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center">
-          {ensAvatar && (
-            <Image
-              src={ensAvatar}
-              width={24}
-              height={24}
-              alt=""
-              className="rounded-full object-cover"
-            />
-          )}
+          <UserAvatar
+            ensAvatar={ensAvatar}
+            width={24}
+            height={24}
+            address={page?.highestBid?.bidder}
+          />
+
           <Paragraph as="p5" className="pl-2.5">
             {displayName}
           </Paragraph>
@@ -78,23 +78,7 @@ const AllBids = ({ page, bids }: AllBidsProps): JSX.Element => {
         className="flex h-full flex-col gap-4 overflow-y-scroll transition-all"
       >
         {bids?.map((bid, index) => (
-          <div key={index} className="flex justify-between">
-            <div className="flex items-center gap-2">
-              <Image
-                src={`/assets/images/users/u${(index % 9) + 1}.jpeg`}
-                width={24}
-                height={24}
-                alt=""
-                className="h-6 w-6 rounded-full object-cover"
-              />
-              <Paragraph as="p5" className="h-min text-grey-dark">
-                {walletSnippet(bid.bidder)}
-              </Paragraph>
-            </div>
-            <Paragraph as="p5" className="text-grey-dark">
-              {formatEther(bid.amount)} ETH
-            </Paragraph>
-          </div>
+          <RenderBidders address={bid.bidder} amount={bid.amount} key={index} />
         ))}
       </motion.div>
     </>

@@ -2,10 +2,7 @@
 import _get from 'lodash.get'
 
 // Local Components
-import {
-  BidComponent,
-  TabList,
-} from '@/components/community'
+import { BidComponent, TabList } from '@/components/community'
 import { TOGGLE_DATA } from '@/content/community'
 import PreAuction from '@/components/community/BidComponent/PreAuction'
 
@@ -17,8 +14,6 @@ type CommunityProfileProps = {
 
 // Actions
 import { getCommunityData } from '@/app/(main)/community/[networkId]/[communityId]/actions'
-
-
 
 /*--------------------------------------------------------------------*/
 
@@ -44,7 +39,13 @@ export default async function CommunityProfile(
   return (
     <>
       <TabList items={TOGGLE_DATA} />
-      <BidComponent token={token} page={page} metaData={metaData} bids={bids} />
+      <BidComponent
+        chainId={chainId}
+        token={token}
+        page={page}
+        metaData={metaData}
+        bids={bids}
+      />
     </>
   )
 }

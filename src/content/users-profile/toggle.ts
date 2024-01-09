@@ -1,13 +1,21 @@
-const USERS_TOGGLE_DATA = [
+type UserDataProps = string
+
+type UserNavigationResponse = {
+  id: string;
+  title: string;
+  href: string
+}
+
+const USERS_TOGGLE_DATA = (user: UserDataProps): UserNavigationResponse[] => [
   {
     id: 'communities',
     title: 'Communities',
-    href: '/user-profile/[user]?type=communities',
+    href: `/profile/${user}?type=communities`,
   },
   {
     id: 'activity',
     title: 'Activity',
-    href: '/user-profile/[user]?type=activity',
+    href: `/profile/${user}?type=activity`,
   },
 ]
 

@@ -11,6 +11,7 @@ import { Paragraph } from '@/stories'
 
 // Types
 import { Address } from 'wagmi'
+import { UserAvatar } from '@/components/shared'
 interface ActivityCreatorProps {
   proposer: Address
   className?: string
@@ -31,16 +32,12 @@ const ActivityCreator = ({
   return (
     <div className={className}>
       <div className="relative h-4 w-4">
-        {ensAvatar ? (
-          <Image
-            src={ensAvatar}
-            alt=""
-            fill
-            className="h-4 w-4 rounded-full object-cover"
-          />
-        ) : (
-          <div className="border-dark h-4 w-4 rounded-full border border-solid bg-background" />
-        )}
+        <UserAvatar
+          ensAvatar={ensAvatar}
+          width={16}
+          height={16}
+          address={proposer}
+        />
       </div>
       <Paragraph as="p5" className="text-grey">
         by {displayName}

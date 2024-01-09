@@ -20,13 +20,18 @@ const SocialMediaItems = dynamic(
 )
 
 // Types
-import { AuctionBid, TokenFragment } from '@/data/subgraph/sdk.generated'
+import {
+  Auction,
+  AuctionBid,
+  TokenFragment,
+} from '@/data/subgraph/sdk.generated'
 import AllBids from '@/components/community/BidComponent/AllBids'
 type BidComponentProps = {
   token: TokenFragment
-  page: any
+  page: Auction
   metaData: any
   bids: AuctionBid[]
+  chainId: number
 }
 
 /*--------------------------------------------------------------------*/
@@ -40,6 +45,7 @@ const BidComponent = ({
   page,
   metaData,
   bids,
+  chainId,
 }: BidComponentProps): JSX.Element => {
   const endTime = page?.endTime
   const isOver = !!endTime
@@ -68,7 +74,11 @@ const BidComponent = ({
           {isOver ? (
             <StartNextAuction page={page} />
           ) : (
-            <PlaceBid token={token} />
+            <PlaceBid
+              token={token}
+              chainId={chainId}
+              highestBid={page.highestBid}
+            />
           )}
         </div>
         <>

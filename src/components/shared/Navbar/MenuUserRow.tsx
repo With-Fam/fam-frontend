@@ -1,22 +1,21 @@
 'use client'
 
 // Framework
-import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-
-// Third Parties
-import { useEnsName } from 'wagmi'
 
 // Local Components
 import Paragraph from '@/stories/Paragraph'
 import { ConfigIcon, Copy } from '@/components/icons'
+import { UserAvatar } from '@/components/shared'
 
 // Types
 import { Wallet } from '@privy-io/react-auth'
 import { walletSnippet } from '@/utils/helpers'
 type MenuUserRowProps = {
   wallet: Wallet
+  ensName: string
+  ensAvatar: string
 }
 
 /*--------------------------------------------------------------------*/
@@ -25,11 +24,11 @@ type MenuUserRowProps = {
  * Component
  */
 
-const MenuUserRow = ({ wallet }: MenuUserRowProps): JSX.Element => {
-  const { data: ensName } = useEnsName({
-    address: wallet.address as `0x${string}`,
-    chainId: 5,
-  })
+const MenuUserRow = ({
+  wallet,
+  ensName,
+  ensAvatar,
+}: MenuUserRowProps): JSX.Element => {
   const [copySuccess, setCopySuccess] = useState(false)
   const copiedTimeout = useRef<NodeJS.Timeout | null>(null)
 
@@ -52,15 +51,14 @@ const MenuUserRow = ({ wallet }: MenuUserRowProps): JSX.Element => {
     <div className="flex w-full">
       <div className="flex w-full justify-between">
         <Link href="/profile" passHref aria-label="go to profile page">
-          <Image
-            src="/assets/images/navbar/n1.jpeg"
-            alt=""
+          <UserAvatar
+            ensAvatar={ensAvatar}
+            address={wallet.address}
             width={40}
             height={40}
-            className="h-10 w-10 overflow-hidden rounded-full object-cover"
           />
         </Link>
-        <div className="ml-2 flex-1 flex flex-col justify-center">
+        <div className="ml-2 flex flex-1 flex-col justify-center">
           <Paragraph as="p4" className="flex font-abcMedium font-bold">
             <span className="mr-1.5">
               {ensName || walletSnippet(wallet.address)}

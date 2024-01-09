@@ -1,18 +1,35 @@
-import { useState } from 'react'
-// Local Components
+'use client'
 
-import { useAccount, useContractReads, useContractWrite } from 'wagmi'
-import { prepareWriteContract, writeContract } from 'wagmi/actions'
-import { parseEther, etherUnits, formatEther } from 'viem'
-import { waitForTransaction } from 'wagmi/actions'
+// Framework
+import { useState } from 'react'
+
+// Third Parties
+import {
+  prepareWriteContract,
+  writeContract,
+  waitForTransaction,
+} from 'wagmi/actions'
+import { useNetwork, useContractReads } from 'wagmi'
+import { parseEther } from 'viem'
 import toast from 'react-hot-toast'
 
+// Local Components
 import { QuestionMark } from '@/components/icons'
 import { useDaoStore } from '@/modules/dao'
 import { auctionAbi } from '@/data/contract/abis'
-import { formatCryptoVal } from '@/utils/numbers'
-import { AddressType, Chain } from '@/types'
-import { useMinBidIncrement } from './hooks'
+
+// Types
+import type { AddressType, Maybe } from '@/types'
+import { AuctionBid, TokenFragment } from '@/data/subgraph/sdk.generated'
+type PlaceBidProps = {
+  token: TokenFragment
+  chainId: number
+  highestBid: Maybe<AuctionBid> | undefined
+}
+
+// Helpers
+import { useMinBidIncrement } from '@/components/community/BidComponent/hooks'
+import { unpackOptionalArray } from '@/utils/helpers'
 
 /*--------------------------------------------------------------------*/
 
@@ -20,39 +37,42 @@ import { useMinBidIncrement } from './hooks'
  * Component
  */
 
-const PlaceBid = ({ token }: any): JSX.Element => {
-  console.log('token::', token)
-  const [bidAmount, setBidAmount] = useState<number>(0)
-  const [settling, setSettling] = useState(false)
-  const chain = 5 // Hardcoded. Should be passed in from the router
+const PlaceBid = ({ token, chainId, highestBid }: PlaceBidProps): JSX.Element => {
+  const [bidAmount, setBidAmount] = useState<string>('')
   const addresses = useDaoStore((state) => state.addresses)
   const { tokenId } = token
 
-  // const auctionContractParams = {
-  //   abi: auctionAbi,
-  //   address: addresses.auction as AddressType,
-  //   chainId: chain,
-  // }
-
-  // const { data } = useContractReads({
-  //   allowFailure: false,
-  //   contracts: [
-  //     { ...auctionContractParams, functionName: 'reservePrice' },
-  //     { ...auctionContractParams, functionName: 'minBidIncrement' },
-  //   ] as const,
-  // })
-
-  // const reservePrice = data?.[0]
-  // const minBidIncrement = data?.[1]
-
-  // console.log('reservePrice::', formatEther(reservePrice))
-  // console.log('minBidIncrement::', minBidIncrement)
-
-  // console.log('RESERVE PRICE::', Number(formatEther(reservePrice as any)))
-  // console.log('minBidIncrement::', Number(formatEther(minBidIncrement as any)))
+  const auctionContractParams = {
+    abi: auctionAbi,
+    address: addresses.auction as AddressType,
+    chainId: chainId,
+  }
+  const { data } = useContractReads({
+    allowFailure: false,
+    contracts: [
+      { ...auctionContractParams, functionName: 'reservePrice' },
+      { ...auctionContractParams, functionName: 'minBidIncrement' },
+    ] as const,
+  })
+  const [auctionReservePrice, minBidIncrement] = unpackOptionalArray(data, 2)
+  const { minBidAmount } = useMinBidIncrement({
+    highestBid: highestBid?.amount,
+    reservePrice: auctionReservePrice,
+    minBidIncrement,
+  })
 
   const placeBid = async () => {
-    setSettling(true)
+
+    if (!bidAmount) {
+      toast.error('Please enter a bid amount')
+      return
+    }
+
+    if (Number(bidAmount) < Number(minBidAmount)) {
+      toast.error(`Bid amount must be at least ${minBidAmount} ETH`)
+      return
+    }
+
     try {
       toast.loading('Loading...')
       const config = await prepareWriteContract({
@@ -60,19 +80,17 @@ const PlaceBid = ({ token }: any): JSX.Element => {
         address: addresses.auction as AddressType,
         functionName: 'createBid',
         args: [BigInt(tokenId)],
-        value: parseEther(bidAmount.toString()),
+        value: parseEther(bidAmount),
       })
 
       const tx = await writeContract(config)
       if (tx?.hash) await waitForTransaction({ hash: tx.hash })
-      setSettling(false)
       toast.dismiss()
       toast.success('Bid succesfully placed!')
     } catch (error) {
       toast.dismiss()
       toast.error('Error placing bid')
       console.log('error::', error)
-      setSettling(false)
     }
   }
 
@@ -84,19 +102,19 @@ const PlaceBid = ({ token }: any): JSX.Element => {
           type="number"
           name="bid-community"
           id="bid-community"
-          placeholder="0.05 ETH or more"
+          placeholder={`${minBidAmount} ETH or more`}
           value={bidAmount}
           onChange={(e) => {
             e.preventDefault()
             console.log('e.target.value::', e.target.value)
-            setBidAmount(Number(e.target.value))
+            setBidAmount(e.target.value)
           }}
         />
         <QuestionMark />
       </div>
       <button
         type="button"
-        className="mx-auto block h-16 w-full self-center rounded-full bg-black py-4 text-white mt-8"
+        className="mx-auto mt-8 block h-16 w-full self-center rounded-full bg-black py-4 text-white"
         onClick={placeBid}
       >
         Place Bid

@@ -2,13 +2,13 @@
 import { PropsWithChildren } from 'react'
 import { PrivyProvider } from '@privy-io/react-auth'
 import { PrivyWagmiConnector } from '@privy-io/wagmi-connector'
-import { goerli } from '@wagmi/chains'
+import { goerli, mainnet } from '@wagmi/chains'
 import { configureChains } from 'wagmi'
 import { Toaster } from 'react-hot-toast'
 
 import { publicProvider } from 'wagmi/providers/public'
 
-const configureChainsConfig = configureChains([goerli], [publicProvider()])
+const configureChainsConfig = configureChains([goerli, mainnet], [publicProvider()])
 
 const handleLogin = (data: { id: string }) => {
   console.log('Login', data.id)

@@ -1,7 +1,6 @@
 'use client'
 
 // Framework
-import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 
@@ -18,6 +17,8 @@ import { Close } from '@/components/icons'
 
 // Utils
 import { formatCryptoVal } from '@/utils/numbers'
+import { UserAvatar } from '@/components/shared'
+import { useEnsData } from '@/hooks/useEnsData'
 
 /*--------------------------------------------------------------------*/
 
@@ -31,6 +32,7 @@ const PopupMenu = (): JSX.Element => {
   const [isMobile, setIsMobile] = useState(false)
   const popoverRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
+  const { ensAvatar, ensName } = useEnsData(user?.wallet?.address)
 
   const { data: balance } = useBalance({
     address: user?.wallet?.address as `0x${string}`,
@@ -106,12 +108,11 @@ const PopupMenu = (): JSX.Element => {
   return (
     <div className="relative h-12">
       <button onClick={() => setOpen(true)} aria-label="open users menu">
-        <Image
-          src="/assets/images/navbar/n1.jpeg"
-          alt=""
+        <UserAvatar
+          ensAvatar={ensAvatar}
+          address={user.wallet?.address}
           width={48}
           height={48}
-          className="h-12 w-12 overflow-hidden rounded-full object-cover"
         />
       </button>
       <motion.div
@@ -128,7 +129,13 @@ const PopupMenu = (): JSX.Element => {
         >
           <Close className="h-6 w-6" />
         </button>
-        {user.wallet && <MenuUserRow wallet={user.wallet} />}
+        {user.wallet && (
+          <MenuUserRow
+            ensName={ensName || ''}
+            ensAvatar={ensAvatar  || ''}
+            wallet={user.wallet}
+          />
+        )}
         {userBalance && <WalletComponent userBalance={userBalance} />}
         <MenuList />
       </motion.div>

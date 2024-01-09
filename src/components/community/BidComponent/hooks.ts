@@ -10,26 +10,30 @@ export const useMinBidIncrement = ({
   highestBid?: bigint
   reservePrice?: bigint
   minBidIncrement?: bigint
-}) => {
+}): { minBidAmount: number } => {
+  const bigHundred = BigInt(100)
+  const bigZero = BigInt(0)
+
   if (
     reservePrice === undefined ||
     minBidIncrement === undefined ||
     // force default min bid amount given reserve price of 0 and no current bids
-    (reservePrice === BigInt(0) && highestBid === BigInt(0))
+    (reservePrice === bigZero && highestBid === bigZero)
   ) {
     return {
       minBidAmount: DEFAULT_MIN_BID_AMOUNT,
     }
   }
 
-  if (!highestBid || highestBid === BigInt(0)) {
+  if (!highestBid || highestBid === bigZero) {
     return {
       minBidAmount: Number(formatEther(reservePrice)),
     }
   }
 
   const minBidRawAmount =
-    (highestBid * minBidIncrement) / BigInt(100) + highestBid
+    (BigInt(highestBid) * BigInt(minBidIncrement)) / bigHundred +
+    BigInt(highestBid)
   const minBidFormattedAmount = Number(formatEther(minBidRawAmount))
 
   return {
