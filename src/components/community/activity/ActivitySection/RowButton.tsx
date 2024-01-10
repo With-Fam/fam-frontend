@@ -27,7 +27,7 @@ const RowButton = ({
     type="button"
     className={twJoin(
       'w-full rounded-2xl',
-      active ? 'bg-orange-500' : 'bg-grey-light'
+      active ? 'bg-orange' : 'bg-grey-light'
     )}
     onClick={onClick}
   >

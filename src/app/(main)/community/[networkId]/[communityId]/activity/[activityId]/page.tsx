@@ -1,5 +1,5 @@
 // Types
-import { ProposalFragment } from '@/data/subgraph/sdk.generated'
+import { ProposalQuery } from '@/data/subgraph/sdk.generated'
 import type { Metadata } from 'next'
 interface ActivityProfileProps {
   params: {
@@ -19,7 +19,7 @@ async function getProposalData(chainId: number, proposalId: string) {
   })
 
   if (typeof proposal?.proposalId === 'string') {
-    return proposal
+    return proposal as ProposalQuery["proposal"]
   } else {
     return null
   }
@@ -40,7 +40,7 @@ const ActivityProfile = async ({
 }: ActivityProfileProps): Promise<JSX.Element> => {
   const { activityId } = params
   const chainId = 5 // Hardcoded. Should be passed in from the router
-  const proposal: ProposalFragment | null = await getProposalData(
+  const proposal: ProposalQuery["proposal"] | null = await getProposalData(
     chainId,
     activityId
   )

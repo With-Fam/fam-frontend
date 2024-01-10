@@ -7,7 +7,7 @@ import { twMerge } from 'tailwind-merge'
 // Types
 interface EProps {
   children: ReactNode
-  as: 'p1' | 'p2' | 'p3' | 'p4' | 'p5'
+  as: 'p1' | 'p2' | 'p3' | 'p4' | 'p5' | 'p6' | 'p7'
   className?: string
 }
 
@@ -37,6 +37,14 @@ const Paragraph = ({ children, as, className }: EProps): JSX.Element => {
     },
     p5: {
       class: 'text-sm leading-4 abc',
+      style: {},
+    },
+    p6: {
+      class: 'text-xs leading-3 abc',
+      style: {},
+    },
+    p7: {
+      class: 'text-xxs leading-2 abc',
       style: {},
     },
   }

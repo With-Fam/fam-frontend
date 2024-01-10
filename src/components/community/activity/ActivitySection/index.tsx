@@ -6,13 +6,12 @@ import Link from 'next/link'
 // Local Components
 import { Paragraph } from '@/stories'
 import { Button } from '@/components/shared'
-import { ExternalLink } from '@/components/icons'
 import BackActivityButton from '@/components/community/activity/BackActivityButton'
 
 // Types
-import { ProposalFragment } from '@/data/subgraph/sdk.generated'
+import { ProposalQuery } from '@/data/subgraph/sdk.generated'
 type ActivitySectionProps = {
-  proposal: ProposalFragment | null
+  proposal: ProposalQuery["proposal"] | null
 }
 
 // Context
@@ -55,18 +54,6 @@ const ActivitySection = ({ proposal }: ActivitySectionProps): JSX.Element => {
             ))}
           </div>
         )}
-        <div>
-          <Link
-            className="flex text-orange"
-            href={`/community/actions`}
-            passHref
-          >
-            <Paragraph as="p5">Actions</Paragraph>
-            <span>
-              <ExternalLink color="#F54D18" />
-            </span>
-          </Link>
-        </div>
         {widget && <ActivitySectionWidget widget={widget} />}
         <Link
           href={{
@@ -80,7 +67,7 @@ const ActivitySection = ({ proposal }: ActivitySectionProps): JSX.Element => {
             <Paragraph as="p5">Vote</Paragraph>
           </Button>
         </Link>
-        <ActivitySectionComments />
+        <ActivitySectionComments proposal={proposal} />
         <VoteButtonHandle />
       </div>
     </section>

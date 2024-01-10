@@ -23,6 +23,9 @@ const config: Config = {
         abcMedium: ['ABCROM Medium', 'sans'],
         abcWide: ['ABCROM Wide Medium', 'sans'],
       },
+      fontSize: {
+        xxs: '0.625rem',
+      },
       transitionProperty: {
         height: 'height',
       },

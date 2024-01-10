@@ -143,7 +143,7 @@ const VoteButtonHandle = (): JSX.Element => {
             aria-label="Exit"
             onClick={() => exitAndReset()}
           />
-          <div className="fixed bottom-0 left-0 z-10 h-max w-full bg-white p-4 md:inset-1/2 md:w-[343px] md:-translate-x-1/2 md:-translate-y-1/2">
+          <div className="fixed rounded-2xl bottom-0 left-0 z-10 h-max w-full bg-white p-4 md:inset-1/2 md:w-[343px] md:-translate-x-1/2 md:-translate-y-1/2">
             {isSubmitting && (
               <div className="h-full w-full">
                 <Loading />
@@ -161,9 +161,6 @@ const VoteButtonHandle = (): JSX.Element => {
                 <div className="mt-3 text-center">
                   <Paragraph as="p3">
                     Voting on <span className="font-bold">{title}</span>
-                  </Paragraph>
-                  <Paragraph as="p3" className="mt-1.5 text-grey">
-                    You have 56 votes available
                   </Paragraph>
                 </div>
                 <textarea
