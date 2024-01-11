@@ -20,8 +20,10 @@ import { formatUnixTimestampDate, isDateExpired } from '@/utils/helpers'
 // Types
 import { ProposalFragment } from '@/data/subgraph/sdk.generated'
 import Link from 'next/link'
+import ActivityQueue from '@/components/community/CommunityActivity/ActivityQueue'
 type ActivitySectionInfoProps = {
   proposal: ProposalFragment
+  chainId: number
 }
 
 /*--------------------------------------------------------------------*/
@@ -32,6 +34,7 @@ type ActivitySectionInfoProps = {
 
 const ActivitySectionInfo = ({
   proposal,
+  chainId,
 }: ActivitySectionInfoProps): JSX.Element => {
   const {
     proposer,
@@ -91,6 +94,7 @@ const ActivitySectionInfo = ({
           </div>
         </div>
       </div>
+      <ActivityQueue proposal={proposal} chainId={chainId} />
       <div className="flex w-full gap-2">
         <VoteBlock votes={proposal.forVotes} rate={rateFor} direction="Yes" />
         <VoteBlock

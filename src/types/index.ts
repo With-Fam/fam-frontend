@@ -12,6 +12,13 @@ export interface Duration {
   minutes?: number
 }
 
+export interface TimeProps {
+  seconds: number
+  days: number
+  hours: number
+  minutes: number
+}
+
 export const enum CHAIN_ID {
   ETHEREUM = 1,
   GOERLI = 5,

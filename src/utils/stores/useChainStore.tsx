@@ -1,8 +1,7 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-
-import { PUBLIC_DEFAULT_CHAINS } from '@/constants/defaultChains'
 import { Chain } from '@/types'
+import { PUBLIC_DEFAULT_CHAINS } from '@/constants/defaultChains'
 
 export interface ChainStoreProps {
   chain: Chain

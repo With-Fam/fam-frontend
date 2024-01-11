@@ -1,9 +1,6 @@
 import { readContract } from 'wagmi/actions'
-
 import { AddressType, BytesType, CHAIN_ID } from '@/types'
-
 import { governorAbi } from '../abis'
-
 export enum ProposalState {
   Pending = 0,
   Active = 1,

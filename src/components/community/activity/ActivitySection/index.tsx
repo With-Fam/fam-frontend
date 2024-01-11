@@ -11,6 +11,7 @@ import BackActivityButton from '@/components/community/activity/BackActivityButt
 // Types
 import { ProposalQuery } from '@/data/subgraph/sdk.generated'
 type ActivitySectionProps = {
+  chainId: number
   proposal: ProposalQuery["proposal"] | null
 }
 
@@ -27,7 +28,7 @@ import VoteButtonHandle from '@/components/community/activity/ActivitySection/Vo
  * Component
  */
 
-const ActivitySection = ({ proposal }: ActivitySectionProps): JSX.Element => {
+const ActivitySection = ({ proposal, chainId }: ActivitySectionProps): JSX.Element => {
   const { widgets } = useMockStoreContext()
 
   if (!proposal) {
@@ -44,7 +45,7 @@ const ActivitySection = ({ proposal }: ActivitySectionProps): JSX.Element => {
     <section className="mx-auto max-w-2xl p-5">
       <BackActivityButton />
       <div className="flex flex-col gap-6">
-        <ActivitySectionInfo proposal={proposal} />
+        <ActivitySectionInfo proposal={proposal} chainId={chainId} />
         {proposal.description && (
           <div>
             {proposal.description.split('\\n').map((paragraph, index) => (

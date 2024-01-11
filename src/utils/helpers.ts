@@ -1,7 +1,6 @@
 import isEqual from 'lodash/isEqual'
 import { isAddress } from 'viem'
-
-import { Duration } from '@/types'
+import { Duration, TimeProps } from '@/types'
 
 /**
  *
@@ -54,7 +53,7 @@ export const toSeconds = ({
   covert seconds to { days, hours, minutes }
 
 */
-export const fromSeconds = (value: bigint | number | undefined): Duration => {
+export const fromSeconds = (value: bigint | number | undefined): TimeProps => {
   if (!value) {
     return { days: 0, hours: 0, minutes: 0, seconds: 0 }
   }
@@ -309,7 +308,7 @@ export function maxChar(str: string, maxLength: number): string {
  * If time is negative, returns zero
  *
  */
-export function getTimeDifference(timestamp: string): Duration {
+export function getTimeDifference(timestamp: string): TimeProps {
   const now = new Date()
   const targetDate = new Date(Number(timestamp) * 1000)
   const timeDifference =
@@ -328,30 +327,19 @@ export function getTimeDifference(timestamp: string): Duration {
  */
 
 export function decrementTimeByOneSecond(
-  time: Duration & { ended?: boolean }
-): Duration & { ended?: boolean } {
-  const m = 60
-  const h = m * 60
-  const d = h * 24
-
-  const remainingSeconds =
-    (time.days || 0) * d +
-    (time.hours || 0) * h +
-    (time.minutes || 0) * m +
-    (time.seconds || 0)
-
-  const newTime = remainingSeconds - 1
-  const { days, hours, minutes, seconds } = fromSeconds(newTime)
-  const sumOfTime =
-    Number(days) + Number(hours) + Number(minutes) + Number(seconds)
-
-  if (sumOfTime <= 0) {
-    return {
-      ended: true,
-    }
+  time: TimeProps & { ended?: boolean }
+): TimeProps & { ended?: boolean } {
+  if (time.seconds > 0) {
+    return { ...time, seconds: time.seconds - 1 }
+  } else if (time.minutes > 0) {
+    return { ...time, minutes: time.minutes - 1, seconds: 59 }
+  } else if (time.hours > 0) {
+    return { ...time, hours: time.hours - 1, minutes: 59, seconds: 59 }
+  } else if (time.days > 0) {
+    return { ...time, days: time.days - 1, hours: 23, minutes: 59, seconds: 59 }
+  } else {
+    return { ...time, ended: true }
   }
-
-  return { days, hours, minutes, seconds }
 }
 
 /**
