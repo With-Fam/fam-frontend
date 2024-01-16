@@ -1,13 +1,13 @@
 'use client'
 
+// Framework
 import { Address, useAccount, useContractReads } from 'wagmi'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { encodeFunctionData, formatEther } from 'viem'
-
 import { yupResolver } from '@hookform/resolvers/yup'
-
 import _isEqual from 'lodash.isequal'
 
+// Schema
 import {
   updateCommunitySchema,
   UpdateCommunityFormValues,
@@ -22,11 +22,14 @@ import {
 } from '@/modules/create-activity/stores'
 import ContinueButton from '@/modules/ContinueButton'
 import { formValuesToTransactionMap } from '@/modules/create-activity/utils'
+import { FounderFieldArray } from '@/modules/create-community/components/auctions/FounderFieldArray'
+import { Paragraph } from '@/stories'
+import { Alert, Sliders } from '@/components/icons'
 
+// Contract
 import { getEnsAddress } from '@/utils/ens'
 import { TokenAllocation } from '@/modules/create-community/components/auctions/AuctionForm.schema'
 import { AddressType, FounderParameters } from '@/types'
-import { useRouter } from 'next/navigation'
 import { useChainStore } from '@/utils/stores/useChainStore'
 import { TransactionType } from '@/modules/create-activity/types'
 import {
@@ -39,9 +42,6 @@ import { useDaoStore } from '@/modules/dao'
 import { fromSeconds, unpackOptionalArray } from '@/utils/helpers'
 import { NULL_ADDRESS } from '@/constants/addresses'
 import VetoManagement from '@/modules/create-community/components/auctions/VetoManagement'
-import { FounderFieldArray } from '@/modules/create-community/components/auctions/FounderFieldArray'
-import { Paragraph } from '@/stories'
-import { Alert, Sliders } from '@/components/icons'
 
 interface UpdateCommunityFormProps {
   callback: () => void
@@ -128,11 +128,12 @@ export function UpdateCommunityForm({
         chainId: chain.id,
         functionName: 'projectURI',
       },
-      {
-        ...metadataContractParams,
-        chainId: chain.id,
-        functionName: 'rendererBase',
-      },
+      // Comment this and rendererBase in the array below
+      // {
+      //   ...metadataContractParams,
+      //   chainId: chain.id,
+      //   functionName: 'rendererBase',
+      // },
       {
         ...metadataContractParams,
         chainId: chain.id,
@@ -145,8 +146,6 @@ export function UpdateCommunityForm({
       },
     ] as const,
   })
-
-  console.log('data::', data)
 
   const [
     auctionDuration,
@@ -183,7 +182,7 @@ export function UpdateCommunityForm({
       (founders as unknown as FounderParameters[])?.map((x: any) => ({
         founderAddress: x.wallet,
         allocationPercentage: x.ownershipPct,
-        endDate: new Date(x.vestExpiry * 1000).toISOString(),
+        endDate: new Date(x.vestExpiry * 1000).toISOString().substring(0, 10),
       })) || [],
     vetoPower: !!vetoer && vetoer !== NULL_ADDRESS,
     vetoerAddress: vetoer || '',
@@ -197,6 +196,7 @@ export function UpdateCommunityForm({
 
   const methods = useForm<UpdateCommunityFormValues>({
     resolver: yupResolver(updateCommunitySchema(address)) as any,
+    defaultValues: initialValues,
   })
 
   const withPauseUnpause = (
@@ -324,6 +324,8 @@ export function UpdateCommunityForm({
 
   const { control, handleSubmit } = methods
 
+  console.log(methods.formState)
+
   return (
     <FormProvider {...methods}>
       <form
@@ -342,29 +344,17 @@ export function UpdateCommunityForm({
           )}
         />
         <div className="mt-6 flex flex-col gap-4">
-          <TextInput
-            name="daoName"
-            placeholder="My community"
-            label="Community"
-          />
           <TextArea
             name="projectDescription"
             label="Description"
             placeholder="Tell the world about your project"
           />
-          <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-            {/** Thoughts on having a smart input like Nouns? */}
-            <TextInput
-              name="daoSymbol"
-              placeholder="$COMMUNITY"
-              label="Symbol"
-            />
-            <TextInput
-              name="daoWebsite"
-              label="Website"
-              placeholder="https://www.withfam.xyz"
-            />
-          </div>
+          {/** Thoughts on having a smart input like Nouns? */}
+          <TextInput
+            name="daoWebsite"
+            label="Website"
+            placeholder="https://www.withfam.xyz"
+          />
         </div>
         <div className="relative z-0 mt-6">
           <TextInput

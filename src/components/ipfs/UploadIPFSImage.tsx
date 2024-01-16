@@ -9,7 +9,7 @@ import { Loading } from '@/components/shared'
 import { Upload } from '@/components/icons'
 import { Maybe } from '@/types'
 
-type UploadIPFSImage = {
+type UploadIPFSImageProps = {
   value?: string
   name: string
   onChange: (a?: string) => void
@@ -24,7 +24,7 @@ export function UploadIPFSImage({
   name,
   onChange,
   value,
-}: UploadIPFSImage): JSX.Element {
+}: UploadIPFSImageProps): JSX.Element {
   const inputRef = useRef<Maybe<HTMLInputElement>>(null)
   const [{ loading, progress }, setUploadState] = useState<UploadState>({
     loading: false,

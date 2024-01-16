@@ -3,23 +3,27 @@
 // Framework
 import { useCallback, useState } from 'react'
 import { useAccount } from 'wagmi'
+import { encodeFunctionData, parseEther } from 'viem'
 
 // Forms
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 // Components
-import { UploadIPFSImage } from '@/components/ipfs/UploadIPFSImage'
+import { UploadIPFSImage, SingleIPFSMediaUpload } from '@/components/ipfs'
 import {
+  InputSlider,
   TextArea,
   TextInput,
   // InputSlider
 } from '@/components/forms'
 import { Button } from '@/components/shared'
 import { EditionTypeRadio } from './EditionTypeRadio'
+import { CoverUrlInput } from './CoverUrlInput'
 
 // Chain
 import { useDaoStore } from '@/modules/dao'
+import { PUBLIC_ZORA_NFT_CREATOR } from '@/constants/addresses'
 
 // Schema
 import schema, {
@@ -27,6 +31,23 @@ import schema, {
   type EditionType,
 } from './CreateNFT.schema'
 import { InputENSAddress } from '@/components/ipfs'
+import { AnimatePresence } from 'framer-motion'
+import { DateInput } from '@/components/forms/DateInput'
+import dayjs from 'dayjs'
+import { TransactionType } from '@/modules/create-activity/types'
+import { AddressType } from '@/types'
+import { useProposalStore } from '@/modules/create-activity/stores'
+import { useChainStore } from '@/utils/stores/useChainStore'
+import { zoraNFTCreatorAbi } from '@/data/contract/abis/ZoraNFTCreator'
+
+const UINT_64_MAX = BigInt('18446744073709551615')
+const UINT_32_MAX = BigInt('4294967295')
+const HASH_ZERO =
+  '0x0000000000000000000000000000000000000000000000000000000000000000' as `0x${string}`
+
+type CreateNFTContractValues = Omit<CreateNFTFormValues, 'duration'> & {
+  publicSaleEnd: string
+}
 
 type CreateNFTFormProps = {
   callback: () => void
@@ -34,19 +55,19 @@ type CreateNFTFormProps = {
 
 export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
   const [editionType, setEditionType] = useState<EditionType>('fixed')
-  const [isIPFSUploading, setIsIPFSUploading] = useState(false)
   const { address: user } = useAccount()
   const { treasury } = useDaoStore((x) => x.addresses)
   const initialValues: CreateNFTFormValues = {
     name: '',
     symbol: '',
     description: '',
+    duration: 7,
     mediaUrl: '',
+    mediaType: '',
     coverUrl: '',
     fundsRecipient: treasury || '',
     defaultAdmin: user || '',
     publicSaleStart: '',
-    publicSaleEnd: '',
     royaltyPercentage: 5,
     pricePerMint: 0,
     maxSupply: 10,
@@ -65,13 +86,90 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
     [setEditionType, setValue]
   )
 
-  console.log('address::', user, initialValues.defaultAdmin)
+  console.log('formState::', formState)
+
+  const addTransaction = useProposalStore((state) => state.addTransaction)
+  const chain = useChainStore((x) => x.chain)
+
+  const onSubmit = (values: CreateNFTFormValues) => {
+    if (!chain) return
+    const {
+      name,
+      symbol,
+      maxSupply,
+      royaltyPercentage,
+      fundsRecipient,
+      defaultAdmin,
+      pricePerMint: publicSalePrice,
+      maxPerAddress: maxSalePurchasePerAddress,
+      publicSaleStart,
+      duration,
+      description,
+      mediaUrl,
+      mediaType,
+      coverUrl,
+    } = values
+    const publicSaleEnd = dayjs(new Date(publicSaleStart))
+      .add(duration, 'days')
+      .format('YYYY-MM-DD')
+
+    const royaltyBPS = royaltyPercentage * 100
+    const salesConfig = {
+      publicSalePrice: parseEther((publicSalePrice || 0).toString()),
+      maxSalePurchasePerAddress: maxSalePurchasePerAddress
+        ? maxSalePurchasePerAddress
+        : Number(UINT_32_MAX),
+      publicSaleStart: BigInt(
+        Math.floor(new Date(publicSaleStart).getTime() / 1000)
+      ),
+      publicSaleEnd: BigInt(
+        Math.floor(new Date(publicSaleEnd).getTime() / 1000)
+      ),
+      presaleStart: BigInt(0), // presaleStart
+      presaleEnd: BigInt(0), // presaleEnd
+      presaleMerkleRoot: HASH_ZERO, // presaleMerkleRoot
+    }
+    const animationUri = mediaType?.startsWith('image') ? '' : mediaUrl
+    const imageUri = mediaType?.startsWith('image') ? mediaUrl : coverUrl
+
+    const editionSize =
+      maxSupply && maxSupply > 0 ? BigInt(maxSupply) : UINT_64_MAX
+
+    const createEdition = {
+      target: PUBLIC_ZORA_NFT_CREATOR[chain.id] as AddressType,
+      functionSignature: 'createEdition()',
+      calldata: encodeFunctionData({
+        abi: zoraNFTCreatorAbi,
+        functionName: 'createEdition',
+        args: [
+          name,
+          symbol,
+          editionSize,
+          royaltyBPS,
+          fundsRecipient as AddressType,
+          defaultAdmin as AddressType,
+          salesConfig,
+          description,
+          animationUri,
+          imageUri,
+        ],
+      }),
+      value: '',
+    }
+
+    addTransaction({
+      type: TransactionType.NFT,
+      summary: 'Create an NFT/Merch release',
+      transactions: [createEdition],
+    })
+    callback?.()
+  }
 
   return (
     <FormProvider {...methods}>
       <form
         id="__create_nft"
-        onSubmit={handleSubmit(callback as any)}
+        onSubmit={handleSubmit(onSubmit)}
         className="mx-auto w-full max-w-[668px]"
       >
         <div className="grid grid-cols-2 gap-4">
@@ -84,7 +182,11 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
               control={control}
               name="mediaUrl"
               render={({ field }) => (
-                <UploadIPFSImage
+                <SingleIPFSMediaUpload
+                  label="Media url"
+                  mediaTypeCallback={(mediaType: string) =>
+                    setValue('mediaType', mediaType)
+                  }
                   name={field.name}
                   value={field.value}
                   onChange={field.onChange}
@@ -92,6 +194,9 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
               )}
             />
           </div>
+          <AnimatePresence>
+            <CoverUrlInput />
+          </AnimatePresence>
           <TextInput
             name="name"
             className="col-span-2"
@@ -113,7 +218,8 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
             placeholder="$Symbol"
             type="text"
           />
-          {/* <div className="col-span-2">
+          <DateInput name="publicSaleStart" label="Sale start date" />
+          <div className="col-span-2">
             <Controller
               control={control}
               name="duration"
@@ -125,7 +231,7 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
                 />
               )}
             />
-          </div> */}
+          </div>
           <TextInput name="maxSupply" label="No. of editions" type="number" />
           <TextInput
             name="pricePerMint"

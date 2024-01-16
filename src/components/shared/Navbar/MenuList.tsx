@@ -26,7 +26,8 @@ const MenuList = (): JSX.Element => {
       </MenuItem>
       <MenuItem
         icon={<MemberIcon className="h-6 w-6" color="#000000" />}
-        href={`/profile/${address}`}
+        // REMOVE HARDCODED NETWORK
+        href={`/profile/goerli/${address}`}
       >
         Profile
       </MenuItem>

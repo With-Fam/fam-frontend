@@ -4,16 +4,18 @@ import {
   TokenAllocation,
 } from '@/modules/create-community/components/auctions/AuctionForm.schema'
 
-import { generalValidationSchema } from '@/modules/create-community/components/general/GeneralForm.schema'
-
 import { Duration, Maybe } from '@/types'
 
 import { Address } from 'wagmi'
+import { urlValidationSchema } from '@/utils/yup'
 
-export interface UpdateCommunityFormValues {
+interface BaseCommunitySchema {
   daoAvatar?: string
   daoWebsite?: string
   projectDescription?: Maybe<string>
+}
+
+export interface UpdateCommunityFormValues extends BaseCommunitySchema {
   // Not sure what this is
   // rendererBase: string
   auctionDuration: Duration
@@ -27,7 +29,14 @@ export interface UpdateCommunityFormValues {
   vetoerAddress?: string
 }
 
+const baseCommunitySchema: Yup.ObjectSchema<BaseCommunitySchema> = Yup.object({
+  daoAvatar: Yup.string().optional(),
+  // Check max limit
+  projectDescription: Yup.string().required('*').max(5000, '< 5000 characters'),
+  daoWebsite: urlValidationSchema,
+})
+
 export const updateCommunitySchema = (
   address?: Address | null
 ): Yup.ObjectSchema<UpdateCommunityFormValues> =>
-  auctionSettingsValidationSchema(address).concat(generalValidationSchema)
+  auctionSettingsValidationSchema(address).concat(baseCommunitySchema)

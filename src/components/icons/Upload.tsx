@@ -2,7 +2,7 @@ import type { SVGProps } from './types'
 
 export function Upload({
   className,
-  color = "#A7A7A7",
+  color = '#A7A7A7',
   ..._props
 }: SVGProps): JSX.Element {
   return (
@@ -13,7 +13,7 @@ export function Upload({
       viewBox="0 0 16 16"
       fill="none"
       className={className}
-    {..._props}
+      {..._props}
     >
       <path
         d="M13.5151 10.0175V12.5286C13.5151 12.8616 13.3829 13.181 13.1474 13.4165C12.9119 13.6519 12.5925 13.7842 12.2595 13.7842H3.47043C3.13743 13.7842 2.81807 13.6519 2.5826 13.4165C2.34713 13.181 2.21484 12.8616 2.21484 12.5286V10.0175"

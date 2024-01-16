@@ -11,6 +11,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 
 // Types
 import type { TokenAllocation } from './AuctionForm.schema'
+import { DateInput } from '@/components/forms/DateInput'
+import { UpdateCommunityFormValues } from '@/modules/create-activity/components/update-community/UpdateCommunity.schema'
 
 const variants = {
   initial: {
@@ -31,8 +33,8 @@ export const initFounder: TokenAllocation = {
 }
 
 export function FounderFieldArray(): JSX.Element {
-  const { control } = useFormContext()
-  const { fields, append } = useFieldArray({
+  const { control } = useFormContext<UpdateCommunityFormValues>()
+  const { fields, append } = useFieldArray<UpdateCommunityFormValues>({
     control,
     name: 'founderAllocation',
   })
@@ -76,9 +78,8 @@ export function FounderFieldArray(): JSX.Element {
                 </Paragraph>
               </div>
               <div className="flex-1">
-                <TextInput
+                <DateInput
                   name={`founderAllocation.${index}.endDate`}
-                  type="date"
                   placeholder="24-06-2023"
                   label="End date"
                 />

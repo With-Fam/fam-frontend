@@ -1,15 +1,11 @@
+'use client'
 // Framework
-import Image from 'next/image'
+import Link from 'next/link'
 
 // Local Components
 import { Paragraph } from '@/stories'
 import ENSname from '@/components/community/ENSname'
-
-// Content
-import { MEMBERS_DATA } from '@/content/community'
-
-// Utils
-import { formatDate } from '@/utils/shared'
+import Avatar from './Avatar'
 
 /*--------------------------------------------------------------------*/
 
@@ -36,18 +32,14 @@ const CommunityMembers = ({ data }: CommunityMembersProps): JSX.Element => {
     >
       {data?.daotokenOwners.map((member, index) => {
         return (
-          <div
+          <Link
+            // remove hardcoded goerli
+            href={`/profile/goerli/${member.owner}`}
             key={index}
             className="mb-2 block rounded-lg bg-white p-4 sm:flex sm:items-center sm:justify-between"
           >
             <div className="mb-4 flex items-center justify-start gap-2 sm:mb-0">
-              {/* <Image
-                src={member.image.href}
-                alt={member.image.alt}
-                width={32}
-                height={32}
-                className="h-8 w-8 rounded-full"
-              /> */}
+              <Avatar token={member?.owner} />
               <ENSname owner={member.owner} />
               {/* {member.founder && (
                 <p
@@ -72,7 +64,7 @@ const CommunityMembers = ({ data }: CommunityMembersProps): JSX.Element => {
                 {((member.daoTokenCount / total) * 100).toFixed(2)}%
               </Paragraph>
             </div>
-          </div>
+          </Link>
         )
       })}
     </section>

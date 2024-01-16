@@ -8,6 +8,7 @@ export interface CreateNFTFormValues {
   name: string
   symbol: string
   description: string
+  duration: number
   mediaUrl: string
   mediaType?: string
   coverUrl: string
@@ -18,7 +19,6 @@ export interface CreateNFTFormValues {
   fundsRecipient: string
   defaultAdmin: string
   publicSaleStart: string
-  publicSaleEnd: string
 }
 
 const createNFTFormSchema = yup.object({
@@ -27,7 +27,7 @@ const createNFTFormSchema = yup.object({
   description: yup.string().required('*'),
   mediaUrl: yup.string().required('*'),
   mediaType: yup.string(),
-  coverUrl: yup.string(),
+  coverUrl: yup.string().optional(),
   pricePerMint: yup.number().required('*'),
   maxPerAddress: yup.number().integer('Must be whole number'),
   maxSupply: yup.number().optional().integer('Must be whole number'),
@@ -35,19 +35,7 @@ const createNFTFormSchema = yup.object({
   defaultAdmin: addressValidationSchema,
   fundsRecipient: addressValidationSchema,
   publicSaleStart: yup.string().required('*'),
-  publicSaleEnd: yup
-    .string()
-    .required('*')
-    .test(
-      'isDateInFuture',
-      'Must be in future',
-      (value: string | undefined) => {
-        if (!value) return false
-        const date = new Date(value)
-        const now = new Date()
-        return date > now
-      }
-    ),
+  duration: yup.number().required().min(1).max(31),
 })
 
 export default createNFTFormSchema
