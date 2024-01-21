@@ -70,6 +70,8 @@ const ProfileClientPage = ({
     return <div className="px-16">Sorry, user not found</div>
   }
 
+  console.log('user data::;', userData)
+
   return (
     <div className="px-4">
       <div className="mt-24 flex flex-col items-center">

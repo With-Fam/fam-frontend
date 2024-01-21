@@ -72,7 +72,7 @@ const BidComponent = ({
             <AllBids page={page} bids={bids} />
           </div>
           {isOver ? (
-            <StartNextAuction page={page} />
+            <StartNextAuction page={page} chainId={chainId} />
           ) : (
             <PlaceBid
               token={token}
@@ -84,7 +84,7 @@ const BidComponent = ({
         <>
           <div className="col-span-1">
             <BidDescription page={page} token={token} metaData={metaData} />
-            <SocialMediaItems metadataAddress={metaData?.metadataAddress} />
+            <SocialMediaItems metadataAddress={metaData?.metadataAddress} chainId={chainId} />
           </div>
           {/* <RaisedComponent /> */}
         </>

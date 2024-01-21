@@ -5,7 +5,7 @@ import { SDK } from '@/data/subgraph/client'
 /*--------------------------------------------------------------------*/
 
 type Props = {
-  params: { communityId: string; networkSlug: string }
+  params: { communityId: string; networkId: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
@@ -21,8 +21,10 @@ async function getMemberData(chainId: number, collection: string) {
 export default async function CommunityProfile(
   _props: Props
 ): Promise<JSX.Element> {
-  const chainId = 5 // Hardcoded. Should be passed in from the router
-  const { communityId } = _props.params
+  /*
+  const { communityId, networkId } = _props.params
+  const chainId = getChainId(networkId);
   const data: any = await getMemberData(chainId, communityId)
+  */
   return <AllDrops />
 }

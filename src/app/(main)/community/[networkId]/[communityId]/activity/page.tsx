@@ -19,6 +19,7 @@ type CommunityProfileProps = {
 
 // Actions
 import { getCommunityData } from '@/app/(main)/community/[networkId]/[communityId]/actions'
+import { getChainId } from '@/utils/getChainId'
 
 /*--------------------------------------------------------------------*/
 
@@ -44,8 +45,8 @@ async function getActivityData(chainId: number, collection: string) {
 export default async function CommunityProfile(
   _props: CommunityProfileProps
 ): Promise<JSX.Element> {
-  const chainId = 5 // Hardcoded. Should be passed in from the router
-  const { communityId } = _props.params
+  const { communityId, networkId } = _props.params
+  const chainId = getChainId(networkId);
   const proposals: ProposalFragment[] = await getActivityData(
     chainId,
     communityId
@@ -58,7 +59,7 @@ export default async function CommunityProfile(
   return (
     <>
       <TabList items={TOGGLE_DATA} />
-      <CommunityActivity proposals={proposals} communityName={metaData.name} />
+      <CommunityActivity proposals={proposals} communityName={metaData.name} chainId={chainId} />
     </>
   )
 }

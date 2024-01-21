@@ -13,8 +13,10 @@ import { parseContractURI } from '@/utils/parseContractURI'
 
 // Types
 import { Address } from 'wagmi'
+import { CHAIN_ID } from '@/types/chain'
 type SocialMediaItemsProps = {
   metadataAddress: Address
+  chainId: CHAIN_ID
 }
 
 /*--------------------------------------------------------------------*/
@@ -25,11 +27,12 @@ type SocialMediaItemsProps = {
 
 const SocialMediaItems = ({
   metadataAddress,
+  chainId,
 }: SocialMediaItemsProps): JSX.Element => {
   const metadataContractParams = {
     abi: metadataAbi,
     address: metadataAddress,
-    chainId: 5,
+    chainId,
   }
 
   const { data: contractData } = useContractReads({

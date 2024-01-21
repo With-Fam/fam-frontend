@@ -69,7 +69,7 @@ const ActivitySection = ({ proposal, chainId }: ActivitySectionProps): JSX.Eleme
           </Button>
         </Link>
         <ActivitySectionComments proposal={proposal} />
-        <VoteButtonHandle />
+        <VoteButtonHandle chainId={chainId} />
       </div>
     </section>
   )

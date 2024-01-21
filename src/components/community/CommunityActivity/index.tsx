@@ -14,12 +14,14 @@ import type { ProposalFragment } from '@/data/subgraph/sdk.generated'
 type CommunityActivityProps = {
   proposals: ProposalFragment[]
   communityName: string
+  chainId: number
 }
 
 // Utils
 import { isDateExpired } from '@/utils/helpers'
 import PointyTopIcon from '@/components/shared/IconsRow/PointyTopIcon'
 import VoteButtonHandle from '@/components/community/activity/ActivitySection/VoteButtonHandle'
+
 
 /*--------------------------------------------------------------------*/
 
@@ -30,6 +32,7 @@ import VoteButtonHandle from '@/components/community/activity/ActivitySection/Vo
 const CommunityActivity = ({
   proposals,
   communityName,
+  chainId,
 }: CommunityActivityProps): JSX.Element => (
   <section className="relative mx-auto max-w-[936px] px-4 pb-4 sm:pb-10">
     {proposals.length > 0 &&
@@ -70,7 +73,7 @@ const CommunityActivity = ({
       </div>
     )}
     <CreateActivityButton />
-    <VoteButtonHandle />
+    <VoteButtonHandle chainId={chainId} />
   </section>
 )
 

@@ -20,8 +20,10 @@ import { waitForTransaction } from 'wagmi/actions'
 
 // Types
 import { CurrentAuctionFragment } from '@/data/subgraph/sdk.generated'
+import { CHAIN_ID } from '@/types'
 type BidStatusProps = {
   page: CurrentAuctionFragment
+  chainId: CHAIN_ID
 }
 
 /*--------------------------------------------------------------------*/
@@ -30,15 +32,14 @@ type BidStatusProps = {
  * Component
  */
 
-const StartNextAuction = ({ page }: BidStatusProps): JSX.Element => {
+const StartNextAuction = ({ page, chainId }: BidStatusProps): JSX.Element => {
   const [settling, setSettling] = useState(false)
-  const chain = 5 // Hardcoded. Should be passed in from the router
   const addresses = useDaoStore((state) => state.addresses)
 
   const { data: paused } = useContractRead({
     enabled: !!addresses?.auction,
     address: addresses?.auction,
-    chainId: chain,
+    chainId,
     abi: auctionAbi,
     functionName: 'paused',
   })

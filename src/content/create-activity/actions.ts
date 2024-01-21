@@ -9,13 +9,13 @@ const ACTIONS_DATA = [
     image: '/assets/images/create-activity/donut.jpg',
     href: '/create-activity/add/nft',
   },
-  {
+/*   {
     id: 'merch',
     title: 'Merch drop',
     description: 'Digi-physical merch collections for your fans',
     image: '/assets/images/create-activity/pyramid.jpg',
     href: '/create-activity/add/crowdfund',
-  },
+  }, */
   {
     id: 'send-eth',
     title: 'Send funds',
@@ -23,13 +23,13 @@ const ACTIONS_DATA = [
     image: '/assets/images/create-activity/cylinder.jpg',
     href: '/create-activity/add/send-funds',
   },
-  {
+/*   {
     id: 'crowdfund',
     title: 'Start a crowdfund',
     description: 'Fund your communities ideas and projects',
     image: '/assets/images/create-activity/spring.jpg',
     href: '/create-activity/add/crowdfund',
-  },
+  }, */
   {
     id: 'airdrop',
     title: 'Gift a membership',

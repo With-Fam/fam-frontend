@@ -9,8 +9,10 @@ import { Heading } from '@/stories'
 
 // Types
 import { TokenFragment } from '@/data/subgraph/sdk.generated'
+import { CHAIN_ID } from '@/types'
 type FoundersComponentProps = {
   token: TokenFragment
+  chainId: CHAIN_ID
 }
 
 // Utils
@@ -23,11 +25,11 @@ import RenderFounder from '@/components/community/RenderFounder'
  * Component
  */
 
-const FoundersComponent = ({ token }: FoundersComponentProps): JSX.Element => {
+const FoundersComponent = ({ token, chainId }: FoundersComponentProps): JSX.Element => {
   const tokenContractParams = {
     abi: tokenAbi,
     address: token?.tokenContract,
-    chainId: 5,
+    chainId,
   }
 
   const { data: contractData } = useContractReads({

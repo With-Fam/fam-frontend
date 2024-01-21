@@ -4,12 +4,13 @@ import { TOGGLE_DATA } from '@/content/community'
 
 // Types
 type CommunityProfileProps = {
-  params: { communityId: string; networkSlug: string }
+  params: { communityId: string; networkId: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
 // API
 import { SDK } from '@/data/subgraph/client'
+import { getChainId } from '@/utils/getChainId';
 
 async function getMemberData(chainId: number, collection: string) {
   const dao = await SDK.connect(chainId).daoMembersList({
@@ -29,8 +30,8 @@ async function getMemberData(chainId: number, collection: string) {
 export default async function CommunityProfile(
   _props: CommunityProfileProps
 ): Promise<JSX.Element> {
-  const chainId = 5 // Hardcoded. Should be passed in from the router
-  const { communityId } = _props.params
+  const { communityId, networkId } = _props.params
+  const chainId = getChainId(networkId);
   const data: any = await getMemberData(chainId, communityId)
   return (
     <>

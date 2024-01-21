@@ -15,12 +15,33 @@ import { metadataAbi, tokenAbi } from '@/data/contract/abis'
 import { useRouter } from 'next/navigation'
 import { CheckMark, Copy } from '@/components/icons'
 import { Paragraph } from '@/stories'
+import { getChainId } from '@/utils/getChainId'
 
 const DEPLOYMENT_ERROR = {
   MISMATCHING_SIGNER:
     'Oops, it looks like the owner of the token contract differs from your signer address. Please ensure that this transaction is handled by the same address.',
   GENERIC:
     'Oops! Looks like there was a problem. Please ensure that your input data is correct',
+}
+
+const createCommunity = async (community: any) => {
+  try {
+    const response = await fetch('/api/create-community', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(community),
+    })
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+
+    await response.json()
+  } catch (error) {
+    console.error('Error:', error)
+  }
 }
 
 export function ReviewForm(): JSX.Element {
@@ -31,11 +52,12 @@ export function ReviewForm(): JSX.Element {
     orderedLayers,
     setFulfilledSections,
     resetForm,
+    general,
   } = useFormStore()
 
   const methods = useForm()
 
-  const chain = 5 //useChainStore((x) => x.chain) - TODO: get chain from store???
+  const chain = getChainId('goerli')
 
   const { data: tokenOwner } = useContractRead({
     enabled: !!deployedDao.token,
@@ -100,7 +122,13 @@ export function ReviewForm(): JSX.Element {
       toast.remove()
       toast.success('DAO Deployed!')
       setIsLoading(false)
-      console.log('ADDRESSES::', deployedDao.token)
+
+      createCommunity({
+        name: general.daoName,
+        community_id: deployedDao.token,
+        network: 'goerli',
+      })
+
       router.push(`/community/goerli/${deployedDao.token}/`)
       setTimeout(() => {
         resetForm()

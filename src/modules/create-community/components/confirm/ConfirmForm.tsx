@@ -39,6 +39,9 @@ import type { AddressType } from '@/types'
 import { IPFSImage } from '@/components/ipfs/IPFSImage'
 // import { RandomPreview } from '@/components/create-community/artwork/RandomPreview'
 
+// Utils
+import { getChainId } from '@/utils/getChainId'
+
 /*--------------------------------------------------------------------*/
 
 /**
@@ -81,7 +84,7 @@ export function ConfirmForm(): JSX.Element {
     useState<boolean>(false)
   const [deploymentError, setDeploymentError] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const chain = 5 //useChainStore((x) => x.chain) - TODO: get chain from store???
+  const chain = getChainId('')
   const { wallet: activeWallet } = usePrivyWagmi()
 
   const methods = useForm<ConfirmFormValues>({

@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 interface ActivityProfileProps {
   params: {
     activityId: string
+    networkId: string
   }
 }
 
@@ -12,6 +13,7 @@ import { ActivitySection } from '@/components/community/activity'
 
 // API
 import { SDK } from '@/data/subgraph/client'
+import { getChainId } from '@/utils/getChainId'
 
 async function getProposalData(chainId: number, proposalId: string) {
   const { proposal } = await SDK.connect(chainId).proposal({
@@ -38,8 +40,8 @@ export const metadata: Metadata = {
 const ActivityProfile = async ({
   params,
 }: ActivityProfileProps): Promise<JSX.Element> => {
-  const { activityId } = params
-  const chainId = 5 // Hardcoded. Should be passed in from the router
+  const { activityId, networkId } = params
+  const chainId = getChainId(networkId);
   const proposal: ProposalQuery["proposal"] | null = await getProposalData(
     chainId,
     activityId

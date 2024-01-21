@@ -1,12 +1,20 @@
 'use client'
-import { useState, FC } from 'react'
-// Local Components
 
-import { useContractWrite, usePrepareContractWrite } from 'wagmi'
-// import { readContract } from 'wagmi/actions'
+// Framework
+import { useState } from 'react'
+
+// Third Parties
+import { useContractWrite } from 'wagmi'
 import { waitForTransaction } from 'wagmi/actions'
+
+// Helpers
 import { useDaoStore } from '@/modules/dao'
 import { auctionAbi } from '@/data/contract/abis'
+
+// Types
+type PreAuctionProps = {
+  chainId: number
+}
 
 /*--------------------------------------------------------------------*/
 
@@ -14,9 +22,8 @@ import { auctionAbi } from '@/data/contract/abis'
  * Component
  */
 
-const PreAuction: FC = () => {
+const PreAuction = ({ chainId }: PreAuctionProps): JSX.Element => {
   const [loading, setIsLoading] = useState(false)
-  const chain = 5 // Hardcoded. Should be passed in from the router
   const addresses = useDaoStore((state) => state.addresses)
 
   const address = addresses?.auction
@@ -26,7 +33,7 @@ const PreAuction: FC = () => {
     abi: auctionAbi,
     address,
     functionName: 'unpause',
-    chainId: chain,
+    chainId,
   }
 
   // USEPREPARECONTRACTWRITE NOT WORKING. LOOK INTO FIX!!!!

@@ -14,7 +14,7 @@ import {
   waitForTransaction,
   writeContract,
 } from 'wagmi/actions'
-import toast from 'react-hot-toast'
+
 // Components
 import { Button, Loading } from '@/components/shared'
 import { Paragraph } from '@/stories'
@@ -23,8 +23,13 @@ import RowButton from '@/components/community/activity/ActivitySection/RowButton
 import { useDaoStore } from '@/modules/dao'
 // ABI
 import { governorAbi } from '@/data/contract/abis'
+
 // Types
+import { CHAIN_ID } from '@/types'
 type BytesType = `0x${string}`
+type VoteButtonHandleProps = {
+  chainId: CHAIN_ID
+}
 
 /*--------------------------------------------------------------------*/
 
@@ -32,7 +37,7 @@ type BytesType = `0x${string}`
  * Component
  */
 
-const VoteButtonHandle = (): JSX.Element => {
+const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
   const { addresses } = useDaoStore()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSucess] = useState(false)
@@ -99,7 +104,7 @@ const VoteButtonHandle = (): JSX.Element => {
     const governorContractParams = {
       address: addresses.governor,
       abi: governorAbi,
-      chainId: 5, // REMOVE HARDCODED CHAIN ID
+      chainId,
     }
 
     let vote: Promise<SendTransactionResult>
@@ -143,7 +148,7 @@ const VoteButtonHandle = (): JSX.Element => {
             aria-label="Exit"
             onClick={() => exitAndReset()}
           />
-          <div className="fixed rounded-2xl bottom-0 left-0 z-10 h-max w-full bg-white p-4 md:inset-1/2 md:w-[343px] md:-translate-x-1/2 md:-translate-y-1/2">
+          <div className="fixed bottom-0 left-0 z-10 h-max w-full rounded-2xl bg-white p-4 md:inset-1/2 md:w-[343px] md:-translate-x-1/2 md:-translate-y-1/2">
             {isSubmitting && (
               <div className="h-full w-full">
                 <Loading />
@@ -153,7 +158,7 @@ const VoteButtonHandle = (): JSX.Element => {
               <>
                 <button
                   aria-label="Close Vote"
-                  className="bg-background-icon cursor-point flex h-8 w-8 items-center justify-center rounded-full"
+                  className="cursor-point flex h-8 w-8 items-center justify-center rounded-full bg-background-icon"
                   onClick={() => exitAndReset()}
                 >
                   <Close />

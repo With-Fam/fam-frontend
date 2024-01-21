@@ -8,12 +8,13 @@ import PreAuction from '@/components/community/BidComponent/PreAuction'
 
 // Types
 type CommunityProfileProps = {
-  params: { communityId: string; networkSlug: string }
+  params: { communityId: string; networkId: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
 // Actions
 import { getCommunityData } from '@/app/(main)/community/[networkId]/[communityId]/actions'
+import { getChainId } from '@/utils/getChainId'
 
 /*--------------------------------------------------------------------*/
 
@@ -24,8 +25,8 @@ import { getCommunityData } from '@/app/(main)/community/[networkId]/[communityI
 export default async function CommunityProfile(
   _props: CommunityProfileProps
 ): Promise<JSX.Element> {
-  const chainId = 5 // Hardcoded. Should be passed in from the router
-  const { communityId } = _props.params
+  const { communityId, networkId } = _props.params
+  const chainId = getChainId(networkId);
   const { page, token, metaData, bids } = await getCommunityData(
     chainId,
     communityId.toLowerCase()
@@ -35,7 +36,7 @@ export default async function CommunityProfile(
   console.log('page::', page)
   console.log('token::', token)
 
-  if (!page && !token) return <PreAuction />
+  if (!page && !token) return <PreAuction chainId={chainId} />
   return (
     <>
       <TabList items={TOGGLE_DATA} />
