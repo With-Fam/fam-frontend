@@ -46,3 +46,14 @@ export type DaoProps = AuctionFragment['dao']
 export type FounderParameters = NonNullable<
   WriteContractUnpreparedArgs<typeof managerAbi, 'deploy'>
 >['args'][0]
+
+export type CommunityDataBase = {
+  id: string
+  name: string
+  community_id: string
+  enabled: true
+  featured: false
+  created_at: string
+  updated_at: string
+  network: string
+}

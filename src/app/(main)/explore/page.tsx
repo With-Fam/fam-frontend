@@ -1,17 +1,23 @@
 // Components
 import { Toggle } from '@/stories'
-import { Communities, ExploreHeader, ExploreHeaderMobile } from '@/components/explore'
+import {
+  Communities,
+  ExploreHeader,
+  ExploreHeaderMobile,
+} from '@/components/explore'
 
 // Types
 import type { Metadata } from 'next'
-interface ExploreProps {
+type ExplorePageProps = {
   searchParams: {
-    type: string
-    search: string
+    page: string
+    type: 'new' | 'trending'
   }
 }
 
 // Content
+import { getExploreData } from '@/app/(main)/explore/actions'
+import ExplorePagination from '@/components/explore/ExplorePagination'
 import { EXPLORE_TOGGLE_DATA } from '@/content/explore'
 
 /*--------------------------------------------------------------------*/
@@ -22,7 +28,7 @@ import { EXPLORE_TOGGLE_DATA } from '@/content/explore'
 
 export const metadata: Metadata = {
   title: 'Explore Communities',
-  description: 'to do',
+  description: 'All Fam communities',
   keywords: [
     'Music Community Platform',
     'Collaborative Music Space',
@@ -47,17 +53,34 @@ export const metadata: Metadata = {
   },
 }
 
-const Explore = ({ searchParams }: ExploreProps): JSX.Element => {
-  const { type, search } = searchParams
+const ExplorePage = async ({
+  searchParams,
+}: ExplorePageProps): Promise<JSX.Element> => {
+  const limit = 10
+  const chainId = 5
+  const { communities, count } = await getExploreData({
+    limit,
+    chainId,
+    page: searchParams.page,
+    trending: searchParams.type === 'trending',
+  })
 
   return (
     <>
       <ExploreHeader />
       <ExploreHeaderMobile />
-      <Toggle type={type} items={EXPLORE_TOGGLE_DATA} defaultType="all" />
-      <Communities type={type} search={search} />
+      <Toggle
+        type={searchParams.type}
+        items={EXPLORE_TOGGLE_DATA}
+        defaultType="trending"
+      />
+      <Communities items={communities} />
+      <ExplorePagination
+        page={searchParams.page || '1'}
+        hasNextPage={count > limit * Number(searchParams.page || '1')}
+      />
     </>
   )
 }
 
-export default Explore
+export default ExplorePage

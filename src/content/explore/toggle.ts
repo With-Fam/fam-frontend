@@ -1,8 +1,13 @@
 const EXPLORE_TOGGLE_DATA = [
   {
-    id: 'all',
-    title: 'All communities',
-    href: '/explore?type=all',
+    id: 'trending',
+    title: 'Trending',
+    href: '/explore?type=trending',
+  },
+  {
+    id: 'new',
+    title: 'New',
+    href: '/explore?type=new',
   },
 ]
 

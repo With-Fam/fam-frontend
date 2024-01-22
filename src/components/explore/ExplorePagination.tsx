@@ -7,9 +7,8 @@ import Link from 'next/link'
 import { Arrow } from '@/components/icons'
 
 // Types
-type CommunitiesPaginationProps = {
+type UsersProfileProps = {
   hasNextPage: boolean
-  user: string
   page: string
 }
 
@@ -19,11 +18,10 @@ type CommunitiesPaginationProps = {
  * Component
  */
 
-const CommunitiesPagination = ({
-  user,
+const ExplorePagination = ({
   page,
   hasNextPage,
-}: CommunitiesPaginationProps): JSX.Element => {
+}: UsersProfileProps): JSX.Element => {
   const hidePagination = page === '1' && !hasNextPage
 
   if (hidePagination) return <></>
@@ -32,9 +30,7 @@ const CommunitiesPagination = ({
     <div className="mt-6 flex w-full items-center justify-center gap-4">
       <Link
         href={
-          page === '1' || !page
-            ? ''
-            : `/profile/${user}?type=communities&page=${parseInt(page) - 1}`
+          page === '1' || !page ? '' : `/explore?page=${parseInt(page) - 1}`
         }
         passHref
       >
@@ -47,12 +43,7 @@ const CommunitiesPagination = ({
         </button>
       </Link>
       <p className="mx-4">Page {page || 1}</p>
-      <Link
-        href={`/profile/${user}?type=communities&page=${
-          parseInt(page || '1') + 1
-        }`}
-        passHref
-      >
+      <Link href={`/profile?page=${parseInt(page || '1') + 1}`} passHref>
         <button aria-label="Next page" disabled={!hasNextPage}>
           <Arrow color={!hasNextPage ? undefined : '#000'} />
         </button>
@@ -61,4 +52,4 @@ const CommunitiesPagination = ({
   )
 }
 
-export default CommunitiesPagination
+export default ExplorePagination

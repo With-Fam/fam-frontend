@@ -1,14 +1,12 @@
 // Local Components
-import { Paragraph, TrendingCard } from '@/stories'
+import CommunityCard from '@/components/explore/CommunityCard'
+import { ExploreDaosPageQuery } from '@/data/subgraph/sdk.generated'
+import { Paragraph } from '@/stories'
 
 // Types
 interface CommunitiesProps {
-  type: string
-  search: string
+  items: ExploreDaosPageQuery['auctions']
 }
-
-// Utils
-import { filterCommunities } from '@/utils/explore'
 
 /*--------------------------------------------------------------------*/
 
@@ -16,33 +14,22 @@ import { filterCommunities } from '@/utils/explore'
  * Component
  */
 
-const Communities = ({
-  type = 'trending',
-  search = '',
-}: CommunitiesProps): JSX.Element => {
-  const communities = filterCommunities({ type, search })
-
+const Communities = ({ items }: CommunitiesProps): JSX.Element => {
   return (
     <section className="block px-4">
-      <div className="mx-auto grid w-full max-w-4xl grid-cols-1 sm:grid-cols-2 justify-center gap-8 md:grid-cols-3">
-        {communities.map((community, index) => {
-          const { image, title, value, users, text, imageAlt, slug } = community
+      <div className="mx-auto grid w-full max-w-4xl grid-cols-1 justify-center gap-8 sm:grid-cols-2 md:grid-cols-3">
+        {items.map((community, index) => {
           return (
-            <div key={index} className="rounder-2xl bg-white p-3 max-w-sm mx-auto h-auto w-full sm:w-auto sm:mx-0 sm:max-w-none">
-              <TrendingCard
-                image={image}
-                title={title}
-                value={value}
-                users={users}
-                text={text}
-                slug={slug}
-                imageAlt={imageAlt}
-              />
+            <div
+              key={index}
+              className="rounder-2xl mx-auto h-auto w-full max-w-sm bg-white p-3 sm:mx-0 sm:w-auto sm:max-w-none"
+            >
+              <CommunityCard community={community} />
             </div>
           )
         })}
       </div>
-      {communities.length === 0 && (
+      {items.length === 0 && (
         <Paragraph as="p3" className="text-center">
           No communities found.
         </Paragraph>
