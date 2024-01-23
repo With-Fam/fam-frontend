@@ -1,18 +1,23 @@
 // Third parties
-import { usePrivy } from '@privy-io/react-auth'
+import { Wallet, usePrivy } from '@privy-io/react-auth'
 import { useAccount } from 'wagmi'
 
 // Local Components
 import { Cross, ExitIcon, EyeIcon, MemberIcon } from '@/components/icons'
 import MenuItem from '@/components/shared/Navbar/MenuItem'
 
-/*--------------------------------------------------------------------*/
+// Props
+type MenuListProps = {
+  wallet: Wallet | undefined
+}
+
+/*-------------------------------------------------------------------*/
 
 /**
  * Component
  */
 
-const MenuList = (): JSX.Element => {
+const MenuList = ({ wallet }: MenuListProps): JSX.Element => {
   const { logout } = usePrivy()
   const { address } = useAccount()
 
@@ -27,7 +32,7 @@ const MenuList = (): JSX.Element => {
       <MenuItem
         icon={<MemberIcon className="h-6 w-6" color="#000000" />}
         // REMOVE HARDCODED NETWORK
-        href={`/profile/goerli/${address}`}
+        href={`/profile/goerli/${wallet?.address || address}`}
       >
         Profile
       </MenuItem>

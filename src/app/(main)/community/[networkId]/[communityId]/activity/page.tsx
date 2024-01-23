@@ -46,7 +46,7 @@ export default async function CommunityProfile(
   _props: CommunityProfileProps
 ): Promise<JSX.Element> {
   const { communityId, networkId } = _props.params
-  const chainId = getChainId(networkId);
+  const chainId = getChainId(networkId)
   const proposals: ProposalFragment[] = await getActivityData(
     chainId,
     communityId
@@ -59,7 +59,11 @@ export default async function CommunityProfile(
   return (
     <>
       <TabList items={TOGGLE_DATA} />
-      <CommunityActivity proposals={proposals} communityName={metaData.name} chainId={chainId} />
+      <CommunityActivity
+        chainId={chainId}
+        proposals={proposals}
+        communityName={metaData.name}
+      />
     </>
   )
 }

@@ -137,7 +137,7 @@ const PopupMenu = (): JSX.Element => {
           />
         )}
         {userBalance && <WalletComponent userBalance={userBalance} />}
-        <MenuList />
+        <MenuList wallet={user.wallet} />
       </motion.div>
     </div>
   )

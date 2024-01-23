@@ -2,6 +2,7 @@
 
 // Framework
 import dynamic from 'next/dynamic'
+import { useState, useEffect } from 'react'
 
 // Local Components
 import { Paragraph, PollComponent } from '@/stories'
@@ -15,7 +16,7 @@ const ActivityCreator = dynamic(
 )
 
 // Utils
-import { formatUnixTimestampDate, isDateExpired } from '@/utils/helpers'
+import { formatUnixTimestampDate } from '@/utils/helpers'
 
 // Types
 import { ProposalFragment } from '@/data/subgraph/sdk.generated'
@@ -25,6 +26,11 @@ type ActivitySectionInfoProps = {
   proposal: ProposalFragment
   chainId: number
 }
+
+// Helpers
+import {
+  getProposalState,
+} from '@/data/contract/requests/getProposalState'
 
 /*--------------------------------------------------------------------*/
 
@@ -36,30 +42,28 @@ const ActivitySectionInfo = ({
   proposal,
   chainId,
 }: ActivitySectionInfoProps): JSX.Element => {
+  const [state, setState] = useState<number | null>(null)
+  const proposalId = proposal.proposalId
+  const governorAddress = proposal.dao.governorAddress
   const {
     proposer,
-    quorumVotes,
     forVotes,
     againstVotes,
     abstainVotes,
-    voteEnd,
     timeCreated,
     title,
   } = proposal
   const sumOfVotes = forVotes + againstVotes + abstainVotes
   const rateFor = forVotes / sumOfVotes
   const rateAgainst = againstVotes / sumOfVotes
-  let status: null | 'passed' | 'rejected' | 'expired' = null
 
-  if (isDateExpired(voteEnd)) {
-    if (sumOfVotes < Number(quorumVotes)) {
-      status = 'expired'
-    } else if (forVotes > againstVotes) {
-      status = 'passed'
-    } else {
-      status = 'rejected'
+  useEffect(() => {
+    if (governorAddress && proposalId) {
+      getProposalState(chainId, governorAddress, proposalId).then((data) => {
+        setState(data)
+      })
     }
-  }
+  }, [proposal, chainId, proposalId, governorAddress])
 
   return (
     <>
@@ -79,7 +83,7 @@ const ActivitySectionInfo = ({
               {title}
             </Paragraph>
             <div className="flex flex-1 justify-start">
-              <PollComponent status={status} />
+              <PollComponent state={state} />
             </div>
           </div>
           <div>

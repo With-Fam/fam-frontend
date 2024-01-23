@@ -13,6 +13,9 @@ import '@/styles/quill-toolbar.scss'
 // Context
 import { MockStoreProvider } from '@/contexts/mock-store'
 
+// Components
+import { ProgressBar } from '@/components/shared'
+
 export const metadata: Metadata = {
   metadataBase: new URL('http://localhost:3000'),
 }
@@ -26,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex min-h-screen flex-col bg-background font-abc">
+        <ProgressBar />
         <WalletContext>
           <DaoContext>
             <MockStoreProvider>{children}</MockStoreProvider>

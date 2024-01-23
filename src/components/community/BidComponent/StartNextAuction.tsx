@@ -9,12 +9,10 @@ import { useState } from 'react'
 import { useDaoStore } from '@/modules/dao'
 import { auctionAbi } from '@/data/contract/abis'
 import {
-  useAccount,
   useContractRead,
   useContractWrite,
   usePrepareContractWrite,
 } from 'wagmi'
-import { TransactionExecutionError } from 'viem'
 import toast from 'react-hot-toast'
 import { waitForTransaction } from 'wagmi/actions'
 

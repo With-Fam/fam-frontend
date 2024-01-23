@@ -52,7 +52,7 @@ const CommunityActivity = ({
                 passHref
                 className="w-full"
               >
-                <ActivityData proposal={proposal as any} />
+                <ActivityData chainId={chainId} proposal={proposal as any} />
                 <ActivityDescription>
                   {proposal.description}
                 </ActivityDescription>

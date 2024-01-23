@@ -41,7 +41,7 @@ const FeatureWidgets = (): JSX.Element => (
                 />
               )
 
-            case 'Poll':
+            case 'poll':
               return (
                 <PollWidget
                   key={index}

@@ -1,5 +1,8 @@
+'use client'
+
 // Framework
 import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
 
 // Local Components
 import { Paragraph, PollComponent } from '@/stories'
@@ -19,11 +22,13 @@ interface ActivityDataProps {
   proposal: ProposalFragment & {
     votes: ProposalVoteFragment[]
   }
+  chainId: number
 }
 
 // Utils
-import { formatUnixTimestampDate, isDateExpired } from '@/utils/helpers'
+import { formatUnixTimestampDate } from '@/utils/helpers'
 import UsersRowDynamic from '@/components/community/UsersRowDynamic'
+import { getProposalState } from '@/data/contract/requests/getProposalState'
 
 /*--------------------------------------------------------------------*/
 
@@ -31,31 +36,32 @@ import UsersRowDynamic from '@/components/community/UsersRowDynamic'
  * Component
  */
 
-const ActivityData = ({ proposal }: ActivityDataProps): JSX.Element => {
+const ActivityData = ({
+  proposal,
+  chainId,
+}: ActivityDataProps): JSX.Element => {
+  const [state, setState] = useState<number | null>(null)
+  const proposalId = proposal.proposalId
+  const governorAddress = proposal.dao.governorAddress
+
   const {
     title,
     proposer,
     timeCreated,
     votes,
-    quorumVotes,
     forVotes,
     againstVotes,
     abstainVotes,
-    voteEnd,
   } = proposal
   const sumOfVotes = forVotes + againstVotes + abstainVotes
 
-  let status: null | 'passed' | 'rejected' | 'expired' = null
-
-  if (isDateExpired(voteEnd)) {
-    if (sumOfVotes < Number(quorumVotes)) {
-      status = 'expired'
-    } else if (forVotes > againstVotes) {
-      status = 'passed'
-    } else {
-      status = 'rejected'
+  useEffect(() => {
+    if (governorAddress && proposalId) {
+      getProposalState(chainId, governorAddress, proposalId).then((data) => {
+        setState(data)
+      })
     }
-  }
+  }, [proposal, chainId, proposalId, governorAddress])
 
   return (
     <>
@@ -74,7 +80,7 @@ const ActivityData = ({ proposal }: ActivityDataProps): JSX.Element => {
           />
         </div>
         <div className="relative right-0 top-0 flex flex-1 justify-end sm:absolute sm:right-4 sm:top-4">
-          <PollComponent status={status} />
+          <PollComponent state={state} />
         </div>
       </div>
     </>
