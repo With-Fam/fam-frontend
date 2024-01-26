@@ -20,6 +20,7 @@ type BidDescriptionProps = {
 
 // Utils
 import { convertIpfsUrl } from '@/utils/helpers'
+import { HandleImage } from '@/components/shared/HandleImage'
 
 /*--------------------------------------------------------------------*/
 
@@ -39,7 +40,7 @@ const BidDescription = ({
     <div className="col-span-1 flex w-full flex-col">
       <div className="mb-4 flex items-center">
         {!imageError && (
-          <Image
+          <HandleImage
             src={imageSrc}
             width={40}
             height={40}

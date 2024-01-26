@@ -1,7 +1,5 @@
 import * as Yup from 'yup'
 
-import { BuilderTransaction } from '../../stores/useProposalStore'
-
 export const ERROR_CODE: Record<string, string> = {
   GENERIC: 'There was a problem submitting this proposal, please try again..',
   WRONG_NETWORK: "You're on the wrong network. Please switch and try again.",
@@ -20,8 +18,8 @@ const schema: Yup.ObjectSchema<Omit<ReviewProposalFormValues, 'transactions'>> =
     title: Yup.string()
       .required('a title is required')
       .matches(
-        /^[A-Za-z0-9 _.-]*[A-Za-z0-9][A-Za-z0-9 _.-]*$/,
-        'only numbers or letters'
+        /^[A-Za-z0-9 !#@$%&/=?;:|<>_.*-]+$/,
+        'only numbers, letters, and specified symbols (!#@$%&/=?;:|<>-_+*)'
       )
       .max(5000, '< 256 characters'),
     summary: Yup.string().optional(),

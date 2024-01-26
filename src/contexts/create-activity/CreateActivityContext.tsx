@@ -3,35 +3,42 @@
 // Framework
 import {
   createContext,
-  PropsWithChildren,
   useCallback,
   useMemo,
   useState,
   useContext,
   useEffect,
   useRef,
+  type PropsWithChildren,
 } from 'react'
-
-import type { CreateSection } from '@/modules/create-community/types'
 
 // Components
 import { Loading } from '@/components/shared'
 import { CreateContextNavigation } from '../CreateContextNavigation'
-
-import { useActivityFormStore } from '@/modules/create-activity/stores'
 import {
   ActionForm,
   ActionSection,
   ReviewProposalForm,
   SubmitProposal,
 } from '@/modules/create-activity/components'
-import { ReviewProposalFormValues } from '@/modules/create-activity/components/review-proposal/schema'
+
+// Helpers
+import { useActivityFormStore } from '@/modules/create-activity/stores'
 import {
   TRANSACTION_TYPES,
-  TransactionType,
+  type TransactionType,
 } from '@/modules/create-activity/types'
-import { AddressType, Maybe } from '@/types'
+let sections: CreateSection[] = []
 
+// Types
+import type { CreateSection } from '@/modules/create-community/types'
+import type { AddressType, Maybe } from '@/types'
+type ActivityProviderProps = PropsWithChildren<{
+  params: {
+    communityId: string
+    networkId: string
+  }
+}>
 export interface CreateActivityContextType {
   loading: boolean
   section: CreateSection
@@ -40,8 +47,6 @@ export interface CreateActivityContextType {
   prev: () => void
   title: string
 }
-
-let sections: CreateSection[] = []
 
 const CreateActivityContext = createContext<CreateActivityContextType>({
   loading: false,
@@ -52,17 +57,16 @@ const CreateActivityContext = createContext<CreateActivityContextType>({
   title: '',
 })
 
-type Props = PropsWithChildren<{
-  params: {
-    communityId: string
-    networkId: string
-  }
-}>
+/*--------------------------------------------------------------------*/
 
-// IMPORTANT: Create loading component
-const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
+const CreateActivityProvider = ({
+  children,
+  params,
+}: ActivityProviderProps): JSX.Element => {
   const { networkId, communityId } = params
   const [loading, setLoading] = useState<boolean>(true)
+  const [loadingMessage, setLoadingMessage] =
+    useState<string>('Setting the vibes')
   const reviewFormRef = useRef<Maybe<HTMLFormElement>>(null)
   const {
     activeSection,
@@ -76,6 +80,13 @@ const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
   useEffect(() => {
     setLoading(false)
   }, [])
+
+  useEffect(() => {
+    if(loadingMessage === 'Proposal posted. Redirecting...') {
+      setLoadingMessage('Setting the vibes')
+      window.location.href = `/community/${networkId}/${communityId}/activity`
+    }
+  }, [loadingMessage])
 
   const navigate = useCallback(
     (a: number) => {
@@ -125,7 +136,14 @@ const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
     }
 
     const proposal: CreateSection = {
-      action: <SubmitProposal formRef={reviewFormRef} />,
+      action: (
+        <SubmitProposal
+          formRef={reviewFormRef}
+          loading={loading}
+          setLoadingMessage={setLoadingMessage}
+          setLoading={setLoading}
+        />
+      ),
       order: 2,
       title: 'New activity',
       key: 'proposal',
@@ -133,18 +151,13 @@ const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
         <ReviewProposalForm
           formRef={reviewFormRef}
           defaultValues={proposalDefault}
+          setLoading={setLoading}
+          setLoadingMessage={setLoadingMessage}
         />
       ),
     }
     return [action, transaction, proposal]
-  }, [
-    proposalDefault,
-    // setProposal,
-    activityType,
-    communityId,
-    next,
-    setActivityType,
-  ])
+  }, [proposalDefault, activityType, communityId, next, setActivityType])
 
   return (
     <CreateActivityContext.Provider
@@ -159,7 +172,7 @@ const CreateActivityProvider = ({ children, params }: Props): JSX.Element => {
     >
       {loading ? (
         <Loading
-          title="Setting the vibes"
+          title={loadingMessage}
           description="Put your feet up and enjoy the tunes"
         />
       ) : (

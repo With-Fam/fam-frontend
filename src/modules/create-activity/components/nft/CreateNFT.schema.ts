@@ -11,6 +11,7 @@ export interface CreateNFTFormValues {
   duration: number
   mediaUrl: string
   mediaType?: string
+  imageBlob?: string
   coverUrl: string
   pricePerMint: number
   maxPerAddress?: number

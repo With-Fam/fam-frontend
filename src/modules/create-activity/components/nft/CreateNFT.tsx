@@ -2,6 +2,7 @@
 
 // Framework
 import { useCallback, useState } from 'react'
+import Image from 'next/image'
 import { useAccount } from 'wagmi'
 import { encodeFunctionData, parseEther } from 'viem'
 
@@ -10,7 +11,8 @@ import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 // Components
-import { UploadIPFSImage, SingleIPFSMediaUpload } from '@/components/ipfs'
+import { SingleIPFSMediaUpload } from '@/components/ipfs'
+import RenderImage from '@/modules/create-activity/components/nft/RenderImage'
 import {
   InputSlider,
   TextArea,
@@ -45,10 +47,6 @@ const UINT_32_MAX = BigInt('4294967295')
 const HASH_ZERO =
   '0x0000000000000000000000000000000000000000000000000000000000000000' as `0x${string}`
 
-type CreateNFTContractValues = Omit<CreateNFTFormValues, 'duration'> & {
-  publicSaleEnd: string
-}
-
 type CreateNFTFormProps = {
   callback: () => void
 }
@@ -76,7 +74,8 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
     defaultValues: initialValues,
     resolver: yupResolver(schema) as any,
   })
-  const { control, formState, handleSubmit, setValue } = methods
+  const { control, formState, handleSubmit, setValue, watch, getValues } =
+    methods
 
   const handleEditionTypeChanged = useCallback(
     (value: EditionType) => {
@@ -85,8 +84,6 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
     },
     [setEditionType, setValue]
   )
-
-  console.log('formState::', formState)
 
   const addTransaction = useProposalStore((state) => state.addTransaction)
   const chain = useChainStore((x) => x.chain)
@@ -194,6 +191,14 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
               )}
             />
           </div>
+          {watch('imageBlob') && (
+            <div className="col-span-2 flex flex-col items-center justify-center   rounded-xl bg-white p-4">
+              <span className="mb-2 block w-full text-left font-abcMedium text-sm">
+                Media Preview
+              </span>
+              <RenderImage image={getValues('imageBlob')} />
+            </div>
+          )}
           <AnimatePresence>
             <CoverUrlInput />
           </AnimatePresence>

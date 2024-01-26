@@ -62,6 +62,8 @@ const DEPLOYMENT_ERROR = {
     'Oops! Looks like there was a problem handling the dao deployment. Please ensure that input data from all the previous steps is correct',
   INVALID_ALLOCATION_PERCENTAGE:
     'Oops! Looks like there are undefined founder allocation values. Please go back to the allocation step to ensure that valid allocation values are set.',
+  MISMATCHING_NETWORK:
+    'Oops! Looks like there is a chain mismatch.',
 }
 
 export function ConfirmForm(): JSX.Element {
@@ -190,12 +192,21 @@ export function ConfirmForm(): JSX.Element {
         functionName: 'deploy',
         args: [founderParams, tokenParams, auctionParams, govParams],
       })
+
       const tx = await writeContract(config)
       console.log('tx::::', tx)
       if (tx.hash) transaction = await waitForTransaction({ hash: tx.hash })
     } catch (e) {
       console.log('e', e)
+
+      if ((e as any).name === 'ChainMismatchError') {
+        setDeploymentError(DEPLOYMENT_ERROR.MISMATCHING_NETWORK)
+      } else {
+        setDeploymentError(DEPLOYMENT_ERROR.GENERIC)
+      }
+      setIsLoading(false)
       setIsPendingTransaction(false)
+
       return
     }
 
@@ -249,12 +260,17 @@ export function ConfirmForm(): JSX.Element {
   }
 
   useEffect(() => {
-    if (isPendingTransaction) toast.loading('Deploying DAO...')
+    if (isPendingTransaction) {
+      toast.loading('Deploying DAO...')
+    }
     if (deploymentError) {
+      toast.dismiss()
       toast.error(deploymentError)
       setIsLoading(false)
     }
   }, [isPendingTransaction, deploymentError])
+
+  const { days, hours, minutes } = auctionSettings.auctionDuration
 
   return (
     <FormProvider {...methods}>
@@ -284,11 +300,11 @@ export function ConfirmForm(): JSX.Element {
         </ConfirmDropDown>
         <ConfirmDropDown text="Auction Settings">
           <div className="px-4 py-6 ">
-            <ConfirmItem label="Auction Durantion">
+            <ConfirmItem label="Auction Duration">
               {`
-                ${auctionSettings.auctionDuration.days} days,
-                ${auctionSettings.auctionDuration.hours} hours &
-                ${auctionSettings.auctionDuration.minutes} minutes.
+                ${days} day${days === 1 ? '' : 's'},
+                ${hours} hour${hours === 1 ? '' : 's'} &
+                ${minutes} minute${minutes === 1 ? '' : 's'}.
               `}
             </ConfirmItem>
             <ConfirmItem label="Auction Reserve Price">

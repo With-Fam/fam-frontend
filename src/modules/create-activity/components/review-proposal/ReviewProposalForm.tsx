@@ -1,10 +1,17 @@
 'use client'
 
 // Framework
-import { MutableRefObject, useCallback, useState } from 'react'
+import { MutableRefObject, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 
 // Third Parties
+import toast from 'react-hot-toast'
+import {
+  prepareWriteContract,
+  waitForTransaction,
+  writeContract,
+} from 'wagmi/actions'
+import { useAccount, useContractRead } from 'wagmi'
 import { FormProvider, useForm } from 'react-hook-form'
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), {
   ssr: false,
@@ -12,55 +19,45 @@ const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), {
 
 // Schema and types
 import schema, { ERROR_CODE, ReviewProposalFormValues } from './schema'
+import type { AddressType, Maybe } from '@/types'
+type ReviewProposalFormProps = {
+  defaultValues: ReviewProposalFormValues
+  formRef: MutableRefObject<Maybe<HTMLFormElement>>
+  setLoading: (loading: boolean) => void
+  setLoadingMessage: (message: string) => void
+}
 
 // Components
 import TitleInput from '@/modules/create-activity/components/review-proposal/TitleInput'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { AddButton } from './AddButton'
 
-// Chain
+// Helpers
 import { governorAbi, tokenAbi } from '@/data/contract/abis'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useDaoStore } from '@/modules/dao'
 import { useChainStore } from '@/utils/stores/useChainStore'
 import { useProposalStore } from '@/modules/create-activity/stores'
-import { useAccount, useContractRead } from 'wagmi'
-import { AddressType, Maybe } from '@/types'
 import { prepareProposalTransactions } from '@/modules/create-activity/utils/prepareTransaction'
-import {
-  prepareWriteContract,
-  waitForTransaction,
-  writeContract,
-} from 'wagmi/actions'
 
-type GeneralFormProps = {
-  defaultValues: ReviewProposalFormValues
-  formRef: MutableRefObject<Maybe<HTMLFormElement>>
-  // onSubmit: (_a: ReviewProposalFormValues) => void
-}
+/*--------------------------------------------------------------------*/
 
 export function ReviewProposalForm({
   defaultValues,
   formRef,
-  // onSubmit,
-}: GeneralFormProps): JSX.Element {
+  setLoading,
+  setLoadingMessage,
+}: ReviewProposalFormProps): JSX.Element {
   const methods = useForm<ReviewProposalFormValues>({
     resolver: yupResolver(schema),
     defaultValues,
   })
   const { handleSubmit } = methods
-
   const addresses = useDaoStore((state) => state.addresses)
   const chain = useChainStore((x) => x.chain)
   const { address } = useAccount()
-  const { transactions, clearProposal } = useProposalStore()
+  const { transactions } = useProposalStore()
 
-  const [error, setError] = useState<string | undefined>()
-  // const [simulationError, setSimulationError] = useState<string | undefined>()
-  // const [simulating, setSimulating] = useState<boolean>(false)
-  // const [simulations, setSimulations] = useState<Array<Simulation>>([])
-  const [proposing, setProposing] = useState<boolean>(false)
-
-  const { data: votes, isLoading } = useContractRead({
+  const { data: votes } = useContractRead({
     address: addresses?.token as AddressType,
     abi: tokenAbi,
     enabled: !!address,
@@ -69,26 +66,24 @@ export function ReviewProposalForm({
     args: [address as AddressType],
   })
 
-  const { data: proposalThreshold, isLoading: thresholdIsLoading } =
-    useContractRead({
-      address: addresses?.governor as AddressType,
-      chainId: chain.id,
-      abi: governorAbi,
-      functionName: 'proposalThreshold',
-    })
+  const { data: proposalThreshold } = useContractRead({
+    address: addresses?.governor as AddressType,
+    chainId: chain.id,
+    abi: governorAbi,
+    functionName: 'proposalThreshold',
+  })
 
   const onSubmit = useCallback(
     async (values: ReviewProposalFormValues) => {
-      setError(undefined)
-      // setSimulationError(undefined)
-      // setSimulations([])
-
-      if (proposalThreshold === undefined) return
+      if (proposalThreshold === undefined) {
+        return
+      }
+      setLoading(true)
 
       const votesToNumber = votes ? Number(votes) : 0
       const doesNotHaveEnoughVotes = votesToNumber <= Number(proposalThreshold)
       if (doesNotHaveEnoughVotes) {
-        setError(ERROR_CODE.NOT_ENOUGH_VOTES)
+        setLoading(false)
         return
       }
 
@@ -97,47 +92,6 @@ export function ReviewProposalForm({
         values: transactionValues,
         calldata,
       } = prepareProposalTransactions(transactions)
-
-      // if (!!CHAINS_TO_SIMULATE.find((x) => x === chain.id)) {
-      //   let simulationResults
-
-      //   try {
-      //     setSimulating(true)
-
-      //     simulationResults = await axios
-      //       .post<SimulationResult>('/api/simulate', {
-      //         treasuryAddress: addresses?.treasury,
-      //         chainId: chain.id,
-      //         calldatas: calldata,
-      //         values: transactionValues.map((x) => x.toString()),
-      //         targets,
-      //       })
-      //       .then((res) => res.data)
-      //   } catch (err) {
-      //     if (axios.isAxiosError(err)) {
-      //       const data = err.response?.data as ErrorResult
-      //       setSimulationError(data.error)
-      //       logError(err)
-      //     } else {
-      //       logError(err)
-      //       setSimulationError(
-      //         'Unable to simulate transactions on DAO create form'
-      //       )
-      //     }
-      //     return
-      //   } finally {
-      //     setSimulating(false)
-      //   }
-      //   const simulationFailed = simulationResults?.success === false
-      //   if (simulationFailed) {
-      //     const failed =
-      //       simulationResults?.simulations.filter(
-      //         ({ success }) => success === false
-      //       ) || []
-      //     setSimulations(failed)
-      //     return
-      //   }
-      // }
 
       try {
         const params = {
@@ -159,27 +113,27 @@ export function ReviewProposalForm({
             params.description,
           ],
         })
-
-        const { hash } = await writeContract(config)
-
-        setProposing(true)
-        await waitForTransaction({ hash })
+        const response = await writeContract(config)
+        await waitForTransaction({ hash: response.hash })
+        setLoadingMessage('Proposal posted. Redirecting...')
       } catch (err: any) {
-        setProposing(false)
-        if (err.code === 'ACTION_REJECTED') {
-          setError(ERROR_CODE.REJECTED)
+        setLoading(false)
+
+        if (err.shortMessage === 'User rejected the request.') {
+          toast.error(ERROR_CODE.REJECTED)
+          console.log('err::', err.shortMessage)
           return
         }
-        setError(err.message)
+        if (err.code === 'ACTION_REJECTED') {
+          console.log('err::', err.code)
+          toast.error(ERROR_CODE.REJECTED)
+          return
+        }
+        toast.error(err.messageD)
       }
     },
-    [addresses, proposalThreshold, votes, clearProposal, chain.id, transactions]
+    [addresses, proposalThreshold, votes, chain.id, transactions]
   )
-
-  // if (isLoading || thresholdIsLoading) return null
-
-  const tokensNeeded =
-    proposalThreshold !== undefined ? Number(proposalThreshold) + 1 : undefined
 
   return (
     <FormProvider {...methods}>

@@ -1,7 +1,7 @@
 'use client'
 
 // Framework
-import { useState } from 'react'
+import { type ReactNode, useState } from 'react'
 
 // Third Parties
 import { twMerge } from 'tailwind-merge'
@@ -12,7 +12,7 @@ import { ChevronDown } from '@/components/icons'
 
 // Type
 interface DropDownProps {
-  children: string
+  children: ReactNode
   question: string
 }
 
@@ -50,9 +50,7 @@ const DropDown = ({ children, question }: DropDownProps): JSX.Element => {
           open ? 'mt-6 max-h-screen' : 'max-h-0'
         )}
       >
-        <Paragraph as="p3" className="text-left text-grey">
-          {children}
-        </Paragraph>
+        {children}
       </div>
     </div>
   )

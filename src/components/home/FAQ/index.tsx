@@ -1,5 +1,5 @@
 // Local Components
-import { Heading } from '@/stories'
+import { Heading, Paragraph } from '@/stories'
 import DropDown from '@/stories/Dropdown'
 
 // Content
@@ -18,7 +18,29 @@ const FAQ = (): JSX.Element => (
     <div className="mx-auto max-w-6xl">
       {FAQ_DATA.map((item, index) => (
         <DropDown key={index} question={item.question}>
-          {item.answer}
+          {item.answer.map((answer, paragraph) => {
+            if (typeof answer === 'string') {
+              return (
+                <Paragraph
+                  as="p3"
+                  className="mb-4 text-left text-grey"
+                  key={paragraph}
+                >
+                  {answer}
+                </Paragraph>
+              )
+            }
+
+            return (
+              <ul className="pl-8 list-inside list-disc" key={paragraph}>
+                {answer.map((text, lineIndex) => (
+                  <li className="mb-4 text-left text-grey" key={lineIndex}>
+                    {text}
+                  </li>
+                ))}
+              </ul>
+            )
+          })}
         </DropDown>
       ))}
     </div>

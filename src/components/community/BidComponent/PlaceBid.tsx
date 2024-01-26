@@ -2,6 +2,7 @@
 
 // Framework
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 // Third Parties
 import {
@@ -30,6 +31,7 @@ type PlaceBidProps = {
 // Helpers
 import { useMinBidIncrement } from '@/components/community/BidComponent/hooks'
 import { unpackOptionalArray } from '@/utils/helpers'
+import { twMerge } from 'tailwind-merge'
 
 /*--------------------------------------------------------------------*/
 
@@ -37,8 +39,14 @@ import { unpackOptionalArray } from '@/utils/helpers'
  * Component
  */
 
-const PlaceBid = ({ token, chainId, highestBid }: PlaceBidProps): JSX.Element => {
-  const [bidAmount, setBidAmount] = useState<string>('')
+const PlaceBid = ({
+  token,
+  chainId,
+  highestBid,
+}: PlaceBidProps): JSX.Element => {
+  const router = useRouter()
+  const [bidAmount, setBidAmount] = useState('')
+  const [loading, setLoading] = useState(false)
   const addresses = useDaoStore((state) => state.addresses)
   const { tokenId } = token
 
@@ -62,7 +70,6 @@ const PlaceBid = ({ token, chainId, highestBid }: PlaceBidProps): JSX.Element =>
   })
 
   const placeBid = async () => {
-
     if (!bidAmount) {
       toast.error('Please enter a bid amount')
       return
@@ -75,6 +82,7 @@ const PlaceBid = ({ token, chainId, highestBid }: PlaceBidProps): JSX.Element =>
 
     try {
       toast.loading('Loading...')
+      setLoading(true)
       const config = await prepareWriteContract({
         abi: auctionAbi,
         address: addresses.auction as AddressType,
@@ -87,10 +95,20 @@ const PlaceBid = ({ token, chainId, highestBid }: PlaceBidProps): JSX.Element =>
       if (tx?.hash) await waitForTransaction({ hash: tx.hash })
       toast.dismiss()
       toast.success('Bid succesfully placed!')
+      setLoading(false)
+      setTimeout(() => {
+        router.refresh()
+      }, 300)
     } catch (error) {
       toast.dismiss()
-      toast.error('Error placing bid')
-      console.log('error::', error)
+
+      if (error && (error as any).shortMessage) {
+        toast.error((error as any).shortMessage)
+      } else {
+        toast.error('Error placing bid')
+      }
+      setLoading(false)
+      console.log(error)
     }
   }
 
@@ -114,10 +132,16 @@ const PlaceBid = ({ token, chainId, highestBid }: PlaceBidProps): JSX.Element =>
       </div>
       <button
         type="button"
-        className="mx-auto mt-8 block h-16 w-full self-center rounded-full bg-black py-4 text-white"
+        className={twMerge(
+          'mx-auto mt-8 block h-16 w-full self-center rounded-full py-4',
+          loading
+            ? 'cursor-not-allowed bg-grey-light text-black opacity-50'
+            : 'bg-black text-white'
+        )}
         onClick={placeBid}
+        disabled={loading}
       >
-        Place Bid
+        {loading ? 'Waiting approval...' : 'Place Bid'}
       </button>
     </>
   )

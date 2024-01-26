@@ -2,8 +2,7 @@
 
 // Framework
 import { useState } from 'react'
-
-// Third Parties
+import { useRouter } from 'next/navigation'
 
 // Local Components'
 import { useDaoStore } from '@/modules/dao'
@@ -17,10 +16,8 @@ import toast from 'react-hot-toast'
 import { waitForTransaction } from 'wagmi/actions'
 
 // Types
-import { CurrentAuctionFragment } from '@/data/subgraph/sdk.generated'
 import { CHAIN_ID } from '@/types'
 type BidStatusProps = {
-  page: CurrentAuctionFragment
   chainId: CHAIN_ID
 }
 
@@ -30,7 +27,8 @@ type BidStatusProps = {
  * Component
  */
 
-const StartNextAuction = ({ page, chainId }: BidStatusProps): JSX.Element => {
+const StartNextAuction = ({ chainId }: BidStatusProps): JSX.Element => {
+  const router = useRouter()
   const [settling, setSettling] = useState(false)
   const addresses = useDaoStore((state) => state.addresses)
 
@@ -62,6 +60,9 @@ const StartNextAuction = ({ page, chainId }: BidStatusProps): JSX.Element => {
       setSettling(false)
       toast.dismiss()
       toast.success('Auction settled successfully')
+      setTimeout(() => {
+        router.refresh()
+      }, 300)
     } catch (error: any) {
       toast.dismiss()
       toast.error('Something went wrong. Try Again.')

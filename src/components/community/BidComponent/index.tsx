@@ -2,7 +2,6 @@
 
 // Framework
 import Image from 'next/image'
-import dynamic from 'next/dynamic'
 
 // Third Parties
 import dayjs from 'dayjs'
@@ -12,12 +11,8 @@ import StartNextAuction from './StartNextAuction'
 import PlaceBid from '@/components/community/BidComponent/PlaceBid'
 import BidDescription from '@/components/community/BidComponent/BidDescription'
 import BidStatus from '@/components/community/BidComponent/BidStatus'
-const SocialMediaItems = dynamic(
-  () => import('@/components/community/BidComponent/SocialMediaItems'),
-  {
-    ssr: false,
-  }
-)
+import AllBids from '@/components/community/BidComponent/AllBids'
+import RaisedComponent from '@/components/community/BidComponent/RaisedComponent'
 
 // Types
 import {
@@ -25,7 +20,6 @@ import {
   AuctionBid,
   TokenFragment,
 } from '@/data/subgraph/sdk.generated'
-import AllBids from '@/components/community/BidComponent/AllBids'
 type BidComponentProps = {
   token: TokenFragment
   page: Auction
@@ -72,7 +66,7 @@ const BidComponent = ({
             <AllBids page={page} bids={bids} />
           </div>
           {isOver ? (
-            <StartNextAuction page={page} chainId={chainId} />
+            <StartNextAuction chainId={chainId} />
           ) : (
             <PlaceBid
               token={token}
@@ -84,9 +78,8 @@ const BidComponent = ({
         <>
           <div className="col-span-1">
             <BidDescription page={page} token={token} metaData={metaData} />
-            <SocialMediaItems metadataAddress={metaData?.metadataAddress} chainId={chainId} />
           </div>
-          {/* <RaisedComponent /> */}
+          <RaisedComponent />
         </>
       </div>
     </section>

@@ -140,8 +140,12 @@ export function ReviewForm(): JSX.Element {
   }
 
   useEffect(() => {
-    if (isPendingTransaction) toast.loading('Deploying DAO...')
+    if (isPendingTransaction) {
+      toast.dismiss()
+      toast.loading('Deploying DAO...')
+    }
     if (deploymentError) {
+      toast.dismiss()
       toast.error(deploymentError)
       setIsLoading(false)
     }

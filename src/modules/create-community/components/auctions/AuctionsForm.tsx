@@ -62,16 +62,6 @@ export function AuctionsForm({
             label="Reserve price"
             placeholder="0.01 ETH"
           />
-          <div className="absolute right-4 top-4 z-10 cursor-pointer">
-            <Sliders />
-          </div>
-        </div>
-        <div className="mb-6 mt-3 flex items-center gap-2 rounded-2xl border border-solid border-grey-light bg-transparent p-4">
-          <Alert />
-          <Paragraph as="p5" className="text-left text-xs text-grey">
-            Auction proceeds go into a shared pool managed by the community.
-            Includes a 2% platform fee
-          </Paragraph>
         </div>
         <Paragraph as="p4" className="text-left text-grey-dark">
           The founders can choose to receive a % of membership tokens until the

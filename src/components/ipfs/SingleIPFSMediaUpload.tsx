@@ -5,7 +5,6 @@ import _get from 'lodash.get'
 
 import { uploadFile } from '@/utils/ipfs-service'
 import { twMerge } from 'tailwind-merge'
-import { Loading } from '@/components/shared'
 import { Upload } from '@/components/icons'
 import { useFormContext } from 'react-hook-form'
 
@@ -34,7 +33,7 @@ export function SingleIPFSMediaUpload({
   value,
   ..._props
 }: SingleIPFSMediaUploadProps): JSX.Element {
-  const { clearErrors } = useFormContext()
+  const { clearErrors, setValue } = useFormContext()
   const inputRef = useRef<Maybe<HTMLInputElement>>(null)
   const [{ loading, progress }, setUploadState] = useState<UploadState>({
     loading: false,
@@ -43,8 +42,20 @@ export function SingleIPFSMediaUpload({
 
   async function handleChange(e: BaseSyntheticEvent) {
     if (loading) return
+
     setUploadState((_state) => ({ ..._state, loading: true }))
     const [file] = e.currentTarget.files
+
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend = () => {
+      if (file.type.startsWith('image/')) {
+        console.log('imageBlob::', reader)
+        setValue('imageBlob', reader.result)
+      }
+    }
+
+
     try {
       const { uri } = await uploadFile(file, {
         onProgress: (progress) => setUploadState((s) => ({ ...s, progress })),
