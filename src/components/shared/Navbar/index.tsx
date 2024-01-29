@@ -30,7 +30,7 @@ const Navbar = (): JSX.Element => {
     >
       <Logo />
       <div className="flex items-center justify-end gap-3 h-12">
-        {user ? <LoggedItems /> : <NotLoggedItems />}
+        {user ? <LoggedItems user={user} /> : <NotLoggedItems />}
       </div>
     </nav>
   )

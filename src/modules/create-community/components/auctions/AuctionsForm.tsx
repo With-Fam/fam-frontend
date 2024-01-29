@@ -14,10 +14,10 @@ import { Alert, Sliders } from '@/components/icons'
 import { Paragraph } from '@/stories'
 import ContinueButton from '../../../ContinueButton'
 import { FounderFieldArray, initFounder } from './FounderFieldArray'
-import { useAccount } from 'wagmi'
+import { ErrorBox } from '@/components/shared'
 
 type AuctionsFormProps = {
-  defaultValues?: AuctionSettingsFormValues
+  defaultValues: AuctionSettingsFormValues
   onSubmit: (_a: AuctionSettingsFormValues) => void
 }
 
@@ -38,10 +38,9 @@ export function AuctionsForm({
   defaultValues,
   onSubmit,
 }: AuctionsFormProps): JSX.Element {
-  const { address } = useAccount()
   const methods = useForm<AuctionSettingsFormValues>({
     resolver: yupResolver(
-      auctionSettingsValidationSchema(address as string)
+      auctionSettingsValidationSchema(defaultValues.vetoerAddress as string)
     ) as any,
     defaultValues: {
       ...DEFAULTS,
@@ -50,6 +49,15 @@ export function AuctionsForm({
   })
 
   const { handleSubmit } = methods
+
+  if (defaultValues.vetoerAddress === '0x') {
+    return (
+      <ErrorBox
+        title="Error with your reload"
+        description="Please, return to previous step."
+      />
+    )
+  }
 
   return (
     <FormProvider {...methods}>

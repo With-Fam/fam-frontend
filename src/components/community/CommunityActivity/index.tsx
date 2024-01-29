@@ -10,7 +10,10 @@ import { CreateActivityButton } from '@/components/community'
 import { Paragraph } from '@/stories'
 
 // Types
-import type { ProposalFragment } from '@/data/subgraph/sdk.generated'
+import type {
+  ProposalFragment,
+  ProposalQuery,
+} from '@/data/subgraph/sdk.generated'
 type CommunityActivityProps = {
   proposals: ProposalFragment[]
   communityName: string
@@ -18,10 +21,9 @@ type CommunityActivityProps = {
 }
 
 // Utils
-import { isDateExpired } from '@/utils/helpers'
+import { formatUnixTimestampDate, isDateExpired } from '@/utils/helpers'
 import PointyTopIcon from '@/components/shared/IconsRow/PointyTopIcon'
 import VoteButtonHandle from '@/components/community/activity/ActivitySection/VoteButtonHandle'
-
 
 /*--------------------------------------------------------------------*/
 
@@ -36,32 +38,33 @@ const CommunityActivity = ({
 }: CommunityActivityProps): JSX.Element => (
   <section className="relative mx-auto max-w-[936px] px-4 pb-4 sm:pb-10">
     {proposals.length > 0 &&
-      proposals.map((proposal, index) => {
-        return (
-          <div
-            key={index}
-            className="relative z-0 mb-8 rounded-lg bg-white p-4"
-          >
-            <div className="flex gap-4">
-              <VotingComponent
-                proposal={proposal}
-                active={isDateExpired(proposal.expiresAt)}
+      proposals.map((proposal, index) => (
+        <div key={index} className="relative z-0 mb-8 rounded-lg bg-white p-4">
+          <div className="flex gap-4">
+            <VotingComponent
+              proposal={proposal}
+              active={isDateExpired(proposal.expiresAt)}
+            />
+            <Link
+              href={`activity/${proposal.proposalId}`}
+              passHref
+              className="w-full"
+            >
+              <ActivityData chainId={chainId} proposal={proposal as any} />
+              <ActivityDescription>{proposal.description}</ActivityDescription>
+              <ActivitysComments
+                proposal={proposal as ProposalQuery['proposal'] | null}
               />
-              <Link
-                href={`activity/${proposal.proposalId}`}
-                passHref
-                className="w-full"
+              <Paragraph
+                as="p5"
+                className="absolute bottom-0 right-4 z-0 mb-4 text-grey"
               >
-                <ActivityData chainId={chainId} proposal={proposal as any} />
-                <ActivityDescription>
-                  {proposal.description}
-                </ActivityDescription>
-                <ActivitysComments comments={[]} />
-              </Link>
-            </div>
+                {formatUnixTimestampDate(proposal.timeCreated)}
+              </Paragraph>
+            </Link>
           </div>
-        )
-      })}
+        </div>
+      ))}
     {proposals.length === 0 && (
       <div className="mx-auto mb-8 flex w-64 flex-col items-center justify-center gap-4">
         <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-grey-light">

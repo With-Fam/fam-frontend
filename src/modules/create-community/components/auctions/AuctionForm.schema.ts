@@ -82,8 +82,8 @@ export const validationSchemaFounderAllocation = (
         }
       )
       .test(
-        'unique',
-        'Founder allocation addresses should be unique.',
+        'founderAddress',
+        'All founders allocation addresses should be unique.',
         function (values) {
           const addresses = values?.map((v) => v.founderAddress)
           return values?.length === new Set(addresses)?.size

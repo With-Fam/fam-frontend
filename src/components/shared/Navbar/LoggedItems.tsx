@@ -5,13 +5,19 @@ import Link from 'next/link'
 import Paragraph from '@/stories/Paragraph'
 import PopupMenu from '@/components/shared/Navbar/PopupMenu'
 
+// Types
+import { User } from '@privy-io/react-auth'
+type LoggedItemsProps = {
+  user: User
+}
+
 /*--------------------------------------------------------------------*/
 
 /**
  * Component
  */
 
-const LoggedItems = (): JSX.Element => (
+const LoggedItems = ({ user }: LoggedItemsProps ): JSX.Element => (
   <>
     <Link className="block h-12" href="/create-community" passHref>
       <Paragraph
@@ -21,7 +27,7 @@ const LoggedItems = (): JSX.Element => (
         Create
       </Paragraph>
     </Link>
-    <PopupMenu />
+    <PopupMenu user={user} />
   </>
 )
 

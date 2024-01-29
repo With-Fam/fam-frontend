@@ -1,7 +1,7 @@
 'use client'
 
 // Framework
-import Image from 'next/image'
+import dynamic from 'next/dynamic'
 
 // Third Parties
 import useSWR from 'swr'
@@ -16,10 +16,11 @@ import {
   UserKey,
   CommunitiesPagination,
 } from '@/components/profile'
-import { getUserData } from '@/components/profile/client-data'
+const UserName = dynamic(() => import('@/components/shared/UserName'), {
+  ssr: false,
+})
 
 // Utils
-import { useEnsData } from '@/hooks/useEnsData'
 import { useChainStore } from '@/utils/stores/useChainStore'
 import SWR_KEYS from '@/constants/swrKeys'
 import { walletSnippet } from '@/utils/helpers'
@@ -31,8 +32,9 @@ type UsersProfileProps = {
   page: string
 }
 
-// Static Content
+// Helpers
 import { USERS_PROFILE_DATA } from '@/content/users-profile'
+import { getUserData } from '@/components/profile/client-data'
 
 /*--------------------------------------------------------------------*/
 
@@ -46,7 +48,6 @@ const ProfileClientPage = ({
   page,
 }: UsersProfileProps): JSX.Element => {
   const chain = useChainStore((x) => x.chain)
-  const { ensName, ensAvatar } = useEnsData(user)
   const {
     data: userData,
     error,
@@ -75,14 +76,10 @@ const ProfileClientPage = ({
   return (
     <div className="px-4">
       <div className="mt-24 flex flex-col items-center">
-        <UserAvatar
-          address={user}
-          ensAvatar={ensAvatar}
-          width={80}
-          height={80}
-        />
+        <UserAvatar address={user} width={80} height={80} />
         <Heading as="h5" className="mt-3">
-          {`${ensName || ''} Profile`}
+          <UserName address={user as `0x${string}`} blankComponent />
+          {' '}Profile
         </Heading>
         <div className="mb-4 mt-2">
           <UserKey>{walletSnippet(user)}</UserKey>

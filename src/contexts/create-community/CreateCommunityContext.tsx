@@ -15,7 +15,7 @@ import {
 import { usePrivy } from '@privy-io/react-auth'
 
 // Components
-import { Loading } from '@/components/shared'
+import { ErrorBox, Loading } from '@/components/shared'
 import { CreateContextNavigation } from '../CreateContextNavigation'
 import { useFormStore } from '@/modules/create-community'
 import { AuctionSettingsFormValues } from '@/modules/create-community/components/auctions/AuctionForm.schema'
@@ -211,14 +211,20 @@ const CreateCommunityProvider = ({
         prev={prev}
         title={sections[activeSection]?.title}
       />
-      {loading ? (
+      {loading && !user && (
         <Loading
           title="Setting the vibes"
           description="Put your feet up and enjoy the tunes"
         />
-      ) : (
-        children
       )}
+      {!user && !loading && (
+        <ErrorBox
+          title="Not this time, friend"
+          description="It seems that you are not logged in. Please log in to continue."
+          exitPath="/"
+        />
+      )}
+      {!loading && user && <>{children}</>}
     </CreateCommunityContext.Provider>
   )
 }

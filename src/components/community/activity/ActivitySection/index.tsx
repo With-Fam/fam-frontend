@@ -12,7 +12,7 @@ import BackActivityButton from '@/components/community/activity/BackActivityButt
 import { ProposalQuery } from '@/data/subgraph/sdk.generated'
 type ActivitySectionProps = {
   chainId: number
-  proposal: ProposalQuery["proposal"] | null
+  proposal: ProposalQuery['proposal'] | null
 }
 
 // Context
@@ -28,7 +28,10 @@ import VoteButtonHandle from '@/components/community/activity/ActivitySection/Vo
  * Component
  */
 
-const ActivitySection = ({ proposal, chainId }: ActivitySectionProps): JSX.Element => {
+const ActivitySection = ({
+  proposal,
+  chainId,
+}: ActivitySectionProps): JSX.Element => {
   const { widgets } = useMockStoreContext()
 
   if (!proposal) {
@@ -47,11 +50,11 @@ const ActivitySection = ({ proposal, chainId }: ActivitySectionProps): JSX.Eleme
       <div className="flex flex-col gap-6">
         <ActivitySectionInfo proposal={proposal} chainId={chainId} />
         {proposal.description && (
-          <div>
+          <div className="external-content">
             {proposal.description.split('\\n').map((paragraph, index) => (
-              <Paragraph key={index} as="p4" className="mb-2">
-                {paragraph}
-              </Paragraph>
+              <div key={index} className="mb-2">
+                <div dangerouslySetInnerHTML={{ __html: paragraph }} />
+              </div>
             ))}
           </div>
         )}
@@ -61,7 +64,7 @@ const ActivitySection = ({ proposal, chainId }: ActivitySectionProps): JSX.Eleme
             pathname: null,
             query: { voting: true, title: proposal.title },
           }}
-          className='w-full'
+          className="w-full"
           passHref
         >
           <Button type="button" className="block w-full sm:hidden">

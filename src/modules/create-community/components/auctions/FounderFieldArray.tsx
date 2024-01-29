@@ -7,24 +7,14 @@ import { useFieldArray, useFormContext } from 'react-hook-form'
 import { TextInput } from '@/components/forms'
 import { Paragraph } from '@/stories'
 import { Icon } from '@/components/Icon'
-import { AnimatePresence, motion } from 'framer-motion'
+import { XMark } from '@/components/icons'
 
 // Types
 import type { TokenAllocation } from './AuctionForm.schema'
 import { DateInput } from '@/components/forms/DateInput'
 import { UpdateCommunityFormValues } from '@/modules/create-activity/components/update-community/UpdateCommunity.schema'
 
-const variants = {
-  initial: {
-    y: -20,
-    opacity: 0,
-  },
-  animate: {
-    y: 0,
-    opacity: 1,
-  },
-}
-
+// Helpers
 export const initFounder: TokenAllocation = {
   founderAddress: '',
   allocationPercentage: 0,
@@ -34,27 +24,27 @@ export const initFounder: TokenAllocation = {
 
 export function FounderFieldArray(): JSX.Element {
   const { control } = useFormContext<UpdateCommunityFormValues>()
-  const { fields, append } = useFieldArray<UpdateCommunityFormValues>({
+  const { fields, remove, append } = useFieldArray<UpdateCommunityFormValues>({
     control,
     name: 'founderAllocation',
   })
 
   return (
     <div className="space-y-2">
-      <AnimatePresence mode="wait">
+      <div>
         {fields.map((field, index) => (
-          <motion.div
-            key={field.id}
-            variants={variants}
-            transition={{
-              duration: 0.1,
-              type: 'spring',
-            }}
-            initial="initial"
-            animate="animate"
-            exit="initial"
-          >
-            <div className="mt-6">
+          <div key={field.id}>
+            <div className="relative z-0 mt-6">
+              {index > 0 && (
+                <div
+                  className="absolute right-4 top-4 z-10 cursor-pointer"
+                  onClick={() => {
+                    remove(index)
+                  }}
+                >
+                  <XMark color="#000" />
+                </div>
+              )}
               <TextInput
                 name={`founderAllocation.${index}.founderAddress`}
                 placeholder="Enter ENS or wallet address"
@@ -85,13 +75,15 @@ export function FounderFieldArray(): JSX.Element {
                 />
               </div>
             </div>
-          </motion.div>
+          </div>
         ))}
-      </AnimatePresence>
+      </div>
       <button
         className="mx-auto my-4 flex flex-row items-center rounded-full bg-white px-3.5 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50"
         type="button"
-        onClick={() => append(initFounder)}
+        onClick={() => {
+          append(initFounder)
+        }}
       >
         <Icon id="plus" className="mr-2 h-6 w-6" />
         <span className="text-sm text-black">Add founder</span>

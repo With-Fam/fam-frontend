@@ -3,9 +3,9 @@
 // Framework
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import dynamic from 'next/dynamic'
 
 // Third parties
-import { usePrivy } from '@privy-io/react-auth'
 import { useBalance } from 'wagmi'
 import { motion } from 'framer-motion'
 
@@ -14,11 +14,18 @@ import MenuList from '@/components/shared/Navbar/MenuList'
 import WalletComponent from '@/components/shared/Navbar/WalletComponent'
 import MenuUserRow from '@/components/shared/Navbar/MenuUserRow'
 import { Close } from '@/components/icons'
+const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
+  ssr: false,
+})
 
 // Utils
 import { formatCryptoVal } from '@/utils/numbers'
-import { UserAvatar } from '@/components/shared'
-import { useEnsData } from '@/hooks/useEnsData'
+
+// Types
+import { User } from '@privy-io/react-auth'
+type PopupMenuProps = {
+  user: User
+}
 
 /*--------------------------------------------------------------------*/
 
@@ -26,13 +33,11 @@ import { useEnsData } from '@/hooks/useEnsData'
  * Component
  */
 
-const PopupMenu = (): JSX.Element => {
-  const { user } = usePrivy()
+const PopupMenu = ({ user }: PopupMenuProps): JSX.Element => {
   const [open, setOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const popoverRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
-  const { ensAvatar, ensName } = useEnsData(user?.wallet?.address)
 
   const { data: balance } = useBalance({
     address: user?.wallet?.address as `0x${string}`,
@@ -109,10 +114,9 @@ const PopupMenu = (): JSX.Element => {
     <div className="relative h-12">
       <button onClick={() => setOpen(true)} aria-label="open users menu">
         <UserAvatar
-          ensAvatar={ensAvatar}
-          address={user.wallet?.address}
           width={48}
           height={48}
+          address={user.wallet?.address as string}
         />
       </button>
       <motion.div
@@ -131,8 +135,6 @@ const PopupMenu = (): JSX.Element => {
         </button>
         {user.wallet && (
           <MenuUserRow
-            ensName={ensName || ''}
-            ensAvatar={ensAvatar  || ''}
             wallet={user.wallet}
           />
         )}

@@ -1,4 +1,5 @@
 export * from './Button'
+export { default as ErrorBox } from './ErrorBox'
 export { default as FamImage } from './FamImage'
 export { default as Footer } from './Footer'
 export * from './Loading'

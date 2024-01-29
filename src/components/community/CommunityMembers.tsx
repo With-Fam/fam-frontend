@@ -1,11 +1,16 @@
 'use client'
 // Framework
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 
 // Local Components
 import { Paragraph } from '@/stories'
-import ENSname from '@/components/community/ENSname'
-import Avatar from './Avatar'
+const UserName = dynamic(() => import('@/components/shared/UserName'), {
+  ssr: false,
+})
+const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
+  ssr: false,
+})
 
 /*--------------------------------------------------------------------*/
 
@@ -39,8 +44,11 @@ const CommunityMembers = ({ data }: CommunityMembersProps): JSX.Element => {
             className="mb-2 block rounded-lg bg-white p-4 sm:flex sm:items-center sm:justify-between"
           >
             <div className="mb-4 flex items-center justify-start gap-2 sm:mb-0">
-              <Avatar token={member?.owner} />
-              <ENSname owner={member.owner} />
+              <UserAvatar width={24} height={24} address={member?.owner} />
+              <UserName
+                className="flex items-center gap-1"
+                address={member?.owner}
+              />
               {/* {member.founder && (
                 <p
                   className="h-min rounded-3xl px-2 py-1 text-xs text-orange"

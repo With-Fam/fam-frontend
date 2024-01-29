@@ -4,16 +4,21 @@
 import Image from 'next/image'
 import { useMemo, useState } from 'react'
 
+// Third Parties
+import { useEnsAvatar, useEnsName } from 'wagmi'
+
 // Types
+import { CHAIN_ID } from '@/types'
 type UserAvatarProps = {
-  ensAvatar: string | null | undefined
-  address?: string
+  address: string
   width: number
   height: number
+  className?: string
 }
 
 // Helpers
 import { gradientForAddress } from '@/components/shared/gradient'
+import { twMerge } from 'tailwind-merge'
 
 /*--------------------------------------------------------------------*/
 
@@ -22,11 +27,19 @@ import { gradientForAddress } from '@/components/shared/gradient'
  */
 
 const UserAvatar = ({
-  ensAvatar,
   address,
   width,
   height,
+  className,
 }: UserAvatarProps): JSX.Element => {
+  const { data: ensName } = useEnsName({
+    address: address as `0x${string}`,
+    chainId: CHAIN_ID.ETHEREUM,
+  })
+  const { data: ensAvatar } = useEnsAvatar({
+    name: ensName,
+    chainId: CHAIN_ID.ETHEREUM,
+  })
   const [imageError, setImageError] = useState(false)
 
   const background = useMemo(() => {
@@ -48,12 +61,15 @@ const UserAvatar = ({
           alt=""
           width={width}
           height={height}
-          className="rounded-full"
+          className={twMerge('rounded-full', className)}
           onError={() => setImageError(true)}
           onErrorCapture={() => setImageError(true)}
         />
       ) : (
-        <div style={{ background, width, height }} className="rounded-full" />
+        <div
+          style={{ background, width, height }}
+          className={twMerge('rounded-full', className)}
+        />
       )}
     </>
   )

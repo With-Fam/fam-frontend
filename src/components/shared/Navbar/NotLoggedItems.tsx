@@ -1,5 +1,4 @@
-// Framework
-// import Link from 'next/link'
+// Third Parties
 import { usePrivy } from '@privy-io/react-auth'
 
 // Local Components

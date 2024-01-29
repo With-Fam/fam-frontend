@@ -1,11 +1,10 @@
-'use client'
-
 // Framework
-import Image from 'next/image'
+import dynamic from 'next/dynamic'
 
-// Third Parties
-import { useEnsData } from '@/hooks/useEnsData'
-import { UserAvatar } from '@/components/shared'
+// Components
+const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
+  ssr: false,
+})
 
 // Types
 interface VoteImageProps {
@@ -19,18 +18,10 @@ interface VoteImageProps {
  * Component
  */
 
-const VoteImage = ({ voter, marginLeft }: VoteImageProps): JSX.Element => {
-  const { ensAvatar } = useEnsData(voter)
-  return (
-    <div className={`relative h-6 w-6 ${marginLeft}`}>
-      <UserAvatar
-        ensAvatar={ensAvatar}
-        width={24}
-        height={24}
-        address={voter}
-      />
-    </div>
-  )
-}
+const VoteImage = ({ voter, marginLeft }: VoteImageProps): JSX.Element => (
+  <div className={`relative h-6 w-6 ${marginLeft}`}>
+    <UserAvatar width={24} height={24} address={voter} />
+  </div>
+)
 
 export default VoteImage

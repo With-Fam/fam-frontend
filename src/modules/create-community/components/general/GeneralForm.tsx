@@ -34,18 +34,25 @@ export function GeneralForm({
     mode: 'onBlur',
   })
 
-  const { control, handleSubmit, watch, getValues, setValue } = methods
+  const {
+    control,
+    handleSubmit,
+    watch,
+    getValues,
+    setValue,
+    formState: { dirtyFields },
+  } = methods
   const currentDaoName = watch('daoName')
 
   useEffect(() => {
-    if (currentDaoName) {
+    if (currentDaoName && !dirtyFields.daoSymbol) {
       const currentSymbol = `$${currentDaoName
         .toUpperCase()
         .replace(/[AEIOU\s]/g, '')
         .slice(0, 4)}`
       setValue('daoSymbol', currentSymbol)
     }
-  }, [currentDaoName, setValue, getValues])
+  }, [currentDaoName, setValue, getValues, dirtyFields])
 
   return (
     <FormProvider {...methods}>
@@ -77,7 +84,6 @@ export function GeneralForm({
               name="daoSymbol"
               placeholder="$COMMUNITY"
               label="Symbol"
-              disabled
             />
             <TextInput
               name="daoWebsite"

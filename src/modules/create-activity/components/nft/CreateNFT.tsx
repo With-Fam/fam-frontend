@@ -1,8 +1,7 @@
 'use client'
 
 // Framework
-import { useCallback, useState } from 'react'
-import Image from 'next/image'
+import { useCallback, useState, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { encodeFunctionData, parseEther } from 'viem'
 
@@ -76,6 +75,7 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
   })
   const { control, formState, handleSubmit, setValue, watch, getValues } =
     methods
+  const currentDaoName = watch('name')
 
   const handleEditionTypeChanged = useCallback(
     (value: EditionType) => {
@@ -84,6 +84,17 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
     },
     [setEditionType, setValue]
   )
+
+  useEffect(() => {
+    if (currentDaoName && !formState.dirtyFields.symbol) {
+      const currentSymbol = `$${currentDaoName
+        .toUpperCase()
+        .replace(/[AEIOU\s]/g, '')
+        .slice(0, 4)}`
+      setValue('symbol', currentSymbol)
+    }
+
+  }, [currentDaoName, setValue, getValues, formState.dirtyFields])
 
   const addTransaction = useProposalStore((state) => state.addTransaction)
   const chain = useChainStore((x) => x.chain)

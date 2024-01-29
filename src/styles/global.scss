@@ -8,6 +8,12 @@
 .editor-content {
   @apply font-abc text-base leading-6 text-black;
 
+  .external-content {
+    p, a, span, li, ul, ol {
+      @apply font-abc text-black text-base;
+    }
+  }
+
   * strong {
     @apply font-abcMedium;
   }

@@ -49,7 +49,6 @@ const Home = (): JSX.Element => {
   return (
     <>
       <Hero />
-      <TrendingSection />
       <CollectiveCulture />
       <FeatureWidgets />
       <FAQ />

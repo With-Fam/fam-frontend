@@ -1,17 +1,24 @@
 'use client'
 
 // Framework
-import Image from 'next/image'
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
 
 // Third Parties
-import { useEnsData } from '@/hooks/useEnsData'
-import { formatEther } from 'ethers'
 import { motion } from 'framer-motion'
 import { twJoin } from 'tailwind-merge'
 
 // Components
 import { Paragraph } from '@/stories'
+const RenderBidders = dynamic(() => import('@/components/community/BidComponent/RenderBidders'), {
+  ssr: false,
+})
+const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
+  ssr: false,
+})
+const UserName = dynamic(() => import('@/components/shared/UserName'), {
+  ssr: false,
+})
 
 // Types
 import { AuctionBid, ExploreDaoFragment } from '@/data/subgraph/sdk.generated'
@@ -20,11 +27,6 @@ type AllBidsProps = {
   bids: AuctionBid[]
 }
 
-// Helpers
-import { walletSnippet } from '@/utils/helpers'
-import { UserAvatar } from '@/components/shared'
-import RenderBidders from '@/components/community/BidComponent/RenderBidders'
-
 /*--------------------------------------------------------------------*/
 
 /**
@@ -32,7 +34,6 @@ import RenderBidders from '@/components/community/BidComponent/RenderBidders'
  */
 
 const AllBids = ({ page, bids }: AllBidsProps): JSX.Element => {
-  const { displayName, ensAvatar } = useEnsData(page?.highestBid?.bidder)
   const [open, setOpen] = useState(false)
 
   const variants = {
@@ -45,15 +46,11 @@ const AllBids = ({ page, bids }: AllBidsProps): JSX.Element => {
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center">
           <UserAvatar
-            ensAvatar={ensAvatar}
             width={24}
             height={24}
             address={page?.highestBid?.bidder}
           />
-
-          <Paragraph as="p5" className="pl-2.5">
-            {displayName}
-          </Paragraph>
+          <UserName address={page?.highestBid?.bidder} />
         </div>
         {bids && bids.length > 0 && (
           <button className="cursor-pointer" onClick={() => setOpen(!open)}>

@@ -3,6 +3,7 @@
 // Framework
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
 
 // Third Parties
 import {
@@ -10,7 +11,7 @@ import {
   writeContract,
   waitForTransaction,
 } from 'wagmi/actions'
-import { useNetwork, useContractReads } from 'wagmi'
+import { useContractReads } from 'wagmi'
 import { parseEther } from 'viem'
 import toast from 'react-hot-toast'
 
@@ -18,6 +19,7 @@ import toast from 'react-hot-toast'
 import { QuestionMark } from '@/components/icons'
 import { useDaoStore } from '@/modules/dao'
 import { auctionAbi } from '@/data/contract/abis'
+const Tooltip = dynamic(() => import('@/components/shared/Tooltip'))
 
 // Types
 import type { AddressType, Maybe } from '@/types'
@@ -128,7 +130,17 @@ const PlaceBid = ({
             setBidAmount(e.target.value)
           }}
         />
-        <QuestionMark />
+        <Tooltip
+          tooltipContent={
+            <>
+              Each day a new membership pass is auctioned and proceeds from the
+              auction to go into a shared pool. Read more about auctions{' '}
+              <a href="/">here</a>
+            </>
+          }
+        >
+          <QuestionMark />
+        </Tooltip>
       </div>
       <button
         type="button"
