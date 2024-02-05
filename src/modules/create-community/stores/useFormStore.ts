@@ -8,8 +8,8 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { IPFSUpload } from '@/hooks'
 
 // Types
+import type { DaoContractAddresses } from '@/modules/dao'
 import { FormStoreState, AuctionSettingsFormValues } from './types'
-import { DaoContractAddresses } from '@/modules/create-community'
 import { ArtworkFormValues, GeneralFormValues } from '../components'
 import { TokenAllocation } from '@/modules/create-community/components/auctions/AuctionForm.schema'
 import type { OrderedTraits } from '@/components/create-community/artwork/TraitsAccordian'

@@ -178,7 +178,7 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
       <form
         id="__create_nft"
         onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto w-full max-w-[668px]"
+        className="mx-auto w-full max-w-[668px] pb-16 md:pb-32"
       >
         <div className="grid grid-cols-2 gap-4">
           <EditionTypeRadio

@@ -10,6 +10,7 @@ import {
 import { useParams } from 'next/navigation'
 import getDaoAddresses from '@/data/contract/requests/getDaoAddresses'
 import { useDaoStore } from '@/modules/dao'
+import { useNetwork } from 'wagmi'
 
 /**
  * Component
@@ -26,24 +27,27 @@ const DaoStoreContext = createContext<DaoStoreContextType>({
 
 const DaoContext = ({ children }: PropsWithChildren): JSX.Element => {
   const { addresses, setAddresses } = useDaoStore()
-  const {
-    // networkId,
-    communityId,
-  } = useParams()
+  const { chain } = useNetwork()
+  const { communityId } = useParams()
 
   useEffect(() => {
-    if (!communityId) return
-    async function getAddresses() {
-      // HARDCODED NETWORK ADDRESS
+    async function getAddresses(chainId: number) {
       try {
-        const addresses = await getDaoAddresses(5, communityId as `0x${string}`)
+        const addresses = await getDaoAddresses(
+          chainId,
+          communityId as `0x${string}`
+        )
+
         setAddresses(addresses as any)
       } catch (e) {
         console.log('error::', e)
       }
     }
-    getAddresses()
-  }, [communityId])
+
+    if (communityId && chain?.id) {
+      getAddresses(chain?.id)
+    }
+  }, [communityId, chain])
   return (
     <DaoStoreContext.Provider
       value={{

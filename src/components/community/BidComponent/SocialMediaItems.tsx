@@ -13,7 +13,7 @@ import { parseContractURI } from '@/utils/parseContractURI'
 
 // Types
 import { Address } from 'wagmi'
-import { CHAIN_ID } from '@/types/chain'
+import { CHAIN_ID } from '@/types'
 type SocialMediaItemsProps = {
   metadataAddress: Address
   chainId: CHAIN_ID

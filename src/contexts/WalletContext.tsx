@@ -2,13 +2,16 @@
 import { PropsWithChildren } from 'react'
 import { PrivyProvider } from '@privy-io/react-auth'
 import { PrivyWagmiConnector } from '@privy-io/wagmi-connector'
-import { goerli, mainnet } from '@wagmi/chains'
 import { configureChains } from 'wagmi'
 import { Toaster } from 'react-hot-toast'
+import { PUBLIC_DEFAULT_CHAINS } from '@/constants/defaultChains'
 
 import { publicProvider } from 'wagmi/providers/public'
 
-const configureChainsConfig = configureChains([goerli, mainnet], [publicProvider()])
+// Public default chains -> constants/defaultChains.ts
+const configureChainsConfig = configureChains(PUBLIC_DEFAULT_CHAINS, [
+  publicProvider(),
+])
 
 const handleLogin = (data: { id: string }) => {
   console.log('Login', data.id)
@@ -25,6 +28,7 @@ export const WalletContext = ({ children }: PropsWithChildren): JSX.Element => {
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
       onSuccess={handleLogin}
       config={{
+        supportedChains: PUBLIC_DEFAULT_CHAINS,
         walletConnectCloudProjectId: 'a2ca754e356641b9ab15dae82876d257',
         loginMethods: ['wallet', 'email', 'apple', 'google', 'twitter'],
         appearance: {

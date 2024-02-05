@@ -20,7 +20,7 @@ import { FamImage } from '@/components/shared'
 const CommunityCard = ({ community }: CommunityCardProps): JSX.Element => (
   <Link
     className="col-span-1 block h-full w-full grow"
-    href={`/community/goerli/${community.dao.tokenAddress}`}
+    href={`/community/base-sepolia/${community.dao.tokenAddress}`}
     passHref
   >
     <div className="relative z-0 aspect-square w-full">

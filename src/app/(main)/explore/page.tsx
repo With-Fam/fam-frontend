@@ -57,7 +57,7 @@ const ExplorePage = async ({
   searchParams,
 }: ExplorePageProps): Promise<JSX.Element> => {
   const limit = 10
-  const chainId = 5
+  const chainId = 84532
   const { communities, count } = await getExploreData({
     limit,
     chainId,

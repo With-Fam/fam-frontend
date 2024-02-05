@@ -42,6 +42,7 @@ import { useDaoStore } from '@/modules/dao'
 import { fromSeconds, unpackOptionalArray } from '@/utils/helpers'
 import { NULL_ADDRESS } from '@/constants/addresses'
 import VetoManagement from '@/modules/create-community/components/auctions/VetoManagement'
+import { useEffect } from 'react'
 
 interface UpdateCommunityFormProps {
   callback: () => void
@@ -324,7 +325,14 @@ export function UpdateCommunityForm({
 
   const { control, handleSubmit } = methods
 
-  console.log(methods.formState)
+  useEffect(() => {
+    if (
+      initialValues.vetoerAddress !==
+      methods.formState.defaultValues?.vetoerAddress
+    ) {
+      methods.reset(initialValues)
+    }
+  }, [initialValues, methods])
 
   return (
     <FormProvider {...methods}>

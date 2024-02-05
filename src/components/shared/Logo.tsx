@@ -13,7 +13,7 @@ interface LogoProps {
  */
 
 const Logo = ({ color = 'black' }: LogoProps): JSX.Element => (
-  <Link href="/" passHref>
+  <Link href="/" className="pointer-events-auto" passHref>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="106"

@@ -2,6 +2,8 @@
 import { Stack, Text } from '@zoralabs/zord'
 import { Interface } from 'ethers'
 import { useContractRead } from 'wagmi'
+import gte from 'lodash/gte'
+const AIRDROP_CONTRACT_VERSION = '1.2.0'
 
 // Chain
 import { auctionAbi, tokenAbi } from '@/data/contract/abis'
@@ -21,6 +23,7 @@ import { useProposalStore } from '@/modules/create-activity/stores'
 // Local components
 import { AirdropForm } from './AirdropForm'
 import { AirdropFormValues } from './AirdropForm.schema'
+import { useAvailableUpgrade } from '@/modules/create-activity/utils/useAvailableUpgrade'
 
 type AirdropProps = {
   callback: () => void
@@ -32,6 +35,13 @@ export function Airdrop({ callback }: AirdropProps): JSX.Element {
   const addTransaction = useProposalStore((state) => state.addTransaction)
   const chain = useChainStore((x) => x.chain)
 
+  const { currentVersions } =
+    useAvailableUpgrade({
+      chainId: chain.id,
+      addresses,
+      contractVersion: AIRDROP_CONTRACT_VERSION,
+    })
+
   const { data: auctionOwner } = useContractRead({
     abi: auctionAbi,
     address: addresses?.auction,
@@ -41,7 +51,7 @@ export function Airdrop({ callback }: AirdropProps): JSX.Element {
 
   const { data: isMinter } = useContractRead({
     // can only check minter on contracts where version >= 1.2.0
-    // enabled: gte(currentVersions?.token, AIRDROP_CONTRACT_VERSION),
+    enabled: gte(currentVersions?.token, AIRDROP_CONTRACT_VERSION),
     abi: tokenAbi,
     address: addresses?.token,
     chainId: chain.id,
@@ -57,7 +67,6 @@ export function Airdrop({ callback }: AirdropProps): JSX.Element {
     const { recipientAddress: recipient } = values
 
     const tokenInterface = new Interface(tokenAbi)
-
     const updateMinterTransaction = {
       functionSignature: 'updateMinters',
       target: addresses?.token as AddressType,

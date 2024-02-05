@@ -3,13 +3,25 @@
 import Image, { type ImageProps } from 'next/image'
 import { useState, useEffect } from 'react'
 
+// Types
+type HandleImageProps = ImageProps & {
+  noDefault?: boolean
+}
+
+/*--------------------------------------------------------------------*/
+
+/**
+ * Component
+ */
+
 export function HandleImage({
   alt,
   width,
   height,
   className,
+  noDefault = false,
   ...props
-}: ImageProps): JSX.Element {
+}: HandleImageProps): JSX.Element {
   const [error, setError] = useState(false)
   const [loaded, setLoaded] = useState(false)
 
@@ -20,7 +32,7 @@ export function HandleImage({
     return () => clearTimeout(timer)
   }, [loaded])
 
-  if (error) {
+  if (error && !noDefault) {
     return (
       <Image
         alt={alt}
@@ -33,13 +45,19 @@ export function HandleImage({
     )
   }
 
+  if (error && noDefault) {
+    return (
+      <></>
+    )
+  }
+
   return (
     <Image
       alt={alt}
       width={width}
       height={height}
       onError={() => setError(true)}
-      onLoadingComplete={() => {
+      onLoad={() => {
         console.log('loaded')
         setLoaded(true)
       }}

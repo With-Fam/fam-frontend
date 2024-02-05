@@ -111,7 +111,7 @@ const PopupMenu = ({ user }: PopupMenuProps): JSX.Element => {
   if (!user) return <></>
 
   return (
-    <div className="relative h-12">
+    <div className="relative h-12 pointer-events-auto">
       <button onClick={() => setOpen(true)} aria-label="open users menu">
         <UserAvatar
           width={48}

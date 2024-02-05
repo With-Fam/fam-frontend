@@ -35,6 +35,7 @@ export function Sections(): JSX.Element {
         initial="closed"
         animate="open"
         exit="exit"
+        className="flex grow flex-col"
       >
         <div className="flex grow flex-col">{section?.content}</div>
       </motion.div>

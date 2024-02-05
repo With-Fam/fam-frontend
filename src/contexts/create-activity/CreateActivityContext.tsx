@@ -11,16 +11,40 @@ import {
   useRef,
   type PropsWithChildren,
 } from 'react'
+import dynamic from 'next/dynamic'
 
 // Components
 import { Loading } from '@/components/shared'
 import { CreateContextNavigation } from '../CreateContextNavigation'
-import {
-  ActionForm,
-  ActionSection,
-  ReviewProposalForm,
-  SubmitProposal,
-} from '@/modules/create-activity/components'
+
+const ActionForm = dynamic(
+  () =>
+    import('@/modules/create-activity/components/ActionForm').then(
+      ({ ActionForm }) => ActionForm
+    ),
+  { ssr: false }
+)
+const ActionSection = dynamic(
+  () =>
+    import(
+      '@/modules/create-activity/components/action/ActionSection/ActionSection'
+    ).then(({ ActionSection }) => ActionSection),
+  { ssr: false }
+)
+const ReviewProposalForm = dynamic(
+  () =>
+    import(
+      '@/modules/create-activity/components/review-proposal/ReviewProposalForm'
+    ).then(({ ReviewProposalForm }) => ReviewProposalForm),
+  { ssr: false }
+)
+const SubmitProposal = dynamic(
+  () =>
+    import('@/modules/create-activity/components/action/SubmitProposal').then(
+      ({ SubmitProposal }) => SubmitProposal
+    ),
+  { ssr: false }
+)
 
 // Helpers
 import { useActivityFormStore } from '@/modules/create-activity/stores'
@@ -64,7 +88,7 @@ const CreateActivityProvider = ({
   params,
 }: ActivityProviderProps): JSX.Element => {
   const { networkId, communityId } = params
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(false)
   const [loadingMessage, setLoadingMessage] =
     useState<string>('Setting the vibes')
   const reviewFormRef = useRef<Maybe<HTMLFormElement>>(null)
@@ -82,7 +106,7 @@ const CreateActivityProvider = ({
   }, [])
 
   useEffect(() => {
-    if(loadingMessage === 'Proposal posted. Redirecting...') {
+    if (loadingMessage === 'Proposal posted. Redirecting...') {
       setLoadingMessage('Setting the vibes')
       window.location.href = `/community/${networkId}/${communityId}/activity`
     }

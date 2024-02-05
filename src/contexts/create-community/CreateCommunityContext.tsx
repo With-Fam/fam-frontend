@@ -33,6 +33,8 @@ import { getDateYearsFromNow } from '@/utils/helpers'
 
 // Types
 import type { CreateSection } from '@/modules/create-community/types'
+import { useNetwork } from 'wagmi'
+import { L2ChainType } from '@/constants/addresses'
 let sections: CreateSection[] = []
 export interface CreateCommunityContextType {
   loading: boolean
@@ -56,6 +58,7 @@ const CreateCommunityContext = createContext<CreateCommunityContextType>({
 const CreateCommunityProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
+  const { chain } = useNetwork()
   const { user } = usePrivy()
   const [loading, setLoading] = useState<boolean>(true)
   const {
@@ -169,7 +172,7 @@ const CreateCommunityProvider = ({
       order: 3,
       title: 'Confirm',
       key: 'review',
-      content: <ConfirmForm />,
+      content: chain && chain.id ? <ConfirmForm chainID={chain?.id as L2ChainType} /> : <></>,
     }
 
     const deploy: CreateSection = {
@@ -193,6 +196,27 @@ const CreateCommunityProvider = ({
     setVetoPower,
     setVetoerAddress,
   ])
+
+  if (typeof chain?.id === 'undefined') {
+    return (
+      <CreateCommunityContext.Provider
+        value={{
+          loading,
+          step: activeSection,
+          section: sections[activeSection],
+          next,
+          prev,
+          title: sections[activeSection]?.title,
+        }}
+      >
+        <ErrorBox
+          title="Not this time"
+          description="It seems that you are not connected to a wallet. Please log in to continue."
+          exitPath="/"
+        />
+      </CreateCommunityContext.Provider>
+    )
+  }
 
   return (
     <CreateCommunityContext.Provider

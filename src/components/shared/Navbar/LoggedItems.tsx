@@ -17,9 +17,13 @@ type LoggedItemsProps = {
  * Component
  */
 
-const LoggedItems = ({ user }: LoggedItemsProps ): JSX.Element => (
+const LoggedItems = ({ user }: LoggedItemsProps): JSX.Element => (
   <>
-    <Link className="block h-12" href="/create-community" passHref>
+    <Link
+      className="pointer-events-auto block h-12"
+      href="/create-community"
+      passHref
+    >
       <Paragraph
         className="rounded-3xl bg-black px-4 py-2 text-white sm:px-6 sm:py-2.5"
         as="p2"

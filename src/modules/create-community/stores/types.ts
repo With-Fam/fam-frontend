@@ -5,11 +5,13 @@ import { PersistOptions } from 'zustand/middleware'
 // Hooks
 import { IPFSUpload } from '@/hooks'
 
-// Types
-import { DaoContractAddresses } from '@/modules/create-community'
-import { GeneralFormValues, ArtworkFormValues } from '../components'
-import { TokenAllocation } from '@/modules/create-community/components/auctions/AuctionForm.schema'
+// Components
 import type { OrderedTraits } from '@/components/create-community/artwork/TraitsAccordian'
+import { GeneralFormValues, ArtworkFormValues } from '../components'
+
+// Types
+import { type TokenAllocation } from '@/modules/create-community/components/auctions/AuctionForm.schema'
+import type { DaoContractAddresses } from '@/modules/dao'
 
 /*--------------------------------------------------------------------*/
 

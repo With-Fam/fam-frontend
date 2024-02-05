@@ -13,6 +13,7 @@ import BidDescription from '@/components/community/BidComponent/BidDescription'
 import BidStatus from '@/components/community/BidComponent/BidStatus'
 import AllBids from '@/components/community/BidComponent/AllBids'
 import RaisedComponent from '@/components/community/BidComponent/RaisedComponent'
+import { HandleImage } from '@/components/shared/HandleImage'
 
 // Types
 import {
@@ -51,12 +52,13 @@ const BidComponent = ({
       <div className="m-auto grid w-full max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
         <div className="relative col-span-1 row-span-1 aspect-square w-full rounded-lg">
           {token?.image && (
-            <Image
+            <HandleImage
               src={token?.image}
               alt=""
               fill
               sizes="100vw; md:50vw"
-              className="relative -z-10 rounded-lg object-contain"
+              className="relative -z-10 rounded-lg object-cover"
+              noDefault
             />
           )}
         </div>

@@ -1,6 +1,8 @@
+'use client'
+
 import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useContractRead } from 'wagmi'
+import { useContractRead, useNetwork } from 'wagmi'
 import {
   prepareWriteContract,
   waitForTransaction,
@@ -15,7 +17,6 @@ import { metadataAbi, tokenAbi } from '@/data/contract/abis'
 import { useRouter } from 'next/navigation'
 import { CheckMark, Copy } from '@/components/icons'
 import { Paragraph } from '@/stories'
-import { getChainId } from '@/utils/getChainId'
 
 const DEPLOYMENT_ERROR = {
   MISMATCHING_SIGNER:
@@ -45,6 +46,7 @@ const createCommunity = async (community: any) => {
 }
 
 export function ReviewForm(): JSX.Element {
+  const { chain } = useNetwork()
   const router = useRouter()
   const {
     deployedDao,
@@ -57,13 +59,11 @@ export function ReviewForm(): JSX.Element {
 
   const methods = useForm()
 
-  const chain = getChainId('goerli')
-
   const { data: tokenOwner } = useContractRead({
     enabled: !!deployedDao.token,
     abi: tokenAbi,
     address: deployedDao.token as `0x${string}`,
-    chainId: chain,
+    chainId: chain?.id,
     functionName: 'owner',
   })
 
@@ -101,7 +101,7 @@ export function ReviewForm(): JSX.Element {
           abi: metadataAbi,
           address: deployedDao.metadata as `0x${string}`,
           functionName: 'addProperties',
-          chainId: chain,
+          chainId: chain?.id,
           args: [transaction.names, transaction.items, transaction.data],
         })
         const tx = await writeContract(config)
@@ -126,10 +126,10 @@ export function ReviewForm(): JSX.Element {
       createCommunity({
         name: general.daoName,
         community_id: deployedDao.token,
-        network: 'goerli',
+        network: chain?.network,
       })
 
-      router.push(`/community/goerli/${deployedDao.token}/`)
+      router.push(`/community/${chain?.network}/${deployedDao.token}/`)
       setTimeout(() => {
         resetForm()
       }, 200)

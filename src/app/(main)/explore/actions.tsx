@@ -33,37 +33,17 @@ export async function getExploreData({
 }: getExploreDataProps): Promise<getExploreDataReturn> {
   const pageInt = parseInt(page, 10) || 1
   try {
-    const getQuery = sql`
-        SELECT * FROM communities WHERE enabled = true AND network = 'goerli';
-      `
-
-    const result = await getQuery
-
-    const daos: string[] = []
-    result.rows.forEach((row) => {
-      if (trending && row.featured) {
-        daos.push(row.community_id)
-      }
-
-      if (!trending) {
-        daos.push(row.community_id)
-      }
-    })
 
     const data = await SDK.connect(chainId).exploreDaosPage({
       orderBy: Auction_OrderBy.StartTime,
       orderDirection: OrderDirection.Desc,
-      where: {
-        dao_in: daos,
-        settled: false,
-      },
       skip: (pageInt - 1) * limit,
       first: limit,
     })
 
     return {
       communities: data.auctions,
-      count: result.rowCount,
+      count: 5,
     }
   } catch (error) {
     console.log(error)

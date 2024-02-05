@@ -6,6 +6,7 @@ export enum TransactionType {
   AIRDROP = 'airdrop',
   UPDATE_COMMUNITY = 'update-community',
   CUSTOM = 'custom',
+  UPGRADE = 'upgrade',
   // REPLACE_ARTWORK = 'replace-artwork',
   UPDATE_MINTER = 'update-minter',
 }

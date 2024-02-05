@@ -11,7 +11,7 @@ import { toSeconds } from '@/utils/helpers'
 import { sanitizeStringForJSON } from '@/utils/sanitize'
 
 import { UpdateCommunityFormValues } from '../components/update-community/UpdateCommunity.schema'
-import { DaoContractAddresses } from '../stores'
+import { DaoContractAddresses } from '@/modules/dao'
 
 type FormValuesTransactionMap = {
   [K in keyof UpdateCommunityFormValues]: {

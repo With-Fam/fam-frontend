@@ -3,19 +3,13 @@
 // Framework
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
-
-// Third Parties
-import { useFormContext } from 'react-hook-form'
+import { useState } from 'react'
 
 // Local Components
 import { Paragraph } from '@/stories'
 import { Cross, ThreeDots, Trash, EditPen, Close } from '@/components/icons'
 
 // Content
-import ACTIONS_DATA from '@/content/create-activity/actions'
-import POPULAR_ACTIONS_DATA from '@/content/create-activity/apps'
 import {
   TRANSACTION_TYPES,
   TransactionType,

@@ -1,4 +1,5 @@
 // Framework
+'use client'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -9,6 +10,7 @@ import { AbiCoder, hexlify, Interface } from 'ethers'
 import { getAddress, parseEther } from 'viem'
 import { usePrivyWagmi } from '@privy-io/wagmi-connector'
 import toast from 'react-hot-toast'
+import { useContractRead, useNetwork } from 'wagmi'
 import {
   WriteContractUnpreparedArgs,
   prepareWriteContract,
@@ -31,16 +33,16 @@ import { sanitizeStringForJSON } from '@/utils/sanitize'
 import { toSeconds, walletSnippet } from '@/utils/helpers'
 
 // Constants
-import { PUBLIC_MANAGER_ADDRESS } from '@/constants/addresses'
+import { L2ChainType, PUBLIC_MANAGER_ADDRESS } from '@/constants/addresses'
 import { NULL_ADDRESS } from '@/constants/addresses'
-import { managerAbi } from '@/data/contract/abis'
+import { managerAbi, managerV2Abi } from '@/data/contract/abis'
 
 import type { AddressType } from '@/types'
+type ConfirmFormProps = {
+  chainID: L2ChainType
+}
 import { IPFSImage } from '@/components/ipfs/IPFSImage'
 // import { RandomPreview } from '@/components/create-community/artwork/RandomPreview'
-
-// Utils
-import { getChainId } from '@/utils/getChainId'
 
 /*--------------------------------------------------------------------*/
 
@@ -62,11 +64,10 @@ const DEPLOYMENT_ERROR = {
     'Oops! Looks like there was a problem handling the dao deployment. Please ensure that input data from all the previous steps is correct',
   INVALID_ALLOCATION_PERCENTAGE:
     'Oops! Looks like there are undefined founder allocation values. Please go back to the allocation step to ensure that valid allocation values are set.',
-  MISMATCHING_NETWORK:
-    'Oops! Looks like there is a chain mismatch.',
+  MISMATCHING_NETWORK: 'Oops! Looks like there is a chain mismatch.',
 }
 
-export function ConfirmForm(): JSX.Element {
+export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
   const {
     founderAllocation,
     contributionAllocation,
@@ -86,7 +87,22 @@ export function ConfirmForm(): JSX.Element {
     useState<boolean>(false)
   const [deploymentError, setDeploymentError] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const chain = getChainId('')
+
+  console.log('address::', PUBLIC_MANAGER_ADDRESS[chainID])
+
+  console.log('CONTRACT READ::', {
+    abi: managerAbi,
+    address: PUBLIC_MANAGER_ADDRESS[chainID],
+    functionName: 'contractVersion',
+    chainId: chainID,
+  })
+  const { data: version, isLoading: isVersionLoading } = useContractRead({
+    abi: managerAbi,
+    address: PUBLIC_MANAGER_ADDRESS[chainID],
+    functionName: 'contractVersion',
+    chainId: chainID,
+  })
+  console.log('version:::', version, isVersionLoading)
   const { wallet: activeWallet } = usePrivyWagmi()
 
   const methods = useForm<ConfirmFormValues>({
@@ -167,7 +183,6 @@ export function ConfirmForm(): JSX.Element {
     }
 
     if (founderParams[0].wallet !== activeWallet?.address) {
-      console.log('WHOS WHO::', founderParams[0].wallet, activeWallet?.address)
       setDeploymentError(DEPLOYMENT_ERROR.MISMATCHING_SIGNER)
       return
     }
@@ -184,14 +199,42 @@ export function ConfirmForm(): JSX.Element {
 
     setIsPendingTransaction(true)
     let transaction
+    console.log('PROPS::', {
+      address: PUBLIC_MANAGER_ADDRESS[chainID],
+      chainId: chainID,
+      abi: managerAbi,
+      functionName: 'deploy',
+      args: [founderParams, tokenParams, auctionParams, govParams],
+    })
+
     try {
-      const config = await prepareWriteContract({
-        address: PUBLIC_MANAGER_ADDRESS[chain],
-        chainId: chain,
-        abi: managerAbi,
-        functionName: 'deploy',
-        args: [founderParams, tokenParams, auctionParams, govParams],
-      })
+      let config: any
+      if (version?.startsWith('2')) {
+        config = await prepareWriteContract({
+          address: PUBLIC_MANAGER_ADDRESS[chainID],
+          chainId: chainID,
+          abi: managerV2Abi,
+          functionName: 'deploy',
+          args: [
+            founderParams,
+            { ...tokenParams, reservedUntilTokenId: BigInt(0), metadataRenderer: NULL_ADDRESS },
+            {
+              ...auctionParams,
+              founderRewardRecipent: NULL_ADDRESS,
+              founderRewardBps: 0,
+            },
+            govParams,
+          ],
+        })
+      } else {
+        config = await prepareWriteContract({
+          address: PUBLIC_MANAGER_ADDRESS[chainID],
+          chainId: chainID,
+          abi: managerAbi,
+          functionName: 'deploy',
+          args: [founderParams, tokenParams, auctionParams, govParams],
+        })
+      }
 
       const tx = await writeContract(config)
       console.log('tx::::', tx)

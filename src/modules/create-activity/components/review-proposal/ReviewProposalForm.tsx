@@ -78,14 +78,16 @@ export function ReviewProposalForm({
       if (proposalThreshold === undefined) {
         return
       }
-      setLoading(true)
 
       const votesToNumber = votes ? Number(votes) : 0
       const doesNotHaveEnoughVotes = votesToNumber <= Number(proposalThreshold)
+
       if (doesNotHaveEnoughVotes) {
-        setLoading(false)
+        toast.error(ERROR_CODE.NOT_ENOUGH_VOTES)
         return
       }
+
+      setLoading(true)
 
       const {
         targets,
@@ -113,11 +115,17 @@ export function ReviewProposalForm({
             params.description,
           ],
         })
+
         const response = await writeContract(config)
         await waitForTransaction({ hash: response.hash })
         setLoadingMessage('Proposal posted. Redirecting...')
       } catch (err: any) {
         setLoading(false)
+
+        if(err.name === 'ConnectorNotFoundError') {
+          toast.error(ERROR_CODE.CONNECTOR_NOT_FOUND)
+          return
+        }
 
         if (err.shortMessage === 'User rejected the request.') {
           toast.error(ERROR_CODE.REJECTED)

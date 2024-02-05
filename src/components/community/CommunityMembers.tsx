@@ -12,6 +12,9 @@ const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
   ssr: false,
 })
 
+// Helpers
+import { useChainStore } from '@/utils/stores/useChainStore'
+
 /*--------------------------------------------------------------------*/
 
 /**
@@ -26,6 +29,7 @@ interface CommunityMembersProps {
 
 const CommunityMembers = ({ data }: CommunityMembersProps): JSX.Element => {
   // Deploy no members component
+  const chain = useChainStore((x) => x.chain)
   if (data?.daotokenOwners.length === 0) return <h1>No members</h1>
   const total = data?.daotokenOwners.reduce((acc, member) => {
     return acc + member.daoTokenCount
@@ -39,7 +43,7 @@ const CommunityMembers = ({ data }: CommunityMembersProps): JSX.Element => {
         return (
           <Link
             // remove hardcoded goerli
-            href={`/profile/goerli/${member.owner}`}
+            href={`/profile/${chain.slug}/${member.owner}`}
             key={index}
             className="mb-2 block rounded-lg bg-white p-4 sm:flex sm:items-center sm:justify-between"
           >

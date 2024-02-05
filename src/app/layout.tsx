@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { WalletContext } from '@/contexts/WalletContext'
 import { DaoContext } from '@/contexts/DaoContext'
+
 // Types
 import type { PropsWithChildren } from 'react'
 

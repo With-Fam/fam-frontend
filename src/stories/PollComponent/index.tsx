@@ -51,7 +51,7 @@ const PollComponent = ({ state }: PollProps): JSX.Element => {
     default:
       return (
         <div className="flex items-center justify-center">
-          <span className="ml-1.5 text-grey-dark">{state && parseState(state)}</span>
+          <span className="ml-1.5 text-grey-dark">{(typeof state === 'number') && parseState(state)}</span>
         </div>
       )
   }
