@@ -5,7 +5,7 @@ import {
   ExploreDaosPageQuery,
   OrderDirection,
 } from '@/data/subgraph/sdk.generated'
-import { sql } from '@vercel/postgres'
+// import { sql } from '@vercel/postgres'
 
 // Types
 type getExploreDataProps = {
@@ -33,7 +33,6 @@ export async function getExploreData({
 }: getExploreDataProps): Promise<getExploreDataReturn> {
   const pageInt = parseInt(page, 10) || 1
   try {
-
     const data = await SDK.connect(chainId).exploreDaosPage({
       orderBy: Auction_OrderBy.StartTime,
       orderDirection: OrderDirection.Desc,
@@ -41,12 +40,17 @@ export async function getExploreData({
       first: limit,
     })
 
+    console.log('DATA::', data)
+
     return {
       communities: data.auctions,
       count: 5,
     }
   } catch (error) {
+    console.log('ERRORRRRR')
     console.log(error)
+    console.log('LLOGSSSs')
+    console.log('......', error?.response)
 
     return {
       communities: [],

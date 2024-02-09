@@ -5,7 +5,7 @@ interface UsersProfileProps {
     type: string
     page: string
   }
-  params: { user: string }
+  params: { user: string; chain: string }
 }
 
 // Content
@@ -52,9 +52,7 @@ const UserPage = ({ params, searchParams }: UsersProfileProps): JSX.Element => {
     return <div className="px-16">User not found</div>
   }
 
-  return (
-    <ProfileClientPage type={type} user={user} page={page} />
-  )
+  return <ProfileClientPage type={type} user={user} page={page} />
 }
 
 export default UserPage

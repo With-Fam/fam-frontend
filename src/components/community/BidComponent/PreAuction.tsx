@@ -2,7 +2,7 @@
 
 // Framework
 import { useState } from 'react'
-
+import { useRouter } from 'next/navigation'
 // Third Parties
 import { useContractWrite } from 'wagmi'
 import { waitForTransaction } from 'wagmi/actions'
@@ -25,6 +25,7 @@ type PreAuctionProps = {
 const PreAuction = ({ chainId }: PreAuctionProps): JSX.Element => {
   const [loading, setIsLoading] = useState(false)
   const addresses = useDaoStore((state) => state.addresses)
+  const router = useRouter()
 
   const address = addresses?.auction
 
@@ -49,8 +50,11 @@ const PreAuction = ({ chainId }: PreAuctionProps): JSX.Element => {
     setIsLoading(true)
     try {
       const tx = await writeAsync?.()
-      if (tx?.hash) await waitForTransaction({ hash: tx.hash })
-      setIsLoading(false)
+      if (tx?.hash) {
+        await waitForTransaction({ hash: tx.hash })
+        router.refresh()
+        setIsLoading(false)
+      }
     } catch (e) {
       console.error(e)
       setIsLoading(false)

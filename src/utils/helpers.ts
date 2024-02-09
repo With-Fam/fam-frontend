@@ -351,7 +351,7 @@ export function convertIpfsUrl(ipfsUrl: string): string {
   const lastSlashIndex = ipfsUrl.lastIndexOf('/')
   const hash = ipfsUrl.substring(lastSlashIndex + 1)
 
-  return `https://ipfs.io/ipfs/${hash}`
+  return `https://cloudflare-ipfs.com/ipfs/${hash}`
 }
 
 /**

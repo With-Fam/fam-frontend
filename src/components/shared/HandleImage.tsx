@@ -46,9 +46,7 @@ export function HandleImage({
   }
 
   if (error && noDefault) {
-    return (
-      <></>
-    )
+    return <></>
   }
 
   return (

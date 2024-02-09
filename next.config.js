@@ -15,12 +15,13 @@ const nextConfig = {
       'ipfs.io',
       'nouns.build',
       'i.ibb.co',
-      'euc.li',
+      // 'euc.li', 
+      'cloudflare-ipfs.com'
     ],
     // remotePatterns: [
     //   {
     //     protocol: 'ipfs',
-    //     hostname: '*',
+    //     hostname: '*', 
     //     port: '',
     //     pathname: '',
     //   },

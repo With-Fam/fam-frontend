@@ -34,7 +34,10 @@ const BidDescription = ({
 }: BidDescriptionProps): JSX.Element => {
   const [imageError, setImageError] = useState(false)
   const imageSrc = convertIpfsUrl(metaData.contractImage || '')
-
+  console.log(imageSrc)
+  // console.log(token?.image)
+  console.log('metaData::', metaData)
+  console.log('page::', page)
   return (
     <div className="col-span-1 flex w-full flex-col">
       <div className="mb-4 flex items-center">

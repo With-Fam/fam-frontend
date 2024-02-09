@@ -65,15 +65,18 @@ const ExplorePage = async ({
     trending: searchParams.type === 'trending',
   })
 
+  console.log('Communities::', communities)
+
   return (
     <>
       <ExploreHeader />
       <ExploreHeaderMobile />
-      <Toggle
+      {/* <Toggle
         type={searchParams.type}
         items={EXPLORE_TOGGLE_DATA}
         defaultType="trending"
-      />
+      /> */}
+      <div className="pt-8" />
       <Communities items={communities} />
       <ExplorePagination
         page={searchParams.page || '1'}

@@ -48,6 +48,7 @@ const ProfileClientPage = ({
   page,
 }: UsersProfileProps): JSX.Element => {
   const chain = useChainStore((x) => x.chain)
+  console.log('useChainStore', chain)
   const {
     data: userData,
     error,
@@ -71,15 +72,12 @@ const ProfileClientPage = ({
     return <div className="px-16">Sorry, user not found</div>
   }
 
-  console.log('user data::;', userData)
-
   return (
     <div className="px-4">
       <div className="mt-24 flex flex-col items-center">
         <UserAvatar address={user} width={80} height={80} />
         <Heading as="h5" className="mt-3">
-          <UserName address={user as `0x${string}`} blankComponent />
-          {' '}Profile
+          <UserName address={user as `0x${string}`} blankComponent /> Profile
         </Heading>
         <div className="mb-4 mt-2">
           <UserKey>{walletSnippet(user)}</UserKey>
