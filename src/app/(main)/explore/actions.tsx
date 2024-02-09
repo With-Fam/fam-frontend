@@ -40,18 +40,11 @@ export async function getExploreData({
       first: limit,
     })
 
-    console.log('DATA::', data)
-
     return {
       communities: data.auctions,
       count: 5,
     }
   } catch (error) {
-    console.log('ERRORRRRR')
-    console.log(error)
-    console.log('LLOGSSSs')
-    console.log('......', error?.response)
-
     return {
       communities: [],
       count: 0,
