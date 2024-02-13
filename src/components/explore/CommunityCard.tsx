@@ -27,7 +27,7 @@ const CommunityCard = ({ community }: CommunityCardProps): JSX.Element => (
       <FamImage
         className="mx-auto h-auto w-full overflow-hidden rounded-lg object-cover"
         fill
-        src={community.token.image}
+        src={community?.token?.image ? community?.token?.image : ''}
         alt={community.token.name}
         sizes="50vw"
       />

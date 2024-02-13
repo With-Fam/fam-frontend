@@ -1,5 +1,5 @@
 // Components
-import { Toggle } from '@/stories'
+// import { Toggle } from '@/stories'
 import {
   Communities,
   ExploreHeader,
@@ -18,7 +18,7 @@ type ExplorePageProps = {
 // Content
 import { getExploreData } from '@/app/(main)/explore/actions'
 import ExplorePagination from '@/components/explore/ExplorePagination'
-import { EXPLORE_TOGGLE_DATA } from '@/content/explore'
+// import { EXPLORE_TOGGLE_DATA } from '@/content/explore'
 
 /*--------------------------------------------------------------------*/
 
