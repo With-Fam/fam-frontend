@@ -1,9 +1,11 @@
 // Components
+import {
+  RoseIcon,
+  PointyTopIcon,
+  StarIcon,
+  RoundTopIcon,
+} from '@/components/icons'
 import { twMerge } from 'tailwind-merge'
-import PointyTopIcon from './PointyTopIcon'
-import RoseIcon from './RoseIcon'
-import RoundTopIcon from './RoundTopIcon'
-import StarIcon from './StarIcon'
 
 // Types
 type IconsRowProps = {

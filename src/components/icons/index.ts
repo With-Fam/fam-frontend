@@ -1,3 +1,7 @@
+export { default as PointyTopIcon } from './PointyTopIcon'
+export { default as RoseIcon } from './RoseIcon'
+export { default as RoundTopIcon } from './RoundTopIcon'
+export { default as StarIcon } from './StarIcon'
 export { default as Alert } from './Alert'
 export { default as Arrow } from './Arrow'
 export { default as Camera } from './Camera'

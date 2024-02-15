@@ -68,12 +68,12 @@ const DEPLOYMENT_ERROR = {
 }
 
 export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
+  const { chain } = useNetwork()
   const {
     founderAllocation,
     contributionAllocation,
     general,
     auctionSettings,
-    setUpArtwork,
     setActiveSection,
     activeSection,
     setDeployedDao,
@@ -88,21 +88,13 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
   const [deploymentError, setDeploymentError] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  console.log('address::', PUBLIC_MANAGER_ADDRESS[chainID])
-
-  console.log('CONTRACT READ::', {
-    abi: managerAbi,
-    address: PUBLIC_MANAGER_ADDRESS[chainID],
-    functionName: 'contractVersion',
-    chainId: chainID,
-  })
   const { data: version, isLoading: isVersionLoading } = useContractRead({
     abi: managerAbi,
     address: PUBLIC_MANAGER_ADDRESS[chainID],
     functionName: 'contractVersion',
     chainId: chainID,
   })
-  console.log('version:::', version, isVersionLoading)
+
   const { wallet: activeWallet } = usePrivyWagmi()
 
   const methods = useForm<ConfirmFormValues>({
@@ -199,13 +191,6 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
 
     setIsPendingTransaction(true)
     let transaction
-    console.log('PROPS::', {
-      address: PUBLIC_MANAGER_ADDRESS[chainID],
-      chainId: chainID,
-      abi: managerAbi,
-      functionName: 'deploy',
-      args: [founderParams, tokenParams, auctionParams, govParams],
-    })
 
     try {
       let config: any
@@ -217,7 +202,11 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
           functionName: 'deploy',
           args: [
             founderParams,
-            { ...tokenParams, reservedUntilTokenId: BigInt(0), metadataRenderer: NULL_ADDRESS },
+            {
+              ...tokenParams,
+              reservedUntilTokenId: BigInt(0),
+              metadataRenderer: NULL_ADDRESS,
+            },
             {
               ...auctionParams,
               founderRewardRecipent: NULL_ADDRESS,
@@ -273,8 +262,6 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
     } catch {}
 
     const deployedAddresses = parsedEvent?.args
-
-    console.log('deployedAddresses:::', deployedAddresses)
 
     if (!deployedAddresses) {
       setDeploymentError(DEPLOYMENT_ERROR.GENERIC)
@@ -374,23 +361,6 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
             </ConfirmItem>
           </div>
         </ConfirmDropDown>
-        {/* <ConfirmDropDown text="Set Up Artwork">
-          <div className="px-4 py-6">
-            <ConfirmItem label="Project Description">
-              {general.projectDescription}
-            </ConfirmItem>
-            <div className="mt-2">
-              <p className="text-xs uppercase text-grey">ARTWORK</p> */}
-        {/* <Button className="mx-auto w-full rounded-lg p-4 text-base ">
-                Preview Artwork
-              </Button> */}
-        {/* <RandomPreview images={setUpArtwork.artwork} isEmpty={false} /> */}
-        {/* </div>
-            <ConfirmItem label="Files Length">
-              {setUpArtwork.filesLength}
-            </ConfirmItem>
-          </div>
-        </ConfirmDropDown> */}
         <div className="mt-10">
           <ConfirmCheckbox name="termsAcceptance">
             I have reviewed and acknowledge and agree to the{' '}
@@ -401,7 +371,7 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
           <ConfirmCheckbox name="deployDaoAcceptance">
             I am deploying my DAO on{' '}
             <Link href="#" className="text-orange">
-              Goerli
+              {chain?.name}
             </Link>
           </ConfirmCheckbox>
         </div>

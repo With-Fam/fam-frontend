@@ -1,6 +1,6 @@
 // Types
-
-type RoundTopIconProps = {
+import { SVGAttributes } from 'react'
+type RoundTopIconProps = SVGAttributes<SVGSVGElement> & {
   color?: string
 }
 
@@ -10,13 +10,14 @@ type RoundTopIconProps = {
  * Component
  */
 
-const RoundTopIcon = ({ color = '#8146FF' }: RoundTopIconProps): JSX.Element => (
+const RoundTopIcon = ({ color = '#8146FF', ..._props }: RoundTopIconProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="67"
     height="99"
     viewBox="0 0 67 99"
     fill="none"
+    {..._props}
   >
     <path
       fillRule="evenodd"

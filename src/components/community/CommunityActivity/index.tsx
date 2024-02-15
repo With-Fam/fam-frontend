@@ -22,7 +22,7 @@ type CommunityActivityProps = {
 
 // Utils
 import { formatUnixTimestampDate, isDateExpired } from '@/utils/helpers'
-import PointyTopIcon from '@/components/shared/IconsRow/PointyTopIcon'
+import PointyTopIcon from '@/components/icons/PointyTopIcon'
 import VoteButtonHandle from '@/components/community/activity/ActivitySection/VoteButtonHandle'
 
 /*--------------------------------------------------------------------*/

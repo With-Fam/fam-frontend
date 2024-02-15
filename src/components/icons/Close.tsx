@@ -1,8 +1,7 @@
 'use client'
 
-import type { SVGProps } from './types'
-
 // Types
+import type { SVGProps } from './types'
 type CloseProps = {
   color?: string
 } & SVGProps

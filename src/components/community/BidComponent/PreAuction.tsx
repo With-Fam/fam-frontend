@@ -10,6 +10,8 @@ import { waitForTransaction } from 'wagmi/actions'
 // Helpers
 import { useDaoStore } from '@/modules/dao'
 import { auctionAbi } from '@/data/contract/abis'
+import { Paragraph } from '@/stories'
+import { StarIcon } from '@/components/icons'
 
 // Types
 type PreAuctionProps = {
@@ -72,32 +74,35 @@ const PreAuction = ({ chainId }: PreAuctionProps): JSX.Element => {
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <h2 className="text-2xl font-bold">Pre-Auction</h2>
-      {loading ? (
-        <button
-          type="button"
-          className="mx-auto mt-8 block h-16 w-[350px] self-center rounded-full bg-black py-4 text-white"
-          disabled
+    <div className="px-4">
+      <div className="mx-auto flex w-full max-w-xs flex-col items-center justify-center rounded-2xl border border-solid border-grey-light px-4 py-6">
+        <div className="rounded-lg bg-grey-light p-3">
+          <StarIcon color="#F54D18" className="h-10 w-10" />
+        </div>
+        <Paragraph
+          as="p3"
+          className="leading[1.2] mt-4 text-center text-grey-dark"
         >
-          Loading...
-        </button>
-      ) : (
-        <button
-          type="button"
-          className="mx-auto mt-8 block h-16 w-[350px] self-center rounded-full bg-black py-4 text-white"
-          onClick={() => handleStartAuction()}
-        >
-          Start Auction
-        </button>
-      )}
+          To get started, kick off your first auction
+        </Paragraph>
+        {loading ? (
+          <button
+            type="button"
+            className=" mx-auto mt-8 block h-8 w-max self-center rounded-full bg-black px-4 text-sm leading-[1.15] text-white"
+            disabled
+          >
+            Loading...
+          </button>
+        ) : (
+          <button
+            type="button"
+            className=" mx-auto mt-8 block h-8 w-max self-center rounded-full bg-black px-4 text-sm leading-[1.15] text-white"
+            onClick={() => handleStartAuction()}
+          >
+            Start Auction
+          </button>
+        )}
+      </div>
     </div>
   )
 }

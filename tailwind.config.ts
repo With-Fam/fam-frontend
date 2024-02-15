@@ -35,6 +35,7 @@ const config: Config = {
         },
         yellow: {
           DEFAULT: '#FFE500',
+          dark: '#FFAC31',
         },
         pink: {
           DEFAULT: '#FDA4FF',

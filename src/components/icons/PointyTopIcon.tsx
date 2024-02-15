@@ -1,7 +1,5 @@
 // Types
-
 import { SVGAttributes } from 'react'
-
 type PointyTopIconProps = SVGAttributes<SVGSVGElement> & {
   color?: string
 }

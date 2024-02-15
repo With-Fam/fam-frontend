@@ -64,7 +64,7 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
     coverUrl: '',
     fundsRecipient: treasury || '',
     defaultAdmin: user || '',
-    publicSaleStart: '',
+    publicSaleStart: new Date().toISOString(),
     royaltyPercentage: 5,
     pricePerMint: 0,
     maxSupply: 10,
@@ -234,7 +234,6 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
             placeholder="$Symbol"
             type="text"
           />
-          <DateInput name="publicSaleStart" label="Sale start date" />
           <div className="col-span-2">
             <Controller
               control={control}

@@ -24,11 +24,13 @@ export const modules = {
 }
 
 export const formats = [
+  'size',
   'font',
   'bold',
   'italic',
   'underline',
   'bullet',
+  'list',
   'link',
   'image',
 ]
@@ -42,10 +44,10 @@ export const formats = [
 export const MobileEditorToolbar = (): JSX.Element => (
   <div id="toolbar">
     <span className="ql-formats text-picker">
-      <select className="ql-font" defaultValue="normal">
-        <option value="small">Small Text</option>
-        <option value="normal">Normal Text</option>
-        <option value="large">Large Text</option>
+      <select className="ql-size" defaultValue="medium">
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
       </select>
     </span>
     <span className="ql-formats">
