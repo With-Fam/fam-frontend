@@ -3,7 +3,6 @@
 // Framework
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import dynamic from 'next/dynamic'
 
 // Third parties
 import { useBalance } from 'wagmi'
@@ -14,18 +13,11 @@ import MenuList from '@/components/shared/Navbar/MenuList'
 import WalletComponent from '@/components/shared/Navbar/WalletComponent'
 import MenuUserRow from '@/components/shared/Navbar/MenuUserRow'
 import { Close } from '@/components/icons'
-const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
-  ssr: false,
-})
+import { UserAvatar } from '@/components/shared'
 
-// Utils
+// Helpers
 import { formatCryptoVal } from '@/utils/numbers'
-
-// Types
-import { User } from '@privy-io/react-auth'
-type PopupMenuProps = {
-  user: User
-}
+import { useCheckAuth } from '@/hooks/useCheckAuth'
 
 /*--------------------------------------------------------------------*/
 
@@ -33,14 +25,17 @@ type PopupMenuProps = {
  * Component
  */
 
-const PopupMenu = ({ user }: PopupMenuProps): JSX.Element => {
+const PopupMenu = (): JSX.Element => {
+  const {
+    wagmiData: { address },
+  } = useCheckAuth()
   const [open, setOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const popoverRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
 
   const { data: balance } = useBalance({
-    address: user?.wallet?.address as `0x${string}`,
+    address: address as `0x${string}`,
   })
 
   const userBalance = balance?.formatted
@@ -108,16 +103,12 @@ const PopupMenu = ({ user }: PopupMenuProps): JSX.Element => {
     closed: { y: '100%', opacity: 1, scale: 1 },
   }
 
-  if (!user) return <></>
+  if (!address) return <></>
 
   return (
-    <div className="relative h-12 pointer-events-auto">
+    <div className="pointer-events-auto relative h-12">
       <button onClick={() => setOpen(true)} aria-label="open users menu">
-        <UserAvatar
-          width={48}
-          height={48}
-          address={user.wallet?.address as string}
-        />
+        <UserAvatar width={48} height={48} address={address as string} />
       </button>
       <motion.div
         initial="closed"
@@ -133,13 +124,9 @@ const PopupMenu = ({ user }: PopupMenuProps): JSX.Element => {
         >
           <Close className="h-6 w-6" />
         </button>
-        {user.wallet && (
-          <MenuUserRow
-            wallet={user.wallet}
-          />
-        )}
+        {address && <MenuUserRow address={address} />}
         {userBalance && <WalletComponent userBalance={userBalance} />}
-        <MenuList wallet={user.wallet} />
+        <MenuList address={address} />
       </motion.div>
     </div>
   )

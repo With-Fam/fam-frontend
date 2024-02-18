@@ -2,7 +2,6 @@
 
 // Framework
 import { useCallback, useState, useEffect } from 'react'
-import { useAccount } from 'wagmi'
 import { encodeFunctionData, parseEther } from 'viem'
 
 // Forms
@@ -12,12 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 // Components
 import { SingleIPFSMediaUpload } from '@/components/ipfs'
 import RenderImage from '@/modules/create-activity/components/nft/RenderImage'
-import {
-  InputSlider,
-  TextArea,
-  TextInput,
-  // InputSlider
-} from '@/components/forms'
+import { InputSlider, TextArea, TextInput } from '@/components/forms'
 import { Button } from '@/components/shared'
 import { EditionTypeRadio } from './EditionTypeRadio'
 import { CoverUrlInput } from './CoverUrlInput'
@@ -40,7 +34,7 @@ import { AddressType } from '@/types'
 import { useProposalStore } from '@/modules/create-activity/stores'
 import { useChainStore } from '@/utils/stores/useChainStore'
 import { zoraNFTCreatorAbi } from '@/data/contract/abis/ZoraNFTCreator'
-
+import { useCheckAuth } from '@/hooks/useCheckAuth'
 const UINT_64_MAX = BigInt('18446744073709551615')
 const UINT_32_MAX = BigInt('4294967295')
 const HASH_ZERO =
@@ -52,7 +46,9 @@ type CreateNFTFormProps = {
 
 export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
   const [editionType, setEditionType] = useState<EditionType>('fixed')
-  const { address: user } = useAccount()
+  const {
+    wagmiData: { address: user },
+  } = useCheckAuth()
   const { treasury } = useDaoStore((x) => x.addresses)
   const initialValues: CreateNFTFormValues = {
     name: '',
@@ -93,7 +89,6 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
         .slice(0, 4)}`
       setValue('symbol', currentSymbol)
     }
-
   }, [currentDaoName, setValue, getValues, formState.dirtyFields])
 
   const addTransaction = useProposalStore((state) => state.addTransaction)

@@ -2,16 +2,18 @@
 
 // Framework
 import { usePathname } from 'next/navigation'
+import { Fragment } from 'react'
 
 // Third parties
-import { usePrivy } from '@privy-io/react-auth'
+import { twJoin } from 'tailwind-merge'
 
 // Local Components
 import { Logo } from '@/components/shared'
 import LoggedItems from '@/components/shared/Navbar/LoggedItems'
 import NotLoggedItems from '@/components/shared/Navbar/NotLoggedItems'
-import { twJoin } from 'tailwind-merge'
-import { Fragment } from 'react'
+
+// Helpers
+import { useCheckAuth } from '@/hooks/useCheckAuth'
 
 /*--------------------------------------------------------------------*/
 
@@ -20,7 +22,10 @@ import { Fragment } from 'react'
  */
 
 const Navbar = (): JSX.Element => {
-  const { user, ready } = usePrivy()
+  const {
+    isAuthenticated,
+    privyData: { ready },
+  } = useCheckAuth()
   const path = usePathname()
   const isHome = path === '/'
 
@@ -35,7 +40,7 @@ const Navbar = (): JSX.Element => {
       <div className="flex h-12 items-center justify-end gap-3">
         {ready && (
           <Fragment>
-            {user ? <LoggedItems user={user} /> : <NotLoggedItems />}
+            {isAuthenticated ? <LoggedItems /> : <NotLoggedItems />}
           </Fragment>
         )}
       </div>

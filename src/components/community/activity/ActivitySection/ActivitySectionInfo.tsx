@@ -2,12 +2,12 @@
 
 // Framework
 import dynamic from 'next/dynamic'
-import { useState, useEffect } from 'react'
 
 // Local Components
 import { Paragraph, PollComponent } from '@/stories'
-import { Button } from '@/components/shared'
 import { VoteBlock } from '@/components/community/activity'
+import ShowVoteManager from '@/components/community/activity/ActivitySection/ShowVoteManager'
+import ActivityStateActions from '@/components/community/CommunityActivity/ActivityStateActions'
 const ActivityCreator = dynamic(
   () => import('@/components/community/CommunityActivity/ActivityCreator'),
   {
@@ -15,22 +15,25 @@ const ActivityCreator = dynamic(
   }
 )
 
-// Utils
-import { formatUnixTimestampDate } from '@/utils/helpers'
-
 // Types
-import { ProposalFragment } from '@/data/subgraph/sdk.generated'
-import Link from 'next/link'
-import ActivityQueue from '@/components/community/CommunityActivity/ActivityQueue'
+import type {
+  ProposalFragment,
+  ProposalVote,
+} from '@/data/subgraph/sdk.generated'
+import type { AddressType } from '@/types'
 type ActivitySectionInfoProps = {
   proposal: ProposalFragment
   chainId: number
+  state: number | null
+  signerVote?: ProposalVote
+  proposalId: string
+  governorAddress: AddressType
+  userAddress: AddressType
 }
 
 // Helpers
-import {
-  getProposalState,
-} from '@/data/contract/requests/getProposalState'
+import { useCheckAuth } from '@/hooks/useCheckAuth'
+import { formatUnixTimestampDate } from '@/utils/helpers'
 
 /*--------------------------------------------------------------------*/
 
@@ -41,29 +44,18 @@ import {
 const ActivitySectionInfo = ({
   proposal,
   chainId,
+  state,
+  governorAddress,
+  proposalId,
+  signerVote,
+  userAddress,
 }: ActivitySectionInfoProps): JSX.Element => {
-  const [state, setState] = useState<number | null>(null)
-  const proposalId = proposal.proposalId
-  const governorAddress = proposal.dao.governorAddress
-  const {
-    proposer,
-    forVotes,
-    againstVotes,
-    abstainVotes,
-    timeCreated,
-    title,
-  } = proposal
+  const { isAuthenticated } = useCheckAuth()
+  const { proposer, forVotes, againstVotes, abstainVotes, timeCreated, title } =
+    proposal
   const sumOfVotes = forVotes + againstVotes + abstainVotes
   const rateFor = forVotes / sumOfVotes
   const rateAgainst = againstVotes / sumOfVotes
-
-  useEffect(() => {
-    if (governorAddress && proposalId) {
-      getProposalState(chainId, governorAddress, proposalId).then((data) => {
-        setState(data)
-      })
-    }
-  }, [proposal, chainId, proposalId, governorAddress])
 
   return (
     <>
@@ -86,19 +78,22 @@ const ActivitySectionInfo = ({
               <PollComponent state={state} />
             </div>
           </div>
-          <div>
-            <Link
+          {isAuthenticated && (
+            <ShowVoteManager
+              state={state}
+              chainId={chainId}
+              governorAddress={governorAddress}
+              userAddress={userAddress as AddressType}
+              timeCreated={proposal.timeCreated}
+              proposalId={proposalId}
+              signerVote={signerVote}
+              className="hidden w-20 px-3 py-2 sm:block"
               href={{ pathname: null, query: { voting: true, title } }}
-              passHref
-            >
-              <Button type="button" className="hidden w-20 px-3 py-2 sm:block">
-                <Paragraph as="p5">Vote</Paragraph>
-              </Button>
-            </Link>
-          </div>
+            />
+          )}
         </div>
       </div>
-      <ActivityQueue proposal={proposal} chainId={chainId} />
+      <ActivityStateActions proposal={proposal} chainId={chainId} />
       <div className="flex w-full gap-2">
         <VoteBlock votes={proposal.forVotes} rate={rateFor} direction="Yes" />
         <VoteBlock

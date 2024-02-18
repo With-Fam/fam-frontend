@@ -5,19 +5,13 @@ import Link from 'next/link'
 import Paragraph from '@/stories/Paragraph'
 import PopupMenu from '@/components/shared/Navbar/PopupMenu'
 
-// Types
-import { User } from '@privy-io/react-auth'
-type LoggedItemsProps = {
-  user: User
-}
-
 /*--------------------------------------------------------------------*/
 
 /**
  * Component
  */
 
-const LoggedItems = ({ user }: LoggedItemsProps): JSX.Element => (
+const LoggedItems = (): JSX.Element => (
   <>
     <Link
       className="pointer-events-auto block h-12"
@@ -31,7 +25,7 @@ const LoggedItems = ({ user }: LoggedItemsProps): JSX.Element => (
         Create
       </Paragraph>
     </Link>
-    <PopupMenu user={user} />
+    <PopupMenu />
   </>
 )
 

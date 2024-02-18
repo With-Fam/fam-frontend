@@ -1,7 +1,7 @@
 'use client'
 
 // Framework
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
   useRouter,
   useSearchParams,
@@ -31,6 +31,9 @@ type VoteButtonHandleProps = {
   chainId: CHAIN_ID
 }
 
+// Helpers
+import useUserHitEscape from '@/hooks/useUserHitEscape'
+
 /*--------------------------------------------------------------------*/
 
 /**
@@ -44,47 +47,22 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
   const [isVoteYes, setIsVoteYes] = useState(true)
   const [comment, setComment] = useState('')
   const router = useRouter()
-
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const { activityId } = useParams()
 
   const voting = searchParams.get('voting')
   const title = searchParams.get('title')
-  const voteYes = searchParams.get('voteYes')
   const cleanParams = new URLSearchParams(Array.from(searchParams.entries()))
   cleanParams.delete('voting')
   cleanParams.delete('title')
   cleanParams.delete('voteYes')
 
-  //fetch activityId from url using router
-
-  // useEffect(() => {
-  //   if (voteYes === 'false') {
-  //     setIsVoteYes(false)
-  //   }
-  // }, [])
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        exitAndReset()
-      }
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [])
-
-  // useEffect(() => {
-  //   if (isSubmitting) {
-  //     setTimeout(() => {
-  //       setIsSubmitting(false)
-  //       setSubmitSucess(true)
-  //     }, 2000)
-  //   }
-  // }, [isSubmitting])
+  useUserHitEscape(() => exitAndReset())
+  const hardReload = () => {
+    const baseUrl = window.location.href.split('?')[0]
+    window.location.href = baseUrl
+  }
 
   const exitAndReset = (reset?: boolean) => {
     router.push(`${pathname}?${cleanParams}`)
@@ -129,12 +107,6 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
     const { hash } = await vote
     await waitForTransaction({ hash })
 
-    // await mutate(
-    //   [SWR_KEYS.PROPOSAL, chain.id, proposalId],
-    //   getProposal(chain.id, proposalId)
-    // )
-
-    // setIsCastVoteSuccess(true)
     setIsSubmitting(false)
     setSubmitSucess(true)
   }
@@ -214,7 +186,7 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
                 <Button
                   type="button"
                   className="mt-4 w-full"
-                  onClick={() => exitAndReset(true)}
+                  onClick={hardReload}
                 >
                   <Paragraph as="p3" className="text-white">
                     Close

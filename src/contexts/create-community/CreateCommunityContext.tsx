@@ -11,9 +11,6 @@ import {
   useEffect,
 } from 'react'
 
-// Third Parties
-import { usePrivy } from '@privy-io/react-auth'
-
 // Components
 import { ErrorBox, Loading } from '@/components/shared'
 import { CreateContextNavigation } from '../CreateContextNavigation'
@@ -28,14 +25,10 @@ import {
   GeneralFormValues,
 } from '@/modules/create-community/components'
 
-// Utils
-import { getDateYearsFromNow } from '@/utils/helpers'
-
 // Types
 import type { CreateSection } from '@/modules/create-community/types'
 import { useNetwork } from 'wagmi'
 import { L2ChainType } from '@/constants/addresses'
-let sections: CreateSection[] = []
 export interface CreateCommunityContextType {
   loading: boolean
   section: CreateSection
@@ -54,12 +47,20 @@ const CreateCommunityContext = createContext<CreateCommunityContextType>({
   title: '',
 })
 
+// Helpers
+import { getDateYearsFromNow } from '@/utils/helpers'
+import { useCheckAuth } from '@/hooks/useCheckAuth'
+let sections: CreateSection[] = []
+
 // IMPORTANT: Create loading component
 const CreateCommunityProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
   const { chain } = useNetwork()
-  const { user } = usePrivy()
+  const {
+    isAuthenticated,
+    wagmiData: { address },
+  } = useCheckAuth()
   const [loading, setLoading] = useState<boolean>(true)
   const {
     activeSection,
@@ -136,7 +137,7 @@ const CreateCommunityProvider = ({
         <AuctionsForm
           defaultValues={{
             vetoPower: vetoPower || true,
-            vetoerAddress: vetoerAddress || user?.wallet?.address || '0x',
+            vetoerAddress: vetoerAddress || address || '0x',
             auctionDuration: {
               minutes: 0,
               hours: 0,
@@ -148,7 +149,7 @@ const CreateCommunityProvider = ({
                 ? founderAllocation
                 : [
                     {
-                      founderAddress: user?.wallet?.address || '0x',
+                      founderAddress: address || '0x',
                       allocationPercentage: 10,
                       endDate: getDateYearsFromNow(1),
                       admin: true,
@@ -172,7 +173,12 @@ const CreateCommunityProvider = ({
       order: 3,
       title: 'Confirm',
       key: 'review',
-      content: chain && chain.id ? <ConfirmForm chainID={chain?.id as L2ChainType} /> : <></>,
+      content:
+        chain && chain.id ? (
+          <ConfirmForm chainID={chain?.id as L2ChainType} />
+        ) : (
+          <></>
+        ),
     }
 
     const deploy: CreateSection = {
@@ -195,7 +201,30 @@ const CreateCommunityProvider = ({
     setFounderAllocation,
     setVetoPower,
     setVetoerAddress,
+    chain,
+    address,
   ])
+
+  if (!isAuthenticated) {
+    return (
+      <CreateCommunityContext.Provider
+        value={{
+          loading,
+          step: activeSection,
+          section: sections[activeSection],
+          next,
+          prev,
+          title: sections[activeSection]?.title,
+        }}
+      >
+        <ErrorBox
+          title="Not this time"
+          description="You are not authenticated"
+          exitPath="/"
+        />
+      </CreateCommunityContext.Provider>
+    )
+  }
 
   if (typeof chain?.id === 'undefined') {
     return (
@@ -235,20 +264,13 @@ const CreateCommunityProvider = ({
         prev={prev}
         title={sections[activeSection]?.title}
       />
-      {loading && !user && (
+      {loading && !address && (
         <Loading
           title="Setting the vibes"
           description="Put your feet up and enjoy the tunes"
         />
       )}
-      {!user && !loading && (
-        <ErrorBox
-          title="Not this time, friend"
-          description="It seems that you are not logged in. Please log in to continue."
-          exitPath="/"
-        />
-      )}
-      {!loading && user && <>{children}</>}
+      {!loading && address && <>{children}</>}
     </CreateCommunityContext.Provider>
   )
 }

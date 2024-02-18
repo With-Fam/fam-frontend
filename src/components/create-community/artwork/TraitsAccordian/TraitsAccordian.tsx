@@ -19,10 +19,17 @@ export function TraitsAccordian({
   setOrderedLayers,
 }: TraitsAccordianProps): JSX.Element {
   useEffect(() => {
-    if (artwork && orderedLayers.length < 1) setOrderedLayers(artwork)
+    if (artwork && orderedLayers.length < 1) {
+      // Sort the layers by trait before saving the first time
+      // After that, it will be handled by the drag and drop
+      const sortedLayers = artwork.sort((a, b) => {
+        if(a.trait < b.trait) { return -1; }
+        if(a.trait > b.trait) { return 1; }
+        return 0;
+      })
+      setOrderedLayers(sortedLayers)
+    }
   }, [artwork, orderedLayers, setOrderedLayers])
-
-  console.log(orderedLayers)
 
   return (
     <div className="col-span-1 space-y-2">

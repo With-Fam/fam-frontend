@@ -1,26 +1,28 @@
 'use client'
+
+// Third Parties
 import { FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-
-import {
-  type AuctionSettingsFormValues,
-  auctionSettingsValidationSchema,
-} from './AuctionForm.schema'
 
 // Components
 import { TextInput } from '@/components/forms'
 import VetoManagement from './VetoManagement'
-import { Alert, Sliders } from '@/components/icons'
 import { Paragraph } from '@/stories'
 import ContinueButton from '../../../ContinueButton'
 import { FounderFieldArray, initFounder } from './FounderFieldArray'
 import { ErrorBox } from '@/components/shared'
 
+// Types
+import {
+  type AuctionSettingsFormValues,
+  auctionSettingsValidationSchema,
+} from './AuctionForm.schema'
 type AuctionsFormProps = {
   defaultValues: AuctionSettingsFormValues
   onSubmit: (_a: AuctionSettingsFormValues) => void
 }
 
+// Helpers
 const DEFAULTS: AuctionSettingsFormValues = {
   auctionDuration: {
     days: 7,

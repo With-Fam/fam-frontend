@@ -11,7 +11,7 @@ import {
   waitForTransaction,
   writeContract,
 } from 'wagmi/actions'
-import { useAccount, useContractRead } from 'wagmi'
+import { useContractRead } from 'wagmi'
 import { FormProvider, useForm } from 'react-hook-form'
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), {
   ssr: false,
@@ -38,6 +38,7 @@ import { useDaoStore } from '@/modules/dao'
 import { useChainStore } from '@/utils/stores/useChainStore'
 import { useProposalStore } from '@/modules/create-activity/stores'
 import { prepareProposalTransactions } from '@/modules/create-activity/utils/prepareTransaction'
+import { useCheckAuth } from '@/hooks/useCheckAuth'
 
 /*--------------------------------------------------------------------*/
 
@@ -54,7 +55,9 @@ export function ReviewProposalForm({
   const { handleSubmit } = methods
   const addresses = useDaoStore((state) => state.addresses)
   const chain = useChainStore((x) => x.chain)
-  const { address } = useAccount()
+  const {
+    wagmiData: { address },
+  } = useCheckAuth()
   const { transactions } = useProposalStore()
 
   const { data: votes } = useContractRead({
@@ -122,7 +125,7 @@ export function ReviewProposalForm({
       } catch (err: any) {
         setLoading(false)
 
-        if(err.name === 'ConnectorNotFoundError') {
+        if (err.name === 'ConnectorNotFoundError') {
           toast.error(ERROR_CODE.CONNECTOR_NOT_FOUND)
           return
         }

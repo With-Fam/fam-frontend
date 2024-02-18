@@ -14,7 +14,7 @@ import {
 import dynamic from 'next/dynamic'
 
 // Components
-import { Loading } from '@/components/shared'
+import { ErrorBox, Loading } from '@/components/shared'
 import { CreateContextNavigation } from '../CreateContextNavigation'
 
 const ActionForm = dynamic(
@@ -48,6 +48,7 @@ const SubmitProposal = dynamic(
 
 // Helpers
 import { useActivityFormStore } from '@/modules/create-activity/stores'
+import { useCheckAuth } from '@/hooks/useCheckAuth'
 import {
   TRANSACTION_TYPES,
   type TransactionType,
@@ -87,6 +88,7 @@ const CreateActivityProvider = ({
   children,
   params,
 }: ActivityProviderProps): JSX.Element => {
+  const { isAuthenticated } = useCheckAuth()
   const { networkId, communityId } = params
   const [loading, setLoading] = useState<boolean>(false)
   const [loadingMessage, setLoadingMessage] =
@@ -182,6 +184,27 @@ const CreateActivityProvider = ({
     }
     return [action, transaction, proposal]
   }, [proposalDefault, activityType, communityId, next, setActivityType])
+
+  if (!isAuthenticated) {
+    return (
+      <CreateActivityContext.Provider
+        value={{
+          loading,
+          step: activeSection,
+          section: sections[activeSection],
+          next,
+          prev,
+          title: sections[activeSection]?.title,
+        }}
+      >
+        <ErrorBox
+          title="Not this time"
+          description="You are not authenticated"
+          exitPath="/"
+        />
+      </CreateActivityContext.Provider>
+    )
+  }
 
   return (
     <CreateActivityContext.Provider

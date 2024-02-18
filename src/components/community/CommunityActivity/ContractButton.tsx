@@ -3,6 +3,11 @@
 // Framework
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
+// Third Parties
+import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useBalance, useNetwork, useSwitchNetwork } from 'wagmi'
+import { twMerge } from 'tailwind-merge'
+
 // Components
 import { Button } from '@/components/shared'
 import { Paragraph } from '@/stories'
@@ -12,13 +17,13 @@ interface ContractButtonProps {
   handleClick: (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   children: React.ReactNode
   disabled?: boolean
+  className?: string
 }
 
 // Helpers
 import { useBridgeModal } from '@/hooks/useBridgeModal'
 import { useChainStore } from '@/utils/stores/useChainStore'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { useAccount, useBalance, useNetwork, useSwitchNetwork } from 'wagmi'
+import { useCheckAuth } from '@/hooks/useCheckAuth'
 
 /*--------------------------------------------------------------------*/
 
@@ -30,6 +35,7 @@ export const ContractButton = ({
   children,
   handleClick,
   disabled,
+  className,
 }: ContractButtonProps): JSX.Element => {
   const router = useRouter()
   const pathname = usePathname()
@@ -37,11 +43,13 @@ export const ContractButton = ({
   const { canUserBridge, openBridgeModal } = useBridgeModal(
     router,
     pathname,
-    searchParams,
+    searchParams
   )
   const appChain = useChainStore((x) => x.chain)
   const { openConnectModal } = useConnectModal()
-  const { address: userAddress } = useAccount()
+  const {
+    wagmiData: { address: userAddress },
+  } = useCheckAuth()
   const { switchNetwork } = useSwitchNetwork()
   const { chain: userChain } = useNetwork()
   const { data: userBalance } = useBalance({
@@ -70,7 +78,7 @@ export const ContractButton = ({
   return (
     <Button
       onClick={handleClickWithValidation}
-      className="mx-auto h-8 w-max px-4 py-2"
+      className={twMerge('mx-auto h-8 w-max px-4 py-2', className)}
       disabled={disabled}
     >
       <Paragraph as="p5" className="text-white">

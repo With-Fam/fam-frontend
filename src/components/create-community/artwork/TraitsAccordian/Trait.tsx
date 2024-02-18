@@ -34,8 +34,6 @@ function getLayer(idx: number) {
       return `Layer #${idx}`
     case 4:
       return 'Base Layer'
-    default:
-      return 'Out of Range'
   }
 }
 

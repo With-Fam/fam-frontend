@@ -66,8 +66,10 @@ export function ArtworkUpload({
 
   */
   useEffect(() => {
-    if (!fileInfo || !filesArray || !fileInfo.traits || uploadArtworkError)
+    if (!fileInfo || !filesArray || !fileInfo.traits || uploadArtworkError) {
+      setFiles(null)
       return
+    }
 
     setSetUpArtwork({
       ...setUpArtwork,
@@ -86,6 +88,7 @@ export function ArtworkUpload({
       onUpload={handleUpload}
       ipfsUploadError={ipfsUploadError}
       uploadArtworkError={uploadArtworkError}
+      setUploadArtworkError={setUploadArtworkError}
       orderedLayers={orderedLayers}
       setOrderedLayers={setOrderedLayers}
       images={images}

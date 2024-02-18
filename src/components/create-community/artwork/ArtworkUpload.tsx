@@ -1,4 +1,10 @@
-import { BaseSyntheticEvent, useEffect, useRef } from 'react'
+import {
+  BaseSyntheticEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+} from 'react'
 
 // Hooks
 import { type ArtworkUploadError } from '@/hooks'
@@ -12,6 +18,7 @@ import { Paragraph } from '@/stories'
 import { TraitsAccordian, type TraitsAccordianProps } from './TraitsAccordian'
 import { RandomPreview, type RandomPreviewProps } from './RandomPreview'
 import { UploadLabel } from './UploadLabel'
+import { ArtworkError } from '@/modules/create-community/components/artwork/ArtworkError'
 
 const nonEmptyArray = (a?: Array<unknown>): boolean =>
   Array.isArray(a) && a.length > 0
@@ -21,6 +28,9 @@ type ArtworkUploadProps = {
   fileCount?: number
   traitCount: number
   onUpload: (e: BaseSyntheticEvent) => void
+  setUploadArtworkError: Dispatch<
+    SetStateAction<ArtworkUploadError | undefined>
+  >
   uploadArtworkError?: ArtworkUploadError
   ipfsUploadError: boolean
   fileType?: string
@@ -35,8 +45,10 @@ export const ArtworkUpload = ({
   onUpload,
   orderedLayers,
   setOrderedLayers,
-  // uploadArtworkError,
-  images, // ipfsUploadError,
+  uploadArtworkError,
+  setUploadArtworkError,
+  images,
+  // ipfsUploadError,
 }: ArtworkUploadProps): JSX.Element => {
   const dropInput = useRef<HTMLInputElement>(null)
   useEffect(() => {
@@ -44,7 +56,7 @@ export const ArtworkUpload = ({
       dropInput.current.setAttribute('directory', '')
       dropInput.current.setAttribute('webkitdirectory', '')
     }
-  }, [dropInput])
+  }, [dropInput, uploadArtworkError])
 
   const hideDropBox = nonEmptyArray(images) && nonEmptyArray(artwork)
 
@@ -68,29 +80,39 @@ export const ArtworkUpload = ({
       </div>
       <div className="relative">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {hideDropBox && (
+          {uploadArtworkError && (
+            <ArtworkError
+              setUploadArtworkError={setUploadArtworkError}
+              uploadArtworkError={uploadArtworkError}
+            />
+          )}
+          {hideDropBox && !uploadArtworkError && (
             <TraitsAccordian
               artwork={artwork}
               orderedLayers={orderedLayers}
               setOrderedLayers={setOrderedLayers}
             />
           )}
-          <RandomPreview
-            isEmpty={!hideDropBox}
-            images={images}
-            orderedLayers={orderedLayers}
-          >
-            <UploadLabel htmlFor="file-upload" isEmpty={!hideDropBox} />
-          </RandomPreview>
-          <input
-            className={defaultUploadStyle}
-            id="file-upload"
-            name="file"
-            type="file"
-            multiple={true}
-            ref={dropInput}
-            onChange={onUpload}
-          />
+          {!uploadArtworkError && (
+            <>
+              <RandomPreview
+                isEmpty={!hideDropBox}
+                images={images}
+                orderedLayers={orderedLayers}
+              >
+                <UploadLabel htmlFor="file-upload" isEmpty={!hideDropBox} />
+              </RandomPreview>
+              <input
+                className={defaultUploadStyle}
+                id="file-upload"
+                name="file"
+                type="file"
+                multiple={true}
+                ref={dropInput}
+                onChange={onUpload}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>

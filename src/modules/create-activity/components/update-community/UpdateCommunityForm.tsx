@@ -1,249 +1,59 @@
 'use client'
 
-// Framework
-import { Address, useAccount, useContractReads } from 'wagmi'
+// Third Parties
+import { Address } from 'wagmi'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import { encodeFunctionData, formatEther } from 'viem'
 import { yupResolver } from '@hookform/resolvers/yup'
 import _isEqual from 'lodash.isequal'
-
-// Schema
-import {
-  updateCommunitySchema,
-  UpdateCommunityFormValues,
-} from './UpdateCommunity.schema'
+import { useEffect } from 'react'
 
 // Components
 import { UploadIPFSImage } from '@/components/ipfs/UploadIPFSImage'
 import { TextArea, TextInput } from '@/components/forms'
-import {
-  BuilderTransaction,
-  useProposalStore,
-} from '@/modules/create-activity/stores'
+import VetoManagement from '@/modules/create-community/components/auctions/VetoManagement'
 import ContinueButton from '@/modules/ContinueButton'
-import { formValuesToTransactionMap } from '@/modules/create-activity/utils'
+
+// Types
 import { FounderFieldArray } from '@/modules/create-community/components/auctions/FounderFieldArray'
 import { Paragraph } from '@/stories'
-import { Alert, Sliders } from '@/components/icons'
-
-// Contract
-import { getEnsAddress } from '@/utils/ens'
 import { TokenAllocation } from '@/modules/create-community/components/auctions/AuctionForm.schema'
-import { AddressType, FounderParameters } from '@/types'
-import { useChainStore } from '@/utils/stores/useChainStore'
 import { TransactionType } from '@/modules/create-activity/types'
-import {
-  auctionAbi,
-  governorAbi,
-  metadataAbi,
-  tokenAbi,
-} from '@/data/contract/abis'
-import { useDaoStore } from '@/modules/dao'
-import { fromSeconds, unpackOptionalArray } from '@/utils/helpers'
-import { NULL_ADDRESS } from '@/constants/addresses'
-import VetoManagement from '@/modules/create-community/components/auctions/VetoManagement'
-import { useEffect } from 'react'
-
 interface UpdateCommunityFormProps {
   callback: () => void
   collectionAddress: string
 }
 
+// Helpers
+import useUpdateCommunityContracts from '@/modules/create-activity/components/update-community/useUpdateCommunityContracts'
+import { formValuesToTransactionMap } from '@/modules/create-activity/utils'
+import {
+  generateInitialData,
+  withPauseUnpause,
+} from '@/modules/create-activity/components/update-community/helpers'
+import { useCheckAuth } from '@/hooks/useCheckAuth'
+import { useDaoStore } from '@/modules/dao'
+import {
+  updateCommunitySchema,
+  UpdateCommunityFormValues,
+} from './UpdateCommunity.schema'
+import {
+  BuilderTransaction,
+  useProposalStore,
+} from '@/modules/create-activity/stores'
+import { getEnsAddress } from '@/utils/ens'
+
 export function UpdateCommunityForm({
   callback, // collectionAddress,
 }: UpdateCommunityFormProps): JSX.Element {
-  const { address } = useAccount()
-
-  // Access local stores
-  const chain = useChainStore((x) => x.chain)
   const createProposal = useProposalStore((state) => state.createProposal)
   const addresses = useDaoStore((state) => state.addresses)
-
-  // const router = useRouter()
-
-  const auctionContractParams = {
-    abi: auctionAbi,
-    address: addresses.auction as Address,
-  }
-
-  const governorContractParams = {
-    abi: governorAbi,
-    address: addresses?.governor as Address,
-  }
-
-  const metadataContractParams = {
-    abi: metadataAbi,
-    address: addresses?.metadata as Address,
-  }
-
-  const tokenContractParams = {
-    abi: tokenAbi,
-    address: addresses?.token as Address,
-  }
-
-  const { data } = useContractReads({
-    allowFailure: false,
-    contracts: [
-      {
-        ...auctionContractParams,
-        chainId: chain.id,
-        functionName: 'duration',
-      },
-      {
-        ...auctionContractParams,
-        chainId: chain.id,
-        functionName: 'reservePrice',
-      },
-      {
-        ...governorContractParams,
-        chainId: chain.id,
-        functionName: 'vetoer',
-      },
-      {
-        ...governorContractParams,
-        chainId: chain.id,
-        functionName: 'votingPeriod',
-      },
-      {
-        ...governorContractParams,
-        chainId: chain.id,
-        functionName: 'votingDelay',
-      },
-      {
-        ...governorContractParams,
-        chainId: chain.id,
-        functionName: 'quorumThresholdBps',
-      },
-      {
-        ...governorContractParams,
-        chainId: chain.id,
-        functionName: 'proposalThresholdBps',
-      },
-      {
-        ...metadataContractParams,
-        chainId: chain.id,
-        functionName: 'contractImage',
-      },
-      {
-        ...metadataContractParams,
-        chainId: chain.id,
-        functionName: 'projectURI',
-      },
-      // Comment this and rendererBase in the array below
-      // {
-      //   ...metadataContractParams,
-      //   chainId: chain.id,
-      //   functionName: 'rendererBase',
-      // },
-      {
-        ...metadataContractParams,
-        chainId: chain.id,
-        functionName: 'description',
-      },
-      {
-        ...tokenContractParams,
-        chainId: chain.id,
-        functionName: 'getFounders',
-      },
-    ] as const,
-  })
-
-  const [
-    auctionDuration,
-    auctionReservePrice,
-    vetoer,
-    votingPeriod,
-    votingDelay,
-    quorumVotesBps,
-    proposalThresholdBps,
-    daoImage,
-    daoWebsite,
-    // rendererBase,
-    description,
-    founders,
-  ] = unpackOptionalArray(data, 12)
-
-  const initialValues: UpdateCommunityFormValues = {
-    /* artwork */
-    projectDescription:
-      description?.replace(/\\n/g, String.fromCharCode(13, 10)) || '',
-    // artwork: []
-
-    /* metadata */
-    daoAvatar: daoImage || '',
-    // rendererBase: rendererBase || '',
-    daoWebsite: daoWebsite || '',
-
-    /* governor */
-    proposalThreshold: Number(proposalThresholdBps) / 100 || 0,
-    quorumThreshold: Number(quorumVotesBps) / 100 || 0,
-    votingPeriod: fromSeconds(votingPeriod && BigInt(votingPeriod)),
-    votingDelay: fromSeconds(votingDelay && BigInt(votingDelay)),
-    founderAllocation:
-      (founders as unknown as FounderParameters[])?.map((x: any) => ({
-        founderAddress: x.wallet,
-        allocationPercentage: x.ownershipPct,
-        endDate: new Date(x.vestExpiry * 1000).toISOString().substring(0, 10),
-      })) || [],
-    vetoPower: !!vetoer && vetoer !== NULL_ADDRESS,
-    vetoerAddress: vetoer || '',
-
-    /* auction */
-    auctionDuration: fromSeconds(auctionDuration && Number(auctionDuration)),
-    auctionReservePrice: auctionReservePrice
-      ? parseFloat(formatEther(auctionReservePrice))
-      : 0,
-  }
-
+  const data = useUpdateCommunityContracts()
+  const initialValues = generateInitialData({ data })
+  const { wagmiData } = useCheckAuth()
   const methods = useForm<UpdateCommunityFormValues>({
-    resolver: yupResolver(updateCommunitySchema(address)) as any,
+    resolver: yupResolver(updateCommunitySchema(wagmiData.address)) as any,
     defaultValues: initialValues,
   })
-
-  const withPauseUnpause = (
-    transactions: BuilderTransaction[],
-    auctionAddress: Address
-  ) => {
-    const targetAddresses = transactions
-      .flatMap((txn) => txn.transactions)
-      .map((txn) => txn.target)
-
-    if (!targetAddresses.includes(auctionAddress)) {
-      return transactions
-    }
-
-    const pause = {
-      type: TransactionType.CUSTOM,
-      transactions: [
-        {
-          functionSignature: 'pause()',
-          target: auctionAddress,
-          calldata: encodeFunctionData({
-            abi: auctionAbi,
-            functionName: 'pause',
-          }),
-          value: '',
-        },
-      ],
-    }
-
-    const unpause = {
-      type: TransactionType.CUSTOM,
-      transactions: [
-        {
-          functionSignature: 'unpause()',
-          target: auctionAddress,
-          calldata: encodeFunctionData({
-            abi: auctionAbi,
-            functionName: 'unpause',
-          }),
-          value: '',
-        },
-      ],
-    }
-
-    return [pause, ...transactions, unpause]
-  }
 
   const onSubmit = async (values: UpdateCommunityFormValues) => {
     let transactions: BuilderTransaction[] = []
@@ -264,7 +74,7 @@ export function UpdateCommunityForm({
       if (field === 'founderAllocation') {
         value = (value as TokenAllocation[]).map(
           ({ founderAddress, allocationPercentage, endDate }) => ({
-            founderAddress: founderAddress as AddressType,
+            founderAddress: founderAddress,
             allocationPercentage: allocationPercentage
               ? allocationPercentage
               : 0,

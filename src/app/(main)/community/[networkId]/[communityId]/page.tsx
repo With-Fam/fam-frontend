@@ -26,7 +26,7 @@ export default async function CommunityProfile(
   _props: CommunityProfileProps
 ): Promise<JSX.Element> {
   const { communityId, networkId } = _props.params
-  const chainId = getChainId(networkId);
+  const chainId = getChainId(networkId)
   const { page, token, metaData, bids } = await getCommunityData(
     chainId,
     communityId.toLowerCase()
@@ -50,3 +50,6 @@ export default async function CommunityProfile(
     </>
   )
 }
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0

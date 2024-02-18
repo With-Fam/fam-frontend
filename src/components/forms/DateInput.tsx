@@ -1,12 +1,11 @@
 'use client'
 
-import { useEffect } from 'react'
+// Third Parties
 import { twMerge } from 'tailwind-merge'
+import { useFormContext } from 'react-hook-form'
 
-import { DetailedHTMLProps, InputHTMLAttributes } from 'react'
 // Local Components
 import ErrorMessage from './ErrorMessage'
-import { useFormContext } from 'react-hook-form'
 
 // Types
 import { InputProps } from './TextInput'
@@ -24,7 +23,7 @@ export function DateInput({
   name,
   ..._props
 }: Omit<InputProps, 'type'>): JSX.Element {
-  const { clearErrors, register, setValue } = useFormContext()
+  const { clearErrors, register } = useFormContext()
 
   return (
     <div className={twMerge('flex-1', className)}>

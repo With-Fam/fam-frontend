@@ -98,9 +98,10 @@ const PlaceBid = ({
       toast.dismiss()
       toast.success('Bid succesfully placed!')
       setLoading(false)
+      setBidAmount('')
       setTimeout(() => {
         router.refresh()
-      }, 300)
+      }, 1000)
     } catch (error) {
       toast.dismiss()
 

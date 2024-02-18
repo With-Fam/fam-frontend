@@ -1,14 +1,17 @@
 'use client'
+import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { usePrivy, useWallets } from '@privy-io/react-auth'
 import { usePrivyWagmi } from '@privy-io/wagmi-connector'
 import { useChainId } from 'wagmi'
+
 /*--------------------------------------------------------------------*/
 
 /**
  * Page
  */
 export default function Wallet(): JSX.Element {
-  const { login, ready, authenticated, logout } = usePrivy()
+  const { privyData } = useCheckAuth()
+  const { login, ready, authenticated, logout } = privyData
   const { wallets } = useWallets()
   const { wallet: activeWallet, setActiveWallet } = usePrivyWagmi()
   const number = useChainId()

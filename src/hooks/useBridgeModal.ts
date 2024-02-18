@@ -1,7 +1,5 @@
-// Third Parties
-import { useAccount } from 'wagmi'
-
 // Helpers
+import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { useIsContract } from './useIsContract'
 
 // Types
@@ -18,7 +16,9 @@ export const useBridgeModal = (
   pathname: string,
   searchParams: ReadonlyURLSearchParams
 ): useBridgeModalReturnType => {
-  const { address } = useAccount()
+  const {
+    wagmiData: { address },
+  } = useCheckAuth()
   const { data: isContractWallet } = useIsContract({ address })
   const dynamicParams = new URLSearchParams(searchParams)
 
