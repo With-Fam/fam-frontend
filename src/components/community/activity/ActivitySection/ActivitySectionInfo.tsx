@@ -4,7 +4,7 @@
 import dynamic from 'next/dynamic'
 
 // Local Components
-import { Paragraph, PollComponent } from '@/stories'
+import { Paragraph } from '@/stories'
 import { VoteBlock } from '@/components/community/activity'
 import ShowVoteManager from '@/components/community/activity/ActivitySection/ShowVoteManager'
 import ActivityStateActions from '@/components/community/CommunityActivity/ActivityStateActions'
@@ -19,6 +19,7 @@ const ActivityCreator = dynamic(
 import type {
   ProposalFragment,
   ProposalVote,
+  ProposalVoteFragment,
 } from '@/data/subgraph/sdk.generated'
 import type { AddressType } from '@/types'
 type ActivitySectionInfoProps = {
@@ -34,6 +35,7 @@ type ActivitySectionInfoProps = {
 // Helpers
 import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { formatUnixTimestampDate } from '@/utils/helpers'
+import ManageStateTime from '@/components/community/CommunityActivity/ActivityData/ManageStateTime'
 
 /*--------------------------------------------------------------------*/
 
@@ -71,11 +73,18 @@ const ActivitySectionInfo = ({
         </div>
         <div className="flex justify-between">
           <div>
-            <Paragraph as="p3" className="mb-1">
+            <Paragraph as="p3" className="mb-2 font-bold">
               {title}
             </Paragraph>
-            <div className="flex flex-1 justify-start">
-              <PollComponent state={state} />
+            <div className="flex gap-2 flex-1 justify-start">
+              <ManageStateTime
+                proposal={
+                  proposal as ProposalFragment & {
+                    votes: ProposalVoteFragment[]
+                  }
+                }
+                chainId={chainId}
+              />
             </div>
           </div>
           {isAuthenticated && (

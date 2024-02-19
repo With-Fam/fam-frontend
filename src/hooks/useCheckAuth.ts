@@ -24,7 +24,7 @@ export const useCheckAuth = (): CheckAuthResponse => {
     }
   }
 
-  if(privyData.authenticated && !wagmiData.isConnected) {
+  if(privyData.authenticated && !wagmiData.isConnected && wagmiData.status !== 'connecting') {
     walletExpired = true
   }
 

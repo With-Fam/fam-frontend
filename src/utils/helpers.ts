@@ -308,16 +308,25 @@ export function maxChar(str: string, maxLength: number): string {
  * If time is negative, returns zero
  *
  */
-export function getTimeDifference(timestamp: string): TimeProps {
+export function getTimeDifference(timestamp: string): {
+  time: TimeProps
+  ended: boolean
+} {
   const now = new Date()
   const targetDate = new Date(Number(timestamp) * 1000)
   const timeDifference =
     Math.floor(targetDate.getTime() / 1000) - Math.floor(now.getTime() / 1000)
   if (timeDifference < 0) {
-    return { days: 0, hours: 0, minutes: 0, seconds: 0 }
+    return {
+      time: { days: 0, hours: 0, minutes: 0, seconds: 0 },
+      ended: true,
+    }
   }
 
-  return fromSeconds(timeDifference)
+  return {
+    time: fromSeconds(timeDifference),
+    ended: false,
+  }
 }
 
 /**

@@ -18,12 +18,15 @@ const ActivityComments = ({ proposal }: CommentsProps): JSX.Element => {
   const votesArray = proposal?.votes.filter((vote) => vote.reason)
 
   return (
-  <div className="hidden cursor-pointer sm:flex">
-    <ChatBox />
-    <Paragraph as="p5" className="ml-1 text-grey">
-      {votesArray ? votesArray.length : '0'} comments
-    </Paragraph>
-  </div>
-)}
+    <div className="flex grow cursor-pointer items-end">
+      <ChatBox />
+      <Paragraph as="p5" className="ml-1 text-grey">
+        {votesArray
+          ? `${votesArray.length} comment${votesArray.length === 1 ? '' : 's'}`
+          : '0 comments'}
+      </Paragraph>
+    </div>
+  )
+}
 
 export default ActivityComments

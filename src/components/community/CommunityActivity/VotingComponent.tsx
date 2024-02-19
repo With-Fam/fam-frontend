@@ -17,7 +17,7 @@ interface VotingProps {
  */
 
 const VotingComponent = ({ proposal, active }: VotingProps): JSX.Element => (
-  <div className="hidden items-center justify-start gap-2 sm:flex sm:flex-col">
+  <div className="items-center justify-start gap-2 flex flex-col">
     <VoteButton
       count={proposal.forVotes}
       title={proposal.title}

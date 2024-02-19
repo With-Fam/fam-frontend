@@ -29,7 +29,7 @@ interface ActivityCreatorProps {
 
 const ActivityCreator = ({
   proposer,
-  className = 'mb-2 hidden items-center gap-2 sm:flex',
+  className = 'mb-2 items-center gap-2 flex',
 }: ActivityCreatorProps): JSX.Element => {
   return (
     <div className={className}>
