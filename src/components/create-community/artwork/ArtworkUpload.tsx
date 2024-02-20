@@ -58,6 +58,7 @@ export const ArtworkUpload = ({
     }
   }, [dropInput, uploadArtworkError])
 
+  const hasError = uploadArtworkError && Object.keys(uploadArtworkError).length > 0
   const hideDropBox = nonEmptyArray(images) && nonEmptyArray(artwork)
 
   return (
@@ -80,20 +81,20 @@ export const ArtworkUpload = ({
       </div>
       <div className="relative">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {uploadArtworkError && (
+          {hasError && (
             <ArtworkError
               setUploadArtworkError={setUploadArtworkError}
               uploadArtworkError={uploadArtworkError}
             />
           )}
-          {hideDropBox && !uploadArtworkError && (
+          {hideDropBox && !hasError && (
             <TraitsAccordian
               artwork={artwork}
               orderedLayers={orderedLayers}
               setOrderedLayers={setOrderedLayers}
             />
           )}
-          {!uploadArtworkError && (
+          {!hasError && (
             <>
               <RandomPreview
                 isEmpty={!hideDropBox}

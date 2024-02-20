@@ -66,8 +66,9 @@ export function ArtworkUpload({
 
   */
   useEffect(() => {
-    if (!fileInfo || !filesArray || !fileInfo.traits || uploadArtworkError) {
-      setFiles(null)
+    const hasError = uploadArtworkError && Object.keys(uploadArtworkError).length > 0
+
+    if (!fileInfo || !filesArray || !fileInfo.traits || hasError) {
       return
     }
 

@@ -7,9 +7,11 @@ import { Toaster } from 'react-hot-toast'
 import { PUBLIC_DEFAULT_CHAINS } from '@/constants/defaultChains'
 
 import { publicProvider } from 'wagmi/providers/public'
+import { alchemyProvider } from 'wagmi/providers/alchemy'
 
 // Public default chains -> constants/defaultChains.ts
 const configureChainsConfig = configureChains(PUBLIC_DEFAULT_CHAINS, [
+  alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID as string }),
   publicProvider(),
 ])
 

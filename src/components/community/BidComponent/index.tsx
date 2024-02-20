@@ -27,6 +27,7 @@ type BidComponentProps = {
   metaData: any
   bids: AuctionBid[]
   chainId: number
+  communityId: string
 }
 
 /*--------------------------------------------------------------------*/
@@ -41,6 +42,7 @@ const BidComponent = ({
   metaData,
   bids,
   chainId,
+  communityId,
 }: BidComponentProps): JSX.Element => {
   const endTime = page?.endTime
   const isOver = !!endTime
@@ -74,6 +76,7 @@ const BidComponent = ({
               token={token}
               chainId={chainId}
               highestBid={page.highestBid}
+              communityId={communityId}
             />
           )}
         </div>

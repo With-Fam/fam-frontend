@@ -65,8 +65,6 @@ const ExplorePage = async ({
     trending: searchParams.type === 'trending',
   })
 
-  console.log('Communities::', communities)
-
   return (
     <>
       <ExploreHeader />

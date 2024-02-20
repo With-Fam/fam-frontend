@@ -28,12 +28,14 @@ type PlaceBidProps = {
   token: TokenFragment
   chainId: number
   highestBid: Maybe<AuctionBid> | undefined
+  communityId: string
 }
 
 // Helpers
 import { useMinBidIncrement } from '@/components/community/BidComponent/hooks'
 import { unpackOptionalArray } from '@/utils/helpers'
 import { twMerge } from 'tailwind-merge'
+import { checkIfBidsAreUpdated } from '@/components/community/BidComponent/PlaceBid/actions'
 
 /*--------------------------------------------------------------------*/
 
@@ -45,6 +47,7 @@ const PlaceBid = ({
   token,
   chainId,
   highestBid,
+  communityId,
 }: PlaceBidProps): JSX.Element => {
   const router = useRouter()
   const [bidAmount, setBidAmount] = useState('')
@@ -95,6 +98,7 @@ const PlaceBid = ({
 
       const tx = await writeContract(config)
       if (tx?.hash) await waitForTransaction({ hash: tx.hash })
+      await checkIfBidsAreUpdated(tx.hash, chainId, communityId, 5000)
       toast.dismiss()
       toast.success('Bid succesfully placed!')
       setLoading(false)

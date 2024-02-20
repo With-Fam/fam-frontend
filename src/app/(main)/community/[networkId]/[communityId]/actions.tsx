@@ -36,8 +36,6 @@ export async function getCommunityData(
     daos: [collection.toLowerCase()],
   })
 
-  console.log('AUCTIOKNS::', auctions)
-
   const { tokens } = await SDK.connect(chainId).tokens({
     where: {
       dao: collection.toLowerCase(),

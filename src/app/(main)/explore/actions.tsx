@@ -1,5 +1,6 @@
 // Third Parties
 import { SDK } from '@/data/subgraph/client'
+import fs from 'fs'
 import {
   Auction_OrderBy,
   ExploreDaosPageQuery,
@@ -32,6 +33,7 @@ export async function getExploreData({
   trending,
 }: getExploreDataProps): Promise<getExploreDataReturn> {
   const pageInt = parseInt(page, 10) || 1
+  const uniqueCommunities: ExploreDaosPageQuery['auctions'] = []
   try {
     const data = await SDK.connect(chainId).exploreDaosPage({
       orderBy: Auction_OrderBy.StartTime,
@@ -40,8 +42,18 @@ export async function getExploreData({
       first: limit,
     })
 
+    data.auctions.forEach((item) => {
+      const hasCommunity = uniqueCommunities.find(
+        (auction) => auction.dao.tokenAddress === item.dao.tokenAddress
+      )
+
+      if (!hasCommunity) {
+        uniqueCommunities.push(item)
+      }
+    })
+
     return {
-      communities: data.auctions,
+      communities: uniqueCommunities,
       count: 5,
     }
   } catch (error) {

@@ -32,10 +32,6 @@ export default async function CommunityProfile(
     communityId.toLowerCase()
   )
 
-  console.log('communityId::', communityId)
-  console.log('page::', page)
-  console.log('token::', token)
-
   if (!page && !token) return <PreAuction chainId={chainId} />
   return (
     <>
@@ -46,6 +42,7 @@ export default async function CommunityProfile(
         page={page}
         metaData={metaData}
         bids={bids}
+        communityId={communityId}
       />
     </>
   )
