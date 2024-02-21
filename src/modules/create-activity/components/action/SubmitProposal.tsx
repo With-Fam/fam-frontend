@@ -26,8 +26,6 @@ export function SubmitProposal({
 }: SubmitProposalProps): Maybe<JSX.Element> {
   const { transactions } = useProposalStore()
 
-  console.log('transactions::', transactions)
-
   return (
     <Button
       className="px-4 py-2"

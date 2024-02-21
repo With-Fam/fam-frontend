@@ -47,12 +47,6 @@ export async function getCommunityData(
     id: `${dao?.tokenAddress}:1`,
   })
 
-  console.log('-------OUTPUT DATA-------')
-  console.log('dao::', dao)
-  console.log('auctions::', auctions)
-  console.log('tokens::', tokens)
-  console.log('-------END OUTPUT-------')
-
   return {
     metaData: dao as DaoFragment,
     page: auctions[0] as Auction,

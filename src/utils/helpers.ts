@@ -204,7 +204,6 @@ export const compareAndReturn = (
           const initValueObject: any[] = Object.entries(_value)
           const valueObject: any[] = Object.entries(value)
           initValueObject.reduce((_acc: any[] = [], _cv: any[]) => {
-            console.log('_acc::', _acc)
             const _f = _cv[0]
             const _v = _cv[1].toString()
             const v = valueObject

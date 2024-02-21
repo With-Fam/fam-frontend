@@ -39,8 +39,6 @@ export function AddButton(): JSX.Element {
     return TRANSACTION_TYPES[activityType]
   }, [activityType])
 
-  console.log('action::', action)
-
   if (activityType && action) {
     return (
       <div

@@ -56,7 +56,6 @@ export function HandleImage({
       height={height}
       onError={() => setError(true)}
       onLoad={() => {
-        console.log('loaded')
         setLoaded(true)
       }}
       className={className}

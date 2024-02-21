@@ -1,8 +1,9 @@
 'use client'
 
 // Framework
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+
 // Third Parties
 import { useContractWrite } from 'wagmi'
 import { waitForTransaction } from 'wagmi/actions'
@@ -26,9 +27,10 @@ type PreAuctionProps = {
 
 const PreAuction = ({ chainId }: PreAuctionProps): JSX.Element => {
   const [loading, setIsLoading] = useState(false)
+  const [started, setStarted] = useState(false)
+  // const [fade, setFade] = useState(false)
   const addresses = useDaoStore((state) => state.addresses)
   const router = useRouter()
-
   const address = addresses?.auction
 
   const fields = {
@@ -39,39 +41,31 @@ const PreAuction = ({ chainId }: PreAuctionProps): JSX.Element => {
     chainId,
   }
 
-  // USEPREPARECONTRACTWRITE NOT WORKING. LOOK INTO FIX!!!!
-
-  //   const { config, error } = usePrepareContractWrite(
-  //     !!addresses?.auction && (fields as any)
-  //   )
-
   const { writeAsync } = useContractWrite(fields as any)
 
   const handleStartAuction = async () => {
-    console.log('handle start')
     setIsLoading(true)
     try {
       const tx = await writeAsync?.()
       if (tx?.hash) {
         await waitForTransaction({ hash: tx.hash })
-        router.refresh()
-        setIsLoading(false)
+        setTimeout(() => {
+          setStarted(true)
+          setIsLoading(false)
+        }, 2000)
       }
     } catch (e) {
       console.error(e)
       setIsLoading(false)
       return
     }
-
-    // const auction = await readContract({
-    //   address: addresses.auction!,
-    //   abi: auctionAbi,
-    //   functionName: 'auction',
-    //   chainId: chain,
-    // })
-
-    window.location.reload()
   }
+
+  useEffect(() => {
+    if (started) {
+      router.refresh()
+    }
+  }, [started, router])
 
   return (
     <div className="px-4">

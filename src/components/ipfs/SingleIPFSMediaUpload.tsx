@@ -50,11 +50,9 @@ export function SingleIPFSMediaUpload({
     reader.readAsDataURL(file)
     reader.onloadend = () => {
       if (file.type.startsWith('image/')) {
-        console.log('imageBlob::', reader)
         setValue('imageBlob', reader.result)
       }
     }
-
 
     try {
       const { uri } = await uploadFile(file, {

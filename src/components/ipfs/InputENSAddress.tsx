@@ -44,8 +44,6 @@ export function InputENSAddress({
     [SWR_KEYS.ENS, value ?? null],
     async () => await getEnsName(value as string)
   )
-
-  console.log('ensName::', ensName)
   const { clearErrors } = useFormContext()
 
   return (

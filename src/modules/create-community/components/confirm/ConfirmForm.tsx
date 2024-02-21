@@ -226,7 +226,6 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
       }
 
       const tx = await writeContract(config)
-      console.log('tx::::', tx)
       if (tx.hash) transaction = await waitForTransaction({ hash: tx.hash })
     } catch (e) {
       console.log('e', e)
@@ -250,8 +249,6 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
         log?.topics[0]?.toLowerCase() ===
         '0x456d2baf5a87d70e586ec06fb91c2d7849778dd41d80fa826a6ea5bf8d28e3a6'
     )
-
-    console.log('deployEvent:::', deployEvent)
 
     let parsedEvent
     try {

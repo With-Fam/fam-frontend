@@ -79,7 +79,6 @@ export function SendEth({
     // Need a callback to return to OG state
     if (!(values.amount && values.recipientAddress)) return
     if (exists && defaultValues && !hasChanged(values, defaultValues)) {
-      console.log('breaking here, values have not changed')
       callback()
       return
     }

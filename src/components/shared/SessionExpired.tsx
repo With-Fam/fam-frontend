@@ -10,11 +10,6 @@ const SessionExpired = (): JSX.Element => {
   if (!walletExpired) {
     return <></>
   }
-  console.log('privyData', {
-    privyData,
-    walletExpired,
-    wagmiData,
-  })
   return (
     <div className="fixed z-20 flex h-screen w-screen flex-col items-center justify-center bg-black/40">
       <div className="rounded-2xl bg-white p-6 text-center shadow-sm">

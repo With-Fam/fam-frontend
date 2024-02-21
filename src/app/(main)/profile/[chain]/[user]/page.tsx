@@ -5,11 +5,12 @@ interface UsersProfileProps {
     type: string
     page: string
   }
-  params: { user: string; chain: string }
+  params: { user: string; chain: any }
 }
 
 // Content
 import ProfileClientPage from '@/components/profile/ProfileClientPage'
+import { getChainId } from '@/utils/getChainId'
 
 /*--------------------------------------------------------------------*/
 
@@ -46,13 +47,17 @@ export const metadata: Metadata = {
 
 const UserPage = ({ params, searchParams }: UsersProfileProps): JSX.Element => {
   const { type = 'communities', page } = searchParams
-  const { user } = params
+  const { user, chain } = params
+
+  const chainId = getChainId(chain.toUpperCase().replace('-', '_'))
 
   if (!user) {
     return <div className="px-16">User not found</div>
   }
 
-  return <ProfileClientPage type={type} user={user} page={page} />
+  return (
+    <ProfileClientPage type={type} user={user} page={page} chain={chainId} />
+  )
 }
 
 export default UserPage

@@ -4,7 +4,7 @@ import MenuItem from '@/components/shared/Navbar/MenuItem'
 
 // Helpers
 import { useCheckAuth } from '@/hooks/useCheckAuth'
-import { useChainStore } from '@/utils/stores/useChainStore'
+import { useNetwork } from 'wagmi'
 
 // Props
 type MenuListProps = {
@@ -19,7 +19,7 @@ type MenuListProps = {
 
 const MenuList = ({ address }: MenuListProps): JSX.Element => {
   const { logout } = useCheckAuth()
-  const chain = useChainStore((x) => x.chain)
+  const { chain }: any = useNetwork()
 
   return (
     <ul className="mt-8 grid gap-6">
@@ -31,7 +31,7 @@ const MenuList = ({ address }: MenuListProps): JSX.Element => {
       </MenuItem>
       <MenuItem
         icon={<MemberIcon className="h-6 w-6" color="#000000" />}
-        href={`/profile/${chain.slug}/${address}`}
+        href={`/profile/${chain?.slug}/${address}`}
       >
         Profile
       </MenuItem>

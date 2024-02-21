@@ -87,7 +87,6 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
 
     let vote: Promise<SendTransactionResult>
     if (comment?.length > 0) {
-      console.log('WE HIT')
       const config = await prepareWriteContract({
         ...governorContractParams,
         functionName: 'castVoteWithReason',
@@ -95,7 +94,6 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
       })
       vote = writeContract(config)
     } else {
-      console.log('NO COMMENT HIT')
       const config = await prepareWriteContract({
         ...governorContractParams,
         functionName: 'castVote',

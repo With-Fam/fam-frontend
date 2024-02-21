@@ -21,7 +21,6 @@ const UserName = dynamic(() => import('@/components/shared/UserName'), {
 })
 
 // Utils
-import { useChainStore } from '@/utils/stores/useChainStore'
 import SWR_KEYS from '@/constants/swrKeys'
 import { walletSnippet } from '@/utils/helpers'
 
@@ -30,6 +29,7 @@ type UsersProfileProps = {
   type: string
   user: string
   page: string
+  chain: any // Added chain as a prop
 }
 
 // Helpers
@@ -46,15 +46,15 @@ const ProfileClientPage = ({
   type,
   user,
   page,
+  chain, // Added chain as a parameter
 }: UsersProfileProps): JSX.Element => {
-  const chain = useChainStore((x) => x.chain)
-  console.log('useChainStore', chain)
+  // Removed useChainStore hook since chain is now passed as a prop
   const {
     data: userData,
     error,
     isValidating,
-  } = useSWR([SWR_KEYS.PROFILE_TOKENS, chain.id, user, page], () =>
-    getUserData({ user, chainID: chain.id, page }).then((data) => data)
+  } = useSWR([SWR_KEYS.PROFILE_TOKENS, chain, user, page], () =>
+    getUserData({ user, chainID: chain, page }).then((data) => data)
   )
 
   if (isValidating) {
@@ -90,7 +90,7 @@ const ProfileClientPage = ({
               <UserCommunity
                 key={index}
                 community={community}
-                network={chain.slug}
+                network={chain}
               />
             ))}
           </div>

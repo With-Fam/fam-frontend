@@ -28,19 +28,8 @@ const VoteButton = ({
   icon,
   textColor,
   active,
-  title,
-  voteType,
 }: VoteButtonProps): JSX.Element => (
-  <Link
-    aria-label={`Vote ${voteType}`}
-    href={{
-      pathname: null,
-      query: {
-        voting: true,
-        title,
-        voteYes: voteType === 'for' ? 'true' : 'false',
-      },
-    }}
+  <div
     className={twMerge(
       active ? 'cursor-pointer' : '',
       'relative z-0 h-6 w-6 rounded-full bg-background p-1'
@@ -63,7 +52,7 @@ const VoteButton = ({
     >
       {count}
     </Paragraph>
-  </Link>
+  </div>
 )
 
 export default VoteButton

@@ -15,11 +15,6 @@ const configureChainsConfig = configureChains(PUBLIC_DEFAULT_CHAINS, [
   publicProvider(),
 ])
 
-const handleLogin = (data: { id: string }) => {
-  console.log('Login', data.id)
-  console.log('data::', data)
-}
-
 /**
  * Component
  */
@@ -28,7 +23,6 @@ export const WalletContext = ({ children }: PropsWithChildren): JSX.Element => {
   return (
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
-      onSuccess={handleLogin}
       config={{
         supportedChains: PUBLIC_DEFAULT_CHAINS,
         walletConnectCloudProjectId: 'a2ca754e356641b9ab15dae82876d257',

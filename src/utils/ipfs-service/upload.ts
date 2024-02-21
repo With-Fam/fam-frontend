@@ -31,7 +31,6 @@ const uploadCache = {
     const digest = hashFiles(files)
     try {
       const cid = localStorage.getItem(`${this.prefix}/${digest}`)
-      console.log('ipfs-service/uploadCache', cid ? 'HIT' : 'MISS', digest, cid)
       if (cid) {
         return { cid, uri: `ipfs://${cid}` }
       }

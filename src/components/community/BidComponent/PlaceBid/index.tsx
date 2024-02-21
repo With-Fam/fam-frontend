@@ -131,7 +131,6 @@ const PlaceBid = ({
           value={bidAmount}
           onChange={(e) => {
             e.preventDefault()
-            console.log('e.target.value::', e.target.value)
             setBidAmount(e.target.value)
           }}
         />
@@ -158,7 +157,7 @@ const PlaceBid = ({
         onClick={placeBid}
         disabled={loading}
       >
-        {loading ? 'Waiting approval...' : 'Place Bid'}
+        {loading ? 'Loading...' : 'Place Bid'}
       </button>
     </>
   )
