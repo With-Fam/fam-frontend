@@ -9,9 +9,7 @@ import { Paragraph } from '@/stories'
 // Types
 import { ExploreDaoFragment } from '@/data/subgraph/sdk.generated'
 import { TimeProps } from '@/types'
-type CountDownProps = {
-  page: ExploreDaoFragment
-}
+type CountDownProps = ExploreDaoFragment['endTime']
 
 // Utils
 import { getTimeDifference, decrementTimeByOneSecond } from '@/utils/helpers'
@@ -28,14 +26,14 @@ const zeroTime = {
  * Component
  */
 
-const CountDown = ({ page }: CountDownProps): JSX.Element => {
+const CountDown = ({ endTime }: CountDownProps): JSX.Element => {
   const [ended, setEnded] = useState(false)
   const [time, setTime] = useState<TimeProps>(zeroTime)
 
   useEffect(() => {
-    const initialTime = getTimeDifference(page?.endTime)
+    const initialTime = getTimeDifference(endTime)
     setTime(initialTime.time)
-  }, [page?.endTime])
+  }, [endTime])
 
   useEffect(() => {
     if (!ended) {

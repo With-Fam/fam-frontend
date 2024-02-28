@@ -26,13 +26,15 @@ export default async function CommunityProfile(
   _props: CommunityProfileProps
 ): Promise<JSX.Element> {
   const { communityId, networkId } = _props.params
+  const collection = communityId.toLowerCase()
   const chainId = getChainId(networkId)
-  const { page, token, metaData, bids } = await getCommunityData(
+  const { page, token, metaData, ...rest } = await getCommunityData(
     chainId,
-    communityId.toLowerCase()
+    collection
   )
 
   if (!page && !token) return <PreAuction chainId={chainId} />
+
   return (
     <>
       <TabList items={TOGGLE_DATA} />
@@ -41,7 +43,6 @@ export default async function CommunityProfile(
         token={token}
         page={page}
         metaData={metaData}
-        bids={bids}
         communityId={communityId}
       />
     </>

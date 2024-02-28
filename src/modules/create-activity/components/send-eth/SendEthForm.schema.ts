@@ -16,12 +16,11 @@ const sendEthSchema = (
     amount: yup
       .number()
       .required()
-      .max(treasuryBalance, 'Treasury balance is insufficient to send ETH.')
-      .test(
-        'is-greater-than-0',
-        'Must send more than 0 ETH',
-        (value) => !!value && value > 0
-      ),
+      .max(
+        treasuryBalance,
+        `Treasury balance is insufficient to send ETH, ${treasuryBalance} ETH available`
+      )
+      .min(0, 'Must send more than 0 ETH'),
   })
 
 export default sendEthSchema

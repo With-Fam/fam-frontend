@@ -35,6 +35,7 @@ import schema, { SendEthValues } from './SendEthForm.schema'
 
 import { Transaction } from '@/modules/create-activity/stores'
 import { ActionFormProps } from '@/modules/create-activity'
+import toast from 'react-hot-toast'
 
 function hasChanged(
   values: SendEthValues,
@@ -129,7 +130,7 @@ export function SendEth({
               step="0.0001"
               className="block w-full text-lg outline-0"
             />
-            <CurrencyList />
+            {/* <CurrencyList /> */}
           </div>
           <TextInput
             name="recipientAddress"

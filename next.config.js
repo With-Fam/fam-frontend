@@ -15,13 +15,13 @@ const nextConfig = {
       'ipfs.io',
       'nouns.build',
       'i.ibb.co',
-      // 'euc.li', 
-      'cloudflare-ipfs.com'
+      // 'euc.li',
+      'cloudflare-ipfs.com',
     ],
     // remotePatterns: [
     //   {
     //     protocol: 'ipfs',
-    //     hostname: '*', 
+    //     hostname: '*',
     //     port: '',
     //     pathname: '',
     //   },
@@ -29,6 +29,7 @@ const nextConfig = {
   },
   experimental: {
     webpackBuildWorker: true,
+    missingSuspenseWithCSRBailout: false,
   },
   webpack(config) {
     // Grab the existing rule that handles SVG imports

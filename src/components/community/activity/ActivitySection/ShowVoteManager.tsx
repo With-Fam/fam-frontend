@@ -157,7 +157,11 @@ const ShowVoteManager = ({
             vote.support === 'AGAINST' && 'text-status-red'
           )}
         >
-          {vote.support}
+          {vote.support === 'FOR'
+            ? 'yes'
+            : vote.support === 'AGAINST'
+              ? 'no'
+              : vote.support}
         </span>
       </div>
     )

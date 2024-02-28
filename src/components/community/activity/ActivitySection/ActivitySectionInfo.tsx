@@ -76,7 +76,7 @@ const ActivitySectionInfo = ({
             <Paragraph as="p3" className="mb-2 font-bold">
               {title}
             </Paragraph>
-            <div className="flex gap-2 flex-1 justify-start">
+            <div className="flex flex-1 justify-start gap-2">
               <ManageStateTime
                 proposal={
                   proposal as ProposalFragment & {

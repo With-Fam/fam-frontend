@@ -10,9 +10,12 @@ import { twJoin } from 'tailwind-merge'
 
 // Components
 import { Paragraph } from '@/stories'
-const RenderBidders = dynamic(() => import('@/components/community/BidComponent/RenderBidders'), {
-  ssr: false,
-})
+const RenderBidders = dynamic(
+  () => import('@/components/community/BidComponent/RenderBidders'),
+  {
+    ssr: false,
+  }
+)
 const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
   ssr: false,
 })
@@ -24,7 +27,7 @@ const UserName = dynamic(() => import('@/components/shared/UserName'), {
 import { AuctionBid, ExploreDaoFragment } from '@/data/subgraph/sdk.generated'
 type AllBidsProps = {
   page: ExploreDaoFragment
-  bids: AuctionBid[]
+  bids?: AuctionBid[]
 }
 
 /*--------------------------------------------------------------------*/
@@ -33,7 +36,7 @@ type AllBidsProps = {
  * Component
  */
 
-const AllBids = ({ page, bids }: AllBidsProps): JSX.Element => {
+const AllBids = ({ page, bids = [] }: AllBidsProps): JSX.Element => {
   const [open, setOpen] = useState(false)
 
   const variants = {

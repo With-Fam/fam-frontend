@@ -1,3 +1,4 @@
+'use client'
 import { Controller, useForm } from 'react-hook-form'
 
 import { useFormStore } from '@/modules/create-community/stores'

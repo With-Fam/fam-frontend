@@ -16,6 +16,7 @@ const validateAddress = async (
       value,
       getProvider(CHAIN_ID.ETHEREUM)
     )
+    console.log(isValid, error)
     if (error) {
       return res(ctx.createError({ message: error, path: ctx.path }))
     }
@@ -36,7 +37,7 @@ const deboucedValidateAddress = async (
 }
 
 export const addressValidationSchema = Yup.string()
-  .required('*')
+  .required('not a valid address')
   .test(deboucedValidateAddress)
 
 export const addressValidationOptionalSchema = Yup.string()

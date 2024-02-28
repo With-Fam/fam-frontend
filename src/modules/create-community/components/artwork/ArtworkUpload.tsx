@@ -1,3 +1,4 @@
+'use client'
 import { BaseSyntheticEvent, useEffect } from 'react'
 
 import { ArtworkUpload as UploadComponent } from '@/components/create-community/artwork'
@@ -66,7 +67,8 @@ export function ArtworkUpload({
 
   */
   useEffect(() => {
-    const hasError = uploadArtworkError && Object.keys(uploadArtworkError).length > 0
+    const hasError =
+      uploadArtworkError && Object.keys(uploadArtworkError).length > 0
 
     if (!fileInfo || !filesArray || !fileInfo.traits || hasError) {
       return

@@ -1,8 +1,5 @@
 'use client'
 
-// Framework
-import Image from 'next/image'
-
 // Third Parties
 import dayjs from 'dayjs'
 
@@ -19,13 +16,22 @@ import { HandleImage } from '@/components/shared/HandleImage'
 import {
   Auction,
   AuctionBid,
+  // AuctionBid,
   TokenFragment,
 } from '@/data/subgraph/sdk.generated'
+import useSWR from 'swr'
+import SWR_KEYS from '@/constants/swrKeys'
+import { getBids } from '@/data/subgraph/requests/getBids'
+import { unpackOptionalArray } from '@/utils/helpers'
+import { AddressType } from '@/types'
+import { auctionAbi } from '@/data/contract/abis'
+import { readContract } from 'wagmi/actions'
+import { useContractRead } from 'wagmi'
 type BidComponentProps = {
   token: TokenFragment
   page: Auction
   metaData: any
-  bids: AuctionBid[]
+  // bids: AuctionBid[]
   chainId: number
   communityId: string
 }
@@ -40,14 +46,32 @@ const BidComponent = ({
   token,
   page,
   metaData,
-  bids,
+  // bids,
   chainId,
   communityId,
 }: BidComponentProps): JSX.Element => {
-  const endTime = page?.endTime
+  const { data: auction } = useSWR(
+    [SWR_KEYS.AUCTION, chainId, metaData.auctionAddress],
+    ([_, chId, auctionAddress]: [string, number, string]) =>
+      readContract({
+        abi: auctionAbi,
+        address: auctionAddress as AddressType,
+        functionName: 'auction',
+        chainId: chId,
+      }),
+    { revalidateOnFocus: true }
+  )
+  const [currentTokenId, highestBid, highestBidder, _, endTime, settled] =
+    unpackOptionalArray(auction, 6)
+
   const isOver = !!endTime
     ? dayjs.unix(Date.now() / 1000) >= dayjs.unix(endTime)
     : true
+
+  const { data: bids } = useSWR(
+    [SWR_KEYS.AUCTION_BIDS, chainId, communityId, token.tokenId],
+    () => getBids(chainId, communityId, token.tokenId)
+  )
 
   return (
     <section className="px-4">
@@ -66,8 +90,13 @@ const BidComponent = ({
         </div>
         <div className="col-span-1 row-span-1">
           <div className="flex w-full flex-col">
-            <BidStatus page={page} />
-            <AllBids page={page} bids={bids} />
+            <BidStatus
+              dao={page.dao}
+              endTime={endTime}
+              highestBid={highestBid}
+              token={page.token}
+            />
+            <AllBids page={page} bids={bids as AuctionBid[]} />
           </div>
           {isOver ? (
             <StartNextAuction chainId={chainId} />
@@ -75,8 +104,9 @@ const BidComponent = ({
             <PlaceBid
               token={token}
               chainId={chainId}
-              highestBid={page.highestBid}
+              highestBid={page.highestBid?.amount}
               communityId={communityId}
+              auctionAddress={metaData.auctionAddress}
             />
           )}
         </div>

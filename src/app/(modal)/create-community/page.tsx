@@ -2,6 +2,7 @@
 
 import { CreateCommunityProvider } from '@/contexts/create-community'
 import { Sections } from '@/modules/create-community/components'
+import { Suspense } from 'react'
 
 /*--------------------------------------------------------------------*/
 
@@ -11,8 +12,10 @@ import { Sections } from '@/modules/create-community/components'
 
 export default function CreateCommunity(): JSX.Element {
   return (
-    <CreateCommunityProvider>
-      <Sections />
-    </CreateCommunityProvider>
+    <Suspense>
+      <CreateCommunityProvider>
+        <Sections />
+      </CreateCommunityProvider>
+    </Suspense>
   )
 }

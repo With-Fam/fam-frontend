@@ -43,11 +43,10 @@ function TextInput({
           {...register(name)}
           {..._props}
           type={type}
-          onBlur={() => clearErrors(name)}
           id={name}
           className={twMerge(
-            "block w-full text-lg outline-0 bg-white",
-            _props.disabled ? 'opacity-30 cursor-not-allowed' : '',
+            'block w-full bg-white text-lg outline-0',
+            _props.disabled ? 'cursor-not-allowed opacity-30' : ''
           )}
         />
       </div>

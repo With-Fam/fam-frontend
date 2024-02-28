@@ -1,7 +1,7 @@
 'use client'
 
 // Framework
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import {
   useRouter,
   useSearchParams,
@@ -14,6 +14,8 @@ import {
   waitForTransaction,
   writeContract,
 } from 'wagmi/actions'
+
+import { useSWRConfig } from 'swr'
 
 // Components
 import { Button, Loading } from '@/components/shared'
@@ -33,6 +35,8 @@ type VoteButtonHandleProps = {
 
 // Helpers
 import useUserHitEscape from '@/hooks/useUserHitEscape'
+import SWR_KEYS from '@/constants/swrKeys'
+import { getProposalData } from '@/components/community/activity'
 
 /*--------------------------------------------------------------------*/
 
@@ -41,6 +45,7 @@ import useUserHitEscape from '@/hooks/useUserHitEscape'
  */
 
 const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
+  const { mutate } = useSWRConfig()
   const { addresses } = useDaoStore()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSucess] = useState(false)
@@ -102,8 +107,12 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
       vote = writeContract(config)
     }
 
-    const { hash } = await vote
-    await waitForTransaction({ hash })
+    const tx = await vote
+    if (tx?.hash) await waitForTransaction({ hash: tx.hash })
+
+    await mutate([SWR_KEYS.PROPOSAL, chainId, activityId], () =>
+      getProposalData(chainId, activityId as string)
+    )
 
     setIsSubmitting(false)
     setSubmitSucess(true)
@@ -184,7 +193,7 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
                 <Button
                   type="button"
                   className="mt-4 w-full"
-                  onClick={hardReload}
+                  onClick={() => exitAndReset(true)}
                 >
                   <Paragraph as="p3" className="text-white">
                     Close
@@ -199,4 +208,10 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
   )
 }
 
-export default VoteButtonHandle
+const SuspendedVetoButton = (_props: VoteButtonHandleProps) => (
+  <Suspense>
+    <VoteButtonHandle {..._props} />
+  </Suspense>
+)
+
+export default SuspendedVetoButton

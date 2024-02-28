@@ -29,7 +29,7 @@ export function CurrencyList(): JSX.Element {
     setValue('currency', selectedCurrency.name)
   }, [])
 
-  const handleSelection = (value: string) => {
+  const handleSelection = (value: any) => {
     const selectedCurrencyData = CURRENCIES_DATA[Number(value) - 1]
     setValue('currency', selectedCurrency.name)
     setSelectedCurrency(selectedCurrencyData)
@@ -37,7 +37,7 @@ export function CurrencyList(): JSX.Element {
 
   return (
     <div className="absolute bottom-4 right-4">
-      <Listbox value="bruno" onChange={handleSelection}>
+      <Listbox value={selectedCurrency} onChange={handleSelection}>
         <Listbox.Button className="flex items-center rounded-full bg-background p-1">
           <span>
             <Image

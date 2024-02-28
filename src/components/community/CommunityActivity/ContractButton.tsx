@@ -1,6 +1,7 @@
 'use client'
 
 // Framework
+import { Suspense } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 // Third Parties
@@ -88,4 +89,10 @@ export const ContractButton = ({
   )
 }
 
-export default ContractButton
+const SuspendedContractButton = (_props: ContractButtonProps) => (
+  <Suspense>
+    <ContractButton {..._props} />
+  </Suspense>
+)
+
+export default SuspendedContractButton

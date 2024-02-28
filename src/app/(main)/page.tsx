@@ -9,6 +9,7 @@ import {
   Hero,
   TrendingSection,
 } from '@/components/home'
+import { Suspense } from 'react'
 
 /*--------------------------------------------------------------------*/
 
@@ -47,12 +48,12 @@ export const metadata: Metadata = {
 
 const Home = (): JSX.Element => {
   return (
-    <>
+    <Suspense>
       <Hero />
       <CollectiveCulture />
       <FeatureWidgets />
       <FAQ />
-    </>
+    </Suspense>
   )
 }
 

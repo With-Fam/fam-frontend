@@ -28,20 +28,23 @@ const ErrorMessage = ({ name }: ErrorMessageProps): Maybe<JSX.Element> => {
   const error = useMemo((): FieldError | undefined => {
     const clean = name.replace(/[\]]/g, '')
     const sections = clean.split(/[\[\.]/g)
-    const error = _get(errors, sections[0])
-    let fieldError: FieldError | undefined
+    // let fieldError: FieldError | undefined
 
-    if (Array.isArray(error)) {
-      fieldError = error.root || _get(error, sections.slice(1).join('.'))
-    } else if (error && clean.includes(String(error?.root?.type))) {
-      const ErrorMessage = error?.root?.message || error?.message
-      fieldError = {
-        message: String(ErrorMessage),
-        type: String(error?.root?.type),
-      }
-    }
+    // if (Array.isArray(currentError)) {
+    //   fieldError =
+    //     currentError.root || _get(currentError, sections.slice(1).join('.'))
+    // } else if (
+    //   currentError &&
+    //   clean.includes(String(currentError?.root?.type))
+    // ) {
+    //   const ErrorMessage = currentError?.root?.message || currentError?.message
+    //   fieldError = {
+    //     message: String(ErrorMessage),
+    //     type: String(currentError?.root?.type),
+    //   }
+    // }
 
-    return fieldError
+    return _get(errors, sections)
   }, [errors, name])
 
   if (!error) return null

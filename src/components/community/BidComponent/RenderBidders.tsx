@@ -37,7 +37,7 @@ const RenderBidders = ({
       <UserName address={address} className="h-min text-grey-dark" />
     </div>
     <Paragraph as="p5" className="text-grey-dark">
-      {formatEther(amount)} ETH
+      {amount} ETH
     </Paragraph>
   </div>
 )

@@ -19,10 +19,15 @@ import { CheckMark, Copy } from '@/components/icons'
 import { Paragraph } from '@/stories'
 
 const DEPLOYMENT_ERROR = {
+  MISSING_IPFS_ARTWORK: `Oops! It looks like your artwork wasn't correctly uploaded to ipfs. Please go back to the artwork step to re-upload your artwork before proceeding.`,
   MISMATCHING_SIGNER:
-    'Oops, it looks like the owner of the token contract differs from your signer address. Please ensure that this transaction is handled by the same address.',
+    'Oops! It looks like the founder address submitted is different than the current signer address. Please go back to the allocation step and re-submit the founder address.',
+  NO_FOUNDER:
+    'Oops! It looks like you have no founders set. Please go back to the allocation step and add at least one founder address.',
   GENERIC:
-    'Oops! Looks like there was a problem. Please ensure that your input data is correct',
+    'Oops! Looks like there was a problem handling the dao deployment. Please ensure that input data from all the previous steps is correct',
+  INVALID_ALLOCATION_PERCENTAGE:
+    'Oops! Looks like there are undefined founder allocation values. Please go back to the allocation step to ensure that valid allocation values are set.',
 }
 
 const createCommunity = async (community: any) => {
@@ -46,8 +51,15 @@ const createCommunity = async (community: any) => {
 }
 
 export function ReviewForm(): JSX.Element {
+  // State
+  const [isPendingTransaction, setIsPendingTransaction] =
+    useState<boolean>(false)
+  const [deploymentError, setDeploymentError] = useState<string | undefined>()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+
+  // Chain
   const { chain } = useNetwork()
-  const router = useRouter()
   const {
     deployedDao,
     ipfsUpload,
@@ -56,9 +68,6 @@ export function ReviewForm(): JSX.Element {
     resetForm,
     general,
   } = useFormStore()
-
-  const methods = useForm()
-
   const { data: tokenOwner } = useContractRead({
     enabled: !!deployedDao.token,
     abi: tokenAbi,
@@ -66,14 +75,13 @@ export function ReviewForm(): JSX.Element {
     chainId: chain?.id,
     functionName: 'owner',
   })
+  const { wallet: activeWallet } = usePrivyWagmi()
+
+  // Framework Hooks
+  const router = useRouter()
+  const methods = useForm()
 
   const { handleSubmit } = methods
-
-  const [deploymentError, setDeploymentError] = useState<string | undefined>()
-  const [isPendingTransaction, setIsPendingTransaction] =
-    useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { wallet: activeWallet } = usePrivyWagmi()
 
   const transactions = useMemo(() => {
     if (!orderedLayers || !ipfsUpload) return []
@@ -114,10 +122,10 @@ export function ReviewForm(): JSX.Element {
     }
 
     setIsPendingTransaction(false)
-    setFulfilledSections('Deployed')
+    setFulfilledSections('deployed')
 
     // MODIFY CHAIN TO BE DYNAMIC....!!!!
-    // Pushes users to commyunity token address
+    // Pushes users to community token address
     try {
       toast.remove()
       toast.success('DAO Deployed!')
