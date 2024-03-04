@@ -42,7 +42,7 @@ export const allocationSchema = Yup.object({
   founderAddress: addressValidationSchema,
   allocationPercentage: Yup.number()
     .transform((value) => (isNaN(value) ? undefined : value))
-    .required('*')
+    .required('percentage is required')
     .integer('Must be whole number')
     .max(100, '< 100')
     .when('admin', (admin, schema) => {
@@ -50,7 +50,7 @@ export const allocationSchema = Yup.object({
       return schema
     }),
   endDate: Yup.string()
-    .required('*')
+    .required('date is required')
     .test(
       'isDateInFuture',
       'Must be in future',
@@ -70,17 +70,17 @@ export const validationSchemaFounderAllocation = (
   Yup.object({
     founderAllocation: Yup.array()
       .of(allocationSchema)
-      .min(1, 'Founder is required')
-      .test(
-        'founderAddress',
-        'The founder must be the connected wallet.',
-        function (value) {
-          if (value?.[0]) {
-            return value?.[0]['founderAddress'] === signerAddress
-          }
-          return false
-        }
-      )
+      .min(1, 'founder is required')
+      // .test(
+      //   'founderAddress',
+      //   'The founder must be the connected wallet.',
+      //   function (value) {
+      //     if (value?.[0]) {
+      //       return value?.[0]['founderAddress'] === signerAddress
+      //     }
+      //     return false
+      //   }
+      // )
       .test(
         'founderAddress',
         'All founders allocation addresses should be unique.',

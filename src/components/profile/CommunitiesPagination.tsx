@@ -11,6 +11,7 @@ type CommunitiesPaginationProps = {
   hasNextPage: boolean
   user: string
   page: string
+  network: string
 }
 
 /*--------------------------------------------------------------------*/
@@ -23,6 +24,7 @@ const CommunitiesPagination = ({
   user,
   page,
   hasNextPage,
+  network
 }: CommunitiesPaginationProps): JSX.Element => {
   const hidePagination = page === '1' && !hasNextPage
 
@@ -34,7 +36,7 @@ const CommunitiesPagination = ({
         href={
           page === '1' || !page
             ? ''
-            : `/profile/${user}?type=communities&page=${parseInt(page) - 1}`
+            : `/profile/${network}/${user}?type=communities&page=${parseInt(page) - 1}`
         }
         passHref
       >
@@ -48,7 +50,7 @@ const CommunitiesPagination = ({
       </Link>
       <p className="mx-4">Page {page || 1}</p>
       <Link
-        href={`/profile/${user}?type=communities&page=${
+        href={`/profile/${network}/${user}?type=communities&page=${
           parseInt(page || '1') + 1
         }`}
         passHref

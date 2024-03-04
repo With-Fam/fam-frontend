@@ -164,7 +164,7 @@ const PlaceBid = ({
       ])
       toast.dismiss()
       toast.success('Bid succesfully placed!')
-      setBidAmount(undefined)
+      setBidAmount('0')
     } catch (error) {
       toast.dismiss()
 
@@ -199,15 +199,7 @@ const PlaceBid = ({
             setBidAmount(e.target.value)
           }}
         />
-        <Tooltip
-          tooltipContent={
-            <>
-              Each day a new membership pass is auctioned and proceeds from the
-              auction to go into a shared pool.
-              <a href="/">here</a>
-            </>
-          }
-        >
+        <Tooltip tooltipContent="Each day a new membership pass is auctioned and proceeds from the auction to go into a shared pool.">
           <QuestionMark />
         </Tooltip>
       </div>
@@ -222,7 +214,7 @@ const PlaceBid = ({
         onClick={handleCreateBid}
         disabled={creatingBid}
       >
-        {creatingBid ? 'Loading...' : 'Place Bid'}
+        {creatingBid ? 'Placing bid...' : 'Place Bid'}
       </button>
     </>
   )

@@ -107,7 +107,7 @@ const ShowVoteManager = ({
           ' bg-grey-light text-black opacity-100'
         )}
       >
-        <Paragraph as="p5">Vote not Started</Paragraph>
+        <Paragraph as="p5">Voting not started</Paragraph>
       </Button>
     )
   }

@@ -99,7 +99,7 @@ const BidComponent = ({
             <AllBids page={page} bids={bids as AuctionBid[]} />
           </div>
           {isOver ? (
-            <StartNextAuction chainId={chainId} />
+            <StartNextAuction chainId={chainId} owner={highestBidder} />
           ) : (
             <PlaceBid
               token={token}

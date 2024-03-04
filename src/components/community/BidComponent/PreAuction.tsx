@@ -64,6 +64,9 @@ const PreAuction = ({ chainId }: PreAuctionProps): JSX.Element => {
   useEffect(() => {
     if (started) {
       router.refresh()
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000)
     }
   }, [started, router])
 

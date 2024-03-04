@@ -1,5 +1,7 @@
 'use client'
 
+import _get from 'lodash.get'
+
 // Packages
 import { useFieldArray, useFormContext } from 'react-hook-form'
 
@@ -13,6 +15,7 @@ import { XMark } from '@/components/icons'
 import type { TokenAllocation } from './AuctionForm.schema'
 import { DateInput } from '@/components/forms/DateInput'
 import { UpdateCommunityFormValues } from '@/modules/create-activity/components/update-community/UpdateCommunity.schema'
+import ErrorMessage from '@/components/forms/ErrorMessage'
 
 // Helpers
 export const initFounder: TokenAllocation = {
@@ -50,6 +53,7 @@ export function FounderFieldArray(): JSX.Element {
                 placeholder="Enter ENS or wallet address"
                 label="Founder address"
               />
+              <ErrorMessage name="founderAllocation.root" />
             </div>
             <div className="mt-4 flex gap-4">
               <div className="relative z-0 flex-1">

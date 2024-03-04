@@ -359,12 +359,12 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
           </div>
         </ConfirmDropDown>
         <div className="mt-10">
-          <ConfirmCheckbox name="termsAcceptance">
+          {/* <ConfirmCheckbox name="termsAcceptance">
             I have reviewed and acknowledge and agree to the{' '}
             <Link href="#" className="text-orange">
               FAM Terms of Service
             </Link>
-          </ConfirmCheckbox>
+          </ConfirmCheckbox> */}
           <ConfirmCheckbox name="deployDaoAcceptance">
             I am deploying my DAO on{' '}
             <Link href="#" className="text-orange">

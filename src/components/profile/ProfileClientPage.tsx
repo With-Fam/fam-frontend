@@ -29,12 +29,14 @@ type UsersProfileProps = {
   type: string
   user: string
   page: string
-  chain: any // Added chain as a prop
+  chainID: CHAIN_ID
+  network: string
 }
 
 // Helpers
 import { USERS_PROFILE_DATA } from '@/content/users-profile'
 import { getUserData } from '@/components/profile/client-data'
+import { CHAIN_ID } from '@/types'
 
 /*--------------------------------------------------------------------*/
 
@@ -46,15 +48,15 @@ const ProfileClientPage = ({
   type,
   user,
   page,
-  chain, // Added chain as a parameter
+  chainID,
+  network,
 }: UsersProfileProps): JSX.Element => {
-  // Removed useChainStore hook since chain is now passed as a prop
   const {
     data: userData,
     error,
     isValidating,
-  } = useSWR([SWR_KEYS.PROFILE_TOKENS, chain, user, page], () =>
-    getUserData({ user, chainID: chain, page }).then((data) => data)
+  } = useSWR([SWR_KEYS.PROFILE_TOKENS, chainID, user, page], () =>
+    getUserData({ user, chainID, page }).then((data) => data)
   )
 
   if (isValidating) {
@@ -90,12 +92,13 @@ const ProfileClientPage = ({
               <UserCommunity
                 key={index}
                 community={community}
-                network={chain}
+                network={network}
               />
             ))}
           </div>
           <CommunitiesPagination
             user={user}
+            network={network}
             hasNextPage={userData.hasNextPage}
             page={page}
           />

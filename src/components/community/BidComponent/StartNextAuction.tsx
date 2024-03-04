@@ -2,12 +2,12 @@
 
 // Framework
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 // Local Components'
 import { useDaoStore } from '@/modules/dao'
 import { auctionAbi } from '@/data/contract/abis'
 import {
+  useAccount,
   useContractRead,
   useContractWrite,
   usePrepareContractWrite,
@@ -19,6 +19,7 @@ import { waitForTransaction } from 'wagmi/actions'
 import { CHAIN_ID } from '@/types'
 type BidStatusProps = {
   chainId: CHAIN_ID
+  owner?: string
 }
 
 /*--------------------------------------------------------------------*/
@@ -27,10 +28,13 @@ type BidStatusProps = {
  * Component
  */
 
-const StartNextAuction = ({ chainId }: BidStatusProps): JSX.Element => {
-  const router = useRouter()
+const StartNextAuction = ({ chainId, owner }: BidStatusProps): JSX.Element => {
+  // const router = useRouter()
   const [settling, setSettling] = useState(false)
   const addresses = useDaoStore((state) => state.addresses)
+  const { address } = useAccount()
+
+  const isWinner = owner != undefined && address == owner
 
   const { data: paused } = useContractRead({
     enabled: !!addresses?.auction,
@@ -51,19 +55,20 @@ const StartNextAuction = ({ chainId }: BidStatusProps): JSX.Element => {
 
   const handleSettle = async () => {
     if (!!error) return
-    console.log('ERROR!!!')
     setSettling(true)
-    toast.loading('Loading...')
+    toast.loading('settling auction...')
     try {
       const tx = await writeAsync?.()
       if (tx?.hash) await waitForTransaction({ hash: tx.hash })
+
       setSettling(false)
       toast.dismiss()
-      toast.success('Auction settled successfully')
-      setTimeout(() => {
-        router.refresh()
-      }, 300)
+      toast.success('Settled successfully')
+      // setTimeout(() => {
+      //   router.refresh()
+      // }, 300)
     } catch (error: any) {
+      console.log('error::', error)
       toast.dismiss()
       toast.error('Something went wrong. Try Again.')
       setSettling(false)
@@ -72,17 +77,18 @@ const StartNextAuction = ({ chainId }: BidStatusProps): JSX.Element => {
 
   if (settling) {
     return (
-      <button className="disabled mx-auto block h-16 w-full self-center rounded-full bg-black py-4 text-white mt-8">
+      <button className="disabled mx-auto mt-8 block h-16 w-full self-center rounded-full bg-black py-4 text-white">
         Start next auction
       </button>
     )
   }
   return (
     <button
-      className="mx-auto block h-16 w-full self-center rounded-full bg-black py-4 text-white mt-8"
+      className="mx-auto mt-8 block h-16 w-full self-center rounded-full bg-black py-4 text-white"
       onClick={handleSettle}
+      disabled={settling}
     >
-      Start next auction
+      {isWinner ? 'Claim membership' : 'Start next auction'}
     </button>
   )
 }
