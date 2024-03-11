@@ -28,7 +28,7 @@ import {
 
 export function AddButton(): JSX.Element {
   // const { communityId } = useParams()
-  // const { removeAllTransactions } = useProposalStore()
+  const { removeAllTransactions } = useProposalStore()
   const { activityType, setActivityType, setActiveSection } =
     useActivityFormStore()
 
@@ -48,10 +48,10 @@ export function AddButton(): JSX.Element {
         <div className="relative flex gap-4 rounded-2xl bg-white p-4">
           <div className="absolute right-1 top-1 z-10 w-auto">
             <ActionsPanel
-              onEdit={() => setActiveSection(2)}
+              onEdit={() => setActiveSection(0)}
               onDelete={() => {
                 setActivityType(null)
-                // removeAllTransactions()
+                removeAllTransactions()
               }}
             />
           </div>
@@ -79,7 +79,7 @@ export function AddButton(): JSX.Element {
 
   return (
     <button
-      type="submit"
+      onClick={() => setActiveSection(0)}
       className="mb-24 box-content w-auto cursor-pointer self-center px-4 sm:w-[322px]"
     >
       <div className="flex gap-4 rounded-2xl bg-white p-4">
