@@ -259,7 +259,6 @@ const CreateCommunityProvider = ({
       }}
     >
       <CreateContextNavigation
-        exitPath="/explore"
         step={activeSection}
         prev={prev}
         title={sections[activeSection]?.title}

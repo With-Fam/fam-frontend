@@ -43,7 +43,7 @@ const TabButton = ({ id, label }: TabButtonProps): JSX.Element => {
 
   return (
     <Link
-      href={`/community/${params.networkId}/${params.communityId}/${
+      href={`/community/${params.network}/${params.community}/${
         id === 'home' ? '' : id
       }`}
       className={twMerge(

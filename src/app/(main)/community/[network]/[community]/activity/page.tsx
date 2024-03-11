@@ -12,13 +12,13 @@ import { TOGGLE_DATA } from '@/content/community'
 import type { ProposalFragment } from '@/data/subgraph/sdk.generated'
 type CommunityProfileProps = {
   params: {
-    networkId: string
-    communityId: `0x${string}`
+    network: string
+    community: `0x${string}`
   }
 }
 
 // Actions
-import { getCommunityData } from '@/app/(main)/community/[networkId]/[communityId]/actions'
+import { getCommunityData } from '@/app/(main)/community/[network]/[community]/actions'
 import { getChainId } from '@/utils/getChainId'
 
 /*--------------------------------------------------------------------*/
@@ -45,16 +45,13 @@ async function getActivityData(chainId: number, collection: string) {
 export default async function CommunityProfile(
   _props: CommunityProfileProps
 ): Promise<JSX.Element> {
-  const { communityId, networkId } = _props.params
-  const chainId = getChainId(networkId)
+  const { community, network } = _props.params
+  const chainId = getChainId(network)
   const proposals: ProposalFragment[] = await getActivityData(
     chainId,
-    communityId
+    community
   )
-  const { metaData } = await getCommunityData(
-    chainId,
-    communityId.toLowerCase()
-  )
+  const { metaData } = await getCommunityData(chainId, community.toLowerCase())
 
   return (
     <>

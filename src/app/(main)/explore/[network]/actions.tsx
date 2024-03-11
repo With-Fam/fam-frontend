@@ -13,7 +13,7 @@ type getExploreDataProps = {
   limit: number
   chainId: number
   page: string
-  trending: boolean
+  trending?: boolean
 }
 type getExploreDataReturn = {
   communities: ExploreDaosPageQuery['auctions']

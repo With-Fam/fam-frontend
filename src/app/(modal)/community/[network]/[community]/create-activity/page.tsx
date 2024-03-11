@@ -8,9 +8,9 @@ import { CreateActivityProvider } from '@/contexts/create-activity/CreateActivit
 
 type CreateActivityPageProps = {
   params: {
-    communityId: string
+    community: string
     activityId: string
-    networkId: string
+    network: string
   }
 }
 

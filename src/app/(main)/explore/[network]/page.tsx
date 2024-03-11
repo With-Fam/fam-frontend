@@ -5,7 +5,7 @@ import {
   ExploreHeader,
   ExploreHeaderMobile,
 } from '@/components/explore'
-
+import { getChainId } from '@/utils/getChainId'
 // Types
 import type { Metadata } from 'next'
 type ExplorePageProps = {
@@ -13,10 +13,11 @@ type ExplorePageProps = {
     page: string
     type: 'new' | 'trending'
   }
+  params: { network: string }
 }
 
 // Content
-import { getExploreData } from '@/app/(main)/explore/actions'
+import { getExploreData } from '@/app/(main)/explore/[network]/actions'
 import ExplorePagination from '@/components/explore/ExplorePagination'
 // import { EXPLORE_TOGGLE_DATA } from '@/content/explore'
 
@@ -55,14 +56,16 @@ export const metadata: Metadata = {
 
 const ExplorePage = async ({
   searchParams,
+  params,
 }: ExplorePageProps): Promise<JSX.Element> => {
-  const limit = 10
-  const chainId = 84532
+  const limit = 100
+  const { network } = params
+  const chainId = getChainId(network.toUpperCase().replace('-', '_'))
+
   const { communities, count } = await getExploreData({
     limit,
     chainId,
     page: searchParams.page,
-    trending: searchParams.type === 'trending',
   })
 
   return (

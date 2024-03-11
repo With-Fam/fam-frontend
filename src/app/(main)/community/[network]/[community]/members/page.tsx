@@ -4,13 +4,13 @@ import { TOGGLE_DATA } from '@/content/community'
 
 // Types
 type CommunityProfileProps = {
-  params: { communityId: string; networkId: string }
+  params: { community: string; network: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
 // API
 import { SDK } from '@/data/subgraph/client'
-import { getChainId } from '@/utils/getChainId';
+import { getChainId } from '@/utils/getChainId'
 
 async function getMemberData(chainId: number, collection: string) {
   const dao = await SDK.connect(chainId).daoMembersList({
@@ -30,9 +30,9 @@ async function getMemberData(chainId: number, collection: string) {
 export default async function CommunityProfile(
   _props: CommunityProfileProps
 ): Promise<JSX.Element> {
-  const { communityId, networkId } = _props.params
-  const chainId = getChainId(networkId);
-  const data: any = await getMemberData(chainId, communityId)
+  const { community, network } = _props.params
+  const chainId = getChainId(network)
+  const data: any = await getMemberData(chainId, community)
   return (
     <>
       <TabList items={TOGGLE_DATA} />

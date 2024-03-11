@@ -17,7 +17,7 @@ import { PropsWithChildren } from 'react'
 
 type CreateContextNavigationProps = {
   step: number
-  exitPath: string
+  // exitPath: string
   prev: () => void
   title: Maybe<string>
   action?: React.ReactElement
@@ -53,7 +53,6 @@ export const CreateContextNavigation = ({
   step,
   prev,
   title,
-  exitPath,
 }: CreateContextNavigationProps): Maybe<JSX.Element> => {
   const router = useRouter()
   return (
@@ -61,7 +60,7 @@ export const CreateContextNavigation = ({
       <div
         className="flex h-8 w-8 cursor-pointer flex-col items-center justify-center rounded-full bg-grey-light"
         onClick={() => {
-          step === 0 ? router.push(exitPath) : prev()
+          step === 0 ? router.back() : prev()
         }}
       >
         <AnimatePresence>

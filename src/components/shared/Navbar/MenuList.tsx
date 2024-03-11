@@ -35,7 +35,10 @@ const MenuList = ({ address }: MenuListProps): JSX.Element => {
       >
         Profile
       </MenuItem>
-      <MenuItem icon={<EyeIcon className="h-6 w-6" />} href="/explore">
+      <MenuItem
+        icon={<EyeIcon className="h-6 w-6" />}
+        href={`/explore/${chain?.slug}`}
+      >
         Explore
       </MenuItem>
       <MenuItem onClick={logout} icon={<ExitIcon className="h-6 w-6" />}>

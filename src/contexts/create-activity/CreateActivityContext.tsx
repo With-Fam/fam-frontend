@@ -60,8 +60,8 @@ import type { CreateSection } from '@/modules/create-community/types'
 import type { AddressType, Maybe } from '@/types'
 type ActivityProviderProps = PropsWithChildren<{
   params: {
-    communityId: string
-    networkId: string
+    community: string
+    network: string
   }
 }>
 export interface CreateActivityContextType {
@@ -89,7 +89,7 @@ const CreateActivityProvider = ({
   params,
 }: ActivityProviderProps): JSX.Element => {
   const { isAuthenticated } = useCheckAuth()
-  const { networkId, communityId } = params
+  const { network, community } = params
   const [loading, setLoading] = useState<boolean>(false)
   const [loadingMessage, setLoadingMessage] =
     useState<string>('Setting the vibes')
@@ -110,7 +110,7 @@ const CreateActivityProvider = ({
   useEffect(() => {
     if (loadingMessage === 'Proposal posted. Redirecting...') {
       setLoadingMessage('Setting the vibes')
-      window.location.href = `/community/${networkId}/${communityId}/activity`
+      window.location.href = `/community/${network}/${community}/activity`
     }
   }, [loadingMessage])
 
@@ -156,7 +156,7 @@ const CreateActivityProvider = ({
         <ActionForm
           callback={next}
           action={activityType as TransactionType}
-          collectionAddress={communityId as AddressType}
+          collectionAddress={community as AddressType}
         />
       ),
     }
@@ -183,7 +183,7 @@ const CreateActivityProvider = ({
       ),
     }
     return [action, transaction, proposal]
-  }, [proposalDefault, activityType, communityId, next, setActivityType])
+  }, [proposalDefault, activityType, community, next, setActivityType])
 
   if (!isAuthenticated) {
     return (
@@ -226,7 +226,7 @@ const CreateActivityProvider = ({
         <>
           <CreateContextNavigation
             action={sections[activeSection]?.action}
-            exitPath={`/community/${networkId}/${communityId}/activity`}
+            // exitPath={`/community/${network}/${community}/activity`}
             step={activeSection}
             prev={prev}
             title={sections[activeSection]?.title}

@@ -27,8 +27,8 @@ import {
  */
 
 export function AddButton(): JSX.Element {
-  const { communityId } = useParams()
-  const { removeAllTransactions } = useProposalStore()
+  // const { communityId } = useParams()
+  // const { removeAllTransactions } = useProposalStore()
   const { activityType, setActivityType, setActiveSection } =
     useActivityFormStore()
 
@@ -51,7 +51,7 @@ export function AddButton(): JSX.Element {
               onEdit={() => setActiveSection(2)}
               onDelete={() => {
                 setActivityType(null)
-                removeAllTransactions()
+                // removeAllTransactions()
               }}
             />
           </div>

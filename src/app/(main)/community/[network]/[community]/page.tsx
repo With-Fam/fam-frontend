@@ -8,12 +8,12 @@ import PreAuction from '@/components/community/BidComponent/PreAuction'
 
 // Types
 type CommunityProfileProps = {
-  params: { communityId: string; networkId: string }
+  params: { community: string; network: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
 // Actions
-import { getCommunityData } from '@/app/(main)/community/[networkId]/[communityId]/actions'
+import { getCommunityData } from '@/app/(main)/community/[network]/[community]/actions'
 import { getChainId } from '@/utils/getChainId'
 
 /*--------------------------------------------------------------------*/
@@ -25,14 +25,15 @@ import { getChainId } from '@/utils/getChainId'
 export default async function CommunityProfile(
   _props: CommunityProfileProps
 ): Promise<JSX.Element> {
-  const { communityId, networkId } = _props.params
-  const collection = communityId.toLowerCase()
-  const chainId = getChainId(networkId)
+  const { community, network } = _props.params
+  const collection = community.toLowerCase()
+  const chainId = getChainId(network.toUpperCase().replace('-', '_'))
   const { page, token, metaData, ...rest } = await getCommunityData(
     chainId,
     collection
   )
 
+  if (!metaData) return <h1>Community not found</h1>
   if (!page && !token) return <PreAuction chainId={chainId} />
 
   return (
@@ -43,7 +44,7 @@ export default async function CommunityProfile(
         token={token}
         page={page}
         metaData={metaData}
-        communityId={communityId}
+        communityId={community}
       />
     </>
   )

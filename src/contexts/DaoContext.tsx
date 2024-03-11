@@ -28,14 +28,14 @@ const DaoStoreContext = createContext<DaoStoreContextType>({
 const DaoContext = ({ children }: PropsWithChildren): JSX.Element => {
   const { addresses, setAddresses } = useDaoStore()
   const { chain } = useNetwork()
-  const { communityId } = useParams()
+  const { community } = useParams()
 
   useEffect(() => {
     async function getAddresses(chainId: number) {
       try {
         const addresses = await getDaoAddresses(
           chainId,
-          communityId as `0x${string}`
+          community as `0x${string}`
         )
 
         setAddresses(addresses as any)
@@ -44,10 +44,10 @@ const DaoContext = ({ children }: PropsWithChildren): JSX.Element => {
       }
     }
 
-    if (communityId && chain?.id) {
+    if (community && chain?.id) {
       getAddresses(chain?.id)
     }
-  }, [communityId, chain])
+  }, [community, chain])
   return (
     <DaoStoreContext.Provider
       value={{
