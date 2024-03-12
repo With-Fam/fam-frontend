@@ -32,6 +32,12 @@ export function FounderFieldArray(): JSX.Element {
     name: 'founderAllocation',
   })
 
+  const handleAddFounder = () => {
+    const firstFounderEndDate = fields[0]?.endDate || ''
+    const newFounder = { ...initFounder, endDate: firstFounderEndDate }
+    append(newFounder)
+  }
+
   return (
     <div className="space-y-2">
       <div>
@@ -85,9 +91,7 @@ export function FounderFieldArray(): JSX.Element {
       <button
         className="mx-auto my-4 flex flex-row items-center rounded-full bg-white px-3.5 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50"
         type="button"
-        onClick={() => {
-          append(initFounder)
-        }}
+        onClick={handleAddFounder}
       >
         <Icon id="plus" className="mr-2 h-6 w-6" />
         <span className="text-sm text-black">Add founder</span>
