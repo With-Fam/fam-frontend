@@ -31,7 +31,8 @@ export default async function CommunityProfile(
   _props: CommunityProfileProps
 ): Promise<JSX.Element> {
   const { community, network } = _props.params
-  const chainId = getChainId(network)
+  const chainId = getChainId(network.toUpperCase().replace('-', '_'))
+
   const data: any = await getMemberData(chainId, community)
   return (
     <>
