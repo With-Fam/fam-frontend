@@ -7,6 +7,7 @@ import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { useState } from 'react'
 import { useRouter, useParams, usePathname } from 'next/navigation'
 import { useNetwork, useSwitchNetwork } from 'wagmi'
+import { useChainStore } from '@/utils/stores/useChainStore'
 
 // Props
 type MenuListProps = {
@@ -34,20 +35,20 @@ const MenuList = ({ address }: MenuListProps): JSX.Element => {
     currentChains.push(chain.network)
   })
 
-  const switched = (net: number) => {
-    switchNetwork?.(Number(net))
-    const selected: any = chains.filter((chain: any) => chain.id === net)
+  const switched = async (net: number) => {
+    await switchNetwork?.(Number(net))
+    const selected: any = chains.find((chain: any) => chain.id === net)
     const isIncluded = currentChains.some((option) => pathname.includes(option))
-    if (isIncluded) {
-      const selectedNetwork = selected[0]?.network
+    if (isIncluded && selected) {
+      const selectedNetwork = selected.network
       const newPath = pathname.replace(network as string, selectedNetwork)
       router.push(newPath)
     } else {
       router.push(pathname)
     }
-    setSelectedNetwork(selected[0])
+    setSelectedNetwork(selected)
+    useChainStore.setState({ chain: selected })
   }
-
   return (
     <ul className="mt-8 grid gap-6">
       <MenuItem

@@ -5,7 +5,7 @@ import { ProposalQuery } from '@/data/subgraph/sdk.generated'
 interface ActivityProfileProps {
   params: {
     activityId: string
-    networkId: string
+    network: string
   }
 }
 
@@ -27,8 +27,8 @@ import SWR_KEYS from '@/constants/swrKeys'
  */
 
 const ActivityProfile = ({ params }: ActivityProfileProps): JSX.Element => {
-  const { activityId, networkId } = params
-  const chainId = getChainId(networkId)
+  const { activityId, network } = params
+  const chainId = getChainId(network.toUpperCase().replace('-', '_'))
 
   const { data: proposal } = useSWR(
     [SWR_KEYS.PROPOSAL, chainId, activityId],

@@ -14,11 +14,11 @@ import { LongArrow } from '@/components/icons'
  */
 
 const BackActivityButton = (): JSX.Element => {
-  const { networkId, communityId } = useParams()
+  const { network, community } = useParams()
 
   return (
     <div className="flex h-8 w-8 cursor-pointer flex-col items-center justify-center rounded-full bg-grey-light">
-      <Link href={`/community/${networkId}/${communityId}/activity`} passHref>
+      <Link href={`/community/${network}/${community}/activity`} passHref>
         <LongArrow />
       </Link>
     </div>
