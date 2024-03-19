@@ -4,6 +4,8 @@ import MenuItem from '@/components/shared/Navbar/MenuItem'
 
 // Helpers
 import { useCheckAuth } from '@/hooks/useCheckAuth'
+import { useState } from 'react'
+import { useRouter, useParams, usePathname } from 'next/navigation'
 import { useNetwork, useSwitchNetwork } from 'wagmi'
 
 // Props
@@ -19,15 +21,31 @@ type MenuListProps = {
 
 const MenuList = ({ address }: MenuListProps): JSX.Element => {
   const { logout } = useCheckAuth()
+  const { network } = useParams()
+  const router = useRouter()
+  const pathname = usePathname()
   const { chain }: any = useNetwork()
+  const [selectedNetwork, setSelectedNetwork] = useState(chain)
   const { chains, error, isLoading, pendingChainId, switchNetwork } =
     useSwitchNetwork()
 
+  const currentChains: string[] = []
+  chains.map((chain: any) => {
+    currentChains.push(chain.network)
+  })
+
   const switched = (net: number) => {
     switchNetwork?.(Number(net))
-    setTimeout(() => {
-      window.location.reload()
-    }, 1000)
+    const selected: any = chains.filter((chain: any) => chain.id === net)
+    const isIncluded = currentChains.some((option) => pathname.includes(option))
+    if (isIncluded) {
+      const selectedNetwork = selected[0]?.network
+      const newPath = pathname.replace(network as string, selectedNetwork)
+      router.push(newPath)
+    } else {
+      router.push(pathname)
+    }
+    setSelectedNetwork(selected[0])
   }
 
   return (
@@ -40,13 +58,13 @@ const MenuList = ({ address }: MenuListProps): JSX.Element => {
       </MenuItem>
       <MenuItem
         icon={<MemberIcon className="h-6 w-6" color="#000000" />}
-        href={`/profile/${chain?.slug}/${address}`}
+        href={`/profile/${selectedNetwork?.slug}/${address}`}
       >
         Profile
       </MenuItem>
       <MenuItem
         icon={<EyeIcon className="h-6 w-6" />}
-        href={`/explore/${chain?.slug}`}
+        href={`/explore/${selectedNetwork?.slug}`}
       >
         Explore
       </MenuItem>
@@ -54,11 +72,12 @@ const MenuList = ({ address }: MenuListProps): JSX.Element => {
         <select
           className="rounded-3xl bg-black px-4 py-2 text-white sm:px-6 sm:py-2.5"
           onChange={(e) => switched(Number(e.target.value))}
-          value={chain?.id || ''}
+          value={selectedNetwork?.id || ''}
+          disabled={pathname.includes('community')}
         >
           {chains.map((x: any) => (
             <option
-              disabled={!switchNetwork || x.id === chain?.id}
+              disabled={!switchNetwork || x.id === selectedNetwork?.id}
               key={x.id}
               value={x.id}
             >

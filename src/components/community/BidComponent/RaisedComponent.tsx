@@ -11,12 +11,13 @@ import useSWR from 'swr'
 import { SDK } from '@/data/subgraph/client'
 import { formatEther } from 'viem'
 import { useBalance } from 'wagmi'
+import { useParams } from 'next/navigation'
 
 // Utils
 import { useDaoStore } from '@/modules/dao'
-import { useChainStore } from '@/utils/stores/useChainStore'
 import SWR_KEYS from '@/constants/swrKeys'
 import { formatCryptoVal, numberFormatter } from '@/utils/numbers'
+import { getChainId } from '@/utils/getChainId'
 
 const COINBASE_ENDPOINT =
   'https://api.coinbase.com/v2/exchange-rates?currency=ETH'
@@ -26,10 +27,12 @@ const RaisedComponent = (): JSX.Element => {
     null
   )
   const { addresses } = useDaoStore()
-  const chain = useChainStore((x) => x.chain)
+  const { network }: any = useParams()
+
+  const chainId = getChainId(network.toUpperCase().replace('-', '_'))
   const { data: balance } = useBalance({
     address: addresses?.treasury as `0x${string}`,
-    chainId: chain.id,
+    chainId: chainId,
   })
 
   const { data: ethUsd } = useSWR(
@@ -61,7 +64,7 @@ const RaisedComponent = (): JSX.Element => {
 
   useEffect(() => {
     if (addresses.token) {
-      SDK.connect(chain.id)
+      SDK.connect(chainId)
         .totalAuctionSales({
           tokenAddress: addresses.token.toLowerCase(),
         })
@@ -72,7 +75,7 @@ const RaisedComponent = (): JSX.Element => {
           setTotalAuctionSales(formattedCrypto)
         })
     }
-  }, [chain.id, addresses.token])
+  }, [chainId, addresses.token])
 
   return (
     <div className="col-span-1">
