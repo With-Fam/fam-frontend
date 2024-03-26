@@ -25,13 +25,13 @@ const COINBASE_ENDPOINT =
   'https://api.coinbase.com/v2/exchange-rates?currency=ETH'
 
 type TotalAuctionSales = {
-  eth: string | number
+  eth: string
   usd: string | number
 }
 
 const RaisedComponent = (): JSX.Element => {
   const [totalAuctionSales, setTotalAuctionSales] = useState<TotalAuctionSales>(
-    { eth: 0, usd: 0 }
+    { eth: '0', usd: 0 }
   )
   const { addresses } = useDaoStore()
   const { network }: any = useParams()
