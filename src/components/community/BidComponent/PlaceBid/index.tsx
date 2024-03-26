@@ -96,25 +96,25 @@ const PlaceBid = ({
 
   const isMinBid = Number(bidAmount) >= minBidAmount
   const formattedMinBid = formatCryptoVal(minBidAmount)
-  const minBidAmountInWei = parseEther(formattedMinBid)
+  // const minBidAmountInWei = parseEther(formattedMinBid)
 
   // Warn users if they are bidding more than 5x the average winning bid or min bid amount
-  const valueToCalculateWarning = averageBid || minBidAmountInWei
-  const minAmountForWarning = valueToCalculateWarning * 5n
+  // const valueToCalculateWarning = averageBid || minBidAmountInWei
+  // const minAmountForWarning = valueToCalculateWarning * 5n
 
   const handleCreateBid = async () => {
     if (!isMinBid || !bidAmount || creatingBid) return
 
-    const amountInWei = parseEther(bidAmount)
+    // const amountInWei = parseEther(bidAmount)
 
-    if (
-      amountInWei &&
-      minAmountForWarning &&
-      amountInWei > minAmountForWarning
-    ) {
-      setShowWarning(true)
-      return
-    }
+    // if (
+    //   amountInWei &&
+    //   minAmountForWarning &&
+    //   amountInWei > minAmountForWarning
+    // ) {
+    //   setShowWarning(true)
+    //   return
+    // }
 
     await createBidTransaction()
   }
@@ -179,9 +179,6 @@ const PlaceBid = ({
     }
   }
 
-  const isValidBid = bidAmount && isMinBid
-  const isValidChain = wagmiChain?.id === chainId
-
   return (
     <>
       <div className="mx-auto mb-4 mt-5 flex h-14 w-full max-w-2xl items-center justify-between gap-2 rounded-lg bg-grey-light px-4 py-2">
@@ -193,7 +190,6 @@ const PlaceBid = ({
           id="bid-community"
           placeholder={`${minBidAmount} ETH or more`}
           min={formattedMinBid}
-          max={balance?.formatted}
           value={bidAmount}
           onChange={(e) => {
             setBidAmount(e.target.value)
