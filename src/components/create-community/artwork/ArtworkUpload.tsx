@@ -27,6 +27,7 @@ type ArtworkUploadProps = {
   helperText: string
   fileCount?: number
   traitCount: number
+  handleReset: () => void
   onUpload: (e: BaseSyntheticEvent) => void
   setUploadArtworkError: Dispatch<
     SetStateAction<ArtworkUploadError | undefined>
@@ -34,6 +35,7 @@ type ArtworkUploadProps = {
   uploadArtworkError?: ArtworkUploadError
   ipfsUploadError: boolean
   fileType?: string
+  isUploadingToIPFS: boolean
 } & TraitsAccordianProps &
   RandomPreviewProps
 
@@ -48,6 +50,8 @@ export const ArtworkUpload = ({
   uploadArtworkError,
   setUploadArtworkError,
   images,
+  isUploadingToIPFS,
+  handleReset,
   // ipfsUploadError,
 }: ArtworkUploadProps): JSX.Element => {
   const dropInput = useRef<HTMLInputElement>(null)
@@ -58,7 +62,8 @@ export const ArtworkUpload = ({
     }
   }, [dropInput, uploadArtworkError])
 
-  const hasError = uploadArtworkError && Object.keys(uploadArtworkError).length > 0
+  const hasError =
+    uploadArtworkError && Object.keys(uploadArtworkError).length > 0
   const hideDropBox = nonEmptyArray(images) && nonEmptyArray(artwork)
 
   return (
@@ -101,7 +106,12 @@ export const ArtworkUpload = ({
                 images={images}
                 orderedLayers={orderedLayers}
               >
-                <UploadLabel htmlFor="file-upload" isEmpty={!hideDropBox} />
+                <UploadLabel
+                  htmlFor="file-upload"
+                  isEmpty={!hideDropBox}
+                  isUploadingToIPFS={isUploadingToIPFS}
+                  handleReset={handleReset}
+                />
               </RandomPreview>
               <input
                 className={defaultUploadStyle}

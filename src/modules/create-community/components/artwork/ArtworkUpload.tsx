@@ -57,8 +57,21 @@ export function ArtworkUpload({
 
   const handleUpload = (e: BaseSyntheticEvent) => {
     setUploadArtworkError(undefined)
+    setFiles(null)
+    // setOrderedLayers([])
+    setIpfsUpload([])
+    setIsUploadingToIPFS(false) // Resetting setUpArtwork to its initial state
     setFiles(e.currentTarget.files)
     setOrderedLayers([])
+  }
+
+  // Added function to clear all items and reset state
+  const handleReset = () => {
+    setUploadArtworkError(undefined)
+    setFiles(null)
+    setOrderedLayers([])
+    setIpfsUpload([])
+    setIsUploadingToIPFS(false) // Resetting setUpArtwork to its initial state
   }
 
   /*
@@ -89,6 +102,8 @@ export function ArtworkUpload({
       traitCount={setUpArtwork.artwork?.length}
       helperText={helperText}
       onUpload={handleUpload}
+      handleReset={handleReset} // Passing handleReset to UploadComponent
+      isUploadingToIPFS={isUploadingToIPFS}
       ipfsUploadError={ipfsUploadError}
       uploadArtworkError={uploadArtworkError}
       setUploadArtworkError={setUploadArtworkError}
