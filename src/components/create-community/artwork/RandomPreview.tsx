@@ -50,10 +50,10 @@ export function RandomPreview({
           <img
             className={twMerge('absolute top-0 h-full w-full', `z-[1${_idx}]`)}
             key={`layer ${_idx}`}
-            alt={_i.trait}
+            alt={_i?.trait}
             height="100%"
             width="100%"
-            src={_i.url}
+            src={_i?.url}
           />
         ))}
       </div>

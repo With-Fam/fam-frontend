@@ -67,6 +67,7 @@ export function ArtworkUpload({
 
   // Added function to clear all items and reset state
   const handleReset = () => {
+    setIsUploadingToIPFS(false)
     setUploadArtworkError(undefined)
     setFiles(null)
     setOrderedLayers([])

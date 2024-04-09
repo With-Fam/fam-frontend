@@ -12,6 +12,7 @@ import { shortenString } from '@/utils/user-profile'
 // Types
 interface UserKeyProps {
   children: string
+  address: string
 }
 
 /*--------------------------------------------------------------------*/
@@ -20,12 +21,12 @@ interface UserKeyProps {
  * Component
  */
 
-const UserKey = ({ children }: UserKeyProps): JSX.Element => {
+const UserKey = ({ children, address }: UserKeyProps): JSX.Element => {
   const [copySuccess, setCopySuccess] = useState(false)
   const copiedTimeout = useRef<NodeJS.Timeout | null>(null)
 
   const handleCopyClick = async () => {
-    await navigator.clipboard.writeText(children)
+    await navigator.clipboard.writeText(address)
     setCopySuccess(true)
 
     copiedTimeout.current = setTimeout(() => {

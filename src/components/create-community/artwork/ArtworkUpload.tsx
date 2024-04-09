@@ -89,6 +89,7 @@ export const ArtworkUpload = ({
           {hasError && (
             <ArtworkError
               setUploadArtworkError={setUploadArtworkError}
+              handleReset={handleReset}
               uploadArtworkError={uploadArtworkError}
             />
           )}

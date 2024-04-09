@@ -82,7 +82,7 @@ const ProfileClientPage = ({
           <UserName address={user as `0x${string}`} blankComponent /> Profile
         </Heading>
         <div className="mb-4 mt-2">
-          <UserKey>{walletSnippet(user)}</UserKey>
+          <UserKey address={user}>{walletSnippet(user)}</UserKey>
         </div>
       </div>
       {type === 'communities' && (

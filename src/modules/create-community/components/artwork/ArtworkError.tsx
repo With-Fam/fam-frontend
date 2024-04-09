@@ -8,11 +8,13 @@ type ArtworkErrorProps = {
     SetStateAction<ArtworkUploadError | undefined>
   >
   uploadArtworkError?: ArtworkUploadError
+  handleReset: () => void
 }
 
 export function ArtworkError({
   setUploadArtworkError,
   uploadArtworkError,
+  handleReset,
 }: ArtworkErrorProps): JSX.Element {
   const errorCategories = Object.keys(
     uploadArtworkError || {}
@@ -30,7 +32,7 @@ export function ArtworkError({
           </p>
         ))}
       <button
-        onClick={() => setUploadArtworkError(undefined)}
+        onClick={() => handleReset()}
         className="mt-4 rounded-full bg-black px-6 py-2 text-white"
       >
         Try Again
