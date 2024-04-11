@@ -162,6 +162,7 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
   }
 
   const handleDeploy = async () => {
+    console.log('SWEETS handleDeploy')
     setIsLoading(true)
     setDeploymentError(undefined)
 
