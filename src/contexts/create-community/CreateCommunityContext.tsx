@@ -19,7 +19,6 @@ import { AuctionSettingsFormValues } from '@/modules/create-community/components
 import { ConfirmForm } from '@/modules/create-community/components/confirm'
 import { ReviewForm } from '@/modules/create-community/components/review'
 import {
-  Artwork,
   AuctionsForm,
   GeneralForm,
   GeneralFormValues,
@@ -28,7 +27,6 @@ import {
 // Types
 import type { CreateSection } from '@/modules/create-community/types'
 import { useNetwork } from 'wagmi'
-import { L2ChainType } from '@/constants/addresses'
 export interface CreateCommunityContextType {
   loading: boolean
   section: CreateSection
@@ -161,29 +159,21 @@ const CreateCommunityProvider = ({
         />
       ),
     }
-
-    // Artwork self handles state directly through the useFormStoreState hook
-    const artwork: CreateSection = {
-      order: 2,
-      title: 'Artwork',
-      key: 'artwork',
-      content: <Artwork />,
-    }
     const review: CreateSection = {
-      order: 3,
+      order: 2,
       title: 'Confirm',
       key: 'review',
       content: chain && chain.id ? <ConfirmForm /> : <></>,
     }
 
     const deploy: CreateSection = {
-      order: 4,
+      order: 3,
       title: 'Confirm',
       key: 'deploy',
       content: <ReviewForm />,
     }
 
-    return [general, auctions, artwork, review, deploy]
+    return [general, auctions, review, deploy]
   }, [
     auctionSettings,
     vetoPower,

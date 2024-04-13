@@ -1,10 +1,10 @@
-// Framework
-import _get from 'lodash.get'
+'use client'
 
 // Local Components
-import { BidComponent, TabList } from '@/components/community'
+import { TabList } from '@/components/community'
 import { TOGGLE_DATA } from '@/content/community'
-import PreAuction from '@/components/community/BidComponent/PreAuction'
+import AddressCopy from '@/modules/create-community/components/review/AddressCopy'
+import { AddressType } from '@/types'
 
 // Types
 type CommunityProfileProps = {
@@ -12,43 +12,24 @@ type CommunityProfileProps = {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-// Actions
-import { getCommunityData } from '@/app/(main)/community/[network]/[community]/actions'
-import { getChainId } from '@/utils/getChainId'
-
 /*--------------------------------------------------------------------*/
 
 /**
  * Page
  */
 
-export default async function CommunityProfile(
+export default function CommunityProfile(
   _props: CommunityProfileProps
-): Promise<JSX.Element> {
+): JSX.Element {
   const { community, network } = _props.params
-  const collection = community.toLowerCase()
-  const chainId = getChainId(network.toUpperCase().replace('-', '_'))
-  const { page, token, metaData, ...rest } = await getCommunityData(
-    chainId,
-    collection
-  )
 
-  if (!metaData) return <h1>Community not found</h1>
-  if (!page && !token) return <PreAuction chainId={chainId} />
-
+  console.log('SWEETS COMMUNITY', community)
   return (
     <>
       <TabList items={TOGGLE_DATA} />
-      <BidComponent
-        chainId={chainId}
-        token={token}
-        page={page}
-        metaData={metaData}
-        communityId={community}
-      />
+      <div>
+        <AddressCopy address={community as AddressType} /> on {network}
+      </div>
     </>
   )
 }
-
-export const dynamic = 'force-dynamic'
-export const revalidate = 0

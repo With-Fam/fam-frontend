@@ -35,11 +35,6 @@ const useDeploy = () => {
       return
     }
 
-    if (ipfsUpload.length === 0) {
-      setDeploymentError(DEPLOYMENT_ERROR.MISSING_IPFS_ARTWORK)
-      return
-    }
-
     setIsPendingTransaction(true)
     const transaction = await createParty()
     const error = (transaction as any)?.error
