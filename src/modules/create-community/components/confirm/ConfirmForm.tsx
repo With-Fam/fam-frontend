@@ -33,7 +33,12 @@ import { sanitizeStringForJSON } from '@/utils/sanitize'
 import { toSeconds, walletSnippet } from '@/utils/helpers'
 
 // Constants
-import { L2ChainType, PUBLIC_MANAGER_ADDRESS } from '@/constants/addresses'
+import {
+  L2ChainType,
+  PARTY_FACTORY,
+  PARTY_IMPLEMENTATION,
+  PUBLIC_MANAGER_ADDRESS,
+} from '@/constants/addresses'
 import { NULL_ADDRESS } from '@/constants/addresses'
 import { managerAbi, managerV2Abi } from '@/data/contract/abis'
 
@@ -42,6 +47,7 @@ type ConfirmFormProps = {
   chainID: L2ChainType
 }
 import { IPFSImage } from '@/components/ipfs/IPFSImage'
+import { partyFactoryAbi } from '@/data/contract/abis/PartyFactory'
 // import { RandomPreview } from '@/components/create-community/artwork/RandomPreview'
 
 /*--------------------------------------------------------------------*/
@@ -197,26 +203,41 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
       let config: any
       if (version?.startsWith('2')) {
         config = await prepareWriteContract({
-          address: PUBLIC_MANAGER_ADDRESS[chainID],
+          address: PARTY_FACTORY[chainID as keyof typeof PARTY_FACTORY],
           chainId: chainID,
-          abi: managerV2Abi,
-          functionName: 'deploy',
+          abi: partyFactoryAbi,
+          functionName: 'createParty',
           args: [
-            founderParams,
+            PARTY_IMPLEMENTATION[chainID as keyof typeof PARTY_IMPLEMENTATION],
+            ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
             {
-              ...tokenParams,
-              reservedUntilTokenId: BigInt(0),
-              metadataRenderer: NULL_ADDRESS,
+              governance: {
+                hosts: ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
+                voteDuration: 172800,
+                executionDelay: 86400,
+                passThresholdBps: 5000,
+                totalVotingPower: 100000000000000000000n,
+                feeBps: 1000,
+                feeRecipient: '0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38',
+              },
+              proposalEngine: {
+                enableAddAuthorityProposal: true,
+                allowArbCallsToSpendPartyEth: true,
+                allowOperators: true,
+                distributionsConfig: 1,
+              },
+              name: 'PARTY',
+              symbol: 'FAM',
+              customizationPresetId: 0n,
             },
-            {
-              ...auctionParams,
-              founderRewardRecipent: NULL_ADDRESS,
-              founderRewardBps: 0,
-            },
-            govParams,
+            [],
+            [],
+            1715603725,
           ],
         })
       } else {
+        console.log('SWEETS UPDATE WITH PARTY DAO 2nd')
+
         config = await prepareWriteContract({
           address: PUBLIC_MANAGER_ADDRESS[chainID],
           chainId: chainID,
@@ -225,6 +246,7 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
           args: [founderParams, tokenParams, auctionParams, govParams],
         })
       }
+      console.log('SWEETS writeContract', config)
 
       const tx = await writeContract(config)
       if (tx.hash) transaction = await waitForTransaction({ hash: tx.hash })
