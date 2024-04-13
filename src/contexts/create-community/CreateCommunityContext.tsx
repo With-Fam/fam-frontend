@@ -173,12 +173,7 @@ const CreateCommunityProvider = ({
       order: 3,
       title: 'Confirm',
       key: 'review',
-      content:
-        chain && chain.id ? (
-          <ConfirmForm chainID={chain?.id as L2ChainType} />
-        ) : (
-          <></>
-        ),
+      content: chain && chain.id ? <ConfirmForm /> : <></>,
     }
 
     const deploy: CreateSection = {

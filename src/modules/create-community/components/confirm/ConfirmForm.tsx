@@ -1,64 +1,23 @@
-// Framework
 'use client'
+
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-
-// Third Parties
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AbiCoder, hexlify, Interface } from 'ethers'
-import { getAddress, parseEther } from 'viem'
-import { usePrivyWagmi } from '@privy-io/wagmi-connector'
+import { Interface } from 'ethers'
 import toast from 'react-hot-toast'
-import { useContractRead, useNetwork } from 'wagmi'
-import {
-  WriteContractUnpreparedArgs,
-  prepareWriteContract,
-  waitForTransaction,
-  writeContract,
-} from 'wagmi/actions'
-
-// Schemas
+import { useNetwork } from 'wagmi'
 import schema, { type ConfirmFormValues } from './schema'
-
-// Components
 import { useFormStore } from '@/modules/create-community'
-// import { Button } from '@/components/shared'
 import ConfirmDropDown from './ConfirmDropDown'
 import ConfirmItem from './ConfirmItem'
 import ConfirmTitle from './ConfirmTitle'
 import ConfirmCheckbox from './ConfirmCheckbox'
 import ContinueButton from '@/modules/ContinueButton'
-import { sanitizeStringForJSON } from '@/utils/sanitize'
-import { toSeconds, walletSnippet } from '@/utils/helpers'
-
-// Constants
-import {
-  L2ChainType,
-  PARTY_FACTORY,
-  PARTY_IMPLEMENTATION,
-  PUBLIC_MANAGER_ADDRESS,
-} from '@/constants/addresses'
-import { NULL_ADDRESS } from '@/constants/addresses'
-import { managerAbi, managerV2Abi } from '@/data/contract/abis'
-
-import type { AddressType } from '@/types'
-type ConfirmFormProps = {
-  chainID: L2ChainType
-}
+import { walletSnippet } from '@/utils/helpers'
 import { IPFSImage } from '@/components/ipfs/IPFSImage'
 import { partyFactoryAbi } from '@/data/contract/abis/PartyFactory'
-// import { RandomPreview } from '@/components/create-community/artwork/RandomPreview'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
-
-type FounderParameters = NonNullable<
-  WriteContractUnpreparedArgs<typeof managerAbi, 'deploy'>
->['args'][0]
+import useCreateParty from '@/hooks/useCreateParty'
 
 const DEPLOYMENT_ERROR = {
   MISSING_IPFS_ARTWORK: `Oops! It looks like your artwork wasn't correctly uploaded to ipfs. Please go back to the artwork step to re-upload your artwork before proceeding.`,
@@ -73,8 +32,9 @@ const DEPLOYMENT_ERROR = {
   MISMATCHING_NETWORK: 'Oops! Looks like there is a chain mismatch.',
 }
 
-export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
+export function ConfirmForm(): JSX.Element {
   const { chain } = useNetwork()
+  const { createParty } = useCreateParty()
   const {
     founderAllocation,
     contributionAllocation,
@@ -85,23 +45,12 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
     setDeployedDao,
     ipfsUpload,
     setFulfilledSections,
-    vetoPower,
-    vetoerAddress,
   } = useFormStore()
 
   const [isPendingTransaction, setIsPendingTransaction] =
     useState<boolean>(false)
   const [deploymentError, setDeploymentError] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-
-  const { data: version, isLoading: isVersionLoading } = useContractRead({
-    abi: managerAbi,
-    address: PUBLIC_MANAGER_ADDRESS[chainID],
-    functionName: 'contractVersion',
-    chainId: chainID,
-  })
-
-  const { wallet: activeWallet } = usePrivyWagmi()
 
   const methods = useForm<ConfirmFormValues>({
     defaultValues: {
@@ -111,61 +60,6 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
   })
 
   const { handleSubmit } = methods
-
-  const founderParams: FounderParameters = [
-    ...founderAllocation,
-    ...contributionAllocation,
-  ].map(({ founderAddress, allocationPercentage: allocation, endDate }) => ({
-    wallet: founderAddress as AddressType,
-    ownershipPct: allocation ? BigInt(allocation) : BigInt(0),
-    vestExpiry: BigInt(Math.floor(new Date(endDate).getTime() / 1000)),
-  }))
-
-  const abiCoder = new AbiCoder()
-  const tokenParamsHex = abiCoder.encode(
-    ['string', 'string', 'string', 'string', 'string', 'string'],
-    [
-      sanitizeStringForJSON(general?.daoName),
-      general?.daoSymbol.replace('$', ''),
-      sanitizeStringForJSON(`${general?.projectDescription}`),
-      general?.daoAvatar,
-      sanitizeStringForJSON(general?.daoWebsite || ''),
-      'https://api.zora.co/renderer/stack-images',
-    ]
-  )
-
-  const tokenParams = {
-    initStrings: hexlify(tokenParamsHex) as AddressType,
-  }
-
-  const auctionParams = {
-    reservePrice: auctionSettings.auctionReservePrice
-      ? parseEther(auctionSettings.auctionReservePrice.toString())
-      : parseEther('0'),
-    duration: auctionSettings?.auctionDuration
-      ? BigInt(toSeconds(auctionSettings?.auctionDuration))
-      : BigInt('86400'),
-  }
-
-  const govParams = {
-    timelockDelay: BigInt(toSeconds({ days: 2 }).toString()),
-    votingDelay: BigInt(toSeconds(auctionSettings.votingDelay)),
-    votingPeriod: BigInt(toSeconds(auctionSettings.votingPeriod)),
-    proposalThresholdBps: auctionSettings?.proposalThreshold
-      ? BigInt(
-          Number((Number(auctionSettings?.proposalThreshold) * 100).toFixed(2))
-        )
-      : BigInt('0'),
-    quorumThresholdBps: auctionSettings?.quorumThreshold
-      ? BigInt(
-          Number((Number(auctionSettings?.quorumThreshold) * 100).toFixed(2))
-        )
-      : BigInt('0'),
-    vetoer:
-      vetoPower === true
-        ? getAddress(vetoerAddress as AddressType)
-        : getAddress(NULL_ADDRESS),
-  }
 
   const handleDeploy = async () => {
     setIsLoading(true)
@@ -180,101 +74,45 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
       return
     }
 
-    if (founderParams[0].wallet !== activeWallet?.address) {
-      setDeploymentError(DEPLOYMENT_ERROR.MISMATCHING_SIGNER)
-      return
-    }
-
-    if (founderParams.length === 0) {
-      setDeploymentError(DEPLOYMENT_ERROR.NO_FOUNDER)
-      return
-    }
-
     if (ipfsUpload.length === 0) {
       setDeploymentError(DEPLOYMENT_ERROR.MISSING_IPFS_ARTWORK)
       return
     }
 
     setIsPendingTransaction(true)
-    let transaction
-
-    try {
-      let config: any
-      if (version?.startsWith('2')) {
-        config = await prepareWriteContract({
-          address: PARTY_FACTORY[chainID as keyof typeof PARTY_FACTORY],
-          chainId: chainID,
-          abi: partyFactoryAbi,
-          functionName: 'createParty',
-          args: [
-            PARTY_IMPLEMENTATION[chainID as keyof typeof PARTY_IMPLEMENTATION],
-            ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
-            {
-              governance: {
-                hosts: ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
-                voteDuration: 172800,
-                executionDelay: 86400,
-                passThresholdBps: 5000,
-                totalVotingPower: 100000000000000000000n,
-                feeBps: 1000,
-                feeRecipient: '0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38',
-              },
-              proposalEngine: {
-                enableAddAuthorityProposal: true,
-                allowArbCallsToSpendPartyEth: true,
-                allowOperators: true,
-                distributionsConfig: 1,
-              },
-              name: 'PARTY',
-              symbol: 'FAM',
-              customizationPresetId: 0n,
-            },
-            [],
-            [],
-            1715603725,
-          ],
-        })
-      } else {
-        config = await prepareWriteContract({
-          address: PUBLIC_MANAGER_ADDRESS[chainID],
-          chainId: chainID,
-          abi: managerAbi,
-          functionName: 'deploy',
-          args: [founderParams, tokenParams, auctionParams, govParams],
-        })
-      }
-      const tx = await writeContract(config)
-      if (tx.hash) transaction = await waitForTransaction({ hash: tx.hash })
-    } catch (e) {
-      console.log('e', e)
-
-      if ((e as any).name === 'ChainMismatchError') {
+    const transaction = await createParty()
+    const error = (transaction as any)?.error
+    if (error) {
+      if ((error as any).name === 'ChainMismatchError') {
         setDeploymentError(DEPLOYMENT_ERROR.MISMATCHING_NETWORK)
       } else {
         setDeploymentError(DEPLOYMENT_ERROR.GENERIC)
       }
       setIsLoading(false)
       setIsPendingTransaction(false)
-
       return
     }
 
-    const managerInterface = new Interface(managerAbi)
+    const managerInterface = new Interface(partyFactoryAbi)
 
     //keccak256 hashed value of DAODeployed(address,address,address,address,address)
-    const deployEvent = transaction?.logs.find(
-      (log) =>
+    console.log('SWEETS SUCCESSFUL TX', transaction)
+    const deployEvent = (transaction as any)?.logs.find(
+      (log: any) =>
         log?.topics[0]?.toLowerCase() ===
-        '0x456d2baf5a87d70e586ec06fb91c2d7849778dd41d80fa826a6ea5bf8d28e3a6'
+        '0x2c83cc7f2e67cf5f6cc54d64518c7769f402efa96e5e1b24cfab3cfbdca271ea'
     )
+    console.log('SWEETS deployEvent', deployEvent)
 
     let parsedEvent
     try {
+      // WHAT ARE WE DOING WITH EVENT?
       parsedEvent = managerInterface.parseLog({
         topics: deployEvent?.topics || [],
         data: deployEvent?.data || '',
       })
     } catch {}
+    console.log('SWEETS parsedEvent', parsedEvent)
 
     const deployedAddresses = parsedEvent?.args
 
@@ -286,10 +124,6 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
 
     setDeployedDao({
       token: deployedAddresses[0],
-      metadata: deployedAddresses[1],
-      auction: deployedAddresses[2],
-      treasury: deployedAddresses[3],
-      governor: deployedAddresses[4],
     })
 
     if (deployedAddresses) {
