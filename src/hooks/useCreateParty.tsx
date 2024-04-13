@@ -49,7 +49,6 @@ const useCreateParty = () => {
       })
 
       const tx = await writeContract(config)
-      console.log('SWEETS TX', tx)
       if (tx.hash) transaction = await waitForTransaction({ hash: tx.hash })
       return transaction
     } catch (error) {

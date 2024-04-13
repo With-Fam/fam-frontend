@@ -23,7 +23,6 @@ export default function CommunityProfile(
 ): JSX.Element {
   const { community, network } = _props.params
 
-  console.log('SWEETS COMMUNITY', community)
   return (
     <>
       <TabList items={TOGGLE_DATA} />
