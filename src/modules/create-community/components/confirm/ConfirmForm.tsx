@@ -168,7 +168,6 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
   }
 
   const handleDeploy = async () => {
-    console.log('SWEETS handleDeploy')
     setIsLoading(true)
     setDeploymentError(undefined)
 
@@ -236,8 +235,6 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
           ],
         })
       } else {
-        console.log('SWEETS UPDATE WITH PARTY DAO 2nd')
-
         config = await prepareWriteContract({
           address: PUBLIC_MANAGER_ADDRESS[chainID],
           chainId: chainID,
@@ -246,8 +243,6 @@ export function ConfirmForm({ chainID }: ConfirmFormProps): JSX.Element {
           args: [founderParams, tokenParams, auctionParams, govParams],
         })
       }
-      console.log('SWEETS writeContract', config)
-
       const tx = await writeContract(config)
       if (tx.hash) transaction = await waitForTransaction({ hash: tx.hash })
     } catch (e) {
