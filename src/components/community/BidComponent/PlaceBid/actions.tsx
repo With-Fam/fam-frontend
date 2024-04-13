@@ -1,4 +1,4 @@
-import { getCommunityData } from '@/app/(main)/community/[network]/[community]/actions'
+import { getCommunityData } from '@/app/(main)/community/[network]/[community]/activity/actions'
 import { CHAIN_ID } from '@/types'
 
 /**

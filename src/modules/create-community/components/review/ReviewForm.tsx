@@ -1,131 +1,31 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useContractRead, useNetwork } from 'wagmi'
-import {
-  prepareWriteContract,
-  waitForTransaction,
-  writeContract,
-} from 'wagmi/actions'
-import { usePrivyWagmi } from '@privy-io/wagmi-connector'
+import { useNetwork } from 'wagmi'
 import toast from 'react-hot-toast'
 import ContinueButton from '@/modules/ContinueButton'
 import { useFormStore } from '@/modules/create-community'
-import { transformFileProperties } from '@/utils/transformFileProperties'
-import { metadataAbi, tokenAbi } from '@/data/contract/abis'
 import { useRouter } from 'next/navigation'
-import { CheckMark, Copy } from '@/components/icons'
-import { Paragraph } from '@/stories'
-
-const DEPLOYMENT_ERROR = {
-  MISSING_IPFS_ARTWORK: `Oops! It looks like your artwork wasn't correctly uploaded to ipfs. Please go back to the artwork step to re-upload your artwork before proceeding.`,
-  MISMATCHING_SIGNER:
-    'Oops! It looks like the founder address submitted is different than the current signer address. Please go back to the allocation step and re-submit the founder address.',
-  NO_FOUNDER:
-    'Oops! It looks like you have no founders set. Please go back to the allocation step and add at least one founder address.',
-  GENERIC:
-    'Oops! Looks like there was a problem handling the dao deployment. Please ensure that input data from all the previous steps is correct',
-  INVALID_ALLOCATION_PERCENTAGE:
-    'Oops! Looks like there are undefined founder allocation values. Please go back to the allocation step to ensure that valid allocation values are set.',
-}
-
-const createCommunity = async (community: any) => {
-  try {
-    const response = await fetch('/api/create-community', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(community),
-    })
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
-
-    await response.json()
-  } catch (error) {
-    console.error('Error:', error)
-  }
-}
+import { CheckMark } from '@/components/icons'
+import createCommunity from '@/utils/createCommunity'
+import AddressCopy from '@/modules/create-community/components/review/AddressCopy'
+import { AddressType } from '@/types'
 
 export function ReviewForm(): JSX.Element {
-  // State
-  const [isPendingTransaction, setIsPendingTransaction] =
-    useState<boolean>(false)
-  const [deploymentError, setDeploymentError] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-
-
-  // Chain
   const { chain } = useNetwork()
-  const {
-    deployedDao,
-    ipfsUpload,
-    orderedLayers,
-    setFulfilledSections,
-    resetForm,
-    general,
-  } = useFormStore()
-  const { data: tokenOwner } = useContractRead({
-    enabled: !!deployedDao.token,
-    abi: tokenAbi,
-    address: deployedDao.token as `0x${string}`,
-    chainId: chain?.id,
-    functionName: 'owner',
-  })
-  const { wallet: activeWallet } = usePrivyWagmi()
-
-  // Framework Hooks
+  const { deployedDao, setFulfilledSections, resetForm, general } =
+    useFormStore()
   const router = useRouter()
   const methods = useForm()
 
   const { handleSubmit } = methods
 
-  const transactions = useMemo(() => {
-    if (!orderedLayers || !ipfsUpload) return []
-    return transformFileProperties(orderedLayers, ipfsUpload, 500)
-  }, [orderedLayers, ipfsUpload])
-
   const handleDeployMetadata = async () => {
     setIsLoading(true)
-    setDeploymentError(undefined)
-
-    if (!transactions || !deployedDao.metadata) {
-      setDeploymentError(DEPLOYMENT_ERROR.GENERIC)
-      return
-    }
-
-    if (tokenOwner !== activeWallet?.address) {
-      setDeploymentError(DEPLOYMENT_ERROR.MISMATCHING_SIGNER)
-      return
-    }
-
-    setIsPendingTransaction(true)
-    for await (const transaction of transactions) {
-      try {
-        const config = await prepareWriteContract({
-          abi: metadataAbi,
-          address: deployedDao.metadata as `0x${string}`,
-          functionName: 'addProperties',
-          chainId: chain?.id,
-          args: [transaction.names, transaction.items, transaction.data],
-        })
-        const tx = await writeContract(config)
-        await waitForTransaction({ hash: tx.hash })
-      } catch (err) {
-        console.warn(err)
-        setIsPendingTransaction(false)
-        return
-      }
-    }
-
-    setIsPendingTransaction(false)
     setFulfilledSections('deployed')
 
-    // MODIFY CHAIN TO BE DYNAMIC....!!!!
-    // Pushes users to community token address
     try {
       toast.remove()
       toast.success('DAO Deployed!')
@@ -137,7 +37,8 @@ export function ReviewForm(): JSX.Element {
         network: chain?.network,
       })
 
-      router.push(`/community/${chain?.network}/${deployedDao.token}/`)
+      const successUrl = `/community/${chain?.network}/${deployedDao.token}/`
+      await router.push(successUrl)
       setTimeout(() => {
         resetForm()
       }, 200)
@@ -146,18 +47,6 @@ export function ReviewForm(): JSX.Element {
       toast.error('Deployment error, try again!')
     }
   }
-
-  useEffect(() => {
-    if (isPendingTransaction) {
-      toast.dismiss()
-      toast.loading('Deploying DAO...')
-    }
-    if (deploymentError) {
-      toast.dismiss()
-      toast.error(deploymentError)
-      setIsLoading(false)
-    }
-  }, [isPendingTransaction, deploymentError])
 
   return (
     <FormProvider {...methods}>
@@ -174,32 +63,9 @@ export function ReviewForm(): JSX.Element {
           </div>
 
           <div className="space-y-2">
-            {Object.keys(deployedDao).map((key: string) => (
-              <div className="w-full rounded-2xl bg-white p-4" key={key}>
-                <Paragraph as="p5" className="w-full text-left font-semibold">
-                  {key}
-                </Paragraph>
-                <div className="flex w-full justify-between truncate">
-                  <Paragraph as="p3" className="max-w-[270px]">
-                    {deployedDao[key as keyof typeof deployedDao]}
-                  </Paragraph>
-                  <button
-                    type="button"
-                    className=""
-                    onClick={() => {
-                      navigator.clipboard.writeText(
-                        deployedDao[key as keyof typeof deployedDao] as string
-                      )
-                      toast.success('Address copied to clipboard!')
-                    }}
-                  >
-                    <Copy />
-                  </button>
-                </div>
-              </div>
-            ))}
+            <AddressCopy address={deployedDao.token as AddressType} />
           </div>
-          <ContinueButton title="Confirm 2/2" loading={isLoading} />
+          <ContinueButton title="Done" loading={isLoading} />
         </div>
       </form>
     </FormProvider>

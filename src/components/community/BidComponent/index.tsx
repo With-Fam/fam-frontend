@@ -9,7 +9,6 @@ import PlaceBid from '@/components/community/BidComponent/PlaceBid'
 import BidDescription from '@/components/community/BidComponent/BidDescription'
 import BidStatus from '@/components/community/BidComponent/BidStatus'
 import AllBids from '@/components/community/BidComponent/AllBids'
-import RaisedComponent from '@/components/community/BidComponent/RaisedComponent'
 import { HandleImage } from '@/components/shared/HandleImage'
 
 // Types
@@ -114,7 +113,6 @@ const BidComponent = ({
           <div className="col-span-1">
             <BidDescription page={page} token={token} metaData={metaData} />
           </div>
-          <RaisedComponent />
         </>
       </div>
     </section>
