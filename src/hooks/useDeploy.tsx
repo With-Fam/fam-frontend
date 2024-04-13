@@ -51,24 +51,19 @@ const useDeploy = () => {
 
     const managerInterface = new Interface(partyFactoryAbi)
 
-    //keccak256 hashed value of DAODeployed(address,address,address,address,address)
-    console.log('SWEETS SUCCESSFUL TX', transaction)
     const deployEvent = (transaction as any)?.logs.find(
       (log: any) =>
         log?.topics[0]?.toLowerCase() ===
         '0x2c83cc7f2e67cf5f6cc54d64518c7769f402efa96e5e1b24cfab3cfbdca271ea'
     )
-    console.log('SWEETS deployEvent', deployEvent)
 
     let parsedEvent
     try {
-      // WHAT ARE WE DOING WITH EVENT?
       parsedEvent = managerInterface.parseLog({
         topics: deployEvent?.topics || [],
         data: deployEvent?.data || '',
       })
     } catch {}
-    console.log('SWEETS parsedEvent', parsedEvent)
 
     const deployedAddresses = parsedEvent?.args
 
