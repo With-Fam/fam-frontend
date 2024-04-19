@@ -8,6 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { TextInput } from '@/components/forms'
 import VetoManagement from './VetoManagement'
 import { Paragraph } from '@/stories'
+import PassThreshold from '@/modules/create-community/components/auctions/PassThreshold'
 import ContinueButton from '../../../ContinueButton'
 import { FounderFieldArray, initFounder } from './FounderFieldArray'
 import { ErrorBox } from '@/components/shared'
@@ -17,6 +18,7 @@ import {
   type AuctionSettingsFormValues,
   auctionSettingsValidationSchema,
 } from './AuctionForm.schema'
+
 type AuctionsFormProps = {
   defaultValues: AuctionSettingsFormValues
   onSubmit: (_a: AuctionSettingsFormValues) => void
@@ -34,6 +36,7 @@ const DEFAULTS: AuctionSettingsFormValues = {
   vetoPower: false,
   vetoerAddress: '',
   founderAllocation: [initFounder],
+  passThreshold: 25,
 }
 
 export function AuctionsForm({
@@ -78,8 +81,10 @@ export function AuctionsForm({
           specified end date. This ensures founders can have a greater influence
           when voting on community activities
         </Paragraph>
+
         <FounderFieldArray />
         <VetoManagement />
+        <PassThreshold />
         <ContinueButton />
       </form>
     </FormProvider>

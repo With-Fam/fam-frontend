@@ -12,6 +12,7 @@ const useCreateParty = () => {
 
   const createParty = async () => {
     let transaction
+    let response
 
     try {
       const config = await prepareWriteContract({
@@ -30,7 +31,7 @@ const useCreateParty = () => {
               passThresholdBps: 5000,
               totalVotingPower: 100000000000000000000n,
               feeBps: 1000,
-              feeRecipient: '0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38',
+              feeRecipient: '0x0000000000000000000000000000000000000000',
             },
             proposalEngine: {
               enableAddAuthorityProposal: true,
@@ -49,13 +50,15 @@ const useCreateParty = () => {
       })
 
       const tx = await writeContract(config)
-      if (tx.hash) transaction = await waitForTransaction({ hash: tx.hash })
-      return transaction
+      if (tx.hash) {
+        transaction = await waitForTransaction({ hash: tx.hash })
+        response = { success: true, transaction }
+      }
     } catch (error) {
-      console.log('e', error)
-
-      return { error }
+      response = { success: false, error }
     }
+
+    return response
   }
 
   return { createParty }
