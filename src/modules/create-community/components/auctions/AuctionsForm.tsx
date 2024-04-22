@@ -18,6 +18,7 @@ import {
   type AuctionSettingsFormValues,
   auctionSettingsValidationSchema,
 } from './AuctionForm.schema'
+import ExecutionDelay from '@/modules/create-community/components/auctions/ExecutionDelay'
 
 type AuctionsFormProps = {
   defaultValues: AuctionSettingsFormValues
@@ -36,7 +37,8 @@ const DEFAULTS: AuctionSettingsFormValues = {
   vetoPower: false,
   vetoerAddress: '',
   founderAllocation: [initFounder],
-  passThreshold: 25,
+  proposalThreshold: 5,
+  executionDelay: 24,
 }
 
 export function AuctionsForm({
@@ -84,6 +86,7 @@ export function AuctionsForm({
 
         <FounderFieldArray />
         <VetoManagement />
+        <ExecutionDelay />
         <PassThreshold />
         <ContinueButton />
       </form>
