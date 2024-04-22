@@ -16,10 +16,9 @@ const useCreateParty = () => {
     let transaction
     let response
     const totalVotingPower = 100000000000000000000n
-    const thresholdBps = BigInt(auctionSettings.proposalThreshold)
-    const passThresholdBps = Number(
-      (totalVotingPower * thresholdBps) / BigInt(10000)
-    )
+    const passThresholdBps =
+      ((auctionSettings.proposalThreshold / 100) * Number(totalVotingPower)) /
+      1e18
 
     try {
       const config = await prepareWriteContract({
@@ -34,8 +33,8 @@ const useCreateParty = () => {
             governance: {
               hosts: ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
               voteDuration: 172800,
-              executionDelay: auctionSettings.executionDelay,
-              passThresholdBps,
+              executionDelay: auctionSettings.executionDelay * 60 * 60,
+              passThresholdBps: passThresholdBps,
               totalVotingPower,
               feeBps: 1000,
               feeRecipient: '0x0000000000000000000000000000000000000000',

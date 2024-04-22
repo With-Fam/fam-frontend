@@ -23,7 +23,7 @@ const PassThreshold = (): JSX.Element => {
             label="Acceptance threshold"
             value={field.value}
             onChange={field.onChange}
-            min={0}
+            min={1}
             max={100}
             suffix="%"
             level={

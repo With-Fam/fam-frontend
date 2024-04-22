@@ -19,6 +19,7 @@ import useDeploy from '@/hooks/useDeploy'
 export function ConfirmForm(): JSX.Element {
   const { chain } = useNetwork()
   const { general } = useFormStore()
+  console.log(general)
   const {
     isLoading,
     handleDeploy,
