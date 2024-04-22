@@ -16,7 +16,7 @@ const PassThreshold = (): JSX.Element => {
   return (
     <div className="mt-6">
       <Controller
-        name="passThreshold"
+        name="proposalThreshold"
         control={control}
         render={({ field }) => (
           <InputSlider
