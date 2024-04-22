@@ -14,7 +14,7 @@ const useCreateParty = () => {
 
   const createParty = async () => {
     let transaction
-    let response
+
     const totalVotingPower = 100000000000000000000n
     const passThresholdBps =
       ((auctionSettings.proposalThreshold / 100) * Number(totalVotingPower)) /
@@ -58,13 +58,11 @@ const useCreateParty = () => {
       const tx = await writeContract(config)
       if (tx.hash) {
         transaction = await waitForTransaction({ hash: tx.hash })
-        response = { success: true, transaction }
+        return transaction
       }
     } catch (error) {
-      response = { success: false, error }
+      return { error }
     }
-
-    return response
   }
 
   return { createParty }
