@@ -34,7 +34,7 @@ const useCreateParty = () => {
               hosts: ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
               voteDuration: 172800,
               executionDelay: auctionSettings.executionDelay * 60 * 60,
-              passThresholdBps: passThresholdBps,
+              passThresholdBps: passThresholdBps * 1000,
               totalVotingPower,
               feeBps: 1000,
               feeRecipient: '0x0000000000000000000000000000000000000000',
