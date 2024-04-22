@@ -20,6 +20,7 @@ export const auctionSettingsDefaultValues: AuctionSettingsFormValues = {
     minutes: 0,
   },
   auctionReservePrice: 0,
+  executionDelay: 24,
   proposalThreshold: 0.1,
   quorumThreshold: 10,
   votingPeriod: {

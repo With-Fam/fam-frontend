@@ -142,6 +142,8 @@ const CreateCommunityProvider = ({
               seconds: 0,
               days: 7,
             },
+            executionDelay: 24,
+            proposalThreshold: 5,
             founderAllocation:
               founderAllocation.length > 0
                 ? founderAllocation
