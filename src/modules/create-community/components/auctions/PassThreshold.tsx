@@ -1,14 +1,7 @@
 'use client'
 
-// Local Components
 import { InputSlider } from '@/components/forms'
 import { Controller, useFormContext } from 'react-hook-form'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 const PassThreshold = (): JSX.Element => {
   const { control } = useFormContext()
