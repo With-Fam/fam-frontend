@@ -76,7 +76,7 @@ export function GeneralForm({
           />
           <TextArea
             name="projectDescription"
-            label="Project Description"
+            label="Description"
             placeholder="Tell the world about your project"
           />
 

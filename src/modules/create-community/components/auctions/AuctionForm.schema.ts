@@ -24,8 +24,8 @@ export interface AuctionSettingsFormValues
     FounderFormValues {
   auctionDuration: Duration
   auctionReservePrice?: number
-  executionDelay: number
   proposalThreshold: number
+  executionDelay: number
   // quorumThreshold?: number
   // votingPeriod: Duration
   // votingDelay: Duration
