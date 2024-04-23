@@ -56,10 +56,8 @@ const useCreateParty = () => {
       })
 
       const tx = await writeContract(config)
-      if (tx.hash) {
-        transaction = await waitForTransaction({ hash: tx.hash })
-        return transaction
-      }
+      if (tx.hash) transaction = await waitForTransaction({ hash: tx.hash })
+      return transaction
     } catch (error) {
       return { error }
     }
