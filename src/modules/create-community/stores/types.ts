@@ -29,7 +29,7 @@ export interface Duration {
 export interface AuctionSettingsFormValues {
   auctionDuration: Duration
   auctionReservePrice?: number
-  proposalThreshold: number
+  proposalThreshold?: number
   quorumThreshold?: number
   votingPeriod: Duration
   votingDelay: Duration
