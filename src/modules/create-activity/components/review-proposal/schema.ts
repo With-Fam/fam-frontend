@@ -5,7 +5,7 @@ export const ERROR_CODE: Record<string, string> = {
   WRONG_NETWORK: "You're on the wrong network. Please switch and try again.",
   REJECTED: 'The transaction was rejected.',
   NOT_ENOUGH_VOTES: "You don't have enough votes to submit a proposal.",
-  CONNECTOR_NOT_FOUND: "We have a problem with your login. Please reconnect.",
+  CONNECTOR_NOT_FOUND: 'We have a problem with your login. Please reconnect.',
 }
 
 export interface ReviewProposalFormValues {

@@ -4,7 +4,7 @@
 import ReactSlider, { ReactSliderProps } from 'react-slider'
 
 // Types
-import { DetailedHTMLProps, HTMLAttributes } from 'react'
+import { DetailedHTMLProps, Fragment, HTMLAttributes } from 'react'
 import { Paragraph } from '@/stories'
 
 /*--------------------------------------------------------------------*/
@@ -29,6 +29,8 @@ const Thumb = (
 
 type InputSliderProps = ReactSliderProps & {
   label: string
+  suffix?: string
+  level?: JSX.Element
 }
 
 export function InputSlider({
@@ -38,6 +40,8 @@ export function InputSlider({
   onChange,
   step = 1,
   value,
+  suffix,
+  level,
   ..._rest
 }: InputSliderProps): JSX.Element {
   return (
@@ -47,7 +51,8 @@ export function InputSlider({
       </label>
       <div className="flex w-full gap-4">
         <Paragraph as="p3" className="whitespace-nowrap">
-          {value} day{value && value > 1 ? 's' : ''}
+          {value}
+          {suffix}
         </Paragraph>
         <ReactSlider
           min={min}
@@ -59,6 +64,7 @@ export function InputSlider({
           className="top-3 h-0.5 w-full cursor-pointer appearance-none bg-grey-light"
           {..._rest}
         />
+        <Fragment>{level && level}</Fragment>
       </div>
     </div>
   )

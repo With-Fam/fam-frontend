@@ -1,5 +1,6 @@
 import { PARTY_FACTORY, PARTY_IMPLEMENTATION } from '@/constants/addresses'
 import { partyFactoryAbi } from '@/data/contract/abis/PartyFactory'
+import { useFormStore } from '@/modules/create-community'
 import {
   prepareWriteContract,
   waitForTransaction,
@@ -9,9 +10,15 @@ import { baseSepolia } from 'wagmi/chains'
 
 const useCreateParty = () => {
   const chainId = baseSepolia.id
+  const { auctionSettings } = useFormStore()
 
   const createParty = async () => {
     let transaction
+
+    const totalVotingPower = 100000000000000000000n
+    const passThresholdBps =
+      ((auctionSettings.proposalThreshold / 100) * Number(totalVotingPower)) /
+      1e18
 
     try {
       const config = await prepareWriteContract({
@@ -26,11 +33,11 @@ const useCreateParty = () => {
             governance: {
               hosts: ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
               voteDuration: 172800,
-              executionDelay: 86400,
-              passThresholdBps: 5000,
-              totalVotingPower: 100000000000000000000n,
+              executionDelay: auctionSettings.executionDelay * 60 * 60,
+              passThresholdBps: passThresholdBps * 1000,
+              totalVotingPower,
               feeBps: 1000,
-              feeRecipient: '0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38',
+              feeRecipient: '0x0000000000000000000000000000000000000000',
             },
             proposalEngine: {
               enableAddAuthorityProposal: true,
@@ -52,8 +59,6 @@ const useCreateParty = () => {
       if (tx.hash) transaction = await waitForTransaction({ hash: tx.hash })
       return transaction
     } catch (error) {
-      console.log('e', error)
-
       return { error }
     }
   }
