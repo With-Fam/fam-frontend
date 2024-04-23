@@ -1,8 +1,4 @@
 import * as Yup from 'yup'
-import {
-  BuilderTransaction,
-  Transaction,
-} from '@/modules/create-activity/stores'
 
 export const ERROR_CODE: Record<string, string> = {
   GENERIC: 'There was a problem submitting this proposal, please try again..',
