@@ -9,6 +9,7 @@ import { TextInput } from '@/components/forms'
 import VetoManagement from './VetoManagement'
 import { Paragraph } from '@/stories'
 import PassThreshold from '@/modules/create-community/components/auctions/PassThreshold'
+import ExecutionDelay from '@/modules/create-community/components/auctions/ExecutionDelay'
 import ContinueButton from '../../../ContinueButton'
 import { FounderFieldArray, initFounder } from './FounderFieldArray'
 import { ErrorBox } from '@/components/shared'
@@ -18,7 +19,6 @@ import {
   type AuctionSettingsFormValues,
   auctionSettingsValidationSchema,
 } from './AuctionForm.schema'
-import ExecutionDelay from '@/modules/create-community/components/auctions/ExecutionDelay'
 
 type AuctionsFormProps = {
   defaultValues: AuctionSettingsFormValues
