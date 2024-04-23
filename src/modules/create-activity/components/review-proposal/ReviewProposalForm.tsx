@@ -22,7 +22,7 @@ import schema, { ERROR_CODE, ReviewProposalFormValues } from './schema'
 import type { AddressType, Maybe } from '@/types'
 type ReviewProposalFormProps = {
   defaultValues: ReviewProposalFormValues
-  formRef?: MutableRefObject<Maybe<HTMLFormElement>>
+  formRef: MutableRefObject<Maybe<HTMLFormElement>>
   setLoading: (loading: boolean) => void
   setLoadingMessage: (message: string) => void
 }

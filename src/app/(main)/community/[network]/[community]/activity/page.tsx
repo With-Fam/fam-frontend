@@ -59,7 +59,7 @@ export default async function CommunityProfile(
       <CommunityActivity
         chainId={chainId}
         proposals={proposals}
-        communityName={metaData?.name}
+        communityName={metaData.name}
       />
     </>
   )
