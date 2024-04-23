@@ -10,8 +10,11 @@ export const useIsContract = ({
   address?: AddressType
   chainId?: CHAIN_ID
 }) => {
-  return useSWRImmutable(address ? [address, chainId] : undefined, async (address) => {
-    const provider = new ethers.JsonRpcProvider(RPC_URL[chainId])
-    return await provider.getCode(address.toString()).then((x) => x !== '0x')
-  })
+  return useSWRImmutable(
+    address ? [address, chainId] : undefined,
+    async (address) => {
+      const provider = new ethers.JsonRpcProvider(RPC_URL[chainId])
+      return await provider.getCode(address.toString()).then((x) => x !== '0x')
+    }
+  )
 }
