@@ -9,7 +9,6 @@ export enum TransactionType {
   UPGRADE = 'upgrade',
   // REPLACE_ARTWORK = 'replace-artwork',
   UPDATE_MINTER = 'update-minter',
-  MIGRATE_TO_PARTY_PROPOSAL = 'migrate-to-party-proposal',
 }
 
 export interface TransactionTypeProps {
@@ -52,11 +51,6 @@ export const TRANSACTION_TYPES = {
     title: 'Update community',
     subTitle: 'Edit your settings and artwork',
     image: '/assets/images/create-activity/tube.jpg',
-  },
-  [TransactionType.MIGRATE_TO_PARTY_PROPOSAL]: {
-    title: 'Create Proposal',
-    subTitle: 'Create a proposal to migrate to party',
-    image: '/assets/images/create-activity/donut.png',
   },
   // [TransactionType.REPLACE_ARTWORK]: {
   //   title: 'Change artwork',

@@ -28,7 +28,7 @@ const schema: Yup.ObjectSchema<Omit<ReviewProposalFormValues, 'transactions'>> =
       )
       .max(5000, '< 256 characters'),
     summary: Yup.string().optional(),
-    // transactions: Yup.array().min(1, 'at least one transaction required'),
+    transactions: Yup.array().min(1, 'at least one transaction required'),
   })
 
 export default schema
