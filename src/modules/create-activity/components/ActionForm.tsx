@@ -6,6 +6,7 @@ import {
   SendEth,
   UpdateCommunityForm,
   CreateNFT,
+  MigrateToParty,
 } from '@/modules/create-activity'
 import { AddressType } from '@/types'
 
@@ -36,6 +37,8 @@ export function ActionForm({
       )
     case 'nft':
       return <CreateNFT callback={callback} />
+    case 'migrate-to-party':
+      return <MigrateToParty />
     default:
       return <div>Not found!</div>
   }
