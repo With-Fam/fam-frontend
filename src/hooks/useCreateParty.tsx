@@ -1,6 +1,7 @@
 import { PARTY_FACTORY, PARTY_IMPLEMENTATION } from '@/constants/addresses'
 import { partyFactoryAbi } from '@/data/contract/abis/PartyFactory'
 import { useFormStore } from '@/modules/create-community'
+import { Address, useAccount } from 'wagmi'
 import {
   prepareWriteContract,
   waitForTransaction,
@@ -11,6 +12,7 @@ import { baseSepolia } from 'wagmi/chains'
 const useCreateParty = () => {
   const chainId = baseSepolia.id
   const { auctionSettings } = useFormStore()
+  const { address } = useAccount()
 
   const createParty = async () => {
     let transaction
@@ -28,10 +30,10 @@ const useCreateParty = () => {
         functionName: 'createParty',
         args: [
           PARTY_IMPLEMENTATION[chainId],
-          ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
+          [address as Address],
           {
             governance: {
-              hosts: ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
+              hosts: [address as Address],
               voteDuration: 172800,
               executionDelay: auctionSettings.executionDelay * 60 * 60,
               passThresholdBps: passThresholdBps * 1000,
@@ -54,7 +56,6 @@ const useCreateParty = () => {
           1715603725,
         ],
       })
-
       const tx = await writeContract(config)
       if (tx.hash) transaction = await waitForTransaction({ hash: tx.hash })
       return transaction
