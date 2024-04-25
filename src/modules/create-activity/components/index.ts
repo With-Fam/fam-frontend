@@ -6,6 +6,5 @@ export * from './crowdfund'
 export * from './nft'
 export * from './update-community'
 export * from './send-eth'
-export * from './migrate-to-party'
 
 export * from './ActionForm'

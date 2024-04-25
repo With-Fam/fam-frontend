@@ -112,11 +112,13 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
       mediaType,
       coverUrl,
     } = values
+
     const publicSaleEnd = dayjs(new Date(publicSaleStart))
       .add(duration, 'days')
       .format('YYYY-MM-DD')
 
     const royaltyBPS = royaltyPercentage * 100
+
     const salesConfig = {
       publicSalePrice: parseEther((publicSalePrice || 0).toString()),
       maxSalePurchasePerAddress: maxSalePurchasePerAddress
@@ -165,6 +167,7 @@ export function CreateNFT({ callback }: CreateNFTFormProps): JSX.Element {
       summary: 'Create an NFT/Merch release',
       transactions: [createEdition],
     })
+
     callback?.()
   }
 

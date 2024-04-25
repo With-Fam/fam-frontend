@@ -1,7 +1,7 @@
 'use client'
 
 // Framework
-import { MutableRefObject, useCallback } from 'react'
+import { MutableRefObject, useCallback, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 
 // Third Parties
@@ -11,7 +11,6 @@ import {
   waitForTransaction,
   writeContract,
 } from 'wagmi/actions'
-import { useContractRead } from 'wagmi'
 import { FormProvider, useForm } from 'react-hook-form'
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), {
   ssr: false,
@@ -19,7 +18,7 @@ const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), {
 
 // Schema and types
 import schema, { ERROR_CODE, ReviewProposalFormValues } from './schema'
-import type { AddressType, Maybe } from '@/types'
+import type { Maybe } from '@/types'
 type ReviewProposalFormProps = {
   defaultValues: ReviewProposalFormValues
   formRef: MutableRefObject<Maybe<HTMLFormElement>>
@@ -32,13 +31,10 @@ import TitleInput from '@/modules/create-activity/components/review-proposal/Tit
 import { AddButton } from './AddButton'
 
 // Helpers
-import { governorAbi, tokenAbi } from '@/data/contract/abis'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useDaoStore } from '@/modules/dao'
-import { useChainStore } from '@/utils/stores/useChainStore'
-import { useProposalStore } from '@/modules/create-activity/stores'
-import { prepareProposalTransactions } from '@/modules/create-activity/utils/prepareTransaction'
-import { useCheckAuth } from '@/hooks/useCheckAuth'
+import { baseSepolia } from 'wagmi/chains'
+import { PARTY_FACTORY, PARTY_IMPLEMENTATION } from '@/constants/addresses'
+import { partyFactoryAbi } from '@/data/contract/abis/PartyFactory'
 
 /*--------------------------------------------------------------------*/
 
@@ -52,70 +48,51 @@ export function ReviewProposalForm({
     resolver: yupResolver(schema),
     defaultValues,
   })
+
+  const [creatingProposalError, setCreatingProposalError] = useState<
+    string | undefined
+  >()
+
   const { handleSubmit } = methods
-  const addresses = useDaoStore((state) => state.addresses)
-  const chain = useChainStore((x) => x.chain)
-  const {
-    wagmiData: { address },
-  } = useCheckAuth()
-  const { transactions } = useProposalStore()
 
-  const { data: votes } = useContractRead({
-    address: addresses?.token as AddressType,
-    abi: tokenAbi,
-    enabled: !!address,
-    functionName: 'getVotes',
-    chainId: chain.id,
-    args: [address as AddressType],
-  })
-
-  const { data: proposalThreshold } = useContractRead({
-    address: addresses?.governor as AddressType,
-    chainId: chain.id,
-    abi: governorAbi,
-    functionName: 'proposalThreshold',
-  })
+  const chainId = baseSepolia.id
 
   const onSubmit = useCallback(
     async (values: ReviewProposalFormValues) => {
-      if (proposalThreshold === undefined) {
-        return
-      }
-
-      const votesToNumber = votes ? Number(votes) : 0
-      const doesNotHaveEnoughVotes = votesToNumber <= Number(proposalThreshold)
-
-      if (doesNotHaveEnoughVotes) {
-        toast.error(ERROR_CODE.NOT_ENOUGH_VOTES)
-        return
-      }
-
       setLoading(true)
 
-      const {
-        targets,
-        values: transactionValues,
-        calldata,
-      } = prepareProposalTransactions(transactions)
-
       try {
-        const params = {
-          targets: targets,
-          values: transactionValues,
-          calldatas: calldata as Array<AddressType>,
-          description: values.title + '&&' + values.summary,
-        }
-
         const config = await prepareWriteContract({
-          abi: governorAbi,
-          functionName: 'propose',
-          address: addresses?.governor as AddressType,
-          chainId: chain.id,
+          address: PARTY_FACTORY[chainId],
+          chainId: chainId,
+          abi: partyFactoryAbi,
+          functionName: 'createParty',
           args: [
-            params.targets,
-            params.values,
-            params.calldatas,
-            params.description,
+            PARTY_IMPLEMENTATION[chainId],
+            ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
+            {
+              governance: {
+                hosts: ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
+                voteDuration: 172800,
+                executionDelay: 86400,
+                passThresholdBps: 5000,
+                totalVotingPower: 100000000000000000000n,
+                feeBps: 1000,
+                feeRecipient: '0x0000000000000000000000000000000000000000',
+              },
+              proposalEngine: {
+                enableAddAuthorityProposal: true,
+                allowArbCallsToSpendPartyEth: true,
+                allowOperators: true,
+                distributionsConfig: 1,
+              },
+              name: values.title,
+              symbol: 'FAM',
+              customizationPresetId: 0n,
+            },
+            [],
+            [],
+            1715603725,
           ],
         })
 
@@ -126,25 +103,33 @@ export function ReviewProposalForm({
         setLoading(false)
 
         if (err.name === 'ConnectorNotFoundError') {
-          toast.error(ERROR_CODE.CONNECTOR_NOT_FOUND)
+          setCreatingProposalError(ERROR_CODE.CONNECTOR_NOT_FOUND)
           return
         }
 
         if (err.shortMessage === 'User rejected the request.') {
-          toast.error(ERROR_CODE.REJECTED)
+          setCreatingProposalError(ERROR_CODE.REJECTED)
           console.log('err::', err.shortMessage)
           return
         }
         if (err.code === 'ACTION_REJECTED') {
           console.log('err::', err.code)
-          toast.error(ERROR_CODE.REJECTED)
+          setCreatingProposalError(ERROR_CODE.REJECTED)
           return
         }
-        toast.error(err.messageD)
+        setCreatingProposalError(ERROR_CODE.REJECTED)
       }
     },
-    [addresses, proposalThreshold, votes, chain.id, transactions]
+    [chainId]
   )
+
+  useEffect(() => {
+    if (creatingProposalError) {
+      toast.dismiss()
+      toast.error(creatingProposalError)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [creatingProposalError])
 
   return (
     <FormProvider {...methods}>

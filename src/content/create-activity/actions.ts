@@ -44,13 +44,6 @@ const ACTIONS_DATA = [
     image: '/assets/images/create-activity/tube.jpg',
     href: '/create-activity/add/crowdfund',
   },
-  {
-    id: 'migrate-to-party',
-    title: 'Migrate to party',
-    description: 'Propose migrate to party',
-    image: '/assets/images/create-activity/pyramid.jpg',
-    href: '/create-activity/add/migrate-to-party',
-  },
 ]
 
 export default ACTIONS_DATA
