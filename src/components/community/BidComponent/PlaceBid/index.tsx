@@ -142,7 +142,7 @@ const PlaceBid = ({
         value: parseEther(bidAmount),
       })
 
-      const tx = await writeContract(config)
+      const tx = await writeContract(config as any)
       if (tx?.hash) await waitForTransaction({ hash: tx.hash })
 
       await Promise.all([
