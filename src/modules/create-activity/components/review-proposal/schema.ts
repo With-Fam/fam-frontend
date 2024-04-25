@@ -6,6 +6,7 @@ export const ERROR_CODE: Record<string, string> = {
   REJECTED: 'The transaction was rejected.',
   NOT_ENOUGH_VOTES: "You don't have enough votes to submit a proposal.",
   CONNECTOR_NOT_FOUND: 'We have a problem with your login. Please reconnect.',
+  NOT_AUTHORIZED: 'You are not authorized to perform action.',
 }
 
 export interface ReviewProposalFormValues {

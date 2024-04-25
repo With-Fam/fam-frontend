@@ -18,7 +18,7 @@ const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), {
 
 // Schema and types
 import schema, { ERROR_CODE, ReviewProposalFormValues } from './schema'
-import type { Maybe } from '@/types'
+import type { AddressType, Maybe } from '@/types'
 type ReviewProposalFormProps = {
   defaultValues: ReviewProposalFormValues
   formRef: MutableRefObject<Maybe<HTMLFormElement>>
@@ -33,8 +33,12 @@ import { AddButton } from './AddButton'
 // Helpers
 import { yupResolver } from '@hookform/resolvers/yup'
 import { baseSepolia } from 'wagmi/chains'
-import { PARTY_FACTORY, PARTY_IMPLEMENTATION } from '@/constants/addresses'
-import { partyFactoryAbi } from '@/data/contract/abis/PartyFactory'
+import { PARTY } from '@/constants/addresses'
+import { partyAbi } from '@/data/contract/abis/Party'
+import { prepareProposalTransactions } from '@/modules/create-activity/utils/prepareTransaction'
+import { useCheckAuth } from '@/hooks/useCheckAuth'
+import { useProposalStore } from '@/modules/create-activity/stores'
+import { useParams } from 'next/navigation'
 
 /*--------------------------------------------------------------------*/
 
@@ -57,50 +61,44 @@ export function ReviewProposalForm({
 
   const chainId = baseSepolia.id
 
+  const {
+    wagmiData: { address },
+  } = useCheckAuth()
+
   const onSubmit = useCallback(
     async (values: ReviewProposalFormValues) => {
       setLoading(true)
 
       try {
         const config = await prepareWriteContract({
-          address: PARTY_FACTORY[chainId],
+          address: PARTY[chainId],
           chainId: chainId,
-          abi: partyFactoryAbi,
-          functionName: 'createParty',
+          abi: partyAbi,
+          functionName: 'propose',
           args: [
-            PARTY_IMPLEMENTATION[chainId],
-            ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
             {
-              governance: {
-                hosts: ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
-                voteDuration: 172800,
-                executionDelay: 86400,
-                passThresholdBps: 5000,
-                totalVotingPower: 100000000000000000000n,
-                feeBps: 1000,
-                feeRecipient: '0x0000000000000000000000000000000000000000',
-              },
-              proposalEngine: {
-                enableAddAuthorityProposal: true,
-                allowArbCallsToSpendPartyEth: true,
-                allowOperators: true,
-                distributionsConfig: 1,
-              },
-              name: values.title,
-              symbol: 'FAM',
-              customizationPresetId: 0n,
+              maxExecutableTime: 86400,
+              cancelDelay: 43200,
+              proposalData: address!,
             },
-            [],
-            [],
-            1715603725,
+            1715603725n,
           ],
         })
 
         const response = await writeContract(config)
+
+        console.log(response)
         await waitForTransaction({ hash: response.hash })
         setLoadingMessage('Proposal posted. Redirecting...')
       } catch (err: any) {
+        console.log(err)
+
         setLoading(false)
+
+        if (err.name === 'NOT_AUTHORIZED()') {
+          setCreatingProposalError(ERROR_CODE.NOT_AUTHORIZED)
+          return
+        }
 
         if (err.name === 'ConnectorNotFoundError') {
           setCreatingProposalError(ERROR_CODE.CONNECTOR_NOT_FOUND)
@@ -118,6 +116,7 @@ export function ReviewProposalForm({
           return
         }
         setCreatingProposalError(ERROR_CODE.REJECTED)
+        return
       }
     },
     [chainId]

@@ -12,7 +12,7 @@ type CommunityProfileProps = {
 import { SDK } from '@/data/subgraph/client'
 import { getChainId } from '@/utils/getChainId'
 
-async function getMemberData(chainId: number, collection: string) {
+export async function getMemberData(chainId: number, collection: string) {
   const dao = await SDK.connect(chainId).daoMembersList({
     where: {
       dao: collection.toLowerCase(),
