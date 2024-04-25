@@ -72,7 +72,6 @@ export function ReviewProposalForm({
       setLoading(true)
 
       try {
-        console.log('SWEETS PROPOSING', community)
         const config = await prepareWriteContract({
           address: community,
           chainId,
@@ -87,8 +86,6 @@ export function ReviewProposalForm({
             1715603725n,
           ],
         })
-        console.log('SWEETS config', config)
-
         const response = await writeContract(config)
 
         console.log(response)
@@ -100,7 +97,6 @@ export function ReviewProposalForm({
         setLoading(false)
 
         if (err.name === 'NOT_AUTHORIZED()') {
-          console.log('SWEETS NOT_AUTHORIZED')
           setCreatingProposalError(ERROR_CODE.NOT_AUTHORIZED)
           return
         }
