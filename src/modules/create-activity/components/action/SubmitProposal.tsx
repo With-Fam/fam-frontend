@@ -31,6 +31,7 @@ export function SubmitProposal({
       className="px-4 py-2"
       type="button"
       onClick={() => {
+        console.log('SWEETS CLICKED')
         setLoadingMessage('Posting proposal')
         formRef?.current?.dispatchEvent(
           new Event('submit', { cancelable: true, bubbles: true })

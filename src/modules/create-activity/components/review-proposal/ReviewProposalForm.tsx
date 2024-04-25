@@ -22,6 +22,7 @@ import type { AddressType, Maybe } from '@/types'
 type ReviewProposalFormProps = {
   defaultValues: ReviewProposalFormValues
   formRef: MutableRefObject<Maybe<HTMLFormElement>>
+  community: AddressType
   setLoading: (loading: boolean) => void
   setLoadingMessage: (message: string) => void
 }
@@ -45,6 +46,7 @@ import { useParams } from 'next/navigation'
 export function ReviewProposalForm({
   defaultValues,
   formRef,
+  community,
   setLoading,
   setLoadingMessage,
 }: ReviewProposalFormProps): JSX.Element {
@@ -70,9 +72,10 @@ export function ReviewProposalForm({
       setLoading(true)
 
       try {
+        console.log('SWEETS PROPOSING', community)
         const config = await prepareWriteContract({
-          address: PARTY[chainId],
-          chainId: chainId,
+          address: community,
+          chainId,
           abi: partyAbi,
           functionName: 'propose',
           args: [
@@ -84,6 +87,7 @@ export function ReviewProposalForm({
             1715603725n,
           ],
         })
+        console.log('SWEETS config', config)
 
         const response = await writeContract(config)
 
@@ -96,6 +100,7 @@ export function ReviewProposalForm({
         setLoading(false)
 
         if (err.name === 'NOT_AUTHORIZED()') {
+          console.log('SWEETS NOT_AUTHORIZED')
           setCreatingProposalError(ERROR_CODE.NOT_AUTHORIZED)
           return
         }
