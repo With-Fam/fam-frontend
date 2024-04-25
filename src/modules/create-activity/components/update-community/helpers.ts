@@ -5,7 +5,6 @@ import { Address } from 'wagmi'
 
 // Types
 import { TransactionType } from '@/modules/create-activity/types'
-import { FounderParameters } from '@/types'
 type GenerateInitialDataProps = {
   data:
     | [
@@ -118,7 +117,7 @@ export const generateInitialData = ({
     votingPeriod: fromSeconds(votingPeriod && BigInt(votingPeriod)),
     votingDelay: fromSeconds(votingDelay && BigInt(votingDelay)),
     founderAllocation:
-      (founders as unknown as FounderParameters[])?.map((x: any) => ({
+      (founders as unknown as any)?.map((x: any) => ({
         founderAddress: x.wallet,
         allocationPercentage: x.ownershipPct,
         endDate: new Date(x.vestExpiry * 1000).toISOString().substring(0, 10),

@@ -47,7 +47,7 @@ export function UpdateCommunityForm({
 }: UpdateCommunityFormProps): JSX.Element {
   const createProposal = useProposalStore((state) => state.createProposal)
   const addresses = useDaoStore((state) => state.addresses)
-  const data = useUpdateCommunityContracts()
+  const data = useUpdateCommunityContracts() as any
   const initialValues = generateInitialData({ data })
   const { wagmiData } = useCheckAuth()
   const methods = useForm<UpdateCommunityFormValues>({

@@ -72,7 +72,7 @@ export function ReviewProposalForm({
       setLoading(true)
 
       try {
-        const config = await prepareWriteContract({
+        const config = (await prepareWriteContract({
           address: community,
           chainId,
           abi: partyAbi,
@@ -85,7 +85,7 @@ export function ReviewProposalForm({
             },
             1715603725n,
           ],
-        })
+        })) as any
         const response = await writeContract(config)
 
         console.log(response)

@@ -23,7 +23,7 @@ const useCreateParty = () => {
       1e18
 
     try {
-      const config = await prepareWriteContract({
+      const config = (await prepareWriteContract({
         address: PARTY_FACTORY[chainId],
         chainId: chainId,
         abi: partyFactoryAbi,
@@ -55,7 +55,7 @@ const useCreateParty = () => {
           [],
           1715603725,
         ],
-      })
+      })) as any
       const tx = await writeContract(config)
       if (tx.hash) transaction = await waitForTransaction({ hash: tx.hash })
       return transaction

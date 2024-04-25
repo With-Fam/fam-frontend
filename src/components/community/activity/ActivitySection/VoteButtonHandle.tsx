@@ -92,18 +92,18 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
 
     let vote: Promise<SendTransactionResult>
     if (comment?.length > 0) {
-      const config = await prepareWriteContract({
+      const config = (await prepareWriteContract({
         ...governorContractParams,
         functionName: 'castVoteWithReason',
         args: [activityId as BytesType, BigInt(value), comment],
-      })
+      })) as any
       vote = writeContract(config)
     } else {
-      const config = await prepareWriteContract({
+      const config = (await prepareWriteContract({
         ...governorContractParams,
         functionName: 'castVote',
         args: [activityId as BytesType, BigInt(value)],
-      })
+      })) as any
       vote = writeContract(config)
     }
 

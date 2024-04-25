@@ -51,7 +51,7 @@ export const useVotes = ({
         functionName: 'proposalThreshold',
         chainId,
       },
-    ] as const,
+    ] as any,
   })
 
   if (!data || isLoading || data.some(isNil)) {
@@ -62,7 +62,7 @@ export const useVotes = ({
     }
   }
 
-  const [votes, delegates, proposalThreshold] = data
+  const [votes, delegates, proposalThreshold] = data as any
 
   return {
     isLoading,

@@ -60,13 +60,13 @@ const ShowVoteManager = ({
         chainId: chainId,
         functionName: 'getVotes',
         args: [userAddress as AddressType, BigInt(timeCreated)],
-      },
+      } as any,
       {
         abi: governorAbi,
         address: governorAddress as AddressType,
         chainId: chainId,
         functionName: 'vetoer',
-      },
+      } as any,
     ] as const,
   })
 

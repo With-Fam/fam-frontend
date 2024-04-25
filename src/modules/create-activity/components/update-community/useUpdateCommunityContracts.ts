@@ -90,7 +90,7 @@ const useUpdateCommunityContracts = () => {
         chainId,
         functionName: 'getFounders',
       },
-    ] as const,
+    ] as any,
   })
 
   return data

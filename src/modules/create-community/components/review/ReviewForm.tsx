@@ -14,7 +14,7 @@ import { AddressType } from '@/types'
 
 export function ReviewForm(): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { chain } = useNetwork()
+  const { chain } = useNetwork() as any
   const { deployedDao, setFulfilledSections, resetForm, general } =
     useFormStore()
   const router = useRouter()

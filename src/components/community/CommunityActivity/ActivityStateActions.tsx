@@ -67,13 +67,13 @@ const ActivityStateActions = ({
         chainId: chainId,
         functionName: 'getVotes',
         args: [userAddress as `0x${string}`, BigInt(proposal.timeCreated)],
-      },
+      } as any,
       {
         abi: governorAbi,
         address: governorAddress,
         chainId: chainId,
         functionName: 'vetoer',
-      },
+      } as any,
     ] as const,
   })
   const shouldShowActions =
