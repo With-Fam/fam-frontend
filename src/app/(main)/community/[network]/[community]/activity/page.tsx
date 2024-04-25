@@ -18,7 +18,7 @@ type CommunityProfileProps = {
 }
 
 // Actions
-import { getCommunityData } from '@/app/(main)/community/[network]/[community]//activity/actions'
+import { getCommunityData } from '@/app/(main)/community/[network]/[community]/activity/actions'
 import { getChainId } from '@/utils/getChainId'
 
 /*--------------------------------------------------------------------*/

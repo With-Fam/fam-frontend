@@ -1,7 +1,7 @@
 'use client'
 
 // Local Components
-import { TabList } from '@/components/community'
+import { BidComponent, TabList } from '@/components/community'
 import { TOGGLE_DATA } from '@/content/community'
 import AddressCopy from '@/modules/create-community/components/review/AddressCopy'
 import { AddressType } from '@/types'
