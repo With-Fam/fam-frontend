@@ -3,6 +3,7 @@
 // Framework
 import { MutableRefObject, useCallback } from 'react'
 import dynamic from 'next/dynamic'
+import { Interface, parseEther } from 'ethers'
 
 // Third Parties
 import toast from 'react-hot-toast'
@@ -11,7 +12,7 @@ import {
   waitForTransaction,
   writeContract,
 } from 'wagmi/actions'
-import { useContractRead } from 'wagmi'
+import { useAccount, useContractRead } from 'wagmi'
 import { FormProvider, useForm } from 'react-hook-form'
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), {
   ssr: false,
@@ -50,6 +51,7 @@ export function ReviewProposalForm({
   setLoading,
   setLoadingMessage,
 }: ReviewProposalFormProps): JSX.Element {
+  const { address: connectedWallet } = useAccount()
   const methods = useForm<ReviewProposalFormValues>({
     resolver: yupResolver(schema),
     defaultValues,
@@ -82,11 +84,34 @@ export function ReviewProposalForm({
     async (values: ReviewProposalFormValues) => {
       setLoading(true)
       try {
+        console.log('SWEETS onSubmit')
+
         const latestSnapIndex = 9236006n
+        console.log('SWEETS latestSnapIndex', latestSnapIndex)
+
+        const ABI = ['function transfer(address to, uint amount)']
+        console.log('SWEETS ABI', ABI)
+
+        const iface = new Interface(ABI)
+        console.log('SWEETS iface', iface)
+
+        const encoded = iface.encodeFunctionData('transfer', [
+          connectedWallet,
+          parseEther('0.001'),
+        ])
+        console.log('SWEETS encoded', encoded)
+        const currentDate = new Date()
+        const oneMonthLater = new Date(
+          currentDate.setMonth(currentDate.getMonth() + 1)
+        )
+        const maxExecutableTime = Math.floor(oneMonthLater.getTime() / 1000)
+        console.log('SWEETS maxExecutableTime:', maxExecutableTime)
+
         const proposal = {
-          maxExecutableTime: '7777777',
+          maxExecutableTime,
           cancelDelay: '0',
-          proposalData: '0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38',
+          proposalData:
+            '0x00000004000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000cfbf34d385ea2d5eb947063b67ea226dcda3dc3800000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
         }
         const args = [proposal, latestSnapIndex] as any
         const config = await prepareWriteContract({
@@ -102,6 +127,7 @@ export function ReviewProposalForm({
         setLoadingMessage('Proposal posted. Redirecting...')
       } catch (err: any) {
         setLoading(false)
+        console.error(err)
 
         if (err.name === 'ConnectorNotFoundError') {
           toast.error(ERROR_CODE.CONNECTOR_NOT_FOUND)
