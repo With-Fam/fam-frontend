@@ -1,4 +1,9 @@
-import { PARTY_FACTORY, PARTY_IMPLEMENTATION } from '@/constants/addresses'
+import {
+  ATOMIC_MANUAL_PARTY,
+  PARTY_FACTORY,
+  PARTY_IMPLEMENTATION,
+} from '@/constants/addresses'
+import { atomicManualPartyAbi } from '@/data/contract/abis/AtomicManualParty'
 import { partyFactoryAbi } from '@/data/contract/abis/PartyFactory'
 import { useFormStore } from '@/modules/create-community'
 import { AddressType } from '@/types'
@@ -29,14 +34,15 @@ const useCreateParty = () => {
     try {
       const ONE_HOUR = 60 * 60
       const MINIMUM_VOTE_DURATION = ONE_HOUR
+      const partyMemberVotingPowers = [1000000n]
+      const partyMembers = [address as AddressType]
       const config = await prepareWriteContract({
-        address: PARTY_FACTORY[chainId],
+        address: ATOMIC_MANUAL_PARTY[chainId],
         chainId: chainId,
-        abi: partyFactoryAbi,
+        abi: atomicManualPartyAbi,
         functionName: 'createParty',
         args: [
           PARTY_IMPLEMENTATION[chainId],
-          [address as AddressType],
           {
             governance: {
               hosts: [address as AddressType],
@@ -60,6 +66,9 @@ const useCreateParty = () => {
           [],
           [],
           1715603725,
+          partyMembers,
+          partyMemberVotingPowers,
+          partyMembers,
         ],
       })
 

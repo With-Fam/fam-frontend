@@ -176,6 +176,7 @@ const CreateActivityProvider = ({
       content: (
         <ReviewProposalForm
           formRef={reviewFormRef}
+          community={community as AddressType}
           defaultValues={proposalDefault}
           setLoading={setLoading}
           setLoadingMessage={setLoadingMessage}
