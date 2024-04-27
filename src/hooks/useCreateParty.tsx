@@ -20,9 +20,11 @@ const useCreateParty = () => {
     let transaction
 
     const totalVotingPower = 100000000000000000000n
-    const passThresholdBps =
+    const passThreshold =
       ((auctionSettings.proposalThreshold / 100) * Number(totalVotingPower)) /
       1e18
+    const BPS_MULTIPLIER = 100
+    const passThresholdBps = passThreshold * BPS_MULTIPLIER
 
     try {
       const ONE_HOUR = 60 * 60
@@ -40,7 +42,7 @@ const useCreateParty = () => {
               hosts: [address as AddressType],
               voteDuration: MINIMUM_VOTE_DURATION,
               executionDelay: auctionSettings.executionDelay * ONE_HOUR,
-              passThresholdBps: passThresholdBps * 1000,
+              passThresholdBps,
               totalVotingPower,
               feeBps: 0,
               feeRecipient: ZeroAddress as AddressType,
