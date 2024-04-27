@@ -80,22 +80,15 @@ export function ReviewProposalForm({
 
   const onSubmit = useCallback(
     async (values: ReviewProposalFormValues) => {
-      console.log('SWEETS onSubmit', community)
-
       setLoading(true)
-
       try {
-        console.log('SWEETS COMMUNITY')
         const latestSnapIndex = 9236006n
         const proposal = {
           maxExecutableTime: '7777777',
           cancelDelay: '0',
           proposalData: '0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38',
         }
-        console.log('SWEETS proposal', proposal)
         const args = [proposal, latestSnapIndex] as any
-        console.log('SWEETS args', args)
-
         const config = await prepareWriteContract({
           abi: partyAbi,
           functionName: 'propose',
@@ -103,7 +96,6 @@ export function ReviewProposalForm({
           chainId: chain.id,
           args,
         })
-        console.log('SWEETS CONFIG', config)
 
         const response = await writeContract(config)
         await waitForTransaction({ hash: response.hash })

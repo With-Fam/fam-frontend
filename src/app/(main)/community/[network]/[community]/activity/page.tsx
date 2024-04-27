@@ -52,7 +52,6 @@ export default async function CommunityProfile(
     community
   )
   const { metaData } = await getCommunityData(chainId, community.toLowerCase())
-  console.log('SWEETS metaData', metaData)
 
   return (
     <>
