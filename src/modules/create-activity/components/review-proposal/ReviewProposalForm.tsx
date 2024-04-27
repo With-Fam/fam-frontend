@@ -94,7 +94,7 @@ export function ReviewProposalForm({
           proposalData: '0',
         }
         console.log('SWEETS proposal', proposal)
-        const args = [proposal, latestSnapIndex]
+        const args = [proposal, latestSnapIndex] as any
         console.log('SWEETS args', args)
 
         const config = await prepareWriteContract({
