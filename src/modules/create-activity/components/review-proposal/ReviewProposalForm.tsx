@@ -11,7 +11,7 @@ import {
   waitForTransaction,
   writeContract,
 } from 'wagmi/actions'
-import { useContractRead } from 'wagmi'
+import { useAccount, useContractRead } from 'wagmi'
 import { FormProvider, useForm } from 'react-hook-form'
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), {
   ssr: false,
@@ -33,12 +33,9 @@ import TitleInput from '@/modules/create-activity/components/review-proposal/Tit
 import { AddButton } from './AddButton'
 
 // Helpers
-import { governorAbi, tokenAbi } from '@/data/contract/abis'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useDaoStore } from '@/modules/dao'
 import { useChainStore } from '@/utils/stores/useChainStore'
-import { useProposalStore } from '@/modules/create-activity/stores'
-import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { partyAbi } from '@/data/contract/abis/Party'
 
 /*--------------------------------------------------------------------*/
@@ -57,72 +54,58 @@ export function ReviewProposalForm({
   const { handleSubmit } = methods
   const addresses = useDaoStore((state) => state.addresses)
   const chain = useChainStore((x) => x.chain)
-  const {
-    wagmiData: { address },
-  } = useCheckAuth()
-  const { transactions } = useProposalStore()
 
-  const { data: votes } = useContractRead({
-    address: addresses?.token as AddressType,
-    abi: tokenAbi,
-    enabled: !!address,
-    functionName: 'getVotes',
-    chainId: chain.id,
-    args: [address as AddressType],
-  })
+  const onSubmit = useCallback(async () => {
+    setLoading(true)
+    try {
+      const latestSnapIndex = 0n
+      const currentDate = new Date()
+      const oneMonthLater = new Date(
+        currentDate.setMonth(currentDate.getMonth() + 1)
+      )
+      const maxExecutableTime = Math.floor(oneMonthLater.getTime() / 1000)
+      const hardCodedTransferProposal =
+        '0x00000004000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000cfbf34d385ea2d5eb947063b67ea226dcda3dc3800000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
 
-  const { data: proposalThreshold } = useContractRead({
-    address: addresses?.governor as AddressType,
-    chainId: chain.id,
-    abi: governorAbi,
-    functionName: 'proposalThreshold',
-  })
-
-  const onSubmit = useCallback(
-    async (values: ReviewProposalFormValues) => {
-      setLoading(true)
-      try {
-        const latestSnapIndex = 9236006n
-        const proposal = {
-          maxExecutableTime: '7777777',
-          cancelDelay: '0',
-          proposalData: '0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38',
-        }
-        const args = [proposal, latestSnapIndex] as any
-        const config = await prepareWriteContract({
-          abi: partyAbi,
-          functionName: 'propose',
-          address: community as AddressType,
-          chainId: chain.id,
-          args,
-        })
-
-        const response = await writeContract(config)
-        await waitForTransaction({ hash: response.hash })
-        setLoadingMessage('Proposal posted. Redirecting...')
-      } catch (err: any) {
-        setLoading(false)
-
-        if (err.name === 'ConnectorNotFoundError') {
-          toast.error(ERROR_CODE.CONNECTOR_NOT_FOUND)
-          return
-        }
-
-        if (err.shortMessage === 'User rejected the request.') {
-          toast.error(ERROR_CODE.REJECTED)
-          console.log('err::', err.shortMessage)
-          return
-        }
-        if (err.code === 'ACTION_REJECTED') {
-          console.log('err::', err.code)
-          toast.error(ERROR_CODE.REJECTED)
-          return
-        }
-        toast.error(err.messageD)
+      const proposal = {
+        maxExecutableTime,
+        cancelDelay: '0',
+        proposalData: hardCodedTransferProposal,
       }
-    },
-    [addresses, proposalThreshold, votes, chain.id, transactions]
-  )
+      console.log('SWEETS proposal:', proposal)
+
+      const args = [proposal, latestSnapIndex] as any
+      const config = await prepareWriteContract({
+        abi: partyAbi,
+        functionName: 'propose',
+        address: community as AddressType,
+        chainId: chain.id,
+        args,
+      })
+
+      const response = await writeContract(config)
+      await waitForTransaction({ hash: response.hash })
+      setLoadingMessage('Proposal posted. Redirecting...')
+    } catch (err: any) {
+      setLoading(false)
+      console.error(err)
+
+      if (err.name === 'ConnectorNotFoundError') {
+        toast.error(ERROR_CODE.CONNECTOR_NOT_FOUND)
+        return
+      }
+
+      if (err.shortMessage === 'User rejected the request.') {
+        toast.error(ERROR_CODE.REJECTED)
+        return
+      }
+      if (err.code === 'ACTION_REJECTED') {
+        toast.error(ERROR_CODE.REJECTED)
+        return
+      }
+      toast.error(err.messageD)
+    }
+  }, [addresses, chain.id])
 
   return (
     <FormProvider {...methods}>
