@@ -25,6 +25,7 @@ type ReviewProposalFormProps = {
   formRef: MutableRefObject<Maybe<HTMLFormElement>>
   setLoading: (loading: boolean) => void
   setLoadingMessage: (message: string) => void
+  community: AddressType
 }
 
 // Components
@@ -39,12 +40,14 @@ import { useChainStore } from '@/utils/stores/useChainStore'
 import { useProposalStore } from '@/modules/create-activity/stores'
 import { prepareProposalTransactions } from '@/modules/create-activity/utils/prepareTransaction'
 import { useCheckAuth } from '@/hooks/useCheckAuth'
+import { partyAbi } from '@/data/contract/abis/Party'
 
 /*--------------------------------------------------------------------*/
 
 export function ReviewProposalForm({
   defaultValues,
   formRef,
+  community,
   setLoading,
   setLoadingMessage,
 }: ReviewProposalFormProps): JSX.Element {
@@ -78,46 +81,30 @@ export function ReviewProposalForm({
 
   const onSubmit = useCallback(
     async (values: ReviewProposalFormValues) => {
-      if (proposalThreshold === undefined) {
-        return
-      }
-
-      const votesToNumber = votes ? Number(votes) : 0
-      const doesNotHaveEnoughVotes = votesToNumber <= Number(proposalThreshold)
-
-      if (doesNotHaveEnoughVotes) {
-        toast.error(ERROR_CODE.NOT_ENOUGH_VOTES)
-        return
-      }
+      console.log('SWEETS onSubmit', community)
 
       setLoading(true)
 
-      const {
-        targets,
-        values: transactionValues,
-        calldata,
-      } = prepareProposalTransactions(transactions)
-
       try {
-        const params = {
-          targets: targets,
-          values: transactionValues,
-          calldatas: calldata as Array<AddressType>,
-          description: values.title + '&&' + values.summary,
+        console.log('SWEETS COMMUNITY')
+        const latestSnapIndex = 9236006n
+        const proposal = {
+          maxExecutableTime: '7777777',
+          cancelDelay: '0',
+          proposalData: '0',
         }
+        console.log('SWEETS proposal', proposal)
+        const args = [proposal, latestSnapIndex]
+        console.log('SWEETS args', args)
 
         const config = await prepareWriteContract({
-          abi: governorAbi,
+          abi: partyAbi,
           functionName: 'propose',
-          address: addresses?.governor as AddressType,
+          address: community as AddressType,
           chainId: chain.id,
-          args: [
-            params.targets,
-            params.values,
-            params.calldatas,
-            params.description,
-          ],
+          args,
         })
+        console.log('SWEETS CONFIG', config)
 
         const response = await writeContract(config)
         await waitForTransaction({ hash: response.hash })
