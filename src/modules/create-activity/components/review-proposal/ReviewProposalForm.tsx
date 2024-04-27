@@ -38,10 +38,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useDaoStore } from '@/modules/dao'
 import { useChainStore } from '@/utils/stores/useChainStore'
 import { useProposalStore } from '@/modules/create-activity/stores'
-import { prepareProposalTransactions } from '@/modules/create-activity/utils/prepareTransaction'
 import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { partyAbi } from '@/data/contract/abis/Party'
-import { AbiCoder, Interface, utils } from 'ethers'
 
 /*--------------------------------------------------------------------*/
 
@@ -94,7 +92,6 @@ export function ReviewProposalForm({
           cancelDelay: '0',
           proposalData: '0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38',
         }
-        utils
         console.log('SWEETS proposal', proposal)
         const args = [proposal, latestSnapIndex] as any
         console.log('SWEETS args', args)
