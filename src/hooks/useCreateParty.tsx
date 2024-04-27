@@ -1,6 +1,9 @@
 import { PARTY_FACTORY, PARTY_IMPLEMENTATION } from '@/constants/addresses'
 import { partyFactoryAbi } from '@/data/contract/abis/PartyFactory'
 import { useFormStore } from '@/modules/create-community'
+import { AddressType } from '@/types'
+import { ZeroAddress } from 'ethers'
+import { useAccount } from 'wagmi'
 import {
   prepareWriteContract,
   waitForTransaction,
@@ -11,6 +14,7 @@ import { baseSepolia } from 'wagmi/chains'
 const useCreateParty = () => {
   const chainId = baseSepolia.id
   const { auctionSettings } = useFormStore()
+  const { address } = useAccount()
 
   const createParty = async () => {
     let transaction
@@ -21,6 +25,8 @@ const useCreateParty = () => {
       1e18
 
     try {
+      const ONE_HOUR = 60 * 60
+      const MINIMUM_VOTE_DURATION = ONE_HOUR
       const config = await prepareWriteContract({
         address: PARTY_FACTORY[chainId],
         chainId: chainId,
@@ -28,16 +34,16 @@ const useCreateParty = () => {
         functionName: 'createParty',
         args: [
           PARTY_IMPLEMENTATION[chainId],
-          ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
+          [address as AddressType],
           {
             governance: {
-              hosts: ['0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38'],
-              voteDuration: 172800,
-              executionDelay: auctionSettings.executionDelay * 60 * 60,
+              hosts: [address as AddressType],
+              voteDuration: MINIMUM_VOTE_DURATION,
+              executionDelay: auctionSettings.executionDelay * ONE_HOUR,
               passThresholdBps: passThresholdBps * 1000,
               totalVotingPower,
-              feeBps: 1000,
-              feeRecipient: '0x0000000000000000000000000000000000000000',
+              feeBps: 0,
+              feeRecipient: ZeroAddress as AddressType,
             },
             proposalEngine: {
               enableAddAuthorityProposal: true,
