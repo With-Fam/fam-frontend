@@ -48,7 +48,7 @@ const CommunityActivity = ({
             <Link
               href={`activity/${proposal.proposalId}`}
               passHref
-              className="w-full flex flex-col"
+              className="flex w-full flex-col"
             >
               <ActivityData chainId={chainId} proposal={proposal as any} />
               <ActivityDescription>{proposal.description}</ActivityDescription>

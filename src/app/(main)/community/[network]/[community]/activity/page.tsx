@@ -20,6 +20,7 @@ type CommunityProfileProps = {
 // Actions
 import { getCommunityData } from '@/app/(main)/community/[network]/[community]//activity/actions'
 import { getChainId } from '@/utils/getChainId'
+import getProposals from '@/utils/getProposals'
 
 /*--------------------------------------------------------------------*/
 
@@ -32,25 +33,15 @@ export const metadata: Metadata = {
   description: 'to do',
 }
 
-async function getActivityData(chainId: number, collection: string) {
-  const { proposals } = await SDK.connect(chainId).proposals({
-    first: 5,
-    where: {
-      dao: collection.toLowerCase(),
-    },
-  })
-  return proposals
-}
-
 export default async function CommunityProfile(
   _props: CommunityProfileProps
 ): Promise<JSX.Element> {
   const { community, network } = _props.params
   const chainId = getChainId(network.toUpperCase().replace('-', '_'))
-  const proposals: ProposalFragment[] = await getActivityData(
-    chainId,
-    community
-  )
+  console.log('SWEETS GET PROPOSALS')
+  const proposals: ProposalFragment[] = await getProposals(chainId, community)
+  console.log('SWEETS proposals', proposals)
+
   const { metaData } = await getCommunityData(chainId, community.toLowerCase())
 
   return (
