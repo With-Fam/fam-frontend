@@ -6,7 +6,7 @@ import { createConfig, http } from 'wagmi'
 import { Toaster } from 'react-hot-toast'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from '@privy-io/wagmi'
-import { base, baseSepolia, mainnet, sepolia } from 'wagmi/chains'
+import { base, baseSepolia } from 'wagmi/chains'
 
 const queryClient = new QueryClient()
 
