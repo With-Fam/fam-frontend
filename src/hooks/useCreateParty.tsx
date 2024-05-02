@@ -1,29 +1,25 @@
 import {
   ATOMIC_MANUAL_PARTY,
-  PARTY_FACTORY,
   PARTY_IMPLEMENTATION,
 } from '@/constants/addresses'
 import { atomicManualPartyAbi } from '@/data/contract/abis/AtomicManualParty'
-import { partyFactoryAbi } from '@/data/contract/abis/PartyFactory'
+import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { useFormStore } from '@/modules/create-community'
 import { AddressType } from '@/types'
+import { getPublicClient } from '@/utils/viem'
+import getViemNetwork from '@/utils/viem/getViemNetwork'
 import { ZeroAddress } from 'ethers'
 import { useAccount } from 'wagmi'
-import {
-  prepareWriteContract,
-  waitForTransaction,
-  writeContract,
-} from 'wagmi/actions'
 import { baseSepolia } from 'wagmi/chains'
 
 const useCreateParty = () => {
   const chainId = baseSepolia.id
   const { auctionSettings } = useFormStore()
   const { address } = useAccount()
+  const { walletClient } = usePrivyWalletClient(baseSepolia.id)
 
   const createParty = async () => {
-    let transaction
-
+    if (!walletClient) return { error: 'Wallet client not found' }
     const totalVotingPower = 100000000000000000000n
     const passThreshold =
       ((auctionSettings.proposalThreshold / 100) * Number(totalVotingPower)) /
@@ -36,9 +32,10 @@ const useCreateParty = () => {
       const MINIMUM_VOTE_DURATION = ONE_HOUR
       const partyMemberVotingPowers = [1000000n]
       const partyMembers = [address as AddressType]
-      const config = await prepareWriteContract({
+      const publicClient = getPublicClient(chainId)
+      const contractConfig = {
         address: ATOMIC_MANUAL_PARTY[chainId],
-        chainId: chainId,
+        chain: getViemNetwork(chainId),
         abi: atomicManualPartyAbi,
         functionName: 'createParty',
         args: [
@@ -70,10 +67,17 @@ const useCreateParty = () => {
           partyMemberVotingPowers,
           partyMembers,
         ],
-      })
+      } as any
+      const { request } = await publicClient.simulateContract(contractConfig)
+      const txHash = await walletClient.writeContract(request)
 
-      const tx = await writeContract(config)
-      if (tx.hash) transaction = await waitForTransaction({ hash: tx.hash })
+      let transaction
+
+      if (txHash) {
+        transaction = await publicClient.waitForTransactionReceipt({
+          hash: txHash,
+        })
+      }
       return transaction
     } catch (error) {
       return { error }

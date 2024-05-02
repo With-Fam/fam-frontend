@@ -12,7 +12,7 @@ import {
   waitForTransaction,
   readContract,
 } from 'wagmi/actions'
-import { useAccount, useBalance, useContractReads, useNetwork } from 'wagmi'
+import { useAccount, useBalance, useContractReads } from 'wagmi'
 import useSWR, { useSWRConfig } from 'swr'
 import SWR_KEYS from '@/constants/swrKeys'
 import { parseEther } from 'viem'
@@ -58,7 +58,7 @@ const PlaceBid = ({
   auctionAddress,
 }: PlaceBidProps): JSX.Element => {
   const { address } = useAccount()
-  const { chain: wagmiChain } = useNetwork()
+  const { chain: wagmiChain } = useAccount()
   const { data: balance } = useBalance({ address: address, chainId })
   const { mutate } = useSWRConfig()
   const { addresses } = useDaoStore()

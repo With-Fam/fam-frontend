@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 import toast from 'react-hot-toast'
 import ContinueButton from '@/modules/ContinueButton'
 import { useFormStore } from '@/modules/create-community'
@@ -14,7 +14,7 @@ import { AddressType } from '@/types'
 
 export function ReviewForm(): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const { deployedDao, setFulfilledSections, resetForm, general } =
     useFormStore()
   const router = useRouter()

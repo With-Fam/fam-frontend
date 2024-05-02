@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import toast from 'react-hot-toast'
-import { useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 import schema, { type ConfirmFormValues } from './schema'
 import { useFormStore } from '@/modules/create-community'
 import ConfirmDropDown from './ConfirmDropDown'
@@ -17,7 +17,7 @@ import { IPFSImage } from '@/components/ipfs/IPFSImage'
 import useDeploy from '@/hooks/useDeploy'
 
 export function ConfirmForm(): JSX.Element {
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const { general } = useFormStore()
   const {
     isLoading,
