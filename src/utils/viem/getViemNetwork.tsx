@@ -8,9 +8,10 @@ import {
   baseSepolia,
   optimismSepolia,
   base,
-} from "viem/chains"
+} from 'viem/chains'
+import { Chain } from 'viem'
 
-const getViemNetwork = (chainId: number) => {
+const getViemNetwork = (chainId: number): Chain => {
   switch (chainId) {
     case mainnet.id:
       return mainnet

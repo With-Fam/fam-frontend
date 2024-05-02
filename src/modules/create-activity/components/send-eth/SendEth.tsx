@@ -74,7 +74,6 @@ export function SendEth({
       recipientAddress: defaultValues.target,
       amount: Number(defaultValues.value),
     },
-    resolver: yupResolver(schema(parseFloat(treasuryBalance?.formatted ?? ''))),
   })
   const onSubmit = async (values: SendEthValues) => {
     // Need a callback to return to OG state
@@ -130,7 +129,6 @@ export function SendEth({
               step="0.0001"
               className="block w-full text-lg outline-0"
             />
-            {/* <CurrencyList /> */}
           </div>
           <TextInput
             name="recipientAddress"

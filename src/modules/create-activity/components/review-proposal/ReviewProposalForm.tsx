@@ -37,6 +37,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useDaoStore } from '@/modules/dao'
 import { useChainStore } from '@/utils/stores/useChainStore'
 import { partyAbi } from '@/data/contract/abis/Party'
+import { getPublicClient } from '@/utils/viem'
+import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
+import { baseSepolia } from 'wagmi/chains'
+import getViemNetwork from '@/utils/viem/getViemNetwork'
 
 /*--------------------------------------------------------------------*/
 
@@ -54,10 +58,15 @@ export function ReviewProposalForm({
   const { handleSubmit } = methods
   const addresses = useDaoStore((state) => state.addresses)
   const chain = useChainStore((x) => x.chain)
+  const chainId = baseSepolia.id
+  const { walletClient } = usePrivyWalletClient(baseSepolia)
+  console.log('SWEETS walletClient', walletClient)
 
-  const onSubmit = useCallback(async () => {
+  const onSubmit = async () => {
     setLoading(true)
+    console.log('SWEETS PROPOSING', walletClient)
     try {
+      if (!walletClient) return { error: 'Wallet client not found' }
       const latestSnapIndex = 0n
       const currentDate = new Date()
       const oneMonthLater = new Date(
@@ -75,17 +84,35 @@ export function ReviewProposalForm({
       console.log('SWEETS proposal:', proposal)
 
       const args = [proposal, latestSnapIndex] as any
-      const config = await prepareWriteContract({
+      const contractConfig = {
+        account: walletClient.account,
         abi: partyAbi,
         functionName: 'propose',
         address: community as AddressType,
-        chainId: chain.id,
+        chain: getViemNetwork(chainId),
         args,
-      })
+      }
+      console.log('SWEETS contractConfig:', contractConfig)
 
-      const response = await writeContract(config)
-      await waitForTransaction({ hash: response.hash })
+      const publicClient = getPublicClient(chainId)
+      console.log('SWEETS publicClient:', publicClient)
+
+      const { request } = await publicClient.simulateContract(
+        contractConfig as any
+      )
+      console.log('SWEETS request:', request)
+
+      const txHash = await walletClient.writeContract(request as any)
+
+      let transaction
+
+      if (txHash) {
+        transaction = await publicClient.waitForTransactionReceipt({
+          hash: txHash,
+        })
+      }
       setLoadingMessage('Proposal posted. Redirecting...')
+      return transaction
     } catch (err: any) {
       setLoading(false)
       console.error(err)
@@ -105,7 +132,7 @@ export function ReviewProposalForm({
       }
       toast.error(err.messageD)
     }
-  }, [addresses, chain.id])
+  }
 
   return (
     <FormProvider {...methods}>

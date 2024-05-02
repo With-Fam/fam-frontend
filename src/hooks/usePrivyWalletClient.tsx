@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
-import { WalletClient, createWalletClient, custom } from 'viem'
+import { WalletClient, createWalletClient, custom, Chain } from 'viem'
 import useConnectedWallet from './useConnectedWallet'
-import { CHAIN_ID } from '@/types'
 
-const usePrivyWalletClient = (chain: CHAIN_ID) => {
+const usePrivyWalletClient = (chain: Chain) => {
   const { connectedWallet, wallet } = useConnectedWallet()
   const [walletClient, setWalletClient] = useState<WalletClient | null>(null)
 
   useEffect(() => {
     const init = async () => {
+      if (!wallet) return
       const provider = await wallet.getEthereumProvider()
       const response = createWalletClient({
         chain,

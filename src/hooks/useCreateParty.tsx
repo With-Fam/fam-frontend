@@ -16,7 +16,7 @@ const useCreateParty = () => {
   const chainId = baseSepolia.id
   const { auctionSettings } = useFormStore()
   const { address } = useAccount()
-  const { walletClient } = usePrivyWalletClient(baseSepolia.id)
+  const { walletClient } = usePrivyWalletClient(baseSepolia)
 
   const createParty = async () => {
     if (!walletClient) return { error: 'Wallet client not found' }
@@ -69,7 +69,7 @@ const useCreateParty = () => {
         ],
       } as any
       const { request } = await publicClient.simulateContract(contractConfig)
-      const txHash = await walletClient.writeContract(request)
+      const txHash = await walletClient.writeContract(request as any)
 
       let transaction
 
