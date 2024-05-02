@@ -4,14 +4,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
-
-// Third Parties
-import {
-  prepareWriteContract,
-  writeContract,
-  waitForTransaction,
-  readContract,
-} from 'wagmi/actions'
 import { useAccount, useBalance, useContractReads } from 'wagmi'
 import useSWR, { useSWRConfig } from 'swr'
 import SWR_KEYS from '@/constants/swrKeys'
@@ -133,38 +125,6 @@ const PlaceBid = ({
     try {
       toast.loading('Confirming your bid...')
       setCreatingBid(true)
-
-      const config = await prepareWriteContract({
-        abi: auctionAbi,
-        address: addresses.auction as AddressType,
-        functionName: 'createBid',
-        args: [BigInt(token.tokenId)],
-        value: parseEther(bidAmount),
-      })
-
-      const tx = await writeContract(config)
-      if (tx?.hash) await waitForTransaction({ hash: tx.hash })
-
-      await Promise.all([
-        mutate(
-          [SWR_KEYS.AUCTION_BIDS, chainId, addresses.token, token.tokenId],
-          () => getBids(chainId, addresses.token!, token.tokenId)
-        ),
-        mutate([SWR_KEYS.AUCTION, chainId, auctionAddress], () =>
-          readContract({
-            abi: auctionAbi,
-            address: auctionAddress as AddressType,
-            functionName: 'auction',
-            chainId,
-          })
-        ),
-        mutate([SWR_KEYS.AVERAGE_WINNING_BID, chainId, addresses.token], () =>
-          averageWinningBid(chainId, addresses.token as AddressType)
-        ),
-      ])
-      toast.dismiss()
-      toast.success('Bid succesfully placed!')
-      setBidAmount('0')
     } catch (error) {
       toast.dismiss()
 

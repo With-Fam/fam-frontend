@@ -6,12 +6,6 @@ import dynamic from 'next/dynamic'
 
 // Third Parties
 import toast from 'react-hot-toast'
-import {
-  prepareWriteContract,
-  waitForTransaction,
-  writeContract,
-} from 'wagmi/actions'
-import { useAccount, useContractRead } from 'wagmi'
 import { FormProvider, useForm } from 'react-hook-form'
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), {
   ssr: false,

@@ -91,28 +91,6 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
     }
 
     let vote: Promise<SendTransactionResult>
-    if (comment?.length > 0) {
-      const config = await prepareWriteContract({
-        ...governorContractParams,
-        functionName: 'castVoteWithReason',
-        args: [activityId as BytesType, BigInt(value), comment],
-      })
-      vote = writeContract(config)
-    } else {
-      const config = await prepareWriteContract({
-        ...governorContractParams,
-        functionName: 'castVote',
-        args: [activityId as BytesType, BigInt(value)],
-      })
-      vote = writeContract(config)
-    }
-
-    const tx = await vote
-    if (tx?.hash) await waitForTransaction({ hash: tx.hash })
-
-    await mutate([SWR_KEYS.PROPOSAL, chainId, activityId], () =>
-      getProposalData(chainId, activityId as string)
-    )
 
     setIsSubmitting(false)
     setSubmitSucess(true)
