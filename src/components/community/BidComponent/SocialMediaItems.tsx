@@ -12,7 +12,7 @@ import { unpackOptionalArray } from '@/utils/helpers'
 import { parseContractURI } from '@/utils/parseContractURI'
 
 // Types
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 import { CHAIN_ID } from '@/types'
 type SocialMediaItemsProps = {
   metadataAddress: Address
