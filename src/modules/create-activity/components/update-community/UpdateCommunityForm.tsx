@@ -1,7 +1,7 @@
 'use client'
 
 // Third Parties
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import _isEqual from 'lodash.isequal'

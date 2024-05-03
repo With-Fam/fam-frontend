@@ -4,7 +4,7 @@
 import dynamic from 'next/dynamic'
 
 // Third Parties
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 // Local Components
 import { Paragraph } from '@/stories'
