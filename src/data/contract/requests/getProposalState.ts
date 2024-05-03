@@ -1,4 +1,3 @@
-import { readContract } from 'wagmi/actions'
 import { AddressType, BytesType, CHAIN_ID } from '@/types'
 import { governorAbi } from '../abis'
 export enum ProposalState {
@@ -18,10 +17,5 @@ export const getProposalState = async (
   governorAddress: AddressType,
   proposalId: BytesType
 ) => {
-  const baseParams = { address: governorAddress, abi: governorAbi, chainId }
-  return (await readContract({
-    ...baseParams,
-    functionName: 'state',
-    args: [proposalId],
-  })) as ProposalState
+  return ProposalState[0]
 }
