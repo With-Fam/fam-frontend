@@ -37,7 +37,7 @@ const UserAvatar = ({
     chainId: CHAIN_ID.ETHEREUM,
   })
   const { data: ensAvatar } = useEnsAvatar({
-    name: ensName,
+    name: ensName as string,
     chainId: CHAIN_ID.ETHEREUM,
   })
   const [imageError, setImageError] = useState(false)
