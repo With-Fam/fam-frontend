@@ -2,20 +2,7 @@
 
 // Framework
 import { Suspense, useState } from 'react'
-import {
-  useRouter,
-  useSearchParams,
-  usePathname,
-  useParams,
-} from 'next/navigation'
-import {
-  SendTransactionResult,
-  prepareWriteContract,
-  waitForTransaction,
-  writeContract,
-} from 'wagmi/actions'
-
-import { useSWRConfig } from 'swr'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 
 // Components
 import { Button, Loading } from '@/components/shared'
@@ -23,29 +10,15 @@ import { Paragraph } from '@/stories'
 import { CheckMark, Close } from '@/components/icons'
 import RowButton from '@/components/community/activity/ActivitySection/RowButton'
 import { useDaoStore } from '@/modules/dao'
-// ABI
-import { governorAbi } from '@/data/contract/abis'
 
-// Types
 import { CHAIN_ID } from '@/types'
-type BytesType = `0x${string}`
 type VoteButtonHandleProps = {
   chainId: CHAIN_ID
 }
 
-// Helpers
 import useUserHitEscape from '@/hooks/useUserHitEscape'
-import SWR_KEYS from '@/constants/swrKeys'
-import { getProposalData } from '@/components/community/activity'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
-  const { mutate } = useSWRConfig()
   const { addresses } = useDaoStore()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSucess] = useState(false)
@@ -54,7 +27,6 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const { activityId } = useParams()
 
   const voting = searchParams.get('voting')
   const title = searchParams.get('title')
@@ -64,10 +36,6 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
   cleanParams.delete('voteYes')
 
   useUserHitEscape(() => exitAndReset())
-  const hardReload = () => {
-    const baseUrl = window.location.href.split('?')[0]
-    window.location.href = baseUrl
-  }
 
   const exitAndReset = (reset?: boolean) => {
     router.push(`${pathname}?${cleanParams}`)
@@ -81,16 +49,6 @@ const VoteButtonHandle = ({ chainId }: VoteButtonHandleProps): JSX.Element => {
   const handleSubmit = async () => {
     if (!addresses.governor) return
     setIsSubmitting(true)
-
-    const value = isVoteYes ? '1' : '0'
-
-    const governorContractParams = {
-      address: addresses.governor,
-      abi: governorAbi,
-      chainId,
-    }
-
-    let vote: Promise<SendTransactionResult>
 
     setIsSubmitting(false)
     setSubmitSucess(true)
