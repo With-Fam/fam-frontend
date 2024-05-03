@@ -17,5 +17,5 @@ export const getProposalState = async (
   governorAddress: AddressType,
   proposalId: BytesType
 ) => {
-  return ProposalState[0]
+  return 0
 }
