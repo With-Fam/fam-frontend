@@ -34,10 +34,10 @@ export function ReviewForm(): JSX.Element {
       createCommunity({
         name: general.daoName,
         community_id: deployedDao.token,
-        network: chain?.network,
+        network: chain,
       })
 
-      const successUrl = `/community/${chain?.network}/${deployedDao.token}/`
+      const successUrl = `/community/${chain}/${deployedDao.token}/`
       await router.push(successUrl)
       setTimeout(() => {
         resetForm()

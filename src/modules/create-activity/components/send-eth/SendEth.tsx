@@ -1,6 +1,5 @@
 'use client'
 
-import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { getAddress } from 'viem'
 import _get from 'lodash.get'
@@ -24,8 +23,7 @@ import { TextInput } from '@/components/forms'
 // import { Paragraph } from '@/stories'
 import { AddActionButton, CurrencyList } from '../action'
 
-// Schema
-import schema, { SendEthValues } from './SendEthForm.schema'
+import { SendEthValues } from './SendEthForm.schema'
 
 /*--------------------------------------------------------------------*/
 
