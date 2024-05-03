@@ -10,7 +10,7 @@ import {
 import { useParams } from 'next/navigation'
 import getDaoAddresses from '@/data/contract/requests/getDaoAddresses'
 import { useDaoStore } from '@/modules/dao'
-import { useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 
 /**
  * Component
@@ -27,7 +27,7 @@ const DaoStoreContext = createContext<DaoStoreContextType>({
 
 const DaoContext = ({ children }: PropsWithChildren): JSX.Element => {
   const { addresses, setAddresses } = useDaoStore()
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const { community } = useParams()
 
   useEffect(() => {

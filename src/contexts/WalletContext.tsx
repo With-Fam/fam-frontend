@@ -1,30 +1,28 @@
 'use client'
+
 import { PropsWithChildren } from 'react'
 import { PrivyProvider } from '@privy-io/react-auth'
-import { PrivyWagmiConnector } from '@privy-io/wagmi-connector'
-import { configureChains } from 'wagmi'
+import { createConfig, http } from 'wagmi'
 import { Toaster } from 'react-hot-toast'
-import { PUBLIC_DEFAULT_CHAINS } from '@/constants/defaultChains'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { WagmiProvider } from '@privy-io/wagmi'
+import { base, baseSepolia } from 'wagmi/chains'
 
-import { publicProvider } from 'wagmi/providers/public'
-import { alchemyProvider } from 'wagmi/providers/alchemy'
+const queryClient = new QueryClient()
 
-// Public default chains -> constants/defaultChains.ts
-const configureChainsConfig = configureChains(PUBLIC_DEFAULT_CHAINS, [
-  alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID as string }),
-  publicProvider(),
-])
-
-/**
- * Component
- */
+export const config = createConfig({
+  chains: [base, baseSepolia],
+  transports: {
+    [base.id]: http(),
+    [baseSepolia.id]: http(),
+  },
+})
 
 export const WalletContext = ({ children }: PropsWithChildren): JSX.Element => {
   return (
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
       config={{
-        supportedChains: PUBLIC_DEFAULT_CHAINS,
         walletConnectCloudProjectId: 'a2ca754e356641b9ab15dae82876d257',
         loginMethods: ['wallet', 'email', 'apple', 'google', 'twitter'],
         appearance: {
@@ -35,10 +33,12 @@ export const WalletContext = ({ children }: PropsWithChildren): JSX.Element => {
         },
       }}
     >
-      <Toaster />
-      <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
-        {children}
-      </PrivyWagmiConnector>
+      <QueryClientProvider client={queryClient}>
+        <WagmiProvider config={config}>
+          <Toaster />
+          {children}
+        </WagmiProvider>
+      </QueryClientProvider>
     </PrivyProvider>
   )
 }

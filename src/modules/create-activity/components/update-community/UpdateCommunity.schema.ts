@@ -6,7 +6,7 @@ import {
 
 import { Duration, Maybe } from '@/types'
 
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 import { urlValidationSchema } from '@/utils/yup'
 
 interface BaseCommunitySchema {

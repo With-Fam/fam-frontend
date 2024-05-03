@@ -1,5 +1,5 @@
 // Third Parties
-import { type Address} from 'wagmi'
+import { type Address } from 'viem'
 
 // Helpers
 import { BytesType } from '@/types'

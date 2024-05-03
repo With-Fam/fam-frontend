@@ -6,7 +6,7 @@ import MenuItem from '@/components/shared/Navbar/MenuItem'
 import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { useState } from 'react'
 import { useRouter, useParams, usePathname } from 'next/navigation'
-import { useNetwork, useSwitchNetwork } from 'wagmi'
+import { useAccount, useSwitchChain } from 'wagmi'
 import { useChainStore } from '@/utils/stores/useChainStore'
 
 // Props
@@ -25,10 +25,9 @@ const MenuList = ({ address }: MenuListProps): JSX.Element => {
   const { network } = useParams()
   const router = useRouter()
   const pathname = usePathname()
-  const { chain }: any = useNetwork()
+  const { chain }: any = useAccount()
   const [selectedNetwork, setSelectedNetwork] = useState(chain)
-  const { chains, error, isLoading, pendingChainId, switchNetwork } =
-    useSwitchNetwork()
+  const { chains, switchChain } = useSwitchChain()
 
   const currentChains: string[] = []
   chains.map((chain: any) => {
@@ -36,7 +35,7 @@ const MenuList = ({ address }: MenuListProps): JSX.Element => {
   })
 
   const switched = async (net: number) => {
-    await switchNetwork?.(Number(net))
+    await switchChain?.({ chainId: Number(net) })
     const selected: any = chains.find((chain: any) => chain.id === net)
     const isIncluded = currentChains.some((option) => pathname.includes(option))
     if (isIncluded && selected) {
@@ -78,7 +77,7 @@ const MenuList = ({ address }: MenuListProps): JSX.Element => {
         >
           {chains.map((x: any) => (
             <option
-              disabled={!switchNetwork || x.id === selectedNetwork?.id}
+              disabled={!switchChain || x.id === selectedNetwork?.id}
               key={x.id}
               value={x.id}
             >

@@ -5,8 +5,7 @@ import { Suspense } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 // Third Parties
-import { useConnectModal } from '@rainbow-me/rainbowkit'
-import { useBalance, useNetwork, useSwitchNetwork } from 'wagmi'
+import { useAccount, useBalance, useSwitchChain } from 'wagmi'
 import { twMerge } from 'tailwind-merge'
 
 // Components
@@ -47,25 +46,21 @@ export const ContractButton = ({
     searchParams
   )
   const appChain = useChainStore((x) => x.chain)
-  const { openConnectModal } = useConnectModal()
   const {
     wagmiData: { address: userAddress },
   } = useCheckAuth()
-  const { switchNetwork } = useSwitchNetwork()
-  const { chain: userChain } = useNetwork()
+  const { switchChain } = useSwitchChain()
+  const { chain: userChain } = useAccount()
   const { data: userBalance } = useBalance({
     address: userAddress,
     chainId: appChain.id,
   })
 
-  const handleSwitchNetwork = () => switchNetwork?.(appChain.id)
+  const handleSwitchNetwork = () => switchChain?.({ chainId: appChain.id })
 
   const handleClickWithValidation = (
     e?: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (!userAddress) {
-      return openConnectModal?.()
-    }
     if (canUserBridge && userBalance?.decimals === 0) {
       return openBridgeModal()
     }

@@ -1,6 +1,5 @@
 'use client'
 
-import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { getAddress } from 'viem'
 import _get from 'lodash.get'
@@ -24,8 +23,7 @@ import { TextInput } from '@/components/forms'
 // import { Paragraph } from '@/stories'
 import { AddActionButton, CurrencyList } from '../action'
 
-// Schema
-import schema, { SendEthValues } from './SendEthForm.schema'
+import { SendEthValues } from './SendEthForm.schema'
 
 /*--------------------------------------------------------------------*/
 
@@ -74,7 +72,6 @@ export function SendEth({
       recipientAddress: defaultValues.target,
       amount: Number(defaultValues.value),
     },
-    resolver: yupResolver(schema(parseFloat(treasuryBalance?.formatted ?? ''))),
   })
   const onSubmit = async (values: SendEthValues) => {
     // Need a callback to return to OG state
@@ -130,7 +127,6 @@ export function SendEth({
               step="0.0001"
               className="block w-full text-lg outline-0"
             />
-            {/* <CurrencyList /> */}
           </div>
           <TextInput
             name="recipientAddress"

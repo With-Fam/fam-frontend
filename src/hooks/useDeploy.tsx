@@ -14,7 +14,6 @@ const useDeploy = () => {
     setActiveSection,
     activeSection,
     setDeployedDao,
-    ipfsUpload,
     setFulfilledSections,
   } = useFormStore()
 
@@ -39,6 +38,7 @@ const useDeploy = () => {
     setIsPendingTransaction(true)
     const transaction = await createParty()
     const error = (transaction as any)?.error
+
     if (error) {
       if ((error as any).name === 'ChainMismatchError') {
         setDeploymentError(DEPLOYMENT_ERROR.MISMATCHING_NETWORK)

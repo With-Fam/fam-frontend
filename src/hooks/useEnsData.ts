@@ -19,7 +19,7 @@ export const useEnsData = (address?: string): UseEnsDataResponse => {
   })
 
   const { data: ensAvatar } = useEnsAvatar({
-    name: ensName,
+    name: ensName as string,
     chainId: CHAIN_ID.ETHEREUM,
   })
 

@@ -1,7 +1,7 @@
 // Third Parties
 import { encodeFunctionData } from 'viem'
 import { formatEther } from 'ethers'
-import { Address } from 'wagmi'
+import { Address } from 'viem'
 
 // Types
 import { TransactionType } from '@/modules/create-activity/types'

@@ -1,5 +1,5 @@
 import { CHAIN_ID } from '@/types'
-import { Chain as WagmiChain } from 'wagmi'
+import { Chain as ViemChain } from 'viem'
 
 export interface Duration {
   seconds?: number
@@ -8,7 +8,7 @@ export interface Duration {
   minutes?: number
 }
 
-export interface Chain extends WagmiChain {
+export interface Chain extends ViemChain {
   id: CHAIN_ID
   slug: string
   icon: string

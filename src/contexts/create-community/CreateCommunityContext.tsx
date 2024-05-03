@@ -26,7 +26,7 @@ import {
 
 // Types
 import type { CreateSection } from '@/modules/create-community/types'
-import { useNetwork } from 'wagmi'
+import { useAccount } from 'wagmi'
 export interface CreateCommunityContextType {
   loading: boolean
   section: CreateSection
@@ -54,7 +54,7 @@ let sections: CreateSection[] = []
 const CreateCommunityProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
-  const { chain } = useNetwork()
+  const { chain } = useAccount()
   const {
     isAuthenticated,
     wagmiData: { address },
