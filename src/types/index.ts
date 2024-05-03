@@ -1,7 +1,5 @@
 import { AuctionFragment } from '@/data/subgraph/sdk.generated'
-import { Chain as WagmiChain } from 'wagmi'
-import { WriteContractUnpreparedArgs } from 'wagmi/actions'
-import { managerAbi } from '@/data/contract/abis'
+import { Chain as WagmiChain } from 'viem'
 
 export type Maybe<T> = T | null
 
@@ -43,9 +41,7 @@ export type BytesType = `0x${string}`
 
 export type DaoProps = AuctionFragment['dao']
 
-export type FounderParameters = NonNullable<
-  WriteContractUnpreparedArgs<typeof managerAbi, 'deploy'>
->['args'][0]
+export type FounderParameters = NonNullable<any>['args'][0]
 
 export type CommunityDataBase = {
   id: string
