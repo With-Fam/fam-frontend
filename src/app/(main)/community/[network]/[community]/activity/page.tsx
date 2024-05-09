@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { CommunityActivity, TabList } from '@/components/community'
 import { TOGGLE_DATA } from '@/content/community'
-import type { ProposalFragment } from '@/data/subgraph/sdk.generated'
 type CommunityProfileProps = {
   params: {
     network: string
@@ -10,8 +9,10 @@ type CommunityProfileProps = {
 }
 import { getCommunityData } from '@/app/(main)/community/[network]/[community]//activity/actions'
 import { getChainId } from '@/utils/getChainId'
-import getLastProposalId from '@/utils/party/getLastProposalId'
 import getAllProposals from '@/utils/party/getAllProposals'
+import getProposedEvents from '@/utils/party/getProposedEvents'
+import getDecodedProposedEvent from '@/utils/party/getDecodedProposedEvent'
+import getFormattedProposals from '@/utils/party/getFormattedProposals'
 
 export const metadata: Metadata = {
   title: 'Community Profile',
@@ -24,14 +25,21 @@ export default async function CommunityProfile(
   const { community, network } = _props.params
   const chainId = getChainId(network.toUpperCase().replace('-', '_'))
   const proposals: any[] = await getAllProposals(community)
+  const eventLogs = await getProposedEvents(community)
+  const decodedLogs = eventLogs.map(
+    (log) => getDecodedProposedEvent(log.data) as any
+  )
+  const updatedProposals = getFormattedProposals(proposals, decodedLogs)
+
   const { metaData } = await getCommunityData(chainId, community.toLowerCase())
 
   return (
     <>
       <TabList items={TOGGLE_DATA} />
       <CommunityActivity
+        community={community}
         chainId={chainId}
-        proposals={proposals}
+        proposals={updatedProposals}
         communityName={metaData?.name}
       />
     </>
