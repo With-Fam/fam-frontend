@@ -66,5 +66,3 @@ export const PUBLIC_DEFAULT_CHAINS = PUBLIC_IS_TESTNET
 
 export const CHAIN = PUBLIC_IS_TESTNET ? baseSepolia : base
 export const CHAIN_ID = CHAIN.id
-export const PROPOSED_TOPIC =
-  '0xea77d064c7d953e57748855e7b0751ea190d1df7505615a4e39336d4d548f688'
