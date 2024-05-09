@@ -10,7 +10,6 @@ const getLastProposalId = async (partyAddress: Address) => {
     abi: partyAbi,
     functionName: 'lastProposalId',
   })
-  console.log('SWEETS lastProposalId', data)
   return data
 }
 

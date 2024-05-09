@@ -24,8 +24,6 @@ export default async function CommunityProfile(
   const { community, network } = _props.params
   const chainId = getChainId(network.toUpperCase().replace('-', '_'))
   const proposals: any[] = await getAllProposals(community)
-  console.log('SWEETS proposals', proposals)
-
   const { metaData } = await getCommunityData(chainId, community.toLowerCase())
 
   return (

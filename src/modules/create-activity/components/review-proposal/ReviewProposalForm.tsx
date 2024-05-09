@@ -50,15 +50,10 @@ export function ReviewProposalForm({
     defaultValues,
   })
   const { handleSubmit } = methods
-  const addresses = useDaoStore((state) => state.addresses)
-  const chain = useChainStore((x) => x.chain)
   const chainId = baseSepolia.id
   const { walletClient } = usePrivyWalletClient(baseSepolia)
-  console.log('SWEETS walletClient', walletClient)
-
   const onSubmit = async () => {
     setLoading(true)
-    console.log('SWEETS PROPOSING', walletClient)
     try {
       if (!walletClient) return { error: 'Wallet client not found' }
       const latestSnapIndex = 0n
@@ -75,8 +70,6 @@ export function ReviewProposalForm({
         cancelDelay: '0',
         proposalData: hardCodedTransferProposal,
       }
-      console.log('SWEETS proposal:', proposal)
-
       const args = [proposal, latestSnapIndex] as any
       const contractConfig = {
         account: walletClient.account,
@@ -86,16 +79,10 @@ export function ReviewProposalForm({
         chain: getViemNetwork(chainId),
         args,
       }
-      console.log('SWEETS contractConfig:', contractConfig)
-
       const publicClient = getPublicClient(chainId)
-      console.log('SWEETS publicClient:', publicClient)
-
       const { request } = await publicClient.simulateContract(
         contractConfig as any
       )
-      console.log('SWEETS request:', request)
-
       const txHash = await walletClient.writeContract(request as any)
 
       let transaction
