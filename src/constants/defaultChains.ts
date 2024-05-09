@@ -9,20 +9,20 @@ import {
   zoraSepolia,
 } from 'wagmi/chains'
 
-import { CHAIN_ID, Chain } from '@/types'
+import { CHAIN_ID as chainIdType, Chain } from '@/types'
 
 const MAINNET_CHAINS: Chain[] = [
   {
     ...mainnet,
-    id: CHAIN_ID.ETHEREUM,
+    id: chainIdType.ETHEREUM,
     slug: 'ethereum',
     icon: '/chains/ethereum.svg',
   },
-  { ...zora, id: CHAIN_ID.ZORA, slug: 'zora', icon: '/chains/zora.png' },
-  { ...base, id: CHAIN_ID.BASE, slug: 'base', icon: '/chains/base.svg' },
+  { ...zora, id: chainIdType.ZORA, slug: 'zora', icon: '/chains/zora.png' },
+  { ...base, id: chainIdType.BASE, slug: 'base', icon: '/chains/base.svg' },
   {
     ...optimism,
-    id: CHAIN_ID.OPTIMISM,
+    id: chainIdType.OPTIMISM,
     slug: 'optimism',
     icon: '/chains/optimism.svg',
   },
@@ -31,25 +31,25 @@ const MAINNET_CHAINS: Chain[] = [
 const TESTNET_CHAINS: Chain[] = [
   {
     ...baseSepolia,
-    id: CHAIN_ID.BASE_SEPOLIA,
+    id: chainIdType.BASE_SEPOLIA,
     slug: 'base-sepolia',
     icon: '/chains/base.svg',
   },
   {
     ...sepolia,
-    id: CHAIN_ID.SEPOLIA,
+    id: chainIdType.SEPOLIA,
     slug: 'sepolia',
     icon: '/chains/ethereum.svg',
   },
   {
     ...optimismSepolia,
-    id: CHAIN_ID.OPTIMISM_SEPOLIA,
+    id: chainIdType.OPTIMISM_SEPOLIA,
     slug: 'op-sepolia',
     icon: '/chains/optimism.svg',
   },
   {
     ...zoraSepolia,
-    id: CHAIN_ID.ZORA_SEPOLIA,
+    id: chainIdType.ZORA_SEPOLIA,
     slug: 'zora-sepolia',
     icon: '/chains/zora.png',
   },
@@ -63,3 +63,6 @@ export const PUBLIC_ALL_CHAINS = [...MAINNET_CHAINS, ...TESTNET_CHAINS]
 export const PUBLIC_DEFAULT_CHAINS = PUBLIC_IS_TESTNET
   ? TESTNET_CHAINS
   : MAINNET_CHAINS
+
+export const CHAIN = PUBLIC_IS_TESTNET ? baseSepolia : base
+export const CHAIN_ID = CHAIN.id
