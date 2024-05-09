@@ -1,5 +1,6 @@
 'use client'
 
+import { CheckMark } from '@/components/icons'
 import { Button } from '@/components/shared'
 import useExecuteProposal from '@/hooks/useExecuteProposal'
 import { Address } from 'viem'
@@ -19,7 +20,11 @@ const ExecuteButton = ({
     await execute(proposal, community)
   }
 
-  return <Button onClick={handleClick}>Execute</Button>
+  return (
+    <Button onClick={handleClick}>
+      <CheckMark />
+    </Button>
+  )
 }
 
 export default ExecuteButton

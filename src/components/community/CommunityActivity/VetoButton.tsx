@@ -1,5 +1,6 @@
 'use client'
 
+import { Close } from '@/components/icons'
 import { Button } from '@/components/shared'
 import useVetoProposal from '@/hooks/useVetoProposal'
 import { Address } from 'viem'
@@ -19,7 +20,11 @@ const VetoButton = ({
     await veto(community, proposalId)
   }
 
-  return <Button onClick={handleClick}>Veto</Button>
+  return (
+    <Button onClick={handleClick}>
+      <Close />
+    </Button>
+  )
 }
 
 export default VetoButton
