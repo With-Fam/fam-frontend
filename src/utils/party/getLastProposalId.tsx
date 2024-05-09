@@ -1,4 +1,4 @@
-import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
+import { CHAIN_ID } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
 import { getPublicClient } from '@/utils/viem'
 import { Address } from 'viem'
