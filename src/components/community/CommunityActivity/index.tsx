@@ -17,12 +17,16 @@ type CommunityActivityProps = {
   proposals: ProposalFragment[]
   communityName: string
   chainId: number
+  community: Address
 }
 
 // Utils
 import { formatUnixTimestampDate, isDateExpired } from '@/utils/helpers'
 import PointyTopIcon from '@/components/icons/PointyTopIcon'
 import VoteButtonHandle from '@/components/community/activity/ActivitySection/VoteButtonHandle'
+import { Button } from '@/components/shared'
+import ExecuteButton from '@/components/community/CommunityActivity/ExecuteButton'
+import { Address } from 'viem'
 
 /*--------------------------------------------------------------------*/
 
@@ -34,6 +38,7 @@ const CommunityActivity = ({
   proposals,
   communityName,
   chainId,
+  community,
 }: CommunityActivityProps): JSX.Element => (
   <section className="relative mx-auto max-w-[936px] px-4 pb-4 sm:pb-10">
     {proposals.length > 0 &&
@@ -55,6 +60,7 @@ const CommunityActivity = ({
                 {formatUnixTimestampDate(proposal.timeCreated)}
               </Paragraph>
             </Link> */}
+            <ExecuteButton proposal={proposal} community={community} />
           </div>
         </div>
       ))}
