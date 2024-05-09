@@ -9,10 +9,7 @@ type CommunityProfileProps = {
 }
 import { getCommunityData } from '@/app/(main)/community/[network]/[community]//activity/actions'
 import { getChainId } from '@/utils/getChainId'
-import getAllProposals from '@/utils/party/getAllProposals'
-import getProposedEvents from '@/utils/party/getProposedEvents'
-import getDecodedProposedEvent from '@/utils/party/getDecodedProposedEvent'
-import getFormattedProposals from '@/utils/party/getFormattedProposals'
+import getAllProposalsWithLogs from '@/utils/party/getAllProposalsWithLogs'
 
 export const metadata: Metadata = {
   title: 'Community Profile',
@@ -24,13 +21,7 @@ export default async function CommunityProfile(
 ): Promise<JSX.Element> {
   const { community, network } = _props.params
   const chainId = getChainId(network.toUpperCase().replace('-', '_'))
-  const proposals: any[] = await getAllProposals(community)
-  const eventLogs = await getProposedEvents(community)
-  const decodedLogs = eventLogs.map(
-    (log) => getDecodedProposedEvent(log.data) as any
-  )
-  const updatedProposals = getFormattedProposals(proposals, decodedLogs)
-
+  const proposals = await getAllProposalsWithLogs(community)
   const { metaData } = await getCommunityData(chainId, community.toLowerCase())
 
   return (
@@ -39,7 +30,7 @@ export default async function CommunityProfile(
       <CommunityActivity
         community={community}
         chainId={chainId}
-        proposals={updatedProposals}
+        proposals={proposals}
         communityName={metaData?.name}
       />
     </>
