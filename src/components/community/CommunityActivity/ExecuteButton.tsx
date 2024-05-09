@@ -16,9 +16,7 @@ const ExecuteButton = ({
   const { execute } = useExecuteProposal()
 
   const handleClick = async () => {
-    console.log('SWEETS PROPOSAL', proposal)
-    const response = await execute(proposal, community)
-    console.log('SWEETS EXECUTE response is RECEIPT?', response)
+    await execute(proposal, community)
   }
 
   return <Button onClick={handleClick}>Execute</Button>
