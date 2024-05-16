@@ -3,6 +3,8 @@
 // Local Components
 import { Sections } from '@/modules/create-activity'
 import { CreateActivityProvider } from '@/contexts/create-activity/CreateActivityContext'
+import { Button } from '@/components/shared'
+import WalletConnectActivityButton from '@/components/create-activity/WalletConnectActivityButton'
 
 /*--------------------------------------------------------------------*/
 
@@ -20,6 +22,7 @@ export default function CreateActivity(
   return (
     <CreateActivityProvider {..._props}>
       <Sections />
+      <WalletConnectActivityButton />
     </CreateActivityProvider>
   )
 }
