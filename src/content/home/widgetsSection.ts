@@ -18,8 +18,8 @@ const WIDGET_DATA = [
   },
   {
     imageAlt: '',
-    title: 'Grow your squad',
-    description: 'A new membership pass is auctioned every day',
+    title: 'Grow your pool',
+    description: 'Memberships help grow a shared pool of funds',
     service: {
       type: 'membership',
       image: '/assets/images/widgets/w2.png',

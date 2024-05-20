@@ -1,16 +1,15 @@
 const FAQ_DATA = [
   {
-    question: 'Daily membership auctions',
+    question: 'Memberships',
     answer: [
-      'Every day a new community membership is auctioned, forever. The proceeds from each auction go into a shared community pool which can be used to fund projects and ideas that members are passionate about.',
-      'A percentage of membership tokens can be reserved for the community founder(s) so that they can ensure decisions are being made that align with the communities best interests.',
-      'Each membership equals one vote.',
+      'The proceeds from each membership are split between the founders and a shared pool which can be used to fund projects and ideas that the community is passionate about.',
+      'Anyone who holds a membership is a co-owner of the shared pool and is able to propose and vote on how the funds are used.',
     ],
   },
   {
     question: 'Shared community pools',
     answer: [
-      'As more members join the community the proceeds from auctions help to grow the shared pool which can be used to fund new projects and ideas. Think of it like a shared bank account that no one person controls.',
+      'As more members join the community the proceeds from memberships help to grow the shared pool which can be used to fund new projects and ideas. Think of it like a shared bank account that no one person controls.',
     ],
   },
   {
