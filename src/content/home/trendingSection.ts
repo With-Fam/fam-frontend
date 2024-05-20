@@ -4,7 +4,11 @@ const TRENDING_DATA = [
     imageAlt: '',
     title: 'Soulection',
     value: '135 ETH',
+<<<<<<< HEAD
     slug: 'soulection',
+=======
+    href: '#',
+>>>>>>> origin/main
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',
@@ -18,7 +22,11 @@ const TRENDING_DATA = [
     imageAlt: '',
     title: 'Warp Records',
     value: '2,530 ETH',
+<<<<<<< HEAD
     slug: 'warp',
+=======
+    href: '#',
+>>>>>>> origin/main
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',
@@ -32,7 +40,11 @@ const TRENDING_DATA = [
     imageAlt: '',
     title: 'Trance Party',
     value: '180 ETH',
+<<<<<<< HEAD
     slug: 'trance',
+=======
+    href: '#',
+>>>>>>> origin/main
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',
@@ -46,7 +58,11 @@ const TRENDING_DATA = [
     imageAlt: '',
     title: 'Ezra Collective',
     value: '22 ETH',
+<<<<<<< HEAD
     slug: 'ezra',
+=======
+    href: '#',
+>>>>>>> origin/main
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',
@@ -60,7 +76,11 @@ const TRENDING_DATA = [
     imageAlt: '',
     title: 'NVSHU',
     value: '58 ETH',
+<<<<<<< HEAD
     slug: 'nvshu',
+=======
+    href: '#',
+>>>>>>> origin/main
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',
@@ -74,7 +94,11 @@ const TRENDING_DATA = [
     imageAlt: '',
     title: 'CHAOS',
     value: '856 ETH',
+<<<<<<< HEAD
     slug: 'chaos',
+=======
+    href: '#',
+>>>>>>> origin/main
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',

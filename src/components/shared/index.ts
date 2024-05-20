@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export * from './Button'
 export { default as ErrorBox } from './ErrorBox'
 export { default as FamImage } from './FamImage'
@@ -13,3 +14,9 @@ export { default as PhaseName } from './PhaseName'
 export { default as ProgressBar } from './ProgressBar'
 export { default as SwiperSlider } from './SwiperSlider'
 export { default as UserAvatar } from './UserAvatar'
+=======
+export { default as Footer } from './Footer'
+export { default as Logo } from './Logo'
+export { default as Navbar } from './Navbar'
+export { default as TallyForm } from './TallyForm'
+>>>>>>> origin/main

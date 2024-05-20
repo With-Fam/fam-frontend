@@ -5,7 +5,11 @@ import ToggleButton from '@/stories/Toggle/ToggleButton'
 
 // Types
 interface ToggleProps {
+<<<<<<< HEAD
   type?: string
+=======
+  type: string
+>>>>>>> origin/main
   center?: boolean
   defaultType?: string
   items: {
@@ -33,7 +37,11 @@ const Toggle = ({
 }: ToggleProps): JSX.Element => (
   <section
     className={`my-4 block w-max sm:my-10 ${
+<<<<<<< HEAD
       center ? 'mx-auto' : 'px-4 mx-0 sm:mx-auto'
+=======
+      center ? 'mx-auto' : 'mx-0 sm:mx-auto'
+>>>>>>> origin/main
     }`}
   >
     {items.map((item, index) => {

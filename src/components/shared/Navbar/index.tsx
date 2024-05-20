@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client'
 
 // Framework
@@ -14,6 +15,18 @@ import NotLoggedItems from '@/components/shared/Navbar/NotLoggedItems'
 
 // Helpers
 import { useCheckAuth } from '@/hooks/useCheckAuth'
+=======
+// Local Components
+import { Logo } from '@/components/shared'
+import LoggedItems from '@/components/shared/Navbar/LoggedItems'
+//Hidden for now
+// import NotLoggedItems from '@/components/shared/Navbar/NotLoggedItems'
+
+// Types
+interface NavProps {
+  logged?: boolean
+}
+>>>>>>> origin/main
 
 /*--------------------------------------------------------------------*/
 
@@ -21,6 +34,7 @@ import { useCheckAuth } from '@/hooks/useCheckAuth'
  * Component
  */
 
+<<<<<<< HEAD
 const Navbar = (): JSX.Element => {
   const {
     isAuthenticated,
@@ -43,6 +57,14 @@ const Navbar = (): JSX.Element => {
             {isAuthenticated ? <LoggedItems /> : <NotLoggedItems />}
           </Fragment>
         )}
+=======
+const Navbar = ({ logged }: NavProps): JSX.Element => {
+  return (
+    <nav className="fixed left-0 top-0 flex w-full justify-between p-4 sm:px-10 sm:py-8">
+      <Logo />
+      <div className="flex items-center justify-end gap-3">
+        {logged ? <LoggedItems user={'/'} /> : null}
+>>>>>>> origin/main
       </div>
     </nav>
   )

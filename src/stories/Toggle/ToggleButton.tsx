@@ -31,7 +31,11 @@ const ToggleButton = ({
   return (
     <button
       className={twMerge(
+<<<<<<< HEAD
         'w-min rounded-3xl px-3 py-2 sm:px-4 whitespace-nowrap',
+=======
+        'w-min rounded-3xl px-3 py-2 sm:px-4',
+>>>>>>> origin/main
         active ? 'bg-grey-light' : ''
       )}
       aria-label={`Toggle to ${children} type`}

@@ -1,7 +1,11 @@
 'use client'
 
 // Framework
+<<<<<<< HEAD
 import { type ReactNode, useState } from 'react'
+=======
+import { useState } from 'react'
+>>>>>>> origin/main
 
 // Third Parties
 import { twMerge } from 'tailwind-merge'
@@ -12,7 +16,11 @@ import { ChevronDown } from '@/components/icons'
 
 // Type
 interface DropDownProps {
+<<<<<<< HEAD
   children: ReactNode
+=======
+  children: React.ReactNode
+>>>>>>> origin/main
   question: string
 }
 
@@ -26,7 +34,11 @@ const DropDown = ({ children, question }: DropDownProps): JSX.Element => {
 
   return (
     <div
+<<<<<<< HEAD
       className="mt-2 rounded-lg bg-white p-8 cursor-pointer"
+=======
+      className="mt-2 cursor-pointer rounded-lg bg-white p-8"
+>>>>>>> origin/main
       onClick={() => setOpen(!open)}
     >
       <Paragraph
@@ -34,7 +46,11 @@ const DropDown = ({ children, question }: DropDownProps): JSX.Element => {
         className="flex items-center justify-between text-left"
       >
         {question}
+<<<<<<< HEAD
         <span className="ml-2">
+=======
+        <span className="ml-2 cursor-pointer">
+>>>>>>> origin/main
           <ChevronDown
             className={`
             transform-gpu transition-transform duration-300

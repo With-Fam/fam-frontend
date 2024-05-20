@@ -20,7 +20,11 @@ export const Default: Story = {
     imageAlt: '',
     title: 'Soulection',
     value: '135 ETH',
+<<<<<<< HEAD
     slug: 'soul',
+=======
+    href: '#',
+>>>>>>> origin/main
     users: [
       '/assets/images/users/u1.jpeg',
       '/assets/images/users/u2.jpeg',

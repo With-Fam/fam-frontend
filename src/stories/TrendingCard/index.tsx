@@ -2,11 +2,28 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+<<<<<<< HEAD
 import { type CommunityProps } from '@/utils/explore/communities'
 
 // Components
 import Paragraph from '@/stories/Paragraph'
 import { MemberIcon } from '@/components/icons'
+=======
+// Types
+interface CProps {
+  image: string
+  imageAlt: string
+  title: string
+  value: string
+  users: string[]
+  text: string
+  href: string
+}
+
+// Components
+import Paragraph from '@/stories/Paragraph'
+import UsersRow from '@/stories/UsersRow'
+>>>>>>> origin/main
 
 /*--------------------------------------------------------------------*/
 
@@ -21,6 +38,7 @@ const TrendingCard = ({
   users,
   text,
   imageAlt,
+<<<<<<< HEAD
   slug,
 }: CommunityProps): JSX.Element => (
   <Link
@@ -28,6 +46,11 @@ const TrendingCard = ({
     href={`/community/${slug}`}
     passHref
   >
+=======
+  href,
+}: CProps): JSX.Element => (
+  <Link className="col-span-1 block w-auto" href={href} passHref>
+>>>>>>> origin/main
     <div className="relative aspect-square w-full">
       <Image
         className="mx-auto h-auto w-full overflow-hidden rounded-lg object-cover"
@@ -41,6 +64,7 @@ const TrendingCard = ({
       <Paragraph as="p3">{title}</Paragraph>
       <Paragraph as="p3">{value}</Paragraph>
     </div>
+<<<<<<< HEAD
     <div className="flex">
       <div className=''>
         <MemberIcon />
@@ -49,6 +73,9 @@ const TrendingCard = ({
         {users.length} members
       </Paragraph>
     </div>
+=======
+    <UsersRow users={users} text={text} />
+>>>>>>> origin/main
   </Link>
 )
 

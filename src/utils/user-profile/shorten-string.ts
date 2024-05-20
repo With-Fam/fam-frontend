@@ -11,11 +11,19 @@ interface ShortenStringProps {
  * Function
  */
 
+<<<<<<< HEAD
 const shortenString = ({
   longString,
   prefixLength = 5,
   suffixLength = 3,
 }: ShortenStringProps): string => {
+=======
+export function shortenString({
+  longString,
+  prefixLength = 5,
+  suffixLength = 3,
+}: ShortenStringProps): string {
+>>>>>>> origin/main
   if (longString.length <= prefixLength + suffixLength) {
     return longString
   }

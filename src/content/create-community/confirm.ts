@@ -8,7 +8,11 @@ const CONFIRM_DATA = [
     value: '0x0b205AA65FE2c144FcFBe36255d8aFa2c480Fe4d',
   },
   {
+<<<<<<< HEAD
     title: 'Governor',
+=======
+    title: 'Gorvenor',
+>>>>>>> origin/main
     value: '0xE12d2be6d4B02Ca79c8a83F0a1CfeFB59EF38C49',
   },
   {

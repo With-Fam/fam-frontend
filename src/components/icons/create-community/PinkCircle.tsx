@@ -11,6 +11,7 @@ interface PinkCircleProps {
 
 const PinkCircle = ({ className }: PinkCircleProps): JSX.Element => (
   <svg
+<<<<<<< HEAD
     width="64"
     height="64"
     viewBox="0 0 64 64"
@@ -28,6 +29,31 @@ const PinkCircle = ({ className }: PinkCircleProps): JSX.Element => (
       d="M14 32C14 41.9411 22.0589 50 32 50C41.9411 50 50 41.9411 50 32C50 22.0589 41.9411 14 32 14C22.0589 14 14 22.0589 14 32ZM26.9901 32.0001C26.9901 34.7672 29.2333 37.0104 32.0004 37.0104C34.7675 37.0104 37.0107 34.7672 37.0107 32.0001C37.0107 29.2329 34.7676 26.9897 32.0004 26.9897C29.2333 26.9897 26.9901 29.2329 26.9901 32.0001Z"
       fill="#FDA4FF"
     />
+=======
+    xmlns="http://www.w3.org/2000/svg"
+    width="48"
+    height="48"
+    viewBox="0 0 48 48"
+    fill="none"
+    className={className}
+  >
+    <ellipse
+      cx="24"
+      cy="24"
+      rx="18"
+      ry="18"
+      transform="rotate(90 24 24)"
+      fill="#FDA4FF"
+    />
+    <ellipse
+      cx="23.9995"
+      cy="24.0001"
+      rx="5.01031"
+      ry="5.01031"
+      transform="rotate(90 23.9995 24.0001)"
+      fill="white"
+    />
+>>>>>>> origin/main
   </svg>
 )
 

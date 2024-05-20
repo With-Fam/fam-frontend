@@ -1,7 +1,11 @@
 // Local Components
 import WidgetInfo from '@/components/home/FeatureWidgets/WidgetInfo'
 import MembershipWidget from '@/components/home/FeatureWidgets/MembershipWidget'
+<<<<<<< HEAD
 import CommunityWidget from '@/components/home/FeatureWidgets/CommunityWidget'
+=======
+import CollaborateWidget from '@/components/home/FeatureWidgets/CollaborateWidget'
+>>>>>>> origin/main
 import PollWidget from '@/components/home/FeatureWidgets/PollWidget'
 
 // Content
@@ -23,12 +27,18 @@ const FeatureWidgets = (): JSX.Element => (
           switch (service.type) {
             case 'community':
               return (
+<<<<<<< HEAD
                 <CommunityWidget
                   key={index}
                   text={service.text}
                   image={service.image}
                   title={service.title}
                   users={service.users}
+=======
+                <CollaborateWidget
+                  key={index}
+                  cards={service.cards}
+>>>>>>> origin/main
                 />
               )
 
@@ -58,7 +68,11 @@ const FeatureWidgets = (): JSX.Element => (
         return (
           <div
             key={index}
+<<<<<<< HEAD
             className="h-80 w-full max-w-md overflow-hidden rounded-3xl bg-white p-6"
+=======
+            className="h-[266px] w-full max-w-md overflow-hidden rounded-3xl bg-white p-6"
+>>>>>>> origin/main
           >
             <WidgetInfo title={title}>{description}</WidgetInfo>
             {renderServiceContent()}

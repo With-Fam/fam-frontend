@@ -4,15 +4,26 @@ interface FilterProps {
   search: string
 }
 
+<<<<<<< HEAD
 export interface CommunityProps {
+=======
+interface CommunityProps {
+>>>>>>> origin/main
   image: string
   imageAlt: string
   title: string
   value: string
+<<<<<<< HEAD
   users: string[]
   slug: string
   text: string
   type?: string
+=======
+  href: string
+  users: string[]
+  text: string
+  type: string
+>>>>>>> origin/main
 }
 
 // Content
