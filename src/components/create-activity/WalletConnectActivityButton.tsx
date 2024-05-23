@@ -43,6 +43,7 @@ const WalletConnectActivityButton = () => {
 
         // await web3wallet.respondSessionRequest({ topic, response })
       })
+
       response.on('session_proposal', async (proposal) => {
         console.log('SWEETS session_proposal', proposal)
         const session = await response.approveSession({
@@ -108,7 +109,8 @@ const WalletConnectActivityButton = () => {
 
   const handleClick = async () => {
     console.log('SWEETS START WALLET CONNECT SESSION', web3Wallet)
-    const uri = ''
+    const uri =
+      'wc:4524941fdd3ce7847e5a95631085d346e51c82a668a881ad908d1f3463c7e45f@2?expiryTimestamp=1715901585&relay-protocol=irn&symKey=fc3b9ffaff7cc28e3a2b5139d2e18675aaf82e5547854fc4f9a64ee8cdf14262'
     try {
       const response = await web3Wallet.pair({ uri })
       console.log('SWEETS PAIR REQUEST', response)
