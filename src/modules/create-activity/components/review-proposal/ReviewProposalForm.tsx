@@ -35,6 +35,7 @@ import { getPublicClient } from '@/utils/viem'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { baseSepolia } from 'wagmi/chains'
 import getViemNetwork from '@/utils/viem/getViemNetwork'
+import getMaxExecutableTime from '@/utils/party/getMaxExecutableTime'
 
 /*--------------------------------------------------------------------*/
 
@@ -57,13 +58,11 @@ export function ReviewProposalForm({
     try {
       if (!walletClient) return { error: 'Wallet client not found' }
       const latestSnapIndex = 0n
-      const currentDate = new Date()
-      const oneMonthLater = new Date(
-        currentDate.setMonth(currentDate.getMonth() + 1)
-      )
-      const maxExecutableTime = Math.floor(oneMonthLater.getTime() / 1000)
+      const maxExecutableTime = getMaxExecutableTime()
+      console.log('SWEETS GET DYNAMIC DATA')
       const hardCodedTransferProposal =
         '0x00000004000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000cfbf34d385ea2d5eb947063b67ea226dcda3dc3800000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+      console.log('SWEETS GET DYNAMIC DATA', hardCodedTransferProposal)
 
       const proposal = {
         maxExecutableTime,

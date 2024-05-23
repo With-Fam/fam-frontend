@@ -15,9 +15,15 @@ import ConfirmCheckbox from './ConfirmCheckbox'
 import ContinueButton from '@/modules/ContinueButton'
 import { IPFSImage } from '@/components/ipfs/IPFSImage'
 import useDeploy from '@/hooks/useDeploy'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
+import getViemNetwork from '@/utils/viem/getViemNetwork'
+import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
+import SwitchNetworkButton from '@/components/SwitchNetworkButton'
 
 export function ConfirmForm(): JSX.Element {
-  const { chain } = useAccount()
+  const { wallet } = useConnectedWallet()
+  const walletChainId = parseInt(wallet?.chainId.split(':')[1] as string, 10)
+  const isCorrectChain = walletChainId === CHAIN_ID
   const { general } = useFormStore()
   const {
     isLoading,
@@ -78,11 +84,15 @@ export function ConfirmForm(): JSX.Element {
           <ConfirmCheckbox name="deployDaoAcceptance">
             I am deploying my DAO on{' '}
             <Link href="#" className="text-orange">
-              {chain?.name}
+              {CHAIN?.name}
             </Link>
           </ConfirmCheckbox>
         </div>
-        <ContinueButton title="Confirm" loading={isLoading} />
+        {isCorrectChain ? (
+          <ContinueButton title="Confirm" loading={isLoading} />
+        ) : (
+          <SwitchNetworkButton />
+        )}
       </form>
     </FormProvider>
   )
