@@ -35,10 +35,6 @@ import { getPublicClient } from '@/utils/viem'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { baseSepolia } from 'wagmi/chains'
 import getViemNetwork from '@/utils/viem/getViemNetwork'
-import getMaxExecutableTime from '@/utils/party/getMaxExecutableTime'
-import getProposalData from '@/utils/party/getProposalData'
-import { BytecodeProposalData } from '@/types/partyTypes'
-import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 
 /*--------------------------------------------------------------------*/
 
@@ -54,37 +50,27 @@ export function ReviewProposalForm({
     defaultValues,
   })
   const { handleSubmit } = methods
-  const chainId = CHAIN_ID
-  const { walletClient } = usePrivyWalletClient(CHAIN)
-  const walletChainId = walletClient?.chain?.id
-  const isCorrectChain = walletClient?.chain?.id === CHAIN_ID
-
+  const chainId = baseSepolia.id
+  const { walletClient } = usePrivyWalletClient(baseSepolia)
   const onSubmit = async () => {
     setLoading(true)
-
     try {
       if (!walletClient) return { error: 'Wallet client not found' }
-      await walletClient.switchChain({ id: CHAIN_ID })
       const latestSnapIndex = 0n
-      const dataResponse = getProposalData([
-        {
-          target: walletClient.account?.address,
-          value: '1',
-          data: '0x0000000000000000000000000000000000000000000000000000000000000000', // bytecode
-          optional: false, // If true, the call is allowed to fail.
-          expectedResultHash:
-            '0x0000000000000000000000000000000000000000000000000000000000000000',
-        },
-      ] as BytecodeProposalData[])
-      // const hardCodedTransferProposal =
-      //   '0x00000004000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000cfbf34d385ea2d5eb947063b67ea226dcda3dc3800000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+      const currentDate = new Date()
+      const oneMonthLater = new Date(
+        currentDate.setMonth(currentDate.getMonth() + 1)
+      )
+      const maxExecutableTime = Math.floor(oneMonthLater.getTime() / 1000)
+      const hardCodedTransferProposal =
+        '0x00000004000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000cfbf34d385ea2d5eb947063b67ea226dcda3dc3800000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
 
-      // const proposal = {
-      //   maxExecutableTime,
-      //   cancelDelay: '0',
-      //   proposalData: hardCodedTransferProposal,
-      // }
-      const args = [dataResponse, latestSnapIndex] as any
+      const proposal = {
+        maxExecutableTime,
+        cancelDelay: '0',
+        proposalData: hardCodedTransferProposal,
+      }
+      const args = [proposal, latestSnapIndex] as any
       const contractConfig = {
         account: walletClient.account,
         abi: partyAbi,
