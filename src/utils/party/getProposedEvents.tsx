@@ -11,7 +11,6 @@ const getProposedEvents = async (partyAddress: Address): Promise<any[]> => {
   const topics = getProposedEventTopic()
   const publicClient = getPublicClient(baseSepolia.id)
   const latestBlockNumber = await publicClient.getBlockNumber()
-  console.log('SWEEETS latestBlockNumber', latestBlockNumber)
   const latestBlock = Number(latestBlockNumber)
   const chunkSize = 1000000
   const batchRequests = []
