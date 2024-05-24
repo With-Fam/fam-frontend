@@ -4,7 +4,7 @@ import { Paragraph } from '@/stories'
 import { usePrivy } from '@privy-io/react-auth'
 
 const SessionExpired = (): JSX.Element => {
-  const { authenticated, ready } = usePrivy()
+  const { authenticated, ready, logout } = usePrivy()
   const router = useRouter()
 
   if (!ready || authenticated) {
