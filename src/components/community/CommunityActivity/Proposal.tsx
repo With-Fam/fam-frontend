@@ -9,7 +9,6 @@ interface ProposalProps {
 
 const Proposal = ({ proposal, community }: ProposalProps): JSX.Element => {
   const proposalId = proposal?.decodedData?.args?.proposalId
-  console.log('SWEETS PROPOSAL', proposal)
 
   return (
     <div className="relative z-0 mb-8 rounded-lg bg-white p-4">

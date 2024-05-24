@@ -27,7 +27,6 @@ export default async function CommunityProfile(
   const chainId = getChainId(network.toUpperCase().replace('-', '_'))
 
   const data: any = await getMemberData(chainId, community as Address)
-  console.log('SWEETS MEMBERS', data)
   return (
     <>
       <TabList items={TOGGLE_DATA} />

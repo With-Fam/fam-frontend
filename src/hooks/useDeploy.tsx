@@ -23,8 +23,6 @@ const useDeploy = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleDeploy = async () => {
-    console.log('SWEETS handleDeploy')
-
     setIsLoading(true)
     setDeploymentError(undefined)
 
@@ -38,7 +36,6 @@ const useDeploy = () => {
     }
 
     setIsPendingTransaction(true)
-    console.log('SWEETS CREATING PARTY')
     const transaction = await createParty()
     const error = (transaction as any)?.error
 
