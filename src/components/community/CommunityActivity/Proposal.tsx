@@ -17,7 +17,7 @@ const Proposal = ({ proposal, community }: ProposalProps): JSX.Element => {
           proposalId={proposal?.decodedData?.args?.proposalId}
           community={community}
         />
-        PARTY PROPOSAL #{proposalId.toString()}
+        PARTY PROPOSAL #{proposalId?.toString?.()}
         <ExecuteButton proposal={proposal} community={community} />
       </div>
     </div>

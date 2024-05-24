@@ -7,14 +7,15 @@ import { Toaster } from 'react-hot-toast'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from '@privy-io/wagmi'
 import { base, baseSepolia } from 'wagmi/chains'
+import { mapChainIdToEndpoint } from '@/utils/alchemy/mapChainIdToEndpoint'
 
 const queryClient = new QueryClient()
 
 export const config = createConfig({
   chains: [base, baseSepolia],
   transports: {
-    [base.id]: http(),
-    [baseSepolia.id]: http(),
+    [base.id]: http(mapChainIdToEndpoint(base.id)),
+    [baseSepolia.id]: http(mapChainIdToEndpoint(baseSepolia.id)),
   },
 })
 
@@ -24,7 +25,7 @@ export const WalletContext = ({ children }: PropsWithChildren): JSX.Element => {
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
       config={{
         walletConnectCloudProjectId: 'a2ca754e356641b9ab15dae82876d257',
-        loginMethods: ['wallet', 'email', 'apple', 'google', 'twitter'],
+        loginMethods: ['wallet', 'email'],
         appearance: {
           showWalletLoginFirst: true,
           theme: 'light',

@@ -4,7 +4,7 @@ import getFormattedProposals from '@/utils/party/getFormattedProposals'
 import getProposedEvents from '@/utils/party/getProposedEvents'
 import { Address } from 'viem'
 
-const getAllProposalsWithLogs = async (community: Address) => {
+const getAllProposalsWithLogs: any = async (community: Address) => {
   const proposals: any[] = await getAllProposals(community)
   const eventLogs = await getProposedEvents(community)
   const decodedLogs = eventLogs.map(

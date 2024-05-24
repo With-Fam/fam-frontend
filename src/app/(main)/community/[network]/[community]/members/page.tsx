@@ -1,23 +1,16 @@
-// Local Components
 import { CommunityMembers, TabList } from '@/components/community'
 import { TOGGLE_DATA } from '@/content/community'
-
-// Types
 type CommunityProfileProps = {
   params: { community: string; network: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
-
-// API
-import { SDK } from '@/data/subgraph/client'
 import { getChainId } from '@/utils/getChainId'
+import getOwners from '@/utils/party/getMembers'
+import { Address } from 'viem'
 
-async function getMemberData(chainId: number, collection: string) {
-  const dao = await SDK.connect(chainId).daoMembersList({
-    where: {
-      dao: collection.toLowerCase(),
-    },
-  })
+async function getMemberData(chainId: number, collection: Address) {
+  const daotokenOwners = await getOwners(collection)
+  const dao = { daotokenOwners }
   return dao
 }
 
@@ -33,7 +26,7 @@ export default async function CommunityProfile(
   const { community, network } = _props.params
   const chainId = getChainId(network.toUpperCase().replace('-', '_'))
 
-  const data: any = await getMemberData(chainId, community)
+  const data: any = await getMemberData(chainId, community as Address)
   return (
     <>
       <TabList items={TOGGLE_DATA} />

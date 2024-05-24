@@ -1,17 +1,12 @@
 'use client'
 
-// Framework
-import { MutableRefObject, useCallback } from 'react'
+import { MutableRefObject } from 'react'
 import dynamic from 'next/dynamic'
-
-// Third Parties
 import toast from 'react-hot-toast'
 import { FormProvider, useForm } from 'react-hook-form'
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), {
   ssr: false,
-}) // Quill library requires a dynamic import to not break SSR
-
-// Schema and types
+})
 import schema, { ERROR_CODE, ReviewProposalFormValues } from './schema'
 import type { AddressType, Maybe } from '@/types'
 type ReviewProposalFormProps = {
@@ -21,20 +16,16 @@ type ReviewProposalFormProps = {
   setLoadingMessage: (message: string) => void
   community: AddressType
 }
-
-// Components
 import TitleInput from '@/modules/create-activity/components/review-proposal/TitleInput'
 import { AddButton } from './AddButton'
-
-// Helpers
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useDaoStore } from '@/modules/dao'
-import { useChainStore } from '@/utils/stores/useChainStore'
 import { partyAbi } from '@/data/contract/abis/Party'
 import { getPublicClient } from '@/utils/viem'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { baseSepolia } from 'wagmi/chains'
 import getViemNetwork from '@/utils/viem/getViemNetwork'
+import getMaxExecutableTime from '@/utils/party/getMaxExecutableTime'
+import { CHAIN_ID } from '@/constants/defaultChains'
 
 /*--------------------------------------------------------------------*/
 
@@ -56,12 +47,9 @@ export function ReviewProposalForm({
     setLoading(true)
     try {
       if (!walletClient) return { error: 'Wallet client not found' }
+      await walletClient.switchChain({ id: CHAIN_ID })
       const latestSnapIndex = 0n
-      const currentDate = new Date()
-      const oneMonthLater = new Date(
-        currentDate.setMonth(currentDate.getMonth() + 1)
-      )
-      const maxExecutableTime = Math.floor(oneMonthLater.getTime() / 1000)
+      const maxExecutableTime = getMaxExecutableTime()
       const hardCodedTransferProposal =
         '0x00000004000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000cfbf34d385ea2d5eb947063b67ea226dcda3dc3800000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
 

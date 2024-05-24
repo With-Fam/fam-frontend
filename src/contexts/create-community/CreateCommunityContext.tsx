@@ -26,7 +26,6 @@ import {
 
 // Types
 import type { CreateSection } from '@/modules/create-community/types'
-import { useAccount } from 'wagmi'
 export interface CreateCommunityContextType {
   loading: boolean
   section: CreateSection
@@ -47,18 +46,16 @@ const CreateCommunityContext = createContext<CreateCommunityContextType>({
 
 // Helpers
 import { getDateYearsFromNow } from '@/utils/helpers'
-import { useCheckAuth } from '@/hooks/useCheckAuth'
+import { usePrivy } from '@privy-io/react-auth'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
 let sections: CreateSection[] = []
 
 // IMPORTANT: Create loading component
 const CreateCommunityProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
-  const { chain } = useAccount()
-  const {
-    isAuthenticated,
-    wagmiData: { address },
-  } = useCheckAuth()
+  const { authenticated, ready } = usePrivy()
+  const { connectedWallet: address } = useConnectedWallet()
   const [loading, setLoading] = useState<boolean>(true)
   const {
     activeSection,
@@ -165,7 +162,7 @@ const CreateCommunityProvider = ({
       order: 2,
       title: 'Confirm',
       key: 'review',
-      content: chain && chain.id ? <ConfirmForm /> : <></>,
+      content: <ConfirmForm />,
     }
 
     const deploy: CreateSection = {
@@ -188,11 +185,10 @@ const CreateCommunityProvider = ({
     setFounderAllocation,
     setVetoPower,
     setVetoerAddress,
-    chain,
     address,
   ])
 
-  if (!isAuthenticated) {
+  if (!authenticated && ready) {
     return (
       <CreateCommunityContext.Provider
         value={{
@@ -207,27 +203,6 @@ const CreateCommunityProvider = ({
         <ErrorBox
           title="Not this time"
           description="You are not authenticated"
-          exitPath="/"
-        />
-      </CreateCommunityContext.Provider>
-    )
-  }
-
-  if (typeof chain?.id === 'undefined') {
-    return (
-      <CreateCommunityContext.Provider
-        value={{
-          loading,
-          step: activeSection,
-          section: sections[activeSection],
-          next,
-          prev,
-          title: sections[activeSection]?.title,
-        }}
-      >
-        <ErrorBox
-          title="Not this time"
-          description="It seems that you are not connected to a wallet. Please log in to continue."
           exitPath="/"
         />
       </CreateCommunityContext.Provider>

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { WalletClient, createWalletClient, custom, Chain } from 'viem'
 import useConnectedWallet from './useConnectedWallet'
+import { CHAIN } from '@/constants/defaultChains'
 
-const usePrivyWalletClient = (chain: Chain) => {
+const usePrivyWalletClient = (chain: Chain = CHAIN) => {
   const { connectedWallet, wallet } = useConnectedWallet()
   const [walletClient, setWalletClient] = useState<WalletClient | null>(null)
 

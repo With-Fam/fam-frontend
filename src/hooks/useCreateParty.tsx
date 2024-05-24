@@ -10,13 +10,14 @@ import { getPublicClient } from '@/utils/viem'
 import getViemNetwork from '@/utils/viem/getViemNetwork'
 import { ZeroAddress } from 'ethers'
 import { useAccount } from 'wagmi'
-import { baseSepolia } from 'wagmi/chains'
+import { CHAIN_ID } from '@/constants/defaultChains'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
 
 const useCreateParty = () => {
-  const chainId = baseSepolia.id
+  const chainId = CHAIN_ID
   const { auctionSettings } = useFormStore()
-  const { address } = useAccount()
-  const { walletClient } = usePrivyWalletClient(baseSepolia)
+  const { connectedWallet: address } = useConnectedWallet()
+  const { walletClient } = usePrivyWalletClient()
 
   const createParty = async () => {
     if (!walletClient) return { error: 'Wallet client not found' }
@@ -72,7 +73,6 @@ const useCreateParty = () => {
       const txHash = await walletClient.writeContract(request as any)
 
       let transaction
-
       if (txHash) {
         transaction = await publicClient.waitForTransactionReceipt({
           hash: txHash,
