@@ -3,7 +3,7 @@ import { partyAbi } from '@/data/contract/abis/Party'
 import { getPublicClient } from '@/utils/viem'
 import { Address } from 'viem'
 
-const getOwners = async (partyAddress: Address) => {
+const getOwners = async (partyAddress: Address): Promise<Address[]> => {
   const publicClient = getPublicClient(CHAIN_ID)
   const tokenCount = await publicClient.readContract({
     address: partyAddress,
@@ -25,7 +25,7 @@ const getOwners = async (partyAddress: Address) => {
   const results = await publicClient.multicall({
     contracts,
   })
-  const owners = results.map((result) => result.result)
+  const owners = results.map((result) => result.result) as Address[]
   return owners
 }
 

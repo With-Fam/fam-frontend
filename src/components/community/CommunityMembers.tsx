@@ -48,32 +48,18 @@ const CommunityMembers = ({ data }: CommunityMembersProps): JSX.Element => {
             className="mb-2 block rounded-lg bg-white p-4 sm:flex sm:items-center sm:justify-between"
           >
             <div className="mb-4 flex items-center justify-start gap-2 sm:mb-0">
-              <UserAvatar width={24} height={24} address={member?.owner} />
-              <UserName
-                className="flex items-center gap-1"
-                address={member?.owner}
-              />
-              {/* {member.founder && (
-                <p
-                  className="h-min rounded-3xl px-2 py-1 text-xs text-orange"
-                  style={{ backgroundColor: 'rgba(245, 77, 24, 0.10)' }}
-                >
-                  Founder
-                </p>
-              )} */}
+              <UserAvatar width={24} height={24} address={member} />
+              <UserName className="flex items-center gap-1" address={member} />
             </div>
             <div className="flex flex-1 items-center justify-between pl-0 sm:pl-6">
-              {/* <Paragraph as="p4" className="text-grey">
-                Joined {formatDate(member.joinedDate)}
-              </Paragraph> */}
               <Paragraph
                 as="p4"
                 className="flex-0 px-0 text-center text-grey sm:flex-1 sm:px-8 sm:text-right"
               >
-                {member.daoTokenCount} votes
+                X votes
               </Paragraph>
               <Paragraph as="p4" className="text-grey">
-                {((member.daoTokenCount / total) * 100).toFixed(2)}%
+                %
               </Paragraph>
             </div>
           </Link>
