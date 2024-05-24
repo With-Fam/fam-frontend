@@ -56,6 +56,7 @@ export function ReviewProposalForm({
     setLoading(true)
     try {
       if (!walletClient) return { error: 'Wallet client not found' }
+      await walletClient.switchChain({ id: CHAIN_ID })
       const latestSnapIndex = 0n
       const currentDate = new Date()
       const oneMonthLater = new Date(
