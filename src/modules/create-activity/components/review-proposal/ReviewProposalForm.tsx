@@ -36,6 +36,9 @@ import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { baseSepolia } from 'wagmi/chains'
 import getViemNetwork from '@/utils/viem/getViemNetwork'
 import getMaxExecutableTime from '@/utils/party/getMaxExecutableTime'
+import getProposalData from '@/utils/party/getProposalData'
+import { BytecodeProposalData } from '@/types/partyTypes'
+import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 
 /*--------------------------------------------------------------------*/
 
@@ -51,25 +54,41 @@ export function ReviewProposalForm({
     defaultValues,
   })
   const { handleSubmit } = methods
-  const chainId = baseSepolia.id
-  const { walletClient } = usePrivyWalletClient(baseSepolia)
+  const chainId = CHAIN_ID
+  const { walletClient } = usePrivyWalletClient(CHAIN)
+  const walletChainId = walletClient?.chain?.id
+  console.log('SWEETS walletChainId', walletChainId)
+  const isCorrectChain = walletClient?.chain?.id === CHAIN_ID
+  console.log('SWEETS isCorrectChain', isCorrectChain)
+
   const onSubmit = async () => {
     setLoading(true)
+
     try {
       if (!walletClient) return { error: 'Wallet client not found' }
+      await walletClient.switchChain({ id: CHAIN_ID })
       const latestSnapIndex = 0n
-      const maxExecutableTime = getMaxExecutableTime()
-      console.log('SWEETS GET DYNAMIC DATA')
-      const hardCodedTransferProposal =
-        '0x00000004000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000cfbf34d385ea2d5eb947063b67ea226dcda3dc3800000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-      console.log('SWEETS GET DYNAMIC DATA', hardCodedTransferProposal)
+      const dataResponse = getProposalData([
+        {
+          target: walletClient.account?.address,
+          value: '1',
+          data: '0x0000000000000000000000000000000000000000000000000000000000000000', // bytecode
+          optional: false, // If true, the call is allowed to fail.
+          expectedResultHash:
+            '0x0000000000000000000000000000000000000000000000000000000000000000',
+        },
+      ] as BytecodeProposalData[])
+      console.log('SWEETS GET DYNAMIC DATA', dataResponse.proposalData)
+      // const hardCodedTransferProposal =
+      //   '0x00000004000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000cfbf34d385ea2d5eb947063b67ea226dcda3dc3800000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+      // console.log('SWEETS GET DYNAMIC DATA', hardCodedTransferProposal)
 
-      const proposal = {
-        maxExecutableTime,
-        cancelDelay: '0',
-        proposalData: hardCodedTransferProposal,
-      }
-      const args = [proposal, latestSnapIndex] as any
+      // const proposal = {
+      //   maxExecutableTime,
+      //   cancelDelay: '0',
+      //   proposalData: hardCodedTransferProposal,
+      // }
+      const args = [dataResponse, latestSnapIndex] as any
       const contractConfig = {
         account: walletClient.account,
         abi: partyAbi,

@@ -48,7 +48,6 @@ const SubmitProposal = dynamic(
 
 // Helpers
 import { useActivityFormStore } from '@/modules/create-activity/stores'
-import { useCheckAuth } from '@/hooks/useCheckAuth'
 import {
   TRANSACTION_TYPES,
   type TransactionType,
@@ -58,6 +57,7 @@ let sections: CreateSection[] = []
 // Types
 import type { CreateSection } from '@/modules/create-community/types'
 import type { AddressType, Maybe } from '@/types'
+import { usePrivy } from '@privy-io/react-auth'
 type ActivityProviderProps = PropsWithChildren<{
   params: {
     community: string
@@ -88,7 +88,7 @@ const CreateActivityProvider = ({
   children,
   params,
 }: ActivityProviderProps): JSX.Element => {
-  const { isAuthenticated } = useCheckAuth()
+  const { authenticated } = usePrivy()
   const { network, community } = params
   const [loading, setLoading] = useState<boolean>(false)
   const [loadingMessage, setLoadingMessage] =
@@ -186,7 +186,7 @@ const CreateActivityProvider = ({
     return [action, transaction, proposal]
   }, [proposalDefault, activityType, community, next, setActivityType])
 
-  if (!isAuthenticated) {
+  if (!authenticated) {
     return (
       <CreateActivityContext.Provider
         value={{

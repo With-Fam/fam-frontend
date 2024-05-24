@@ -1,13 +1,13 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { Paragraph } from '@/stories'
+import { usePrivy } from '@privy-io/react-auth'
 
 const SessionExpired = (): JSX.Element => {
-  const { walletExpired, logout, privyData, wagmiData } = useCheckAuth()
+  const { authenticated, ready } = usePrivy()
   const router = useRouter()
 
-  if (!walletExpired) {
+  if (!ready || authenticated) {
     return <></>
   }
   return (

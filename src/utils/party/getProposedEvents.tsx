@@ -4,12 +4,14 @@ import { CHAIN_ID } from '@/constants/defaultChains'
 import { batchRpcCall } from '@/utils/alchemy/batchRpcCall'
 import { mapChainIdToEndpoint } from '@/utils/alchemy/mapChainIdToEndpoint'
 import getProposedEventTopic from '@/utils/party/getProposedEventTopic'
+import { baseSepolia } from 'viem/chains'
 
 const getProposedEvents = async (partyAddress: Address): Promise<any[]> => {
   if (!partyAddress) return []
   const topics = getProposedEventTopic()
-  const publicClient = getPublicClient(CHAIN_ID)
+  const publicClient = getPublicClient(baseSepolia.id)
   const latestBlockNumber = await publicClient.getBlockNumber()
+  console.log('SWEEETS latestBlockNumber', latestBlockNumber)
   const latestBlock = Number(latestBlockNumber)
   const chunkSize = 1000000
   const batchRequests = []

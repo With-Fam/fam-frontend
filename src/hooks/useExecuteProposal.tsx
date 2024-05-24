@@ -12,6 +12,7 @@ const useExecuteProposal = (): any => {
     const { args } = proposal.decodedData
     const proposalId = args.proposalId
     const proposalArgs = args.proposal
+    console.log('SWEETS proposalArgs', proposalArgs)
     const preciousTokens = [] as any[]
     const preciousTokenIds = [] as any[]
     const progressData = '0x'
