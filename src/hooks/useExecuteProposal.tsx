@@ -17,7 +17,6 @@ const useExecuteProposal = (): any => {
     const progressData = '0x'
     const extraData = '0x'
     try {
-      console.log('SWEETS EXECUTING', proposal)
       const hash = await walletClient.writeContract({
         account: walletClient.account?.address as Address,
         address: community,
