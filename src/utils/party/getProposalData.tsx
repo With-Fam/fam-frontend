@@ -1,13 +1,7 @@
 import { BytecodeProposalData, ProposalType } from '@/types/partyTypes'
 import getMaxExecutableTime from '@/utils/party/getMaxExecutableTime'
 import { AbiCoder } from 'ethers'
-import {
-  encodeAbiParameters,
-  pad,
-  toHex,
-  concatHex,
-  decodeAbiParameters,
-} from 'viem'
+import { pad, toHex, concatHex, Address } from 'viem'
 
 const getProposalData = (inputProposalData: BytecodeProposalData) => {
   const abiCoder = AbiCoder.defaultAbiCoder()
@@ -39,7 +33,7 @@ const getProposalData = (inputProposalData: BytecodeProposalData) => {
   // Concatenate the selector and the encoded proposal data
   const proposalData = concatHex([
     hexEncodedSelector,
-    encodedBytecodeProposalData,
+    encodedBytecodeProposalData as Address,
   ])
 
   // Construct the proposal struct
