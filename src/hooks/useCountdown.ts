@@ -46,6 +46,9 @@ export const useCountdown = (
             .toString()
             .padStart(2, '0')}h ${Math.floor((countdown % 3600) / 60)
             .toString()
-            .padStart(2, '0')}m ${(countdown % 60).toString().padStart(2, '0')}s`,
+            .padStart(
+              2,
+              '0'
+            )}m ${(countdown % 60).toString().padStart(2, '0')}s`,
   }
 }

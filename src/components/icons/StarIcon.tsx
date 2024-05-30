@@ -10,7 +10,10 @@ type StarIconProps = SVGAttributes<SVGSVGElement> & {
  * Component
  */
 
-const StarIcon = ({ color = '#477443', ..._props }: StarIconProps): JSX.Element => (
+const StarIcon = ({
+  color = '#477443',
+  ..._props
+}: StarIconProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="121"

@@ -7,8 +7,8 @@ const meta: Meta<typeof NavigationButton> = {
   component: NavigationButton,
   tags: ['autodocs'],
   args: {
-    className: "left-0 -scale-x-100",
-    direction: "prev",
+    className: 'left-0 -scale-x-100',
+    direction: 'prev',
   },
   parameters: {
     tags: ['autodocs'],

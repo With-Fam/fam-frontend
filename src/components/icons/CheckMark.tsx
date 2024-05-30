@@ -8,7 +8,7 @@ import type { SVGProps } from './types'
 
 const CheckMark = ({
   className,
-  color = "#45D039",
+  color = '#45D039',
   ..._props
 }: SVGProps): JSX.Element => (
   <svg

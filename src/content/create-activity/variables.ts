@@ -4,12 +4,7 @@ type Phase = {
   title: string
 }
 
-export type PhaseKeys =
-  | 'start'
-  | 'pick-action'
-  | 'actions'
-  | 'apps'
-  | 'add'
+export type PhaseKeys = 'start' | 'pick-action' | 'actions' | 'apps' | 'add'
 
 export const phases: Phase[] = [
   {

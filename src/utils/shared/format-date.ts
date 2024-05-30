@@ -14,4 +14,3 @@ const formatDate = (inputDate: string): string => {
 }
 
 export default formatDate
-

@@ -1,4 +1,4 @@
-import { CHAIN_ID } from "@/types"
+import { CHAIN_ID } from '@/types'
 
 export function getChainId(
   chainName: string

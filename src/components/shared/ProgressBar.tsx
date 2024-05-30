@@ -1,6 +1,6 @@
 'use client'
 // Third Parties
-import { AppProgressBar } from 'next-nprogress-bar';
+import { AppProgressBar } from 'next-nprogress-bar'
 
 /*-------------------------------------------------------------------*/
 

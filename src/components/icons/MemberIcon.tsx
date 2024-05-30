@@ -2,7 +2,7 @@ import type { SVGProps } from './types'
 
 export function MemberIcon({
   className,
-  color = "#7A7A7A",
+  color = '#7A7A7A',
   ..._props
 }: SVGProps): JSX.Element {
   return (

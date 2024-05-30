@@ -1,4 +1,5 @@
 import { CommunityMembers, TabList } from '@/components/community'
+import CommunityHeader from '@/components/community/CommunityHeader'
 import { TOGGLE_DATA } from '@/content/community'
 type CommunityProfileProps = {
   params: { community: string; network: string }
@@ -29,6 +30,7 @@ export default async function CommunityProfile(
   const data: any = await getMemberData(chainId, community as Address)
   return (
     <>
+      <CommunityHeader />
       <TabList items={TOGGLE_DATA} />
       <CommunityMembers data={data as any} />
     </>

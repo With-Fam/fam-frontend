@@ -8,7 +8,7 @@ import type { SVGProps } from './types'
 
 const XMark = ({
   className,
-  color = "#FF0000",
+  color = '#FF0000',
   ..._props
 }: SVGProps): JSX.Element => (
   <svg

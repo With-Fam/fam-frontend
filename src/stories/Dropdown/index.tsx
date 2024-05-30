@@ -26,7 +26,7 @@ const DropDown = ({ children, question }: DropDownProps): JSX.Element => {
 
   return (
     <div
-      className="mt-2 rounded-lg bg-white p-8 cursor-pointer"
+      className="mt-2 cursor-pointer rounded-lg bg-white p-8"
       onClick={() => setOpen(!open)}
     >
       <Paragraph

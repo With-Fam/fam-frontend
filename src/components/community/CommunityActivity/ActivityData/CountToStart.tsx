@@ -25,12 +25,15 @@ import { fromSeconds } from '@/utils/helpers'
  */
 
 const CountToStart = ({ proposal }: CountToStartProps): JSX.Element => {
-  const timeToStart = fromSeconds(Math.floor(proposal.voteStart - new Date().getTime() / 1000))
+  const timeToStart = fromSeconds(
+    Math.floor(proposal.voteStart - new Date().getTime() / 1000)
+  )
 
   return (
     <div className="w-max rounded-3xl bg-orange-500/10 px-2 py-1">
       <Paragraph as="p6" className="font-bold text-orange">
-        {timeToStart.days}d {timeToStart.hours}h {timeToStart.minutes}m {timeToStart.seconds}s
+        {timeToStart.days}d {timeToStart.hours}h {timeToStart.minutes}m{' '}
+        {timeToStart.seconds}s
       </Paragraph>
     </div>
   )
