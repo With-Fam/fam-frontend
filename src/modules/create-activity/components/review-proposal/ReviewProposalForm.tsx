@@ -28,6 +28,7 @@ import { CHAIN_ID } from '@/constants/defaultChains'
 import getProposalData from '@/utils/party/getProposalData'
 import { useProposalStore } from '@/modules/create-activity/stores'
 import { parseEther } from 'viem'
+import { usePrivy } from '@privy-io/react-auth'
 
 /*--------------------------------------------------------------------*/
 
@@ -44,21 +45,13 @@ export function ReviewProposalForm({
   })
   const { transactions } = useProposalStore()
   const { target, value } = transactions[0].transactions[0]
-
   const { handleSubmit } = methods
   const chainId = baseSepolia.id
   const { walletClient } = usePrivyWalletClient(baseSepolia)
   const onSubmit = async () => {
-    console.log('SWEETS onSubmit', transactions)
-    console.log('SWEETS transactions', transactions)
-    console.log('SWEETS target', target)
-    console.log('SWEETS value', parseEther(value))
     setLoading(true)
     try {
-      console.log('SWEETS walletClient', walletClient)
       if (!walletClient) return { error: 'Wallet client not found' }
-      console.log('SWEETS walletClient exists')
-
       await walletClient.switchChain({ id: CHAIN_ID })
       const latestSnapIndex = 0n
       const proposalRaw = {
@@ -68,10 +61,7 @@ export function ReviewProposalForm({
         optional: false,
         expectedResultHash: '0x0',
       }
-      console.log('SWEETS proposalRaw', proposalRaw)
-
       const proposalData = getProposalData(proposalRaw)
-      console.log('PROPOSAL DATA', proposalData)
       const args = [proposalData, latestSnapIndex] as any
       const contractConfig = {
         account: walletClient.account,
