@@ -2,12 +2,11 @@
 
 import { MutableRefObject } from 'react'
 import dynamic from 'next/dynamic'
-import toast from 'react-hot-toast'
 import { FormProvider, useForm } from 'react-hook-form'
 const DescriptionEditor = dynamic(() => import('./DescriptionEditor'), {
   ssr: false,
 })
-import schema, { ERROR_CODE, ReviewProposalFormValues } from './schema'
+import schema, { ReviewProposalFormValues } from './schema'
 import type { AddressType, Maybe } from '@/types'
 type ReviewProposalFormProps = {
   defaultValues: ReviewProposalFormValues
@@ -19,18 +18,7 @@ type ReviewProposalFormProps = {
 import TitleInput from '@/modules/create-activity/components/review-proposal/TitleInput'
 import { AddButton } from './AddButton'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { partyAbi } from '@/data/contract/abis/Party'
-import { getPublicClient } from '@/utils/viem'
-import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
-import { baseSepolia } from 'wagmi/chains'
-import getViemNetwork from '@/utils/viem/getViemNetwork'
-import { CHAIN_ID } from '@/constants/defaultChains'
-import getProposalData from '@/utils/party/getProposalData'
-import { useProposalStore } from '@/modules/create-activity/stores'
-import { parseEther } from 'viem'
-import { usePrivy } from '@privy-io/react-auth'
-
-/*--------------------------------------------------------------------*/
+import useCreateProposal from '@/hooks/useCreateProposal'
 
 export function ReviewProposalForm({
   defaultValues,
@@ -43,68 +31,17 @@ export function ReviewProposalForm({
     resolver: yupResolver(schema),
     defaultValues,
   })
-  const { transactions } = useProposalStore()
-  const { target, value } = transactions[0].transactions[0]
+  const { create } = useCreateProposal(community)
   const { handleSubmit } = methods
-  const chainId = baseSepolia.id
-  const { walletClient } = usePrivyWalletClient(baseSepolia)
+
   const onSubmit = async () => {
     setLoading(true)
-    try {
-      if (!walletClient) return { error: 'Wallet client not found' }
-      await walletClient.switchChain({ id: CHAIN_ID })
-      const latestSnapIndex = 0n
-      const proposalRaw = {
-        target: target,
-        value: parseEther(value),
-        data: '0x0',
-        optional: false,
-        expectedResultHash: '0x0',
-      }
-      const proposalData = getProposalData(proposalRaw)
-      const args = [proposalData, latestSnapIndex] as any
-      const contractConfig = {
-        account: walletClient.account,
-        abi: partyAbi,
-        functionName: 'propose',
-        address: community as AddressType,
-        chain: getViemNetwork(chainId),
-        args,
-      }
-      const publicClient = getPublicClient(chainId)
-      const { request } = await publicClient.simulateContract(
-        contractConfig as any
-      )
-      const txHash = await walletClient.writeContract(request as any)
-
-      let transaction
-
-      if (txHash) {
-        transaction = await publicClient.waitForTransactionReceipt({
-          hash: txHash,
-        })
-      }
+    const transaction = await create()
+    if (transaction) {
       setLoadingMessage('Proposal posted. Redirecting...')
-      return transaction
-    } catch (err: any) {
-      setLoading(false)
-      console.error(err)
-
-      if (err.name === 'ConnectorNotFoundError') {
-        toast.error(ERROR_CODE.CONNECTOR_NOT_FOUND)
-        return
-      }
-
-      if (err.shortMessage === 'User rejected the request.') {
-        toast.error(ERROR_CODE.REJECTED)
-        return
-      }
-      if (err.code === 'ACTION_REJECTED') {
-        toast.error(ERROR_CODE.REJECTED)
-        return
-      }
-      toast.error(err.messageD)
+      return
     }
+    setLoading(false)
   }
 
   return (
