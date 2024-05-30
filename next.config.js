@@ -17,7 +17,8 @@ const nextConfig = {
       'i.ibb.co',
       // 'euc.li',
       'cloudflare-ipfs.com',
-      'media.discordapp.net'
+      'media.discordapp.net',
+      'i.imgur.com'
     ],
     // remotePatterns: [
     //   {

@@ -1,83 +1,71 @@
 'use client'
-import { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
-
-import { twMerge } from 'tailwind-merge'
-
-// Context
-import { useCreateCommunityContext } from '@/contexts/create-community'
-
-// Components
 import { Paragraph } from '@/stories'
 
 // data
-import { MEMBERSHIP_DATA } from '@/content/create-community'
 import { MembershipTypes } from '@/types/create-community'
-import { zodResolver } from '@hookform/resolvers/zod'
 
 // validation
-import schema from './schema'
 import ContinueButton from '@/modules/ContinueButton'
+import { TextInput } from '@/components/forms'
+import { FormProvider, useForm } from 'react-hook-form'
+import { MembershipFormValues, membershipValidationSchema } from '@/modules/create-community/components/membership/MembershipForm.schema'
+import { yupResolver } from '@hookform/resolvers/yup'
+import Image from 'next/image'
 
 export type FormValues = {
   type: MembershipTypes
 }
 
-export function MembershipForm(): JSX.Element {
-  const { control, handleSubmit } = useForm<FormValues>({
-    defaultValues: {
-      type: 'daily',
-    },
-    resolver: zodResolver(schema),
-  })
-  const { next } = useCreateCommunityContext()
-  const [selectedType, setSelectedType] = useState<FormValues['type']>('daily')
+// Helpers
+const DEFAULTS: MembershipFormValues = {
+  membershipPrice: 0.01,
+  mintPeriod: 5,
+  revenueSplit: 1,
+  founderAllocation: []
+}
 
-  const onSubmit = (values: FormValues): void => {
-    console.log(values)
-    next()
-  }
+export function MembershipForm(): JSX.Element {
+  const methods = useForm<MembershipFormValues>({
+    resolver: yupResolver(
+      membershipValidationSchema
+    ) as any,
+    defaultValues: {
+      ...DEFAULTS,
+    },
+  })
+
+  const { handleSubmit } = methods
+
+  const onSubmit = () => {}
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Controller
-        name="type"
-        control={control}
-        render={({ field }) => (
-          <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {MEMBERSHIP_DATA.map(({ description, market, title, type }) => (
-              <div key={type} className="text-left">
-                <div
-                  className={twMerge(
-                    'mb-2 cursor-pointer rounded-lg bg-white p-4',
-                    'border border-solid border-white',
-                    selectedType === type && 'border-orange'
-                  )}
-                  {...(type && {
-                    onClick: () => {
-                      field.onChange(type)
-                      setSelectedType(type)
-                    },
-                  })}
-                >
-                  <Paragraph as="p3" className="mb-2">
-                    {title}
-                  </Paragraph>
-                  <Paragraph as="p5" className="text-grey">
-                    {description}
-                  </Paragraph>
-                </div>
-                <div className="rounded-lg border border-solid border-grey-light bg-transparent p-4">
-                  <Paragraph as="p5" className="text-grey">
-                    {market}
-                  </Paragraph>
-                </div>
-              </div>
-            ))}
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Paragraph as="p4" className="text-left text-grey-dark mt-6">
+          Set your membership price, revenue split adn
+          add additional founders
+        </Paragraph>
+        <div className="relative z-0 mt-4">
+          <TextInput
+            name="membership price"
+            type="number"
+            step="0.01"
+            label="Membership price"
+            placeholder="0.01 ETH"
+          />
+          <div className='absolute flex gap-1 items-center right-3 bottom-3 border rounded-full p-0.5 bg-white-secondary'>
+            <div className='w-8 h-8 relative rounded-full overflow-hidden'>
+              <Image
+                src="https://i.imgur.com/n93Kwtm.png"
+                layout='fill'
+                alt=""
+              />
+            </div>
+            <p className='font-abcMedium text-md text-black pr-2'>ETH</p>
           </div>
-        )}
-      />
-      <ContinueButton />
-    </form>
+        </div>
+        <ContinueButton />
+      </form>
+    </FormProvider>
   )
 }

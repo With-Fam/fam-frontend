@@ -22,6 +22,7 @@ import {
   AuctionsForm,
   GeneralForm,
   GeneralFormValues,
+  MembershipForm,
 } from '@/modules/create-community/components'
 
 // Types
@@ -109,6 +110,13 @@ const CreateCommunityProvider = ({
       ),
     }
 
+    const membership: CreateSection = {
+      order: 1,
+      title: 'Memberships',
+      key: 'memberships',
+      content: <MembershipForm />,
+    }
+
     const auctionSubmit = ({
       auctionReservePrice,
       founderAllocation,
@@ -121,11 +129,11 @@ const CreateCommunityProvider = ({
       }
       setFounderAllocation(founderAllocation)
       setReservePrice(auctionReservePrice)
-      navigate(2)
+      navigate(3)
     }
 
     const auctions: CreateSection = {
-      order: 1,
+      order: 2,
       title: 'Auctions',
       key: 'auctions',
       content: (
@@ -159,20 +167,20 @@ const CreateCommunityProvider = ({
       ),
     }
     const review: CreateSection = {
-      order: 2,
+      order: 3,
       title: 'Confirm',
       key: 'review',
       content: <ConfirmForm />,
     }
 
     const deploy: CreateSection = {
-      order: 3,
+      order: 4,
       title: 'Confirm',
       key: 'deploy',
       content: <ReviewForm />,
     }
 
-    return [general, auctions, review, deploy]
+    return [general, membership, auctions, review, deploy]
   }, [
     auctionSettings,
     vetoPower,
