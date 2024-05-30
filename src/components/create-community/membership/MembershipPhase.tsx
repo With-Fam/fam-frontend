@@ -17,7 +17,7 @@ const MembershipPhase = (): JSX.Element => (
     <Paragraph as="p4" className="mt-0 text-grey-dark sm:mt-10">
       What kind of community would you like to create?
     </Paragraph>
-    <MembershipForm />
+    <MembershipForm onSubmit={() => {}} />
   </div>
 )
 
