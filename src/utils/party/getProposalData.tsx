@@ -22,21 +22,13 @@ const getProposalData = (inputProposalData: BytecodeProposalData) => {
       ],
     ]
   )
-
-  console.log('SWEETS encodedBytecodeProposalData', encodedBytecodeProposalData)
-
-  // Convert ProposalType.ArbitraryCalls to hex and pad it to 4 bytes
   const hexEncodedSelector = pad(toHex(ProposalType.ArbitraryCalls), {
     size: 4,
   })
-
-  // Concatenate the selector and the encoded proposal data
   const proposalData = concatHex([
     hexEncodedSelector,
     encodedBytecodeProposalData as Address,
   ])
-
-  // Construct the proposal struct
   const proposalStruct: any = {
     cancelDelay: '0',
     maxExecutableTime: getMaxExecutableTime(),

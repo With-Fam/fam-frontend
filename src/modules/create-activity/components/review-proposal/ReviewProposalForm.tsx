@@ -24,10 +24,10 @@ import { getPublicClient } from '@/utils/viem'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { baseSepolia } from 'wagmi/chains'
 import getViemNetwork from '@/utils/viem/getViemNetwork'
-import getMaxExecutableTime from '@/utils/party/getMaxExecutableTime'
 import { CHAIN_ID } from '@/constants/defaultChains'
 import getProposalData from '@/utils/party/getProposalData'
-import { zeroAddress } from 'viem'
+import { useProposalStore } from '@/modules/create-activity/stores'
+import { parseEther } from 'viem'
 
 /*--------------------------------------------------------------------*/
 
@@ -42,10 +42,17 @@ export function ReviewProposalForm({
     resolver: yupResolver(schema),
     defaultValues,
   })
+  const { transactions } = useProposalStore()
+  const { target, value } = transactions[0].transactions[0]
+
   const { handleSubmit } = methods
   const chainId = baseSepolia.id
   const { walletClient } = usePrivyWalletClient(baseSepolia)
   const onSubmit = async () => {
+    console.log('SWEETS onSubmit', transactions)
+    console.log('SWEETS transactions', transactions)
+    console.log('SWEETS target', target)
+    console.log('SWEETS value', parseEther(value))
     setLoading(true)
     try {
       console.log('SWEETS walletClient', walletClient)
@@ -54,10 +61,9 @@ export function ReviewProposalForm({
 
       await walletClient.switchChain({ id: CHAIN_ID })
       const latestSnapIndex = 0n
-
       const proposalRaw = {
-        target: '0x73C1106Ac50eEFF8B69040c95C665e674b850BC3',
-        value: '1',
+        target: target,
+        value: parseEther(value),
         data: '0x0',
         optional: false,
         expectedResultHash: '0x0',
@@ -66,11 +72,6 @@ export function ReviewProposalForm({
 
       const proposalData = getProposalData(proposalRaw)
       console.log('PROPOSAL DATA', proposalData)
-      // const proposal = {
-      //   maxExecutableTime,
-      //   cancelDelay: '0',
-      //   proposalData: hardCodedTransferProposal,
-      // }
       const args = [proposalData, latestSnapIndex] as any
       const contractConfig = {
         account: walletClient.account,
