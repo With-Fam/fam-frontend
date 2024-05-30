@@ -17,10 +17,13 @@ import Cross16 from './assets/cross-16.svg'
 import Cross from './assets/cross.svg'
 import Dash from './assets/dash.svg'
 import Discord from './assets/discord.svg'
+import DiscordV2 from './assets/discord-v2.svg'
 import Dots from './assets/dots.svg'
 import Download from './assets/download.svg'
+import Earth from './assets/earth.svg'
 import Eth from './assets/eth.svg'
 import External from './assets/external-16.svg'
+import ExternalLink from './assets/external-link.svg'
 import Github from './assets/github.svg'
 import Globe from './assets/globe.svg'
 import HandlebarCircle from './assets/handlebar-circle.svg'
@@ -34,8 +37,10 @@ import Pause from './assets/pause.svg'
 import Play from './assets/play.svg'
 import Plus from './assets/plus.svg'
 import Refresh from './assets/refresh.svg'
+import Settings from './assets/settings.svg'
 import Trash from './assets/trash.svg'
 import Twitter from './assets/twitter.svg'
+import TwitterV2 from './assets/twitter-v2.svg'
 import Warning16 from './assets/warning-16.svg'
 import Warning from './assets/warning.svg'
 
@@ -59,11 +64,14 @@ export const icons = {
   'cross-16': Cross16,
   dash: Dash,
   discord: Discord,
+  'discord-v2': DiscordV2,
   dots: Dots,
   download: Download,
   'external-16': External,
+  'external-link': ExternalLink,
   github: Github,
   eth: Eth,
+  earth: Earth,
   handlebarCircle: HandlebarCircle,
   helpCircle: HelpCircle,
   'info-16': Info16,
@@ -76,8 +84,10 @@ export const icons = {
   play: Play,
   plus: Plus,
   refresh: Refresh,
+  settings: Settings,
   trash: Trash,
   twitter: Twitter,
+  'twitter-v2': TwitterV2,
   warning: Warning,
   'warning-16': Warning16,
 }
