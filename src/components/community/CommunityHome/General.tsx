@@ -2,7 +2,11 @@ import { Icon } from '@/components/Icon'
 import { Paragraph } from '@/stories'
 import Image from 'next/image'
 
-const General = () => {
+interface GeneralProps {
+  status: 'voting' | 'passed'
+}
+
+const General = ({ status }: GeneralProps) => {
   return (
     <section className="rounded-md bg-white p-4">
       <div className="flex justify-between">
@@ -19,10 +23,22 @@ const General = () => {
           <p className="font-abc text-[12px] text-grey">1d ago</p>
         </div>
         <div className="flex items-center gap-1">
-          <Icon id="archieve" fill="#ffffff" />
-          <Paragraph as="p5" className="text-status-purple">
-            Voting
-          </Paragraph>
+          {status === 'voting' && (
+            <>
+              <Icon id="archieve" fill="#ffffff" />
+              <Paragraph as="p5" className="text-status-purple">
+                Voting
+              </Paragraph>
+            </>
+          )}
+          {status === 'passed' && (
+            <>
+              <Icon id="check" fill="#45D039" />
+              <Paragraph as="p5" className="text-status-green">
+                Passed
+              </Paragraph>
+            </>
+          )}
         </div>
       </div>
       <div className="mt-4 flex justify-between">
