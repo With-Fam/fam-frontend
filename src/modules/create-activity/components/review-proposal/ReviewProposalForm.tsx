@@ -26,6 +26,8 @@ import { baseSepolia } from 'wagmi/chains'
 import getViemNetwork from '@/utils/viem/getViemNetwork'
 import getMaxExecutableTime from '@/utils/party/getMaxExecutableTime'
 import { CHAIN_ID } from '@/constants/defaultChains'
+import getProposalData from '@/utils/party/getProposalData'
+import { zeroAddress } from 'viem'
 
 /*--------------------------------------------------------------------*/
 
@@ -46,19 +48,30 @@ export function ReviewProposalForm({
   const onSubmit = async () => {
     setLoading(true)
     try {
+      console.log('SWEETS walletClient', walletClient)
       if (!walletClient) return { error: 'Wallet client not found' }
+      console.log('SWEETS walletClient exists')
+
       await walletClient.switchChain({ id: CHAIN_ID })
       const latestSnapIndex = 0n
-      const maxExecutableTime = getMaxExecutableTime()
-      const hardCodedTransferProposal =
-        '0x00000004000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000cfbf34d385ea2d5eb947063b67ea226dcda3dc3800000000000000000000000000000000000000000000000000005af3107a400000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
 
-      const proposal = {
-        maxExecutableTime,
-        cancelDelay: '0',
-        proposalData: hardCodedTransferProposal,
+      const proposalRaw = {
+        target: '0x73C1106Ac50eEFF8B69040c95C665e674b850BC3',
+        value: '1',
+        data: '0x0',
+        optional: false,
+        expectedResultHash: '0x0',
       }
-      const args = [proposal, latestSnapIndex] as any
+      console.log('SWEETS proposalRaw', proposalRaw)
+
+      const proposalData = getProposalData(proposalRaw)
+      console.log('PROPOSAL DATA', proposalData)
+      // const proposal = {
+      //   maxExecutableTime,
+      //   cancelDelay: '0',
+      //   proposalData: hardCodedTransferProposal,
+      // }
+      const args = [proposalData, latestSnapIndex] as any
       const contractConfig = {
         account: walletClient.account,
         abi: partyAbi,
