@@ -18,10 +18,7 @@ import { Paragraph } from '@/stories'
  * Component
  */
 
-const ActivityCountdown = ({
-  end,
-  onEnd,
-}: CountdownProps): JSX.Element => {
+const ActivityCountdown = ({ end, onEnd }: CountdownProps): JSX.Element => {
   const isMounted = useIsMounted()
   const { countdownStringDays, isEnded } = useCountdown(Number(end), onEnd)
 

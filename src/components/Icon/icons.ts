@@ -24,6 +24,7 @@ import External from './assets/external-16.svg'
 import Github from './assets/github.svg'
 import Globe from './assets/globe.svg'
 import HandlebarCircle from './assets/handlebar-circle.svg'
+import HelpCircle from './assets/help-circle.svg'
 import Info16 from './assets/info-16.svg'
 import Move from './assets/move.svg'
 import NewWindow from './assets/new-window.svg'
@@ -64,6 +65,7 @@ export const icons = {
   github: Github,
   eth: Eth,
   handlebarCircle: HandlebarCircle,
+  helpCircle: HelpCircle,
   'info-16': Info16,
   globe: Globe,
   move: Move,

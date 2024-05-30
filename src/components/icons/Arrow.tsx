@@ -8,7 +8,7 @@ import type { SVGProps } from './types'
 
 const Arrow = ({
   className,
-  color = "#A7A7A7",
+  color = '#A7A7A7',
   ..._props
 }: SVGProps): JSX.Element => (
   <svg

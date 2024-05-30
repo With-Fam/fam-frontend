@@ -13,7 +13,7 @@ import { Button, IconsRow } from '@/components/shared'
  */
 
 const ExploreHeader = (): JSX.Element => (
-  <section className="hidden sm:block w-full bg-orange p-8 text-center">
+  <section className="hidden w-full bg-orange p-8 text-center sm:block">
     <div className="rounded-2xl p-4">
       <Heading as="h1" className="mb-4 text-yellow">
         Your fam
