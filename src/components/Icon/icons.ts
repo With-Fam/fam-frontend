@@ -1,4 +1,5 @@
 import Airdrop from './assets/airdrop.svg'
+import Archieve from './assets/archive.svg'
 import ArrowLeft from './assets/arrow-left.svg'
 import ArrowRight from './assets/arrow-right.svg'
 import ArrowTopRight from './assets/arrow-top-right.svg'
@@ -11,6 +12,7 @@ import ChevronLeft from './assets/chevron-left.svg'
 import ChevronRight from './assets/chevron-right.svg'
 import ChevronUp from './assets/chevron-up.svg'
 import Code from './assets/code.svg'
+import Comment from './assets/comment.svg'
 import Collection from './assets/collection.svg'
 import Copy from './assets/copy.svg'
 import Cross16 from './assets/cross-16.svg'
@@ -46,6 +48,7 @@ import Warning from './assets/warning.svg'
 
 export const icons = {
   airdrop: Airdrop,
+  archieve: Archieve,
   arrowLeft: ArrowLeft,
   arrowRight: ArrowRight,
   arrowTopRight: ArrowTopRight,
@@ -60,6 +63,7 @@ export const icons = {
   code: Code,
   collection: Collection,
   copy: Copy,
+  comment: Comment,
   cross: Cross,
   'cross-16': Cross16,
   dash: Dash,
