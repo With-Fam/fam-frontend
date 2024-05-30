@@ -31,7 +31,7 @@ export type FormValues = {
 const DEFAULTS: MembershipFormValues = {
   membershipPrice: 0.01,
   mintPeriod: 5,
-  revenueSplit: 1,
+  revenueSplit: 30,
   founders: [initFounder],
 }
 
