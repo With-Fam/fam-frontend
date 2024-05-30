@@ -24,7 +24,7 @@ const CommunitiesPagination = ({
   user,
   page,
   hasNextPage,
-  network
+  network,
 }: CommunitiesPaginationProps): JSX.Element => {
   const hidePagination = page === '1' && !hasNextPage
 

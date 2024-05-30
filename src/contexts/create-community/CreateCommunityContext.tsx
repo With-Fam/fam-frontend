@@ -15,13 +15,12 @@ import {
 import { ErrorBox, Loading } from '@/components/shared'
 import { CreateContextNavigation } from '../CreateContextNavigation'
 import { useFormStore } from '@/modules/create-community'
-import { AuctionSettingsFormValues } from '@/modules/create-community/components/auctions/AuctionForm.schema'
 import { ConfirmForm } from '@/modules/create-community/components/confirm'
 import { ReviewForm } from '@/modules/create-community/components/review'
 import {
-  AuctionsForm,
   GeneralForm,
   GeneralFormValues,
+  MembershipForm,
 } from '@/modules/create-community/components'
 
 // Types
@@ -45,7 +44,6 @@ const CreateCommunityContext = createContext<CreateCommunityContextType>({
 })
 
 // Helpers
-import { getDateYearsFromNow } from '@/utils/helpers'
 import { usePrivy } from '@privy-io/react-auth'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 let sections: CreateSection[] = []
@@ -109,55 +107,17 @@ const CreateCommunityProvider = ({
       ),
     }
 
-    const auctionSubmit = ({
-      auctionReservePrice,
-      founderAllocation,
-      vetoPower,
-      vetoerAddress,
-    }: AuctionSettingsFormValues) => {
-      if (vetoPower && vetoerAddress) {
-        setVetoPower(vetoPower)
-        setVetoerAddress(vetoerAddress)
-      }
-      setFounderAllocation(founderAllocation)
-      setReservePrice(auctionReservePrice)
+    const membershipSubmit = () => {
       navigate(2)
     }
 
-    const auctions: CreateSection = {
+    const membership: CreateSection = {
       order: 1,
-      title: 'Auctions',
-      key: 'auctions',
-      content: (
-        <AuctionsForm
-          defaultValues={{
-            vetoPower: vetoPower || true,
-            vetoerAddress: vetoerAddress || address || '0x',
-            auctionDuration: {
-              minutes: 0,
-              hours: 0,
-              seconds: 0,
-              days: 7,
-            },
-            executionDelay: 24,
-            proposalThreshold: 5,
-            founderAllocation:
-              founderAllocation.length > 0
-                ? founderAllocation
-                : [
-                    {
-                      founderAddress: address || '0x',
-                      allocationPercentage: 10,
-                      endDate: getDateYearsFromNow(1),
-                      admin: true,
-                    },
-                  ],
-            auctionReservePrice: auctionSettings.auctionReservePrice || 0.05,
-          }}
-          onSubmit={auctionSubmit}
-        />
-      ),
+      title: 'Memberships',
+      key: 'memberships',
+      content: <MembershipForm onSubmit={membershipSubmit} />,
     }
+
     const review: CreateSection = {
       order: 2,
       title: 'Confirm',
@@ -172,7 +132,7 @@ const CreateCommunityProvider = ({
       content: <ReviewForm />,
     }
 
-    return [general, auctions, review, deploy]
+    return [general, membership, review, deploy]
   }, [
     auctionSettings,
     vetoPower,

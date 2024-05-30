@@ -14,12 +14,11 @@ export const getBids = async (
   try {
     return SDK.connect(chainId)
       .auctionBids({ id: `${collection.toLowerCase()}:${tokenId}` })
-      .then(
-        (x) =>
-          x.auction?.bids?.map((bid: AuctionBidFragment) => ({
-            ...bid,
-            amount: formatEther(bid.amount),
-          }))
+      .then((x) =>
+        x.auction?.bids?.map((bid: AuctionBidFragment) => ({
+          ...bid,
+          amount: formatEther(bid.amount),
+        }))
       )
   } catch (error) {
     console.error(error)

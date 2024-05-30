@@ -56,14 +56,15 @@ const UserCommunity = ({
                 }}
               />
             )}
-            {srcError || loading && (
-              <div
-                className={twMerge(
-                  'h-full w-full rounded-lg bg-grey-light',
-                  loading ? 'animate-pulse' : ''
-                )}
-              />
-            )}
+            {srcError ||
+              (loading && (
+                <div
+                  className={twMerge(
+                    'h-full w-full rounded-lg bg-grey-light',
+                    loading ? 'animate-pulse' : ''
+                  )}
+                />
+              ))}
           </div>
         )}
         <Paragraph as="p3" className="pb-2 pt-3">

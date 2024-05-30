@@ -19,13 +19,17 @@ const TotalAmountBox = ({
   valueEth,
   valueCurrency,
 }: TotalAmountBoxProps): JSX.Element => (
-  <div className='mb-6'>
-    <Paragraph as="p4" className="text-orange mb-2">
+  <div className="mb-6">
+    <Paragraph as="p4" className="mb-2 text-orange">
       {title}
     </Paragraph>
-    <div className='flex justify-between items-center'>
-      <Paragraph as="p2" className=''>{valueEth} ETH</Paragraph>
-      <Paragraph as="p5" className='text-grey'>${valueCurrency}</Paragraph>
+    <div className="flex items-center justify-between">
+      <Paragraph as="p2" className="">
+        {valueEth} ETH
+      </Paragraph>
+      <Paragraph as="p5" className="text-grey">
+        ${valueCurrency}
+      </Paragraph>
     </div>
   </div>
 )

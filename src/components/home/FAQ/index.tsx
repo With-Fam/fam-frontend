@@ -32,7 +32,7 @@ const FAQ = (): JSX.Element => (
             }
 
             return (
-              <ul className="pl-8 list-inside list-disc" key={paragraph}>
+              <ul className="list-inside list-disc pl-8" key={paragraph}>
                 {answer.map((text, lineIndex) => (
                   <li className="mb-4 text-left text-grey" key={lineIndex}>
                     {text}

@@ -14,9 +14,11 @@ import { useCheckAuth } from '@/hooks/useCheckAuth'
  */
 
 const NotLoggedItems = (): JSX.Element => {
-  const { privyData: { login } } = useCheckAuth()
+  const {
+    privyData: { login },
+  } = useCheckAuth()
   return (
-    <button onClick={login} className='pointer-events-auto'>
+    <button onClick={login} className="pointer-events-auto">
       <Paragraph
         className="rounded-3xl bg-black px-4 py-2 text-white sm:px-6 sm:py-2.5"
         as="p2"

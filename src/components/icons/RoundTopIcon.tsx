@@ -10,7 +10,10 @@ type RoundTopIconProps = SVGAttributes<SVGSVGElement> & {
  * Component
  */
 
-const RoundTopIcon = ({ color = '#8146FF', ..._props }: RoundTopIconProps): JSX.Element => (
+const RoundTopIcon = ({
+  color = '#8146FF',
+  ..._props
+}: RoundTopIconProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="67"

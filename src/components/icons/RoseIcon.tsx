@@ -10,7 +10,10 @@ type RoseIconProps = SVGAttributes<SVGSVGElement> & {
  * Component
  */
 
-const RoseIcon = ({ color = '#FDA4FF', ..._props }: RoseIconProps): JSX.Element => (
+const RoseIcon = ({
+  color = '#FDA4FF',
+  ..._props
+}: RoseIconProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="100"

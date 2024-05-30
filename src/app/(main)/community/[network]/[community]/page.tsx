@@ -2,6 +2,8 @@
 
 // Local Components
 import { TabList } from '@/components/community'
+import CommunityHeader from '@/components/community/CommunityHeader'
+import CommunityHome from '@/components/community/CommunityHome'
 import { TOGGLE_DATA } from '@/content/community'
 import AddressCopy from '@/modules/create-community/components/review/AddressCopy'
 import { AddressType } from '@/types'
@@ -25,9 +27,10 @@ export default function CommunityProfile(
 
   return (
     <>
+      <CommunityHeader />
       <TabList items={TOGGLE_DATA} />
       <div>
-        <AddressCopy address={community as AddressType} /> on {network}
+        <CommunityHome />
       </div>
     </>
   )

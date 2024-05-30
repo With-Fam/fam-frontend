@@ -1,8 +1,8 @@
 type UserDataProps = string
 
 type UserNavigationResponse = {
-  id: string;
-  title: string;
+  id: string
+  title: string
   href: string
 }
 

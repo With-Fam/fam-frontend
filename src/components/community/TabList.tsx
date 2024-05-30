@@ -15,7 +15,7 @@ type TabProviderProps = PropsWithChildren<{
 
 const TabList = ({ items }: TabProviderProps): JSX.Element => {
   return (
-    <div className="mx-auto my-4 flex gap-2 w-max sm:my-10">
+    <div className="relative my-4 flex justify-around gap-1 px-4 sm:my-10 md:mx-auto md:max-w-[936px] md:gap-2 md:px-0">
       {items.map(({ id, ..._i }) => (
         <TabButton key={id} id={id} {..._i} />
       ))}

@@ -53,7 +53,7 @@ const PollComponent = ({ state }: PollProps): JSX.Element => {
         return (
           <>
             <EyeIcon color="#FFAC31" />
-            <span className="text text-yellow-dark ml-1.5">
+            <span className="text ml-1.5 text-yellow-dark">
               {typeof state === 'number' && parseState(state)}
             </span>
           </>

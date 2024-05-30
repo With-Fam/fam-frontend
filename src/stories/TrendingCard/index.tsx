@@ -42,7 +42,7 @@ const TrendingCard = ({
       <Paragraph as="p3">{value}</Paragraph>
     </div>
     <div className="flex">
-      <div className=''>
+      <div className="">
         <MemberIcon />
       </div>
       <Paragraph as="p4" className="text-grey-dark">
