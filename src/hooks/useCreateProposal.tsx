@@ -18,12 +18,10 @@ const useCreateProposal: any = (community: Address) => {
   const create = async () => {
     try {
       if (!walletClient) {
-        console.log('Wallet client not found')
         await logout()
         return false
       }
       await walletClient.switchChain({ id: CHAIN_ID })
-      console.log('Wallet client on correct network')
 
       const latestSnapIndex = 0n
       const proposalRaw = {
