@@ -47,7 +47,7 @@ const TabButton = ({ id, label }: TabButtonProps): JSX.Element => {
         id === 'home' ? '' : id
       }`}
       className={twMerge(
-        'w-[154px] rounded-3xl px-3 py-2 text-center sm:px-4',
+        'w-auto rounded-3xl px-2.5 py-2 text-center sm:px-4 md:w-[154px] md:px-3',
         isActive ? 'bg-grey-light' : ''
       )}
       aria-label={`Toggle to ${label} type`}

@@ -16,7 +16,7 @@ const Member = ({ address }: { address: Address }) => {
   const isFounder = true
 
   return (
-    <section className="mb-4 flex items-center gap-2 sm:mb-0">
+    <section className="flex items-center gap-2">
       {pfpImage ? (
         <div className="relative !h-8 !w-8 overflow-hidden rounded-full">
           <Image src={pfpImage} alt="" layout="fill" />
