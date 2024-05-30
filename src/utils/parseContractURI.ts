@@ -1,4 +1,4 @@
-import { decodeBase64 } from 'ethers';
+import { decodeBase64 } from 'ethers'
 
 interface ParsedContractURI {
   name: string
@@ -7,7 +7,9 @@ interface ParsedContractURI {
   external_url?: string
 }
 
-export function parseContractURI(uri: string | undefined): ParsedContractURI | undefined {
+export function parseContractURI(
+  uri: string | undefined
+): ParsedContractURI | undefined {
   if (!uri) return
 
   try {

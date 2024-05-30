@@ -8,11 +8,19 @@ import { MembershipTypes } from '@/types/create-community'
 import ContinueButton from '@/modules/ContinueButton'
 import { TextInput } from '@/components/forms'
 import { FormProvider, useForm } from 'react-hook-form'
-import { MembershipFormValues, membershipValidationSchema } from '@/modules/create-community/components/membership/MembershipForm.schema'
+import {
+  MembershipFormValues,
+  membershipValidationSchema,
+} from '@/modules/create-community/components/membership/MembershipForm.schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Image from 'next/image'
 import MembershipPrice from '@/modules/create-community/components/membership/MembershipPrice'
+import MintPeriod from '@/modules/create-community/components/membership/MintPeriod'
+import RevenueSplit from '@/modules/create-community/components/membership/RevenueSplit'
 
+type MembershipFormProps = {
+  onSubmit: () => void
+}
 export type FormValues = {
   type: MembershipTypes
 }
@@ -22,14 +30,12 @@ const DEFAULTS: MembershipFormValues = {
   membershipPrice: 0.01,
   mintPeriod: 5,
   revenueSplit: 1,
-  founderAllocation: []
+  founderAllocation: [],
 }
 
-export function MembershipForm(): JSX.Element {
+export function MembershipForm({ onSubmit }: MembershipFormProps): JSX.Element {
   const methods = useForm<MembershipFormValues>({
-    resolver: yupResolver(
-      membershipValidationSchema
-    ) as any,
+    resolver: yupResolver(membershipValidationSchema) as any,
     defaultValues: {
       ...DEFAULTS,
     },
@@ -37,16 +43,15 @@ export function MembershipForm(): JSX.Element {
 
   const { handleSubmit } = methods
 
-  const onSubmit = () => {}
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Paragraph as="p4" className="text-left text-grey-dark mt-6">
-          Set your membership price, revenue split adn
-          add additional founders
+        <Paragraph as="p4" className="mt-6 text-left text-grey-dark">
+          Set your membership price, revenue split adn add additional founders
         </Paragraph>
         <MembershipPrice />
+        <MintPeriod />
+        <RevenueSplit />
         <ContinueButton />
       </form>
     </FormProvider>

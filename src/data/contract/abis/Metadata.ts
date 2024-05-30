@@ -9,7 +9,9 @@ export const metadataAbi = [
   { inputs: [], name: 'DELEGATE_CALL_FAILED', type: 'error' },
   { inputs: [], name: 'INITIALIZING', type: 'error' },
   {
-    inputs: [{ internalType: 'uint256', name: 'selectedPropertyId', type: 'uint256' }],
+    inputs: [
+      { internalType: 'uint256', name: 'selectedPropertyId', type: 'uint256' },
+    ],
     name: 'INVALID_PROPERTY_SELECTED',
     type: 'error',
   },
@@ -45,7 +47,8 @@ export const metadataAbi = [
           { internalType: 'bool', name: 'quote', type: 'bool' },
         ],
         indexed: false,
-        internalType: 'struct MetadataRendererTypesV2.AdditionalTokenProperty[]',
+        internalType:
+          'struct MetadataRendererTypesV2.AdditionalTokenProperty[]',
         name: '_additionalJsonProperties',
         type: 'tuple[]',
       },
@@ -56,8 +59,18 @@ export const metadataAbi = [
   {
     anonymous: false,
     inputs: [
-      { indexed: false, internalType: 'string', name: 'prevImage', type: 'string' },
-      { indexed: false, internalType: 'string', name: 'newImage', type: 'string' },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'prevImage',
+        type: 'string',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'newImage',
+        type: 'string',
+      },
     ],
     name: 'ContractImageUpdated',
     type: 'event',
@@ -65,8 +78,18 @@ export const metadataAbi = [
   {
     anonymous: false,
     inputs: [
-      { indexed: false, internalType: 'string', name: 'prevDescription', type: 'string' },
-      { indexed: false, internalType: 'string', name: 'newDescription', type: 'string' },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'prevDescription',
+        type: 'string',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'newDescription',
+        type: 'string',
+      },
     ],
     name: 'DescriptionUpdated',
     type: 'event',
@@ -74,7 +97,12 @@ export const metadataAbi = [
   {
     anonymous: false,
     inputs: [
-      { indexed: false, internalType: 'uint256', name: 'version', type: 'uint256' },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'version',
+        type: 'uint256',
+      },
     ],
     name: 'Initialized',
     type: 'event',
@@ -97,22 +125,44 @@ export const metadataAbi = [
         name: 'prevRendererBase',
         type: 'string',
       },
-      { indexed: false, internalType: 'string', name: 'newRendererBase', type: 'string' },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'newRendererBase',
+        type: 'string',
+      },
     ],
     name: 'RendererBaseUpdated',
     type: 'event',
   },
   {
     anonymous: false,
-    inputs: [{ indexed: false, internalType: 'address', name: 'impl', type: 'address' }],
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'impl',
+        type: 'address',
+      },
+    ],
     name: 'Upgraded',
     type: 'event',
   },
   {
     anonymous: false,
     inputs: [
-      { indexed: false, internalType: 'string', name: 'lastURI', type: 'string' },
-      { indexed: false, internalType: 'string', name: 'newURI', type: 'string' },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'lastURI',
+        type: 'string',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'newURI',
+        type: 'string',
+      },
     ],
     name: 'WebsiteURIUpdated',
     type: 'event',
@@ -312,7 +362,8 @@ export const metadataAbi = [
           { internalType: 'string', name: 'value', type: 'string' },
           { internalType: 'bool', name: 'quote', type: 'bool' },
         ],
-        internalType: 'struct MetadataRendererTypesV2.AdditionalTokenProperty[]',
+        internalType:
+          'struct MetadataRendererTypesV2.AdditionalTokenProperty[]',
         name: '_additionalTokenProperties',
         type: 'tuple[]',
       },
@@ -350,28 +401,36 @@ export const metadataAbi = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'string', name: '_newContractImage', type: 'string' }],
+    inputs: [
+      { internalType: 'string', name: '_newContractImage', type: 'string' },
+    ],
     name: 'updateContractImage',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'string', name: '_newDescription', type: 'string' }],
+    inputs: [
+      { internalType: 'string', name: '_newDescription', type: 'string' },
+    ],
     name: 'updateDescription',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'string', name: '_newProjectURI', type: 'string' }],
+    inputs: [
+      { internalType: 'string', name: '_newProjectURI', type: 'string' },
+    ],
     name: 'updateProjectURI',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'string', name: '_newRendererBase', type: 'string' }],
+    inputs: [
+      { internalType: 'string', name: '_newRendererBase', type: 'string' },
+    ],
     name: 'updateRendererBase',
     outputs: [],
     stateMutability: 'nonpayable',

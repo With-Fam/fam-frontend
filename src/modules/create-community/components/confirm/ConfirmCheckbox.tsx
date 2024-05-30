@@ -45,7 +45,7 @@ const ConfirmCheckbox = ({
       <label htmlFor={name} className="flex items-center gap-2">
         <input
           type="checkbox"
-          className="relative z-10 h-6 w-6 opacity-0 shrink-0"
+          className="relative z-10 h-6 w-6 shrink-0 opacity-0"
           {...register(name)}
           {..._props}
         />

@@ -23,9 +23,13 @@ export function TraitsAccordian({
       // Sort the layers by trait before saving the first time
       // After that, it will be handled by the drag and drop
       const sortedLayers = artwork.sort((a, b) => {
-        if(a.trait < b.trait) { return -1; }
-        if(a.trait > b.trait) { return 1; }
-        return 0;
+        if (a.trait < b.trait) {
+          return -1
+        }
+        if (a.trait > b.trait) {
+          return 1
+        }
+        return 0
       })
       setOrderedLayers(sortedLayers)
     }

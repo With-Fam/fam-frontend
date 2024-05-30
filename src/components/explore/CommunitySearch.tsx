@@ -47,7 +47,7 @@ const CommunitySearch = ({
 
   return (
     <section className="block px-4 pt-24">
-      <div className="flex h-14 w-full items-center gap-2 rounded-lg bg-grey-light px-4 py-2 max-w-2xl mx-auto">
+      <div className="mx-auto flex h-14 w-full max-w-2xl items-center gap-2 rounded-lg bg-grey-light px-4 py-2">
         <Search />
         <input
           className="flex-1 bg-transparent outline-0"

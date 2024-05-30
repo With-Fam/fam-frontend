@@ -31,6 +31,7 @@ type InputSliderProps = ReactSliderProps & {
   label: string
   suffix?: string
   level?: JSX.Element
+  className?: string
 }
 
 export function InputSlider({
@@ -42,11 +43,14 @@ export function InputSlider({
   value,
   suffix,
   level,
+  className = '',
   ..._rest
 }: InputSliderProps): JSX.Element {
   return (
-    <div className="flex flex-col items-start justify-start rounded-xl bg-white p-4 text-black">
-      <label className="mb-2 block font-abcMedium text-sm" htmlFor="duration">
+    <div
+      className={`flex flex-col items-start justify-start rounded-xl bg-white p-4 text-black ${className}`}
+    >
+      <label className="block font-abcMedium text-sm" htmlFor="duration">
         {label}
       </label>
       <div className="flex w-full gap-4">

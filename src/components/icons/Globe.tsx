@@ -6,7 +6,11 @@ import type { SVGProps } from './types'
  * Component
  */
 
-const Globe = ({ className, color = "#000000", ..._props }: SVGProps): JSX.Element => (
+const Globe = ({
+  className,
+  color = '#000000',
+  ..._props
+}: SVGProps): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"

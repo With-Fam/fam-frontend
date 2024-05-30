@@ -110,11 +110,15 @@ const CreateCommunityProvider = ({
       ),
     }
 
+    const membershipSubmit = () => {
+      navigate(2)
+    }
+
     const membership: CreateSection = {
       order: 1,
       title: 'Memberships',
       key: 'memberships',
-      content: <MembershipForm />,
+      content: <MembershipForm onSubmit={membershipSubmit} />,
     }
 
     const auctionSubmit = ({

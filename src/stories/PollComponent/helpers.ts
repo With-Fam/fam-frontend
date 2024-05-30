@@ -1,7 +1,6 @@
-import { ProposalState } from "@/data/contract/requests/getProposalState"
+import { ProposalState } from '@/data/contract/requests/getProposalState'
 
 export function parseState(state: ProposalState): string {
-
   switch (state) {
     case ProposalState.Pending:
       return 'Pending'
