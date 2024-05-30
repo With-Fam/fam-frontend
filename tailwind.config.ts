@@ -30,8 +30,13 @@ const config: Config = {
         height: 'height',
       },
       colors: {
+        white: {
+          secondary: '#D9D9D9',
+          DEFAULT: '#ffffff',
+        },
         orange: {
           DEFAULT: '#F54D18',
+          secondary: 'rgba(245, 77, 24, 0.1)',
         },
         yellow: {
           DEFAULT: '#FFE500',
