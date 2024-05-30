@@ -1,6 +1,6 @@
 export interface BytecodeProposalData {
   target: string // dapp address (payable field)
-  value: string
+  value: string | bigint
   data: string // bytecode
 
   // If true, the call is allowed to fail.
