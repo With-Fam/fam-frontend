@@ -1,3 +1,4 @@
+import { Icon } from '@/components/Icon'
 import { InputSlider } from '@/components/forms'
 import { Paragraph } from '@/stories'
 import { Controller, useFormContext } from 'react-hook-form'
@@ -7,9 +8,9 @@ const RevenueSplit = () => {
 
   return (
     <section className="mt-4 rounded-md bg-white">
-      <p className="block px-4 pt-4 text-left font-abcMedium text-sm">
-        Revenue Split
-      </p>
+      <div className="flex items-center gap-1 px-4 pt-4 text-left font-abcMedium text-sm">
+        Revenue Split <Icon id="helpCircle" fill="#ffffff" />
+      </div>
       <div className="flex justify-between px-4 pt-4">
         <div className="rounded-full border bg-grey-light px-3 py-1">
           <p className="text-[12px]">Founders</p>

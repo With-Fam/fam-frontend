@@ -6,6 +6,7 @@ import { DetailedHTMLProps, InputHTMLAttributes } from 'react'
 // Local Components
 import ErrorMessage from './ErrorMessage'
 import { useFormContext } from 'react-hook-form'
+import { Icon } from '@/components/Icon'
 
 // Types
 export interface InputProps
@@ -16,6 +17,8 @@ export interface InputProps
   className?: string
   name: string
   label: string
+  containerClasses?: string
+  labelIcon?: any
 }
 
 /*--------------------------------------------------------------------*/
@@ -29,15 +32,22 @@ function TextInput({
   label,
   name,
   type = 'text',
+  containerClasses,
+  labelIcon,
   ..._props
 }: InputProps): JSX.Element {
   const { register, clearErrors } = useFormContext()
 
   return (
     <div className={twMerge('flex-1', className)}>
-      <div className="flex flex-col items-start justify-start rounded-xl bg-white p-4 text-black">
-        <label className="mb-2 block font-abcMedium text-sm" htmlFor={name}>
-          {label}
+      <div
+        className={`flex flex-col items-start justify-start rounded-xl bg-white p-4 text-black ${containerClasses}`}
+      >
+        <label
+          className="mb-2 block flex items-center gap-1 font-abcMedium text-sm"
+          htmlFor={name}
+        >
+          {label} {labelIcon && <Icon id={labelIcon} fill="#ffffff" />}
         </label>
         <input
           {...register(name)}

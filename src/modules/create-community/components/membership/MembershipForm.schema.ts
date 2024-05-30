@@ -1,5 +1,12 @@
-import { FounderFormValues } from '@/modules/create-community/components/auctions/AuctionForm.schema'
 import * as Yup from 'yup'
+
+export interface TokenAllocation {
+  founderAddress: string
+}
+
+export interface FounderFormValues {
+  founders: TokenAllocation[]
+}
 
 export interface MembershipFormValues extends FounderFormValues {
   membershipPrice: number
