@@ -1,5 +1,7 @@
 // Local Components
-import { AllDrops } from '@/components/community'
+import { AllDrops, TabList } from '@/components/community'
+import CommunityHeader from '@/components/community/CommunityHeader'
+import { TOGGLE_DATA } from '@/content/community'
 import { SDK } from '@/data/subgraph/client'
 
 /*--------------------------------------------------------------------*/
@@ -26,5 +28,11 @@ export default async function CommunityProfile(
   const chainId = getChainId(networkId);
   const data: any = await getMemberData(chainId, communityId)
   */
-  return <AllDrops />
+  return (
+    <>
+      <CommunityHeader />
+      <TabList items={TOGGLE_DATA} />
+      <AllDrops />
+    </>
+  )
 }
