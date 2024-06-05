@@ -1,28 +1,15 @@
 'use client'
 
-// Third Parties
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-
-// Hooks
 import { IPFSUpload } from '@/hooks'
-
-// Types
 import type { DaoContractAddresses } from '@/modules/dao'
 import { FormStoreState, AuctionSettingsFormValues } from './types'
 import { ArtworkFormValues, GeneralFormValues } from '../components'
 import { TokenAllocation } from '@/modules/create-community/components/auctions/AuctionForm.schema'
 import type { OrderedTraits } from '@/components/create-community/artwork/TraitsAccordian'
-
-// Variables
 import { auctionSettingsDefaultValues, initialState } from './variables'
 import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Store
- */
 
 export const useFormStore = create(
   persist<FormStoreState>(

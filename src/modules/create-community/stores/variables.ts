@@ -64,7 +64,7 @@ export const initialState = {
     governor: undefined,
   },
   membership: {
-    membershipPrice: 0.01,
+    membershipPrice: 0.0001,
     mintPeriod: 5,
     revenueSplit: 30,
     founders: [],
