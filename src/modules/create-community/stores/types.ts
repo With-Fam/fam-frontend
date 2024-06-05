@@ -12,6 +12,7 @@ import { GeneralFormValues, ArtworkFormValues } from '../components'
 // Types
 import { type TokenAllocation } from '@/modules/create-community/components/auctions/AuctionForm.schema'
 import type { DaoContractAddresses } from '@/modules/dao'
+import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
 
 /*--------------------------------------------------------------------*/
 
@@ -42,7 +43,9 @@ export interface FormStoreState {
   fulfilledSections: string[]
   setFulfilledSections: (section: string) => void
   general: GeneralFormValues
+  membership: MembershipFormValues
   setGeneral: (general: GeneralFormValues) => void
+  setMembership: (membership: MembershipFormValues) => void
   vetoPower: boolean | undefined
   setVetoPower: (vetoPower: boolean) => void
   vetoerAddress: string

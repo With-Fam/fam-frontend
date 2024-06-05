@@ -21,7 +21,8 @@ import {
 } from '@/modules/create-community/components/membership/FoundersFieldArray'
 
 type MembershipFormProps = {
-  onSubmit: () => void
+  defaultValues?: MembershipFormValues
+  onSubmit: (_value: MembershipFormValues) => void
 }
 export type FormValues = {
   type: MembershipTypes
@@ -35,12 +36,18 @@ const DEFAULTS: MembershipFormValues = {
   founders: [initFounder],
 }
 
-export function MembershipForm({ onSubmit }: MembershipFormProps): JSX.Element {
+export function MembershipForm({
+  defaultValues = {
+    founders: [{ founderAddress: '' }],
+    membershipPrice: 0.02,
+    mintPeriod: 5,
+    revenueSplit: 30,
+  },
+  onSubmit,
+}: MembershipFormProps): JSX.Element {
   const methods = useForm<MembershipFormValues>({
     resolver: yupResolver(membershipValidationSchema) as any,
-    defaultValues: {
-      ...DEFAULTS,
-    },
+    defaultValues,
   })
 
   const { handleSubmit } = methods

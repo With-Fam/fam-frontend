@@ -16,6 +16,7 @@ import type { OrderedTraits } from '@/components/create-community/artwork/Traits
 
 // Variables
 import { auctionSettingsDefaultValues, initialState } from './variables'
+import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
 
 /*--------------------------------------------------------------------*/
 
@@ -39,6 +40,7 @@ export const useFormStore = create(
         }))
       },
       setGeneral: (general: GeneralFormValues) => set({ general }),
+      setMembership: (membership: MembershipFormValues) => set({ membership }),
       setVetoPower: (vetoPower: boolean) => set({ vetoPower }),
       setVetoerAddress: (vetoerAddress: string) => set({ vetoerAddress }),
       setFounderAllocation: (founderAllocation: Array<TokenAllocation>) =>
