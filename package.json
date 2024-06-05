@@ -7,10 +7,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "format": "prettier --write \"**/*.{js,jsx,json,ts,tsx,md,mdx,yml,yaml}\""
+    "format": "yarn run prettier:fix && yarn run lint:fix",
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,json,ts,tsx,md,mdx,yml,yaml}\"",
+    "lint:fix": "next lint"
   },
   "dependencies": {
     "@brokerloop/ttlcache": "^3.2.3",

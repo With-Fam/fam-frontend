@@ -1,19 +1,14 @@
 'use client'
 
 import _get from 'lodash.get'
-
-// Packages
 import { useFieldArray, useFormContext } from 'react-hook-form'
-
-// Components
 import { TextInput } from '@/components/forms'
 import { Icon } from '@/components/Icon'
 import { XMark } from '@/components/icons'
-
-// Types
 import ErrorMessage from '@/components/forms/ErrorMessage'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
+import { useEffect } from 'react'
 
-// Helpers
 export interface TokenAllocation {
   founderAddress: string
 }
@@ -27,8 +22,9 @@ export const initFounder: TokenAllocation = {
 }
 
 export function FounderFieldArray(): JSX.Element {
+  const { connectedWallet } = useConnectedWallet()
   const { control } = useFormContext<MembershipFoundersFormValues>()
-  const { fields, remove, append } =
+  const { fields, remove, append, update } =
     useFieldArray<MembershipFoundersFormValues>({
       control,
       name: 'founders',
@@ -38,6 +34,11 @@ export function FounderFieldArray(): JSX.Element {
     const newFounder = { ...initFounder }
     append(newFounder)
   }
+
+  useEffect(() => {
+    if (!connectedWallet) return
+    update(0, { founderAddress: connectedWallet })
+  }, [connectedWallet])
 
   return (
     <section className="mt-4 space-y-1 rounded-md bg-white py-4">

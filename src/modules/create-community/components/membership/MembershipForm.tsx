@@ -1,10 +1,6 @@
 'use client'
 import { Paragraph } from '@/stories'
-
-// data
 import { MembershipTypes } from '@/types/create-community'
-
-// validation
 import ContinueButton from '@/modules/ContinueButton'
 import { FormProvider, useForm } from 'react-hook-form'
 import {
@@ -15,10 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import MembershipPrice from '@/modules/create-community/components/membership/MembershipPrice'
 import MintPeriod from '@/modules/create-community/components/membership/MintPeriod'
 import RevenueSplit from '@/modules/create-community/components/membership/RevenueSplit'
-import {
-  FounderFieldArray,
-  initFounder,
-} from '@/modules/create-community/components/membership/FoundersFieldArray'
+import { FounderFieldArray } from '@/modules/create-community/components/membership/FoundersFieldArray'
 
 type MembershipFormProps = {
   defaultValues?: MembershipFormValues
@@ -26,14 +19,6 @@ type MembershipFormProps = {
 }
 export type FormValues = {
   type: MembershipTypes
-}
-
-// Helpers
-const DEFAULTS: MembershipFormValues = {
-  membershipPrice: 0.01,
-  mintPeriod: 5,
-  revenueSplit: 30,
-  founders: [initFounder],
 }
 
 export function MembershipForm({
