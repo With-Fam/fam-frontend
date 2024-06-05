@@ -51,8 +51,8 @@ export function ConfirmForm(): JSX.Element {
   return (
     <FormProvider {...methods}>
       <p className="mb-6 mt-4 text-left text-grey md:mt-16">
-        Make sure your community details before approving. These can only be
-        changed later via a community vote.
+        Make sure your community details are correct before approving. These can
+        only be changed later via a community vote.
       </p>
       <form onSubmit={handleSubmit(handleDeploy)}>
         <ProfileConfirmation />
