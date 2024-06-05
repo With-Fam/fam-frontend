@@ -92,8 +92,10 @@ export function ConfirmForm(): JSX.Element {
             <div className="mt-2">
               <ConfirmTitle>{`Founders(s)`}</ConfirmTitle>
               <div className="mt-2 space-y-2">
-                {membership.founders.map((founder) => (
-                  <p>{founder.founderAddress}</p>
+                {membership.founders.map((founder, i) => (
+                  <p key={`${founder.founderAddress}-${i}`}>
+                    {founder.founderAddress}
+                  </p>
                 ))}
               </div>
             </div>
