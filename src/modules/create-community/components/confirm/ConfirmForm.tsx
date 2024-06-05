@@ -15,7 +15,7 @@ import ContinueButton from '@/modules/ContinueButton'
 import { IPFSImage } from '@/components/ipfs/IPFSImage'
 import useDeploy from '@/hooks/useDeploy'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
-import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
+import { CHAIN_ID } from '@/constants/defaultChains'
 import SwitchNetworkButton from '@/components/SwitchNetworkButton'
 
 export function ConfirmForm(): JSX.Element {
@@ -110,7 +110,7 @@ export function ConfirmForm(): JSX.Element {
           </ConfirmCheckbox>
         </div>
         {isCorrectChain ? (
-          <ContinueButton title="Confirm" loading={isLoading} />
+          <ContinueButton title="Create my Community" loading={isLoading} />
         ) : (
           <SwitchNetworkButton />
         )}
