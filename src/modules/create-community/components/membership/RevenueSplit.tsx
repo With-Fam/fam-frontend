@@ -1,10 +1,18 @@
 import { Icon } from '@/components/Icon'
 import { InputSlider } from '@/components/forms'
+import { useFormStore } from '@/modules/create-community/stores'
 import { Paragraph } from '@/stories'
+import { useEffect, useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
 const RevenueSplit = () => {
   const { control } = useFormContext()
+  const [selectedSplit, setSelectedSplit] = useState(0)
+  const { membership } = useFormStore()
+
+  useEffect(() => {
+    setSelectedSplit(100 - membership.revenueSplit)
+  }, [membership])
 
   return (
     <section className="mt-4 rounded-md bg-white">
@@ -28,7 +36,10 @@ const RevenueSplit = () => {
               <InputSlider
                 label=""
                 value={field.value}
-                onChange={field.onChange}
+                onChange={(value, index) => {
+                  field.onChange(value, index)
+                  setSelectedSplit(100 - value)
+                }}
                 min={30}
                 max={70}
                 suffix="%"
@@ -37,7 +48,7 @@ const RevenueSplit = () => {
           />
         </div>
         <Paragraph as="p3" className="whitespace-nowrap">
-          70%
+          {selectedSplit}%
         </Paragraph>
       </div>
     </section>
