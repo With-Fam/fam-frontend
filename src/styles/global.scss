@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import './fonts.scss';
-
-// Custom
+@import './tooltip.scss';
 
 .editor-content {
   @apply font-abc text-base leading-6 text-black;

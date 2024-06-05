@@ -10,6 +10,7 @@ const MintPeriod = () => {
         label="Mint Period"
         placeholder="5"
         labelIcon="helpCircle"
+        tooltip="The percentage of community members who need to accept a vote in order for it to pass"
       />
       <div className="absolute bottom-3 right-3 flex h-10 items-center gap-1 rounded-full border bg-grey-light px-4">
         <p className="text-md font-abcMedium text-black">Days</p>
