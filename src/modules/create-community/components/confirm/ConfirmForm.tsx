@@ -12,7 +12,7 @@ import useDeploy from '@/hooks/useDeploy'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { CHAIN_ID } from '@/constants/defaultChains'
 import SwitchNetworkButton from '@/components/SwitchNetworkButton'
-import MemebershipConfirmation from '@/modules/create-community/components/confirm/MembershipConfirmation'
+import MembershipConfirmation from '@/modules/create-community/components/confirm/MembershipConfirmation'
 import ProfileConfirmation from '@/modules/create-community/components/confirm/ProfileConfirmation'
 
 export function ConfirmForm(): JSX.Element {
@@ -56,10 +56,10 @@ export function ConfirmForm(): JSX.Element {
       </p>
       <form onSubmit={handleSubmit(handleDeploy)}>
         <ProfileConfirmation />
-        <MemebershipConfirmation />
+        <MembershipConfirmation />
         <div className="mt-10">
           <ConfirmCheckbox name="deployDaoAcceptance">
-            I have acknowlwedged and agree to the{' '}
+            I have acknowledged and agree to the{' '}
             <Link href="#" className="text-orange">
               Fam Terms of Service
             </Link>

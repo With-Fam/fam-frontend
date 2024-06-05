@@ -3,7 +3,7 @@ import ConfirmItem from '@/modules/create-community/components/confirm/ConfirmIt
 import ConfirmTitle from '@/modules/create-community/components/confirm/ConfirmTitle'
 import { useFormStore } from '@/modules/create-community/stores'
 
-const MemebershipConfirmation = () => {
+const MembershipConfirmation = () => {
   const { membership } = useFormStore()
   return (
     <ConfirmDropDown text="Memberships">
@@ -32,4 +32,4 @@ const MemebershipConfirmation = () => {
   )
 }
 
-export default MemebershipConfirmation
+export default MembershipConfirmation
