@@ -1,11 +1,5 @@
 import type { SVGProps } from './types'
 
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
-
 const Plus = ({
   className,
   color = '#A7A7A7',
