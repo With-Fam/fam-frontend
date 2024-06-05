@@ -1,13 +1,5 @@
 import { useCreateCommunityContext } from '@/contexts/create-community'
-
-// Local Components
 import { AnimatePresence, motion } from 'framer-motion'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 export function Sections(): JSX.Element {
   const { section } = useCreateCommunityContext()
