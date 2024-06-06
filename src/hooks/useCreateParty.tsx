@@ -9,6 +9,7 @@ import { getPublicClient } from '@/utils/viem'
 import getViemNetwork from '@/utils/viem/getViemNetwork'
 import { CHAIN_ID } from '@/constants/defaultChains'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
+import { zeroAddress } from 'viem'
 
 const useCreateParty = () => {
   const chainId = CHAIN_ID
@@ -34,11 +35,11 @@ const useCreateParty = () => {
         duration: 86400,
         exchangeRate: 1000000000000000000n,
         fundingSplitBps: 0,
-        fundingSplitRecipient: ,
-        gateKeeper: '0x0000000000000000000000000000000000000000',
+        fundingSplitRecipient: address,
+        gateKeeper: zeroAddress,
         gateKeeperId: '0x000000000000000000000000',
-        initialContributor: '0x0000000000000000000000000000000000000000',
-        initialDelegate: '0x0000000000000000000000000000000000000000',
+        initialContributor: zeroAddress,
+        initialDelegate: zeroAddress,
         maxContribution: 1000000000000000n,
         maxTotalContributions: 1000000000000000000000000n,
         minContribution: 1000000000000000n,
@@ -74,8 +75,7 @@ const useCreateParty = () => {
         rageQuitTimestamp: 0,
         symbol: 'testing',
       }
-
-      const createGateCallData = '0x0000000000000000000000000000000000000000'
+      const createGateCallData = zeroAddress
       const contractConfig = {
         address: CROWDFUND_PARTY_FACTORY[chainId],
         chain: getViemNetwork(chainId),
