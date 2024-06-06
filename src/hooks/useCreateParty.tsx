@@ -2,16 +2,18 @@ import {
   CROWDFUND_PARTY_FACTORY,
   INITIAL_ETH_CROWDFUND,
 } from '@/constants/addresses'
+import { crowdfundFactoryAbi } from '@/data/contract/abis/CrowdfundFactory'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { useFormStore } from '@/modules/create-community'
 import { getPublicClient } from '@/utils/viem'
 import getViemNetwork from '@/utils/viem/getViemNetwork'
 import { CHAIN_ID } from '@/constants/defaultChains'
-import { crowdfundFactoryAbi } from '@/data/contract/abis/CrowdfundFactory'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
 
 const useCreateParty = () => {
   const chainId = CHAIN_ID
   const { auctionSettings } = useFormStore()
+  const { connectedWallet: address } = useConnectedWallet()
   const { walletClient } = usePrivyWalletClient()
 
   const createInitialETHCrowdfund = async () => {
@@ -32,7 +34,7 @@ const useCreateParty = () => {
         duration: 86400,
         exchangeRate: 1000000000000000000n,
         fundingSplitBps: 0,
-        fundingSplitRecipient: '0xb5acDED340D66678f01097818940A0F028DAFB8d',
+        fundingSplitRecipient: ,
         gateKeeper: '0x0000000000000000000000000000000000000000',
         gateKeeperId: '0x000000000000000000000000',
         initialContributor: '0x0000000000000000000000000000000000000000',
@@ -46,7 +48,7 @@ const useCreateParty = () => {
         executionDelay: 604800,
         feeBps: 250,
         feeRecipient: '0x0e63D6f414b40BaFCa676810ef1aBf05ECc8E459',
-        hosts: ['0xb5acDED340D66678f01097818940A0F028DAFB8d'],
+        hosts: [address],
         partyFactory: '0xB418f5B001Af94A91daB2cE641E39722e1d9dDAC',
         partyImpl: '0xeFA4054F3Db3D1f5e981513a3d8A33D91FC97dc1',
         passThresholdBps: passThresholdBps,
