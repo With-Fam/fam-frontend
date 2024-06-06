@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Address, createPublicClient, http } from 'viem'
+import { Address, createPublicClient, http, isAddress } from 'viem'
 import { mainnet } from 'viem/chains'
 
 const useEnsName = (value: string) => {
@@ -12,14 +12,22 @@ const useEnsName = (value: string) => {
 
   useEffect(() => {
     const init = async () => {
-      const name = await publicClient.getEnsName({
-        address: value as Address,
-      })
-      if (!name) {
+      try {
+        if (!isAddress(value)) {
+          setEnsName('')
+          return
+        }
+        const name = await publicClient.getEnsName({
+          address: value as Address,
+        })
+        if (!name) {
+          setEnsName('')
+          return
+        }
+        setEnsName(name)
+      } catch (error) {
         setEnsName('')
-        return
       }
-      setEnsName(name)
     }
 
     if (!value) return
