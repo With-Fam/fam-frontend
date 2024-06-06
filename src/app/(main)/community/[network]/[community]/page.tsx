@@ -1,29 +1,26 @@
 'use client'
 
-// Local Components
 import { TabList } from '@/components/community'
 import CommunityHeader from '@/components/community/CommunityHeader'
 import CommunityHome from '@/components/community/CommunityHome'
 import { TOGGLE_DATA } from '@/content/community'
-import AddressCopy from '@/modules/create-community/components/review/AddressCopy'
-import { AddressType } from '@/types'
+import { useFormStore } from '@/modules/create-community'
+import { useEffect } from 'react'
 
-// Types
 type CommunityProfileProps = {
   params: { community: string; network: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-/*--------------------------------------------------------------------*/
-
-/**
- * Page
- */
-
 export default function CommunityProfile(
   _props: CommunityProfileProps
 ): JSX.Element {
-  const { community, network } = _props.params
+  const { created } = _props.searchParams
+  const { resetForm } = useFormStore()
+
+  useEffect(() => {
+    if (created === 'true') resetForm()
+  }, [created])
 
   return (
     <>
