@@ -1,15 +1,30 @@
 import { Icon } from '@/components/Icon'
 import { InputSlider } from '@/components/forms'
+import { useFormStore } from '@/modules/create-community/stores'
 import { Paragraph } from '@/stories'
+import { useEffect, useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
+import Tooltip from '@/components/shared/Tooltip'
 
 const RevenueSplit = () => {
   const { control } = useFormContext()
+  const [selectedSplit, setSelectedSplit] = useState(0)
+  const { membership } = useFormStore()
+
+  useEffect(() => {
+    setSelectedSplit(100 - membership.revenueSplit)
+  }, [membership])
 
   return (
     <section className="mt-4 rounded-md bg-white">
       <div className="flex items-center gap-1 px-4 pt-4 text-left font-abcMedium text-sm">
-        Revenue Split <Icon id="helpCircle" fill="#ffffff" />
+        Revenue Split{' '}
+        <Tooltip
+          id={'revenue-split-tooltip'}
+          message="This is the period between a vote passing and the action being completed onchain. This can be skipped if all founders accept"
+        >
+          <Icon id="helpCircle" fill="#ffffff" />
+        </Tooltip>
       </div>
       <div className="flex justify-between px-4 pt-4">
         <div className="rounded-full border bg-grey-light px-3 py-1">
@@ -28,7 +43,10 @@ const RevenueSplit = () => {
               <InputSlider
                 label=""
                 value={field.value}
-                onChange={field.onChange}
+                onChange={(value, index) => {
+                  field.onChange(value, index)
+                  setSelectedSplit(100 - value)
+                }}
                 min={30}
                 max={70}
                 suffix="%"
@@ -37,7 +55,7 @@ const RevenueSplit = () => {
           />
         </div>
         <Paragraph as="p3" className="whitespace-nowrap">
-          70%
+          {selectedSplit}%
         </Paragraph>
       </div>
     </section>

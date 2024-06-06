@@ -1,10 +1,6 @@
 'use client'
 import { Paragraph } from '@/stories'
-
-// data
 import { MembershipTypes } from '@/types/create-community'
-
-// validation
 import ContinueButton from '@/modules/ContinueButton'
 import { FormProvider, useForm } from 'react-hook-form'
 import {
@@ -15,32 +11,28 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import MembershipPrice from '@/modules/create-community/components/membership/MembershipPrice'
 import MintPeriod from '@/modules/create-community/components/membership/MintPeriod'
 import RevenueSplit from '@/modules/create-community/components/membership/RevenueSplit'
-import {
-  FounderFieldArray,
-  initFounder,
-} from '@/modules/create-community/components/membership/FoundersFieldArray'
+import { FounderFieldArray } from '@/modules/create-community/components/membership/FoundersFieldArray'
 
 type MembershipFormProps = {
-  onSubmit: () => void
+  defaultValues?: MembershipFormValues
+  onSubmit: (_value: MembershipFormValues) => void
 }
 export type FormValues = {
   type: MembershipTypes
 }
 
-// Helpers
-const DEFAULTS: MembershipFormValues = {
-  membershipPrice: 0.01,
-  mintPeriod: 5,
-  revenueSplit: 30,
-  founders: [initFounder],
-}
-
-export function MembershipForm({ onSubmit }: MembershipFormProps): JSX.Element {
+export function MembershipForm({
+  defaultValues = {
+    founders: [{ founderAddress: '' }],
+    membershipPrice: 0.0001,
+    mintPeriod: 5,
+    revenueSplit: 30,
+  },
+  onSubmit,
+}: MembershipFormProps): JSX.Element {
   const methods = useForm<MembershipFormValues>({
     resolver: yupResolver(membershipValidationSchema) as any,
-    defaultValues: {
-      ...DEFAULTS,
-    },
+    defaultValues,
   })
 
   const { handleSubmit } = methods

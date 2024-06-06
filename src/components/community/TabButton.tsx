@@ -33,7 +33,8 @@ const TabButton = ({ id, label }: TabButtonProps): JSX.Element => {
       isActive = !(
         pathname.includes('drops') ||
         pathname.includes('members') ||
-        pathname.includes('activity')
+        pathname.includes('activity') ||
+        pathname.includes('about')
       )
       break
     default:

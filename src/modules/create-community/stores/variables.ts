@@ -5,7 +5,6 @@ import {
 } from '@/modules/create-community'
 
 import { AuctionSettingsFormValues } from './types'
-
 /*--------------------------------------------------------------------*/
 
 /**
@@ -63,5 +62,11 @@ export const initialState = {
     auction: undefined,
     treasury: undefined,
     governor: undefined,
+  },
+  membership: {
+    membershipPrice: 0.0001,
+    mintPeriod: 5,
+    revenueSplit: 30,
+    founders: [],
   },
 }

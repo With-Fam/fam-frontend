@@ -46,6 +46,7 @@ const CreateCommunityContext = createContext<CreateCommunityContextType>({
 // Helpers
 import { usePrivy } from '@privy-io/react-auth'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
+import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
 let sections: CreateSection[] = []
 
 // IMPORTANT: Create loading component
@@ -58,6 +59,7 @@ const CreateCommunityProvider = ({
   const {
     activeSection,
     general: gDefault,
+    membership: mDefault,
     founderAllocation,
     vetoPower,
     vetoerAddress,
@@ -69,6 +71,7 @@ const CreateCommunityProvider = ({
     setVetoerAddress,
     setReservePrice,
     setFulfilledSections,
+    setMembership,
   } = useFormStore()
 
   useEffect(() => {
@@ -107,7 +110,8 @@ const CreateCommunityProvider = ({
       ),
     }
 
-    const membershipSubmit = () => {
+    const membershipSubmit = (_values: MembershipFormValues): void => {
+      setMembership(_values)
       navigate(2)
     }
 
@@ -115,7 +119,9 @@ const CreateCommunityProvider = ({
       order: 1,
       title: 'Memberships',
       key: 'memberships',
-      content: <MembershipForm onSubmit={membershipSubmit} />,
+      content: (
+        <MembershipForm defaultValues={mDefault} onSubmit={membershipSubmit} />
+      ),
     }
 
     const review: CreateSection = {
