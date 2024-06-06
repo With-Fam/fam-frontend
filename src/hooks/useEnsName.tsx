@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Address, createPublicClient, http, isAddress } from 'viem'
 import { mainnet } from 'viem/chains'
 
-const useEnsName = (value: string) => {
+const useEnsName = (value: string): any => {
   const [ensName, setEnsName] = useState('')
 
   const publicClient = createPublicClient({
