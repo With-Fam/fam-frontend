@@ -1,14 +1,12 @@
 'use client'
 
 import { twMerge } from 'tailwind-merge'
-
 import { DetailedHTMLProps, InputHTMLAttributes } from 'react'
-// Local Components
 import ErrorMessage from './ErrorMessage'
 import { useFormContext } from 'react-hook-form'
 import { Icon } from '@/components/Icon'
+import Tooltip from '@/components/shared/Tooltip'
 
-// Types
 export interface InputProps
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
@@ -19,13 +17,8 @@ export interface InputProps
   label: string
   containerClasses?: string
   labelIcon?: any
+  tooltip?: string
 }
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 function TextInput({
   className,
@@ -34,9 +27,10 @@ function TextInput({
   type = 'text',
   containerClasses,
   labelIcon,
+  tooltip = '',
   ..._props
 }: InputProps): JSX.Element {
-  const { register, clearErrors } = useFormContext()
+  const { register } = useFormContext()
 
   return (
     <div className={twMerge('flex-1', className)}>
@@ -47,7 +41,10 @@ function TextInput({
           className="mb-2 block flex items-center gap-1 font-abcMedium text-sm"
           htmlFor={name}
         >
-          {label} {labelIcon && <Icon id={labelIcon} fill="#ffffff" />}
+          {label}{' '}
+          <Tooltip id={name} message={tooltip}>
+            {labelIcon && <Icon id={labelIcon} fill="#ffffff" />}
+          </Tooltip>
         </label>
         <input
           {...register(name)}

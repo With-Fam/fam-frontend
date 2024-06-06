@@ -55,6 +55,7 @@
     "react-hot-toast": "^2.4.1",
     "react-quill": "^2.0.0",
     "react-slider": "^2.0.6",
+    "react-tooltip": "^5.26.4",
     "sass": "^1.71.1",
     "save": "^2.9.0",
     "sharp": "^0.33.2",

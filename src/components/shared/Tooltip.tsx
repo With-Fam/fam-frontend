@@ -1,30 +1,37 @@
-'use client'
+import React, { PropsWithChildren } from 'react'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
-// Framework
-import { ReactNode } from 'react'
-
-// Types
-interface TooltipProps {
-  children: ReactNode
-  tooltipContent: ReactNode
+interface Props {
+  id: string
+  message: string
+  link?: string
+  className?: string
+  tipClasses?: string
 }
 
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
-
-const Tooltip = ({ children, tooltipContent }: TooltipProps): JSX.Element => (
-  <div className="group relative z-0 flex h-min w-min">
-    <span>{children}</span>
-    <span
-      className="pointer-events-none absolute right-6 top-6 w-60 rounded-2xl bg-white p-4 text-grey
-opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 sm:w-96"
+const Tooltip = ({
+  children,
+  message,
+  id,
+  className,
+  tipClasses = '',
+}: PropsWithChildren<Props>) => {
+  return (
+    <div
+      className={className}
+      data-tooltip-id={id}
+      data-tooltip-content={message}
+      data-tooltip-delay-hide={100}
     >
-      {tooltipContent}
-    </span>
-  </div>
-)
+      {children}
+      <ReactTooltip
+        id={id}
+        events={['hover']}
+        className={`!w-[225px] !rounded-xl border !bg-white !text-left !font-abc !text-grey ${tipClasses}`}
+        place="right"
+      />
+    </div>
+  )
+}
 
 export default Tooltip
