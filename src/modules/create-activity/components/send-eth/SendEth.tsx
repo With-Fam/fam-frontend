@@ -3,37 +3,20 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { getAddress } from 'viem'
 import _get from 'lodash.get'
-
-// Hooks & Stores
 import { useDaoStore } from '@/modules/dao'
 import { useBalance } from 'wagmi'
 import { useProposalStore } from '@/modules/create-activity/stores'
-
-// Types
 import { TransactionType } from '@/modules/create-activity/types'
 import { useChainStore } from '@/utils/stores/useChainStore'
 import { getEnsAddress } from '@/utils/ens'
 import { getProvider } from '@/utils/provider'
 import { walletSnippet } from '@/utils/helpers'
 import { AddressType, CHAIN_ID } from '@/types'
-
-// Components
 import { TextInput } from '@/components/forms'
-// import { Button } from '@/components/shared'
-// import { Paragraph } from '@/stories'
-import { AddActionButton, CurrencyList } from '../action'
-
+import { AddActionButton } from '../action'
 import { SendEthValues } from './SendEthForm.schema'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Componennt
- */
-
 import { Transaction } from '@/modules/create-activity/stores'
 import { ActionFormProps } from '@/modules/create-activity'
-import toast from 'react-hot-toast'
 
 function hasChanged(
   values: SendEthValues,
