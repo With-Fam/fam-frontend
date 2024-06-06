@@ -1,6 +1,7 @@
 'use client'
 
 import ActivityButton from '@/components/community/CommunityHeader/ActivityButton'
+import JoinButton from '@/components/community/CommunityHeader/JoinButton'
 import TopMembers from '@/components/community/CommunityHeader/TopMembers'
 import UploadButton from '@/components/community/CommunityHeader/UploadButton'
 import Image from 'next/image'
@@ -24,6 +25,7 @@ const CommunityHeader = () => {
         <TopMembers />
         <div className="flex items-center gap-2">
           <UploadButton />
+          <JoinButton />
           <ActivityButton />
         </div>
       </div>
