@@ -24,7 +24,7 @@ export type FormValues = {
 export function MembershipForm({
   defaultValues = {
     founders: [{ founderAddress: '' }],
-    membershipPrice: 0.02,
+    membershipPrice: 0.0001,
     mintPeriod: 5,
     revenueSplit: 30,
   },
