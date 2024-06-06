@@ -1,9 +1,7 @@
-// Framework
 import { NextRequest, NextResponse } from 'next/server'
 import { sql } from '@vercel/postgres'
 import { v4 as uuidv4 } from 'uuid'
 
-// ---------------------- POST ROUTE ---------------------- //
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const body = await req.json()
