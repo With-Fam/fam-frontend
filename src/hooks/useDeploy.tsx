@@ -7,7 +7,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 const useDeploy = () => {
-  const { createParty, createInitialETHCrowdfund } = useCreateParty()
+  const { createInitialETHCrowdfund } = useCreateParty()
   const {
     founderAllocation,
     contributionAllocation,
@@ -36,7 +36,6 @@ const useDeploy = () => {
     }
 
     setIsPendingTransaction(true)
-    console.log('SWEETS createInitialETHCrowdfund', createInitialETHCrowdfund)
     const transaction = await createInitialETHCrowdfund()
     const error = (transaction as any)?.error
 
