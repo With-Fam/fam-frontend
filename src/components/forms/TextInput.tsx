@@ -1,11 +1,17 @@
 'use client'
 
 import { twMerge } from 'tailwind-merge'
-import { DetailedHTMLProps, InputHTMLAttributes } from 'react'
+import {
+  DetailedHTMLProps,
+  InputHTMLAttributes,
+  useEffect,
+  useState,
+} from 'react'
 import ErrorMessage from './ErrorMessage'
 import { useFormContext } from 'react-hook-form'
 import { Icon } from '@/components/Icon'
 import Tooltip from '@/components/shared/Tooltip'
+import useEnsName from '@/hooks/useEnsName'
 
 export interface InputProps
   extends DetailedHTMLProps<
@@ -30,7 +36,18 @@ function TextInput({
   tooltip = '',
   ..._props
 }: InputProps): JSX.Element {
-  const { register } = useFormContext()
+  const { register, setValue, getValues } = useFormContext()
+  const [currentValue, setCurrentValue] = useState('')
+  const { ensName } = useEnsName(currentValue)
+  const values = getValues()
+
+  useEffect(() => {
+    if (ensName) setValue(name, ensName)
+  }, [ensName])
+
+  useEffect(() => {
+    setCurrentValue(values[name])
+  }, [])
 
   return (
     <div className={twMerge('flex-1', className)}>
@@ -55,6 +72,7 @@ function TextInput({
             'block w-full bg-white text-lg outline-0',
             _props.disabled ? 'cursor-not-allowed opacity-30' : ''
           )}
+          onChange={(e) => setCurrentValue(e.target.value)}
         />
       </div>
       <ErrorMessage name={name} />
