@@ -3,11 +3,12 @@ import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { ERROR_CODE } from '@/modules/create-activity/components/review-proposal/schema'
 import { useProposalStore } from '@/modules/create-activity/stores'
+import getEnsAddress from '@/utils/getEnsAddress'
 import getProposalData from '@/utils/party/getProposalData'
 import { getPublicClient } from '@/utils/viem'
 import { usePrivy } from '@privy-io/react-auth'
 import toast from 'react-hot-toast'
-import { Address, parseEther } from 'viem'
+import { Address, isAddress, parseEther } from 'viem'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -22,10 +23,11 @@ const useCreateProposal: any = (community: Address) => {
         return false
       }
       await walletClient.switchChain({ id: CHAIN_ID })
+      const ensAddress = await getEnsAddress('sweetman.eth')
 
       const latestSnapIndex = 0n
       const proposalRaw = {
-        target: target,
+        target: isAddress(target) ? target : (ensAddress as Address),
         value: parseEther(value),
         data: '0x0',
         optional: false,
