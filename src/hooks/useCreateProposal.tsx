@@ -3,12 +3,11 @@ import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { ERROR_CODE } from '@/modules/create-activity/components/review-proposal/schema'
 import { useProposalStore } from '@/modules/create-activity/stores'
-import getEnsAddress from '@/utils/getEnsAddress'
 import getProposalData from '@/utils/party/getProposalData'
 import { getPublicClient } from '@/utils/viem'
 import { usePrivy } from '@privy-io/react-auth'
 import toast from 'react-hot-toast'
-import { Address, isAddress, parseEther } from 'viem'
+import { Address, parseEther } from 'viem'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
