@@ -23,7 +23,7 @@ const useCreateProposal: any = (community: Address) => {
         return false
       }
       await walletClient.switchChain({ id: CHAIN_ID })
-      const ensAddress = await getEnsAddress('sweetman.eth')
+      const ensAddress = await getEnsAddress(target)
 
       const latestSnapIndex = 0n
       const proposalRaw = {
