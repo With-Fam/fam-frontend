@@ -36,13 +36,18 @@ function TextInput({
   tooltip = '',
   ..._props
 }: InputProps): JSX.Element {
-  const { register, setValue } = useFormContext()
+  const { register, setValue, getValues } = useFormContext()
   const [currentValue, setCurrentValue] = useState('')
   const { ensName } = useEnsName(currentValue)
+  const values = getValues()
 
   useEffect(() => {
     if (ensName) setValue(name, ensName)
   }, [ensName])
+
+  useEffect(() => {
+    setCurrentValue(values[name])
+  }, [])
 
   return (
     <div className={twMerge('flex-1', className)}>
