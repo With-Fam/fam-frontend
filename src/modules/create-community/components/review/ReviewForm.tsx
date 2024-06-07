@@ -11,13 +11,13 @@ import { CheckMark } from '@/components/icons'
 import createCommunity from '@/utils/createCommunity'
 import AddressCopy from '@/modules/create-community/components/review/AddressCopy'
 import { AddressType } from '@/types'
+import { CHAIN_ID } from '@/constants/defaultChains'
 
 export function ReviewForm(): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { chain } = useAccount()
-  const { deployedDao, setFulfilledSections, resetForm, general } =
-    useFormStore()
-  const router = useRouter()
+  const { deployedDao, setFulfilledSections, general } = useFormStore()
+  const { push } = useRouter()
   const methods = useForm()
 
   const { handleSubmit } = methods
@@ -37,11 +37,9 @@ export function ReviewForm(): JSX.Element {
         network: chain,
       })
 
-      const successUrl = `/community/${chain}/${deployedDao.token}/`
-      await router.push(successUrl)
-      setTimeout(() => {
-        resetForm()
-      }, 200)
+      const successUrl =
+        `/community/${CHAIN_ID}/${deployedDao.token}?created=true` as any
+      push(successUrl)
     } catch {
       setIsLoading(false)
       toast.error('Deployment error, try again!')
