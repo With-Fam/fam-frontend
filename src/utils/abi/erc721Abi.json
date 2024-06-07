@@ -1,0 +1,2375 @@
+[
+  {
+    "type": "constructor",
+    "name": "",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "globals",
+        "internalType": "contract IGlobals"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "error",
+    "name": "AlreadyInitialized",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "AlreadyVotedError",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "voter",
+        "internalType": "address"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "BadPreciousListError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "BadProposalHashError",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "proposalHash",
+        "internalType": "bytes32"
+      },
+      {
+        "type": "bytes32",
+        "name": "actualHash",
+        "internalType": "bytes32"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "BadProposalStatusError",
+    "inputs": [
+      {
+        "type": "uint8",
+        "name": "status",
+        "internalType": "enum PartyGovernance.ProposalStatus"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "BelowMinWithdrawAmountError",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "amount",
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint256",
+        "name": "minAmount",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "CannotDisableRageQuitAfterInitializationError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "CannotEnableRageQuitIfNotDistributionsRequireVoteError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "CannotModifyTotalVotingPowerAndAcceptError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "CannotRageQuitError",
+    "inputs": [
+      {
+        "type": "uint40",
+        "name": "rageQuitTimestamp",
+        "internalType": "uint40"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "DistributionsRequireVoteError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "EthTransferFailed",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "receiver",
+        "internalType": "address"
+      },
+      {
+        "type": "bytes",
+        "name": "errData",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "ExecutionTimeExceededError",
+    "inputs": [
+      {
+        "type": "uint40",
+        "name": "maxExecutableTime",
+        "internalType": "uint40"
+      },
+      {
+        "type": "uint40",
+        "name": "timestamp",
+        "internalType": "uint40"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "FixedRageQuitTimestampError",
+    "inputs": [
+      {
+        "type": "uint40",
+        "name": "rageQuitTimestamp",
+        "internalType": "uint40"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "Int192ToUint96CastOutOfRange",
+    "inputs": [
+      {
+        "type": "int192",
+        "name": "i192",
+        "internalType": "int192"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidBpsError",
+    "inputs": [
+      {
+        "type": "uint16",
+        "name": "bps",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidDelegateError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidGovernanceParameter",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "value",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidNewHostError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidTokenOrderError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "MismatchedPreciousListLengths",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotATokenError",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "token",
+        "internalType": "contract IERC20"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotAuthorized",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotMinted",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "NothingToBurnError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "OnlyDelegateCallError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "OnlyWhenEmergencyActionsAllowedError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "OnlyWhenEnabledError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "PartyNotStartedError",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "ProposalCannotBeCancelledYetError",
+    "inputs": [
+      {
+        "type": "uint40",
+        "name": "currentTime",
+        "internalType": "uint40"
+      },
+      {
+        "type": "uint40",
+        "name": "cancelTime",
+        "internalType": "uint40"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "TokenTransferFailedError",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "token",
+        "internalType": "contract IERC20"
+      },
+      {
+        "type": "address",
+        "name": "to",
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "amount",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "TooManyHosts",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "Uint256ToInt192CastOutOfRange",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "v",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "Uint256ToUint96CastOutOfRange",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "v",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "Unauthorized",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "UnsafeRecipient",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "ZeroAddress",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "event",
+    "name": "Approval",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "owner",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "operator",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ApprovalForAll",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "owner",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "operator",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "type": "bool",
+        "name": "approved",
+        "indexed": false,
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "AuthorityAdded",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "authority",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "AuthorityRemoved",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "authority",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "BatchMetadataUpdate",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "_fromTokenId",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint256",
+        "name": "_toTokenId",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Burn",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "caller",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint256",
+        "name": "votingPower",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "DistributionCreated",
+    "inputs": [
+      {
+        "type": "uint8",
+        "name": "tokenType",
+        "indexed": false,
+        "internalType": "enum ITokenDistributor.TokenType"
+      },
+      {
+        "type": "address",
+        "name": "token",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "EmergencyExecute",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "target",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "type": "bytes",
+        "name": "data",
+        "indexed": false,
+        "internalType": "bytes"
+      },
+      {
+        "type": "uint256",
+        "name": "amountEth",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "EmergencyExecuteDisabled",
+    "inputs": [],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "HostStatusTransferred",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "oldHost",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "newHost",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Initialized",
+    "inputs": [],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "MetadataUpdate",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "_tokenId",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PartyCardIntrinsicVotingPowerSet",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint256",
+        "name": "intrinsicVotingPower",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PartyDelegateUpdated",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "owner",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "delegate",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PartyVotingSnapshotCreated",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "voter",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "type": "uint40",
+        "name": "timestamp",
+        "indexed": false,
+        "internalType": "uint40"
+      },
+      {
+        "type": "uint96",
+        "name": "delegatedVotingPower",
+        "indexed": false,
+        "internalType": "uint96"
+      },
+      {
+        "type": "uint96",
+        "name": "intrinsicVotingPower",
+        "indexed": false,
+        "internalType": "uint96"
+      },
+      {
+        "type": "bool",
+        "name": "isDelegated",
+        "indexed": false,
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ProposalAccepted",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "proposalId",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "type": "address",
+        "name": "voter",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "weight",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ProposalCancelled",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "proposalId",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ProposalExecuted",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "proposalId",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "type": "address",
+        "name": "executor",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "type": "bytes",
+        "name": "nextProgressData",
+        "indexed": false,
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ProposalPassed",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "proposalId",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ProposalVetoed",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "proposalId",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "type": "address",
+        "name": "host",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Proposed",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "proposalId",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "type": "address",
+        "name": "proposer",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "type": "tuple",
+        "name": "proposal",
+        "components": [
+          {
+            "type": "uint40",
+            "name": "maxExecutableTime",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint40",
+            "name": "cancelDelay",
+            "internalType": "uint40"
+          },
+          {
+            "type": "bytes",
+            "name": "proposalData",
+            "internalType": "bytes"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct PartyGovernance.Proposal"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "RageQuit",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "caller",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "type": "uint256[]",
+        "name": "tokenIds",
+        "indexed": false,
+        "internalType": "uint256[]"
+      },
+      {
+        "type": "address[]",
+        "name": "withdrawTokens",
+        "indexed": false,
+        "internalType": "contract IERC20[]"
+      },
+      {
+        "type": "address",
+        "name": "receiver",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "RageQuitSet",
+    "inputs": [
+      {
+        "type": "uint40",
+        "name": "oldRageQuitTimestamp",
+        "indexed": false,
+        "internalType": "uint40"
+      },
+      {
+        "type": "uint40",
+        "name": "newRageQuitTimestamp",
+        "indexed": false,
+        "internalType": "uint40"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Transfer",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "owner",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "to",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "fallback",
+    "name": "",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "IMPL",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "VERSION_ID",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint16",
+        "name": "",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "abdicateAuthority",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "abdicateHost",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "newPartyHost",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "accept",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "proposalId",
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint256",
+        "name": "snapIndex",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "totalVotes",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "addAuthority",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "authority",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "approve",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "spender",
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "id",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "balanceOf",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "owner",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "burn",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "burn",
+    "inputs": [
+      {
+        "type": "uint256[]",
+        "name": "tokenIds",
+        "internalType": "uint256[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "cancel",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "proposalId",
+        "internalType": "uint256"
+      },
+      {
+        "type": "tuple",
+        "name": "proposal",
+        "components": [
+          {
+            "type": "uint40",
+            "name": "maxExecutableTime",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint40",
+            "name": "cancelDelay",
+            "internalType": "uint40"
+          },
+          {
+            "type": "bytes",
+            "name": "proposalData",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct PartyGovernance.Proposal"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "contractURI",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "string",
+        "name": "",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "decreaseTotalVotingPower",
+    "inputs": [
+      {
+        "type": "uint96",
+        "name": "votingPower",
+        "internalType": "uint96"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "decreaseVotingPower",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint96",
+        "name": "votingPower",
+        "internalType": "uint96"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "delegateCallAndRevert",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "impl",
+        "internalType": "address"
+      },
+      {
+        "type": "bytes",
+        "name": "callData",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "delegateVotingPower",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "delegate",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "delegationsByVoter",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "disableEmergencyExecute",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "distribute",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "amount",
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint8",
+        "name": "tokenType",
+        "internalType": "enum ITokenDistributor.TokenType"
+      },
+      {
+        "type": "address",
+        "name": "token",
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple",
+        "name": "distInfo",
+        "components": [
+          {
+            "type": "uint8",
+            "name": "tokenType",
+            "internalType": "enum ITokenDistributor.TokenType"
+          },
+          {
+            "type": "uint256",
+            "name": "distributionId",
+            "internalType": "uint256"
+          },
+          {
+            "type": "address",
+            "name": "party",
+            "internalType": "contract Party"
+          },
+          {
+            "type": "address",
+            "name": "feeRecipient",
+            "internalType": "address payable"
+          },
+          {
+            "type": "address",
+            "name": "token",
+            "internalType": "address"
+          },
+          {
+            "type": "uint128",
+            "name": "memberSupply",
+            "internalType": "uint128"
+          },
+          {
+            "type": "uint128",
+            "name": "fee",
+            "internalType": "uint128"
+          },
+          {
+            "type": "uint96",
+            "name": "totalShares",
+            "internalType": "uint96"
+          }
+        ],
+        "internalType": "struct ITokenDistributor.DistributionInfo"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "emergencyExecute",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "targetAddress",
+        "internalType": "address"
+      },
+      {
+        "type": "bytes",
+        "name": "targetCallData",
+        "internalType": "bytes"
+      },
+      {
+        "type": "uint256",
+        "name": "amountEth",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "emergencyExecuteDisabled",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bool",
+        "name": "",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "execute",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "proposalId",
+        "internalType": "uint256"
+      },
+      {
+        "type": "tuple",
+        "name": "proposal",
+        "components": [
+          {
+            "type": "uint40",
+            "name": "maxExecutableTime",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint40",
+            "name": "cancelDelay",
+            "internalType": "uint40"
+          },
+          {
+            "type": "bytes",
+            "name": "proposalData",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct PartyGovernance.Proposal"
+      },
+      {
+        "type": "address[]",
+        "name": "preciousTokens",
+        "internalType": "contract IERC721[]"
+      },
+      {
+        "type": "uint256[]",
+        "name": "preciousTokenIds",
+        "internalType": "uint256[]"
+      },
+      {
+        "type": "bytes",
+        "name": "progressData",
+        "internalType": "bytes"
+      },
+      {
+        "type": "bytes",
+        "name": "extraData",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "feeBps",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint16",
+        "name": "",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "feeRecipient",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address payable"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "findVotingPowerSnapshotIndex",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "voter",
+        "internalType": "address"
+      },
+      {
+        "type": "uint40",
+        "name": "timestamp",
+        "internalType": "uint40"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "index",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getApproved",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getDistributionShareOf",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getGovernanceValues",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "tuple",
+        "name": "",
+        "components": [
+          {
+            "type": "uint40",
+            "name": "voteDuration",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint40",
+            "name": "executionDelay",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint16",
+            "name": "passThresholdBps",
+            "internalType": "uint16"
+          },
+          {
+            "type": "uint96",
+            "name": "totalVotingPower",
+            "internalType": "uint96"
+          }
+        ],
+        "internalType": "struct ProposalStorage.GovernanceValues"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getProposalEngineOpts",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "tuple",
+        "name": "",
+        "components": [
+          {
+            "type": "bool",
+            "name": "enableAddAuthorityProposal",
+            "internalType": "bool"
+          },
+          {
+            "type": "bool",
+            "name": "allowArbCallsToSpendPartyEth",
+            "internalType": "bool"
+          },
+          {
+            "type": "bool",
+            "name": "allowOperators",
+            "internalType": "bool"
+          },
+          {
+            "type": "uint8",
+            "name": "distributionsConfig",
+            "internalType": "enum ProposalStorage.DistributionsConfig"
+          }
+        ],
+        "internalType": "struct ProposalStorage.ProposalEngineOpts"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getProposalExecutionEngine",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "contract IProposalExecutionEngine"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getProposalHash",
+    "inputs": [
+      {
+        "type": "tuple",
+        "name": "proposal",
+        "components": [
+          {
+            "type": "uint40",
+            "name": "maxExecutableTime",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint40",
+            "name": "cancelDelay",
+            "internalType": "uint40"
+          },
+          {
+            "type": "bytes",
+            "name": "proposalData",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct PartyGovernance.Proposal"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bytes32",
+        "name": "proposalHash",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "pure"
+  },
+  {
+    "type": "function",
+    "name": "getProposalStateInfo",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "proposalId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint8",
+        "name": "status",
+        "internalType": "enum PartyGovernance.ProposalStatus"
+      },
+      {
+        "type": "tuple",
+        "name": "values",
+        "components": [
+          {
+            "type": "uint40",
+            "name": "proposedTime",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint40",
+            "name": "passedTime",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint40",
+            "name": "executedTime",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint40",
+            "name": "completedTime",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint96",
+            "name": "votes",
+            "internalType": "uint96"
+          },
+          {
+            "type": "uint96",
+            "name": "totalVotingPower",
+            "internalType": "uint96"
+          },
+          {
+            "type": "uint8",
+            "name": "numHosts",
+            "internalType": "uint8"
+          },
+          {
+            "type": "uint8",
+            "name": "numHostsAccepted",
+            "internalType": "uint8"
+          },
+          {
+            "type": "uint40",
+            "name": "voteDuration",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint40",
+            "name": "executionDelay",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint16",
+            "name": "passThresholdBps",
+            "internalType": "uint16"
+          }
+        ],
+        "internalType": "struct PartyGovernance.ProposalStateValues"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getVotingPowerAt",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "voter",
+        "internalType": "address"
+      },
+      {
+        "type": "uint40",
+        "name": "timestamp",
+        "internalType": "uint40"
+      },
+      {
+        "type": "uint256",
+        "name": "snapIndex",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint96",
+        "name": "votingPower",
+        "internalType": "uint96"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getVotingPowerShareOf",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "implementation",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "increaseTotalVotingPower",
+    "inputs": [
+      {
+        "type": "uint96",
+        "name": "votingPower",
+        "internalType": "uint96"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "increaseVotingPower",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint96",
+        "name": "votingPower",
+        "internalType": "uint96"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "initialize",
+    "inputs": [
+      {
+        "type": "tuple",
+        "name": "initData",
+        "components": [
+          {
+            "type": "tuple",
+            "name": "options",
+            "components": [
+              {
+                "components": [
+                  {
+                    "internalType": "address[]",
+                    "name": "hosts",
+                    "type": "address[]"
+                  },
+                  {
+                    "internalType": "uint40",
+                    "name": "voteDuration",
+                    "type": "uint40"
+                  },
+                  {
+                    "internalType": "uint40",
+                    "name": "executionDelay",
+                    "type": "uint40"
+                  },
+                  {
+                    "internalType": "uint16",
+                    "name": "passThresholdBps",
+                    "type": "uint16"
+                  },
+                  {
+                    "internalType": "uint96",
+                    "name": "totalVotingPower",
+                    "type": "uint96"
+                  },
+                  {
+                    "internalType": "uint16",
+                    "name": "feeBps",
+                    "type": "uint16"
+                  },
+                  {
+                    "internalType": "address payable",
+                    "name": "feeRecipient",
+                    "type": "address"
+                  }
+                ],
+                "internalType": "struct PartyGovernance.GovernanceOpts",
+                "name": "governance",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "bool",
+                    "name": "enableAddAuthorityProposal",
+                    "type": "bool"
+                  },
+                  {
+                    "internalType": "bool",
+                    "name": "allowArbCallsToSpendPartyEth",
+                    "type": "bool"
+                  },
+                  {
+                    "internalType": "bool",
+                    "name": "allowOperators",
+                    "type": "bool"
+                  },
+                  {
+                    "internalType": "enum ProposalStorage.DistributionsConfig",
+                    "name": "distributionsConfig",
+                    "type": "uint8"
+                  }
+                ],
+                "internalType": "struct ProposalStorage.ProposalEngineOpts",
+                "name": "proposalEngine",
+                "type": "tuple"
+              },
+              {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "symbol",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "customizationPresetId",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct Party.PartyOptions"
+          },
+          {
+            "type": "address[]",
+            "name": "preciousTokens",
+            "internalType": "contract IERC721[]"
+          },
+          {
+            "type": "uint256[]",
+            "name": "preciousTokenIds",
+            "internalType": "uint256[]"
+          },
+          {
+            "type": "address[]",
+            "name": "authorities",
+            "internalType": "address[]"
+          },
+          {
+            "type": "uint40",
+            "name": "rageQuitTimestamp",
+            "internalType": "uint40"
+          }
+        ],
+        "internalType": "struct Party.PartyInitData"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "initialized",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bool",
+        "name": "",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "isApprovedForAll",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool",
+        "name": "",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "isAuthority",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool",
+        "name": "",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "isHost",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool",
+        "name": "",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "lastProposalId",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "lastTotalVotingPowerChangeTimestamp",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint40",
+        "name": "",
+        "internalType": "uint40"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "mint",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "owner",
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "votingPower",
+        "internalType": "uint256"
+      },
+      {
+        "type": "address",
+        "name": "delegate",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "mintedVotingPower",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint96",
+        "name": "",
+        "internalType": "uint96"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "name",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "string",
+        "name": "",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "numHosts",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint8",
+        "name": "",
+        "internalType": "uint8"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "ownerOf",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "id",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "owner",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "preciousListHash",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bytes32",
+        "name": "",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "propose",
+    "inputs": [
+      {
+        "type": "tuple",
+        "name": "proposal",
+        "components": [
+          {
+            "type": "uint40",
+            "name": "maxExecutableTime",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint40",
+            "name": "cancelDelay",
+            "internalType": "uint40"
+          },
+          {
+            "type": "bytes",
+            "name": "proposalData",
+            "internalType": "bytes"
+          }
+        ],
+        "internalType": "struct PartyGovernance.Proposal"
+      },
+      {
+        "type": "uint256",
+        "name": "latestSnapIndex",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "proposalId",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "rageQuit",
+    "inputs": [
+      {
+        "type": "uint256[]",
+        "name": "tokenIds",
+        "internalType": "uint256[]"
+      },
+      {
+        "type": "address[]",
+        "name": "withdrawTokens",
+        "internalType": "contract IERC20[]"
+      },
+      {
+        "type": "uint256[]",
+        "name": "minWithdrawAmounts",
+        "internalType": "uint256[]"
+      },
+      {
+        "type": "address",
+        "name": "receiver",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "rageQuitTimestamp",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint40",
+        "name": "",
+        "internalType": "uint40"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "royaltyInfo",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "safeTransferFrom",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "owner",
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "to",
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "safeTransferFrom",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "owner",
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "to",
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "internalType": "uint256"
+      },
+      {
+        "type": "bytes",
+        "name": "data",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setApprovalForAll",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "operator",
+        "internalType": "address"
+      },
+      {
+        "type": "bool",
+        "name": "approved",
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setRageQuit",
+    "inputs": [
+      {
+        "type": "uint40",
+        "name": "newRageQuitTimestamp",
+        "internalType": "uint40"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "supportsInterface",
+    "inputs": [
+      {
+        "type": "bytes4",
+        "name": "interfaceId",
+        "internalType": "bytes4"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool",
+        "name": "",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "pure"
+  },
+  {
+    "type": "function",
+    "name": "symbol",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "string",
+        "name": "",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "tokenCount",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint96",
+        "name": "",
+        "internalType": "uint96"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "tokenURI",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "string",
+        "name": "",
+        "internalType": "string"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "transferFrom",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "owner",
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "to",
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "tokenId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "veto",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "proposalId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "votingPowerByTokenId",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "receive",
+    "name": "",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "payable"
+  }
+]
