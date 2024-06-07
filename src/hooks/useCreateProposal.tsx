@@ -23,11 +23,10 @@ const useCreateProposal: any = (community: Address) => {
         return false
       }
       await walletClient.switchChain({ id: CHAIN_ID })
-      const ensAddress = await getEnsAddress(target)
 
       const latestSnapIndex = 0n
       const proposalRaw = {
-        target: isAddress(target) ? target : (ensAddress as Address),
+        target,
         value: parseEther(value),
         data: '0x0',
         optional: false,

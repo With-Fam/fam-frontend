@@ -1,7 +1,7 @@
 'use client'
 
 import { FormProvider, useForm } from 'react-hook-form'
-import { getAddress } from 'viem'
+import { Address, getAddress } from 'viem'
 import _get from 'lodash.get'
 import { useDaoStore } from '@/modules/dao'
 import { useBalance } from 'wagmi'
@@ -64,10 +64,9 @@ export function SendEth({
       return
     }
 
-    const target = await getEnsAddress(
-      values.recipientAddress,
-      getProvider(CHAIN_ID.ETHEREUM)
-    )
+    const ensAddress = await getEnsAddress(values.recipientAddress)
+    const target = (ensAddress || values.recipientAddress) as Address
+
     const value = values.amount.toString()
 
     const builderTransaction = {
@@ -76,7 +75,7 @@ export function SendEth({
       transactions: [
         {
           functionSignature: 'sendEth(address)',
-          target: getAddress(target),
+          target,
           value,
           calldata: '0x',
         },
