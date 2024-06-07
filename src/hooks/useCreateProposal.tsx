@@ -25,7 +25,7 @@ const useCreateProposal: any = (community: Address) => {
 
       const latestSnapIndex = 0n
       const proposalRaw = {
-        target: target,
+        target,
         value: parseEther(value),
         data: '0x0',
         optional: false,
