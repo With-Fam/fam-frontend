@@ -57,7 +57,6 @@ export function SendEth({
     },
   })
   const onSubmit = async (values: SendEthValues) => {
-    // Need a callback to return to OG state
     if (!(values.amount && values.recipientAddress)) return
     if (exists && defaultValues && !hasChanged(values, defaultValues)) {
       callback()
