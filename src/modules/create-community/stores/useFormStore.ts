@@ -28,6 +28,8 @@ export const useFormStore = create(
       },
       setGeneral: (general: GeneralFormValues) => set({ general }),
       setMembership: (membership: MembershipFormValues) => set({ membership }),
+      setVetoPeriod: (vetoPeriod: number) => set({ vetoPeriod }),
+      setShowAdvanced: (showAdvanced: boolean) => set({ showAdvanced }),
       setVetoPower: (vetoPower: boolean) => set({ vetoPower }),
       setVetoerAddress: (vetoerAddress: string) => set({ vetoerAddress }),
       setFounderAllocation: (founderAllocation: Array<TokenAllocation>) =>
