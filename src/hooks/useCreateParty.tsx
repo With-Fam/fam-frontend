@@ -31,7 +31,7 @@ const useCreateParty = () => {
       const publicClient = getPublicClient(chainId)
       const crowdfundOpts = {
         disableContributingForExistingCard: true,
-        duration: 86400,
+        duration: 86400 * membership.mintPeriod,
         exchangeRate: 1000000000000000000n,
         fundingSplitBps: 0,
         fundingSplitRecipient: address,
@@ -45,7 +45,7 @@ const useCreateParty = () => {
         minTotalContributions: 1000000000000000n,
       }
       const governanceOpts = {
-        executionDelay: 86400 * membership.mintPeriod,
+        executionDelay: 604800,
         feeBps: membership.revenueSplit * 100,
         feeRecipient: '0x0e63D6f414b40BaFCa676810ef1aBf05ECc8E459',
         hosts: [address],
