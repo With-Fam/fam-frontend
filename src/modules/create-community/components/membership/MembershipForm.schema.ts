@@ -12,6 +12,7 @@ export interface MembershipFormValues extends FounderFormValues {
   membershipPrice: number
   mintPeriod: number
   revenueSplit: number
+  threshold: number
 }
 
 export const membershipValidationSchema = Yup.object({

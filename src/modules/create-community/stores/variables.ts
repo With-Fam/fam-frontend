@@ -68,5 +68,8 @@ export const initialState = {
     mintPeriod: 5,
     revenueSplit: 30,
     founders: [],
+    threshold: 25,
   },
+  vetoPeriod: 8 * 3600,
+  showAdvanced: false,
 }
