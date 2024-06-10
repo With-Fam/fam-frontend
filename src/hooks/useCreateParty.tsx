@@ -13,7 +13,7 @@ import { zeroAddress } from 'viem'
 
 const useCreateParty = () => {
   const chainId = CHAIN_ID
-  const { auctionSettings, general, membership } = useFormStore()
+  const { general, membership, vetoPeriod } = useFormStore()
   const { connectedWallet: address } = useConnectedWallet()
   const { walletClient } = usePrivyWalletClient()
 
@@ -21,8 +21,7 @@ const useCreateParty = () => {
     if (!walletClient) return { error: 'Wallet client not found' }
     const totalVotingPower = 100000000000000000000n
     const passThreshold =
-      ((auctionSettings.proposalThreshold / 100) * Number(totalVotingPower)) /
-      1e18
+      ((membership.threshold / 100) * Number(totalVotingPower)) / 1e18
     const BPS_MULTIPLIER = 100
     const passThresholdBps = passThreshold * BPS_MULTIPLIER
 
@@ -53,7 +52,7 @@ const useCreateParty = () => {
         partyFactory: '0xB418f5B001Af94A91daB2cE641E39722e1d9dDAC',
         partyImpl: '0xeFA4054F3Db3D1f5e981513a3d8A33D91FC97dc1',
         passThresholdBps: passThresholdBps,
-        voteDuration: MINIMUM_VOTE_DURATION,
+        voteDuration: vetoPeriod,
       }
       const proposalEngineOpts = {
         allowArbCallsToSpendPartyEth: true,
