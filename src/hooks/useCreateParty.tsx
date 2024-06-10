@@ -13,7 +13,7 @@ import { zeroAddress } from 'viem'
 
 const useCreateParty = () => {
   const chainId = CHAIN_ID
-  const { auctionSettings } = useFormStore()
+  const { auctionSettings, general, membership } = useFormStore()
   const { connectedWallet: address } = useConnectedWallet()
   const { walletClient } = usePrivyWalletClient()
 
@@ -46,8 +46,8 @@ const useCreateParty = () => {
         minTotalContributions: 1000000000000000n,
       }
       const governanceOpts = {
-        executionDelay: 604800,
-        feeBps: 250,
+        executionDelay: 86400 * membership.mintPeriod,
+        feeBps: membership.revenueSplit * 100,
         feeRecipient: '0x0e63D6f414b40BaFCa676810ef1aBf05ECc8E459',
         hosts: [address],
         partyFactory: '0xB418f5B001Af94A91daB2cE641E39722e1d9dDAC',
@@ -68,12 +68,12 @@ const useCreateParty = () => {
         ],
         customizationPresetId: 2n,
         governanceOpts,
-        name: 'testing',
+        name: general.daoName,
         preciousTokens: [],
         preciousTokenIds: [],
         proposalEngineOpts,
         rageQuitTimestamp: 0,
-        symbol: 'testing',
+        symbol: general.daoSymbol,
       }
       const createGateCallData = zeroAddress
       const contractConfig = {
