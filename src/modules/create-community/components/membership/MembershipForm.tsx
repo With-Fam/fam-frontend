@@ -12,6 +12,7 @@ import MembershipPrice from '@/modules/create-community/components/membership/Me
 import MintPeriod from '@/modules/create-community/components/membership/MintPeriod'
 import RevenueSplit from '@/modules/create-community/components/membership/RevenueSplit'
 import { FounderFieldArray } from '@/modules/create-community/components/membership/FoundersFieldArray'
+import Advanced from '@/modules/create-community/components/membership/Advanced'
 
 type MembershipFormProps = {
   defaultValues?: MembershipFormValues
@@ -27,6 +28,7 @@ export function MembershipForm({
     membershipPrice: 0.0001,
     mintPeriod: 5,
     revenueSplit: 30,
+    threshold: 25,
   },
   onSubmit,
 }: MembershipFormProps): JSX.Element {
@@ -47,6 +49,7 @@ export function MembershipForm({
         <MintPeriod />
         <RevenueSplit />
         <FounderFieldArray />
+        <Advanced />
         <ContinueButton />
       </form>
     </FormProvider>

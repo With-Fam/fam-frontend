@@ -1,18 +1,10 @@
-// Local Components
 import CommunityCard from '@/components/explore/CommunityCard'
-import { ExploreDaosPageQuery } from '@/data/subgraph/sdk.generated'
 import { Paragraph } from '@/stories'
+import { Address } from 'viem'
 
-// Types
 interface CommunitiesProps {
-  items: ExploreDaosPageQuery['auctions']
+  items: Array<Address>
 }
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 const Communities = ({ items }: CommunitiesProps): JSX.Element => {
   return (

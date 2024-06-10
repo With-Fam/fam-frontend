@@ -21,7 +21,6 @@ const useDeploy = () => {
     useState<boolean>(false)
   const [deploymentError, setDeploymentError] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-
   const handleDeploy = async () => {
     setIsLoading(true)
     setDeploymentError(undefined)

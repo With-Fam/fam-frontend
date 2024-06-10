@@ -1,13 +1,12 @@
-// Components
-// import { Toggle } from '@/stories'
 import {
   Communities,
   ExploreHeader,
   ExploreHeaderMobile,
 } from '@/components/explore'
 import { getChainId } from '@/utils/getChainId'
-// Types
 import type { Metadata } from 'next'
+import getAllParties from '@/utils/party/getAllParties'
+
 type ExplorePageProps = {
   searchParams: {
     page: string
@@ -15,17 +14,6 @@ type ExplorePageProps = {
   }
   params: { network: string }
 }
-
-// Content
-import { getExploreData } from '@/app/(main)/explore/[network]/actions'
-import ExplorePagination from '@/components/explore/ExplorePagination'
-// import { EXPLORE_TOGGLE_DATA } from '@/content/explore'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Page
- */
 
 export const metadata: Metadata = {
   title: 'Explore Communities',
@@ -55,34 +43,19 @@ export const metadata: Metadata = {
 }
 
 const ExplorePage = async ({
-  searchParams,
   params,
 }: ExplorePageProps): Promise<JSX.Element> => {
-  const limit = 100
   const { network } = params
   const chainId = getChainId(network.toUpperCase().replace('-', '_'))
 
-  const { communities, count } = await getExploreData({
-    limit,
-    chainId,
-    page: searchParams.page,
-  })
+  const parties = await getAllParties(chainId as any)
 
   return (
     <>
       <ExploreHeader />
       <ExploreHeaderMobile />
-      {/* <Toggle
-        type={searchParams.type}
-        items={EXPLORE_TOGGLE_DATA}
-        defaultType="trending"
-      /> */}
       <div className="pt-8" />
-      <Communities items={communities} />
-      <ExplorePagination
-        page={searchParams.page || '1'}
-        hasNextPage={count > limit * Number(searchParams.page || '1')}
-      />
+      <Communities items={parties} />
     </>
   )
 }

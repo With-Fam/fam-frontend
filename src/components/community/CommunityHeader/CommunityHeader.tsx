@@ -2,7 +2,7 @@
 
 import ActivityButton from '@/components/community/CommunityHeader/ActivityButton'
 import TopMembers from '@/components/community/CommunityHeader/TopMembers'
-import UploadButton from '@/components/community/CommunityHeader/UploadButton'
+import ShareButton from '@/components/community/CommunityHeader/ShareButton'
 import Image from 'next/image'
 
 const CommunityHeader = () => {
@@ -23,7 +23,7 @@ const CommunityHeader = () => {
       <div className="hidden w-full justify-between md:flex">
         <TopMembers />
         <div className="flex items-center gap-2">
-          <UploadButton />
+          <ShareButton />
           <ActivityButton />
         </div>
       </div>

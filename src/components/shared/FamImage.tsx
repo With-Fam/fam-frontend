@@ -1,14 +1,7 @@
 'use client'
 
-// Framework
 import Image, { ImageProps } from 'next/image'
 import { useState } from 'react'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 const FamImage = ({ alt, src, ..._props }: ImageProps): JSX.Element => {
   const [srcError, setSrcError] = useState(false)
