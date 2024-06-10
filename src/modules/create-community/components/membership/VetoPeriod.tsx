@@ -1,13 +1,13 @@
 import { Icon } from '@/components/Icon'
 import { useFormStore } from '@/modules/create-community/stores'
-import { Paragraph } from '@/stories'
 import Tooltip from '@/components/shared/Tooltip'
+import VetoPeriodButton from '@/modules/create-community/components/membership/VetoPeriodButton'
 
 const VetoPeriod = () => {
   const { vetoPeriod, setVetoPeriod } = useFormStore()
 
   return (
-    <section className="mt-4 rounded-md bg-white">
+    <section className="mt-4 rounded-md bg-white pb-3">
       <div className="flex items-center gap-1 px-4 pt-4 text-left font-abcMedium text-sm">
         Veto Period{' '}
         <Tooltip
@@ -19,27 +19,21 @@ const VetoPeriod = () => {
         </Tooltip>
       </div>
       <div className="mt-4 flex grid w-full grid-cols-3 gap-2 px-4 md:gap-8">
-        <button
-          className={`text-abcMedium flex h-[100px] items-center justify-center rounded-2xl border ${vetoPeriod === 8 * 3600 ? 'border-orange' : ''}`}
-          type="button"
+        <VetoPeriodButton
+          isActive={vetoPeriod === 8 * 3600}
+          label="8H"
           onClick={() => setVetoPeriod(8 * 3600)}
-        >
-          <Paragraph as="p3">8H</Paragraph>
-        </button>
-        <button
-          className={`text-abcMedium flex h-[100px] items-center justify-center rounded-2xl border ${vetoPeriod === 24 * 3600 ? 'border-orange' : ''}`}
-          type="button"
+        />
+        <VetoPeriodButton
+          isActive={vetoPeriod === 24 * 3600}
+          label="24H"
           onClick={() => setVetoPeriod(24 * 3600)}
-        >
-          <Paragraph as="p3">24H</Paragraph>
-        </button>
-        <button
-          className={`text-abcMedium flex h-[100px] items-center justify-center rounded-2xl border ${vetoPeriod === 7 * 24 * 3600 ? 'border-orange' : ''}`}
-          type="button"
+        />
+        <VetoPeriodButton
+          isActive={vetoPeriod === 7 * 24 * 3600}
+          label="7D"
           onClick={() => setVetoPeriod(7 * 24 * 3600)}
-        >
-          <Paragraph as="p3">7D</Paragraph>
-        </button>
+        />
       </div>
     </section>
   )

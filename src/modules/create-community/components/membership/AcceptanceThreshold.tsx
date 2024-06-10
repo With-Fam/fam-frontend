@@ -1,13 +1,17 @@
 import { Icon } from '@/components/Icon'
 import { InputSlider } from '@/components/forms'
 import { useFormStore } from '@/modules/create-community/stores'
-import { Paragraph } from '@/stories'
 import { Controller, useFormContext } from 'react-hook-form'
 import Tooltip from '@/components/shared/Tooltip'
+import { useState } from 'react'
+import DifficultyPill from './DifficultyPill'
 
 const AcceptanceThreshold = () => {
   const { control } = useFormContext()
   const { membership } = useFormStore()
+  const [selectedThreshold, setSelectedThreshold] = useState(
+    membership.threshold
+  )
 
   return (
     <section className="mt-4 rounded-md bg-white">
@@ -30,7 +34,10 @@ const AcceptanceThreshold = () => {
               <InputSlider
                 label=""
                 value={field.value}
-                onChange={(value, index) => field.onChange(value, index)}
+                onChange={(value, index) => {
+                  field.onChange(value, index)
+                  setSelectedThreshold(value)
+                }}
                 min={0}
                 max={100}
                 suffix="%"
@@ -38,9 +45,7 @@ const AcceptanceThreshold = () => {
             )}
           />
         </div>
-        <Paragraph as="p3" className="whitespace-nowrap">
-          100%
-        </Paragraph>
+        <DifficultyPill threshold={selectedThreshold} />
       </div>
     </section>
   )

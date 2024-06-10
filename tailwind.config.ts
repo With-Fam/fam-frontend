@@ -59,6 +59,10 @@ const config: Config = {
           tertiary: '#F8F8F8',
           icon: '#ECECEC',
         },
+        green: {
+          DEFAULT: '#45D039',
+          light: '#45D0391A',
+        },
         status: {
           red: '#F00',
           green: '#45D039',
