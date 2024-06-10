@@ -1,21 +1,17 @@
 import { Icon } from '@/components/Icon'
 import { InputSlider } from '@/components/forms'
 import { useFormStore } from '@/modules/create-community/stores'
-import { Paragraph } from '@/stories'
 import { Controller, useFormContext } from 'react-hook-form'
 import Tooltip from '@/components/shared/Tooltip'
 import { useState } from 'react'
+import DifficultyPill from './DifficultyPill'
 
 const AcceptanceThreshold = () => {
   const { control } = useFormContext()
-  const { vetoPeriod, membership } = useFormStore()
+  const { membership } = useFormStore()
   const [selectedThreshold, setSelectedThreshold] = useState(
     membership.threshold
   )
-
-  const isEasy = selectedThreshold >= 0 && selectedThreshold <= 25
-  const isMedium = selectedThreshold > 25 && selectedThreshold < 66
-  const isHard = selectedThreshold >= 66
 
   return (
     <section className="mt-4 rounded-md bg-white">
@@ -49,13 +45,7 @@ const AcceptanceThreshold = () => {
             )}
           />
         </div>
-        <div
-          className={`rounded-full ${isEasy ? 'bg-green-light text-green' : 'bg-orange-light text-orange'} px-2 py-1`}
-        >
-          {isEasy && 'Easy'}
-          {isMedium && 'Medium'}
-          {isHard && 'Hard'}
-        </div>
+        <DifficultyPill threshold={selectedThreshold} />
       </div>
     </section>
   )
