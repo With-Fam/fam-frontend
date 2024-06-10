@@ -4,10 +4,18 @@ import { useFormStore } from '@/modules/create-community/stores'
 import { Paragraph } from '@/stories'
 import { Controller, useFormContext } from 'react-hook-form'
 import Tooltip from '@/components/shared/Tooltip'
+import { useState } from 'react'
 
 const AcceptanceThreshold = () => {
   const { control } = useFormContext()
-  const { membership } = useFormStore()
+  const { vetoPeriod, membership } = useFormStore()
+  const [selectedThreshold, setSelectedThreshold] = useState(
+    membership.threshold
+  )
+
+  const isEasy = selectedThreshold >= 0 && selectedThreshold <= 25
+  const isMedium = selectedThreshold > 25 && selectedThreshold < 66
+  const isHard = selectedThreshold >= 66
 
   return (
     <section className="mt-4 rounded-md bg-white">
@@ -30,7 +38,10 @@ const AcceptanceThreshold = () => {
               <InputSlider
                 label=""
                 value={field.value}
-                onChange={(value, index) => field.onChange(value, index)}
+                onChange={(value, index) => {
+                  field.onChange(value, index)
+                  setSelectedThreshold(value)
+                }}
                 min={0}
                 max={100}
                 suffix="%"
@@ -38,9 +49,11 @@ const AcceptanceThreshold = () => {
             )}
           />
         </div>
-        <Paragraph as="p3" className="whitespace-nowrap">
-          100%
-        </Paragraph>
+        <div className="rounded-full bg-green-light px-2 py-1 text-green">
+          {isEasy && 'Easy'}
+          {isMedium && 'Medium'}
+          {isHard && 'Hard'}
+        </div>
       </div>
     </section>
   )
