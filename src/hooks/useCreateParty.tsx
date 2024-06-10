@@ -35,7 +35,7 @@ const useCreateParty = () => {
         disableContributingForExistingCard: true,
         duration: 86400 * membership.mintPeriod,
         exchangeRate: 1000000000000000000n,
-        fundingSplitBps: 0,
+        fundingSplitBps: membership.revenueSplit * 100,
         fundingSplitRecipient: address,
         gateKeeper: zeroAddress,
         gateKeeperId: '0x000000000000000000000000',
