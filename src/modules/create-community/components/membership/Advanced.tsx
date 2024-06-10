@@ -1,7 +1,7 @@
 import React from 'react'
 import { Icon } from '@/components/Icon'
 import AcceptanceThreshold from './AcceptanceThreshold'
-import VetoPeriod from '@/modules/create-community/components/membership/VetoPeriod'
+import VotePeriod from '@/modules/create-community/components/membership/VotePeriod'
 import { useFormStore } from '@/modules/create-community/stores'
 
 const Advanced = () => {
@@ -24,7 +24,7 @@ const Advanced = () => {
       {showAdvanced && (
         <>
           <AcceptanceThreshold />
-          <VetoPeriod />
+          <VotePeriod />
         </>
       )}
     </>
