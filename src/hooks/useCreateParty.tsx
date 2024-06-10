@@ -35,7 +35,7 @@ const useCreateParty = () => {
         disableContributingForExistingCard: true,
         duration: 86400 * membership.mintPeriod,
         exchangeRate: 1000000000000000000n,
-        fundingSplitBps: 0,
+        fundingSplitBps: membership.revenueSplit * 100,
         fundingSplitRecipient: address,
         gateKeeper: zeroAddress,
         gateKeeperId: '0x000000000000000000000000',
@@ -57,7 +57,7 @@ const useCreateParty = () => {
       const governanceOpts = {
         executionDelay: 604800,
         feeBps: membership.revenueSplit * 100,
-        feeRecipient: '0x0e63D6f414b40BaFCa676810ef1aBf05ECc8E459',
+        feeRecipient: address,
         hosts,
         partyFactory: '0xB418f5B001Af94A91daB2cE641E39722e1d9dDAC',
         partyImpl: '0xeFA4054F3Db3D1f5e981513a3d8A33D91FC97dc1',
