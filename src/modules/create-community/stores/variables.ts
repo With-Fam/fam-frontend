@@ -70,6 +70,6 @@ export const initialState = {
     founders: [],
     threshold: 25,
   },
-  vetoPeriod: 8 * 3600,
+  votePeriod: 8 * 3600,
   showAdvanced: false,
 }

@@ -1,7 +1,7 @@
 import { Paragraph } from '@/stories'
 import React from 'react'
 
-const VetoPeriodButton = ({
+const VotePeriodButton = ({
   isActive,
   onClick,
   label,
@@ -21,4 +21,4 @@ const VetoPeriodButton = ({
   )
 }
 
-export default VetoPeriodButton
+export default VotePeriodButton

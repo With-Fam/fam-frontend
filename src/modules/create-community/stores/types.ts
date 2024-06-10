@@ -43,8 +43,8 @@ export interface FormStoreState {
   fulfilledSections: string[]
   setFulfilledSections: (section: string) => void
   general: GeneralFormValues
-  vetoPeriod: number
-  setVetoPeriod: (vetoPeriod: number) => void
+  votePeriod: number
+  setVotePeriod: (votePeriod: number) => void
   membership: MembershipFormValues
   setGeneral: (general: GeneralFormValues) => void
   setMembership: (membership: MembershipFormValues) => void

@@ -15,7 +15,7 @@ import { ethers } from 'ethers'
 
 const useCreateParty = () => {
   const chainId = CHAIN_ID
-  const { general, membership, vetoPeriod } = useFormStore()
+  const { general, membership, votePeriod } = useFormStore()
   const { connectedWallet: address } = useConnectedWallet()
   const { walletClient } = usePrivyWalletClient()
 
@@ -62,7 +62,7 @@ const useCreateParty = () => {
         partyFactory: '0xB418f5B001Af94A91daB2cE641E39722e1d9dDAC',
         partyImpl: '0xeFA4054F3Db3D1f5e981513a3d8A33D91FC97dc1',
         passThresholdBps: passThresholdBps,
-        voteDuration: vetoPeriod,
+        voteDuration: votePeriod,
       }
       const proposalEngineOpts = {
         allowArbCallsToSpendPartyEth: true,
