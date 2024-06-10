@@ -9,7 +9,8 @@ import { getPublicClient } from '@/utils/viem'
 import getViemNetwork from '@/utils/viem/getViemNetwork'
 import { CHAIN_ID } from '@/constants/defaultChains'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
-import { zeroAddress } from 'viem'
+import { isAddress, zeroAddress } from 'viem'
+import getEnsAddress from '@/utils/getEnsAddress'
 
 const useCreateParty = () => {
   const chainId = CHAIN_ID
@@ -44,11 +45,19 @@ const useCreateParty = () => {
         minContribution: 1000000000000000n,
         minTotalContributions: 1000000000000000n,
       }
+      const hostsPromise = membership.founders.map(async (founder) => {
+        if (isAddress(founder.founderAddress)) return founder.founderAddress
+        const ensAddress = await getEnsAddress(founder.founderAddress)
+        return ensAddress
+      })
+
+      const hosts = await Promise.all(hostsPromise)
+
       const governanceOpts = {
         executionDelay: 604800,
         feeBps: membership.revenueSplit * 100,
         feeRecipient: '0x0e63D6f414b40BaFCa676810ef1aBf05ECc8E459',
-        hosts: [address],
+        hosts,
         partyFactory: '0xB418f5B001Af94A91daB2cE641E39722e1d9dDAC',
         partyImpl: '0xeFA4054F3Db3D1f5e981513a3d8A33D91FC97dc1',
         passThresholdBps: passThresholdBps,
