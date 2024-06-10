@@ -26,7 +26,7 @@ const useCreateParty = () => {
       ((membership.threshold / 100) * Number(totalVotingPower)) / 1e18
     const BPS_MULTIPLIER = 100
     const passThresholdBps = passThreshold * BPS_MULTIPLIER
-
+    const price = ethers.parseEther(membership.membershipPrice.toString())
     try {
       const ONE_HOUR = 60 * 60
       const MINIMUM_VOTE_DURATION = ONE_HOUR
@@ -41,12 +41,10 @@ const useCreateParty = () => {
         gateKeeperId: '0x000000000000000000000000',
         initialContributor: zeroAddress,
         initialDelegate: zeroAddress,
-        maxContribution: ethers.parseEther(
-          membership.membershipPrice.toString()
-        ),
+        maxContribution: price,
         maxTotalContributions: 1000000000000000000000000n,
-        minContribution: 1000000000000000n,
-        minTotalContributions: 100000000000000n,
+        minContribution: price,
+        minTotalContributions: price,
       }
       const hostsPromise = membership.founders.map(async (founder) => {
         if (isAddress(founder.founderAddress)) return founder.founderAddress
