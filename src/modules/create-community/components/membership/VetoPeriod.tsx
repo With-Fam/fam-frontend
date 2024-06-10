@@ -7,7 +7,7 @@ const VetoPeriod = () => {
   const { vetoPeriod, setVetoPeriod } = useFormStore()
 
   return (
-    <section className="mt-4 rounded-md bg-white">
+    <section className="mt-4 rounded-md bg-white pb-3">
       <div className="flex items-center gap-1 px-4 pt-4 text-left font-abcMedium text-sm">
         Veto Period{' '}
         <Tooltip
