@@ -49,7 +49,9 @@ const AcceptanceThreshold = () => {
             )}
           />
         </div>
-        <div className="rounded-full bg-green-light px-2 py-1 text-green">
+        <div
+          className={`rounded-full ${isEasy ? 'bg-green-light text-green' : 'bg-orange-light text-orange'} px-2 py-1`}
+        >
           {isEasy && 'Easy'}
           {isMedium && 'Medium'}
           {isHard && 'Hard'}
