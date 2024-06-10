@@ -11,6 +11,7 @@ import { CHAIN_ID } from '@/constants/defaultChains'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { isAddress, zeroAddress } from 'viem'
 import getEnsAddress from '@/utils/getEnsAddress'
+import { ethers } from 'ethers'
 
 const useCreateParty = () => {
   const chainId = CHAIN_ID
@@ -40,10 +41,12 @@ const useCreateParty = () => {
         gateKeeperId: '0x000000000000000000000000',
         initialContributor: zeroAddress,
         initialDelegate: zeroAddress,
-        maxContribution: 1000000000000000n,
+        maxContribution: ethers.parseEther(
+          membership.membershipPrice.toString()
+        ),
         maxTotalContributions: 1000000000000000000000000n,
         minContribution: 1000000000000000n,
-        minTotalContributions: 1000000000000000n,
+        minTotalContributions: 100000000000000n,
       }
       const hostsPromise = membership.founders.map(async (founder) => {
         if (isAddress(founder.founderAddress)) return founder.founderAddress
