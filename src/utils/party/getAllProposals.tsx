@@ -6,7 +6,7 @@ import { Address } from 'viem'
 
 const getAllProposals = async (partyAddress: Address) => {
   const lastProposalId = await getLastProposalId(partyAddress)
-  const publicClient = getPublicClient(CHAIN_ID, false)
+  const publicClient = getPublicClient(CHAIN_ID)
   const wagmiContract = {
     address: partyAddress,
     abi: partyAbi,

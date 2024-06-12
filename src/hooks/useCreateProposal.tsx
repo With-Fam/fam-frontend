@@ -50,7 +50,7 @@ const useCreateProposal: any = (community: Address) => {
         chain: CHAIN,
         args,
       }
-      const publicClient = getPublicClient(CHAIN_ID, false)
+      const publicClient = getPublicClient(CHAIN_ID)
       const { request } = await publicClient.simulateContract(
         contractConfig as any
       )

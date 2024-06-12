@@ -1,5 +1,5 @@
-const getFormattedProposals = (proposals: any[], decodedLogs: any[]) =>
-  proposals.map((proposal, index) => {
+const getFormattedProposals = (decodedLogs: any[]) =>
+  decodedLogs.map((proposal, index) => {
     const proposalId = index + 1
     const matchingLog = decodedLogs.find(
       (log) => log.args.proposalId === BigInt(proposalId)

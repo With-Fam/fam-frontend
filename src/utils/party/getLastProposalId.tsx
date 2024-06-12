@@ -4,7 +4,7 @@ import { getPublicClient } from '@/utils/viem'
 import { Address } from 'viem'
 
 const getLastProposalId = async (partyAddress: Address) => {
-  const publicClient = getPublicClient(CHAIN_ID, false)
+  const publicClient = getPublicClient(CHAIN_ID)
   const data = await publicClient.readContract({
     address: partyAddress,
     abi: partyAbi,

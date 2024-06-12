@@ -9,7 +9,7 @@ import { baseSepolia } from 'viem/chains'
 const getProposedEvents = async (partyAddress: Address): Promise<any[]> => {
   if (!partyAddress) return []
   const topics = getProposedEventTopic()
-  const publicClient = getPublicClient(baseSepolia.id, false)
+  const publicClient = getPublicClient(baseSepolia.id)
   const latestBlockNumber = await publicClient.getBlockNumber()
   const latestBlock = Number(latestBlockNumber)
   const chunkSize = 1000000
