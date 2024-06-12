@@ -5,7 +5,6 @@ import { Address } from 'viem'
 import _get from 'lodash.get'
 import { useProposalStore } from '@/modules/create-activity/stores'
 import { TransactionType } from '@/modules/create-activity/types'
-import { walletSnippet } from '@/utils/helpers'
 import { TextInput } from '@/components/forms'
 import { AddActionButton } from '../action'
 import { ZoraCollectValues } from './ZoraCollectForm.schema'
@@ -19,7 +18,7 @@ function hasChanged(
   previous: Pick<Transaction, 'target' | 'value' | 'tokenId' | 'ethPrice'>
 ) {
   return (
-    values.party !== previous.target ||
+    values.tokenRecipient !== previous.target ||
     values.collectionAddress !== previous.value ||
     values.ethPrice !== previous.ethPrice ||
     values.tokenId !== previous.tokenId
@@ -44,20 +43,20 @@ export function ZoraCollect({
 
   const methods = useForm<ZoraCollectValues>({
     defaultValues: {
-      party: defaultValues.target,
+      tokenRecipient: defaultValues.target,
       collectionAddress: defaultValues.value as Address,
       ethPrice: defaultValues.ethPrice,
       tokenId: defaultValues.tokenId,
     },
   })
   const onSubmit = async (values: ZoraCollectValues) => {
-    if (!(values.collectionAddress && values.party)) return
+    if (!(values.collectionAddress && values.tokenRecipient)) return
     if (exists && defaultValues && !hasChanged(values, defaultValues)) {
       callback()
       return
     }
 
-    const target = values.party
+    const target = values.tokenRecipient
     const value = values.collectionAddress
     const tokenId = values.tokenId
     const ethPrice = values.ethPrice
