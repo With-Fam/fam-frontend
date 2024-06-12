@@ -9,6 +9,8 @@ export type Transaction = {
   target: AddressType
   value: string
   calldata: string
+  tokenId?: bigint
+  ethPrice?: number
 }
 
 export type BuilderTransaction = {
@@ -22,9 +24,11 @@ interface State {
   disabled: boolean
   title?: string
   summary?: string
+  showAdvancedOfZoraCollect: boolean
 }
 
 interface Actions {
+  setShowAdvancedOfZoraCollect: (showAdvanced: boolean) => void
   addTransaction: (builderTransaction: BuilderTransaction) => void
   addTransactions: (builderTransactions: BuilderTransaction[]) => void
   editTransaction: (
@@ -47,6 +51,7 @@ const initialState: State = {
   title: undefined,
   disabled: false,
   transactions: [],
+  showAdvancedOfZoraCollect: false,
 }
 
 export const useProposalStore = create<State & Actions>((set) => ({
@@ -56,6 +61,8 @@ export const useProposalStore = create<State & Actions>((set) => ({
       transactions: [...state.transactions, transaction],
     }))
   },
+  setShowAdvancedOfZoraCollect: (showAdvancedOfZoraCollect: boolean) =>
+    set({ showAdvancedOfZoraCollect }),
   addTransactions: (transaction: BuilderTransaction[]) => {
     set((state) => ({
       transactions: [...state.transactions, ...transaction],

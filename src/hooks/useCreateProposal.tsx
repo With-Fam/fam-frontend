@@ -1,19 +1,24 @@
+import { SALE_STRATEGY } from '@/constants/addresses'
 import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { ERROR_CODE } from '@/modules/create-activity/components/review-proposal/schema'
 import { useProposalStore } from '@/modules/create-activity/stores'
-import getProposalData from '@/utils/party/getProposalData'
+import { TransactionType } from '@/modules/create-activity/types'
+import getSendEthProposalData from '@/utils/party/getSendEthProposalData'
+import getZoraCollectProposalData from '@/utils/party/getZoraCollectProposalData'
 import { getPublicClient } from '@/utils/viem'
+import { BigNumber } from '@ethersproject/bignumber'
 import { usePrivy } from '@privy-io/react-auth'
 import toast from 'react-hot-toast'
-import { Address, parseEther } from 'viem'
+import { Address } from 'viem'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
-  const { transactions } = useProposalStore()
+  const { transactions, showAdvancedOfZoraCollect } = useProposalStore()
   const { logout } = usePrivy()
-  const { target, value } = transactions[0].transactions[0]
+  const { target, value, ethPrice, tokenId } = transactions[0].transactions[0]
+  const { type } = transactions[0]
 
   const create = async () => {
     try {
@@ -24,14 +29,19 @@ const useCreateProposal: any = (community: Address) => {
       await walletClient.switchChain({ id: CHAIN_ID })
 
       const latestSnapIndex = 0n
-      const proposalRaw = {
-        target,
-        value: parseEther(value),
-        data: '0x0',
-        optional: false,
-        expectedResultHash: '0x0',
-      }
-      const proposalData = getProposalData(proposalRaw)
+      let proposalData: any = null
+      if (type === TransactionType.SEND_ETH)
+        proposalData = getSendEthProposalData(target, value)
+
+      if (type === TransactionType.ZOAR_COLLECT)
+        proposalData = getZoraCollectProposalData(
+          value as Address,
+          SALE_STRATEGY[CHAIN.id],
+          target,
+          showAdvancedOfZoraCollect ? ethPrice : 0,
+          showAdvancedOfZoraCollect ? tokenId : 1n
+        )
+
       const args = [proposalData, latestSnapIndex] as any
       const contractConfig = {
         account: walletClient.account,

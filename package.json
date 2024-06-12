@@ -32,6 +32,7 @@
     "@vanilla-extract/css": "^1.14.1",
     "@vercel/postgres": "^0.7.2",
     "@wagmi/chains": "^1.8.0",
+    "@zoralabs/protocol-deployments": "^0.1.13",
     "@zoralabs/zord": "^2.1.0",
     "axios": "^1.6.7",
     "dayjs": "^1.11.10",
