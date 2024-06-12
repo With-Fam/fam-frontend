@@ -95,7 +95,7 @@ export function ZoraCollect({
         <div className="flex flex-col gap-2">
           <div className="relative z-0">
             <TextInput
-              name="party"
+              name="tokenRecipient"
               label="Party"
               type="text"
               placeholder="Party"
