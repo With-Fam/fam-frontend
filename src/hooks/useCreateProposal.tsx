@@ -8,7 +8,6 @@ import { TransactionType } from '@/modules/create-activity/types'
 import getSendEthProposalData from '@/utils/party/getSendEthProposalData'
 import getZoraCollectProposalData from '@/utils/party/getZoraCollectProposalData'
 import { getPublicClient } from '@/utils/viem'
-import { BigNumber } from '@ethersproject/bignumber'
 import { usePrivy } from '@privy-io/react-auth'
 import toast from 'react-hot-toast'
 import { Address } from 'viem'
@@ -33,7 +32,7 @@ const useCreateProposal: any = (community: Address) => {
       if (type === TransactionType.SEND_ETH)
         proposalData = getSendEthProposalData(target, value)
 
-      if (type === TransactionType.ZOAR_COLLECT)
+      if (type === TransactionType.ZORA_COLLECT)
         proposalData = getZoraCollectProposalData(
           value as Address,
           SALE_STRATEGY[CHAIN.id],

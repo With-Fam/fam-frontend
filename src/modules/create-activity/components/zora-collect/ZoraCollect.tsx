@@ -63,8 +63,7 @@ export function ZoraCollect({
     const ethPrice = values.ethPrice
 
     const builderTransaction = {
-      type: TransactionType.ZOAR_COLLECT,
-      summary: `Bring your own party ${walletSnippet(target)}. create on zora.${walletSnippet(value)}`,
+      type: TransactionType.ZORA_COLLECT,
       transactions: [
         {
           functionSignature: 'zoraCollect(address)',
