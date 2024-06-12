@@ -51,6 +51,13 @@ const ACTIONS_DATA = [
     image: '/assets/images/create-activity/pyramid.jpg',
     href: '/create-activity/add/zoracollect',
   },
+  {
+    id: 'zora-create',
+    title: 'Zora Create',
+    description: 'Bring your own party. collect on zora.',
+    image: '/assets/images/create-activity/spring.jpg',
+    href: '/create-activity/add/zoracreate',
+  },
 ]
 
 export default ACTIONS_DATA
