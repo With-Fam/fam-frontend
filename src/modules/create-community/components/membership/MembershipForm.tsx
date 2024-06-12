@@ -27,7 +27,7 @@ export function MembershipForm({
     founders: [{ founderAddress: '' }],
     membershipPrice: 0.0001,
     mintPeriod: 5,
-    revenueSplit: 30,
+    revenueSplit: 10,
     threshold: 25,
   },
   onSubmit,

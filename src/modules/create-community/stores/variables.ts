@@ -66,7 +66,7 @@ export const initialState = {
   membership: {
     membershipPrice: 0.0001,
     mintPeriod: 5,
-    revenueSplit: 30,
+    revenueSplit: 10,
     founders: [],
     threshold: 25,
   },
