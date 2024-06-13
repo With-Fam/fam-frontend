@@ -20,10 +20,12 @@ const getZoraCollectProposalData = (
   const hexEncodedSelector = pad(toHex(ProposalType.ArbitraryCalls), {
     size: 4,
   })
+
   const proposalData = concatHex([
     hexEncodedSelector,
     encodedBytecodeProposalData as Address,
   ])
+
   const proposalStruct: any = {
     cancelDelay: '0',
     maxExecutableTime: getMaxExecutableTime(),
