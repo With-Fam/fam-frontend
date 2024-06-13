@@ -8,6 +8,7 @@ import {
   CreateNFT,
 } from '@/modules/create-activity'
 import { AddressType } from '@/types'
+import { ZoraCollect } from '@/modules/create-activity/components/zora-collect'
 
 export type ActionFormProps = {
   action: TransactionType
@@ -34,6 +35,8 @@ export function ActionForm({
           collectionAddress={collectionAddress}
         />
       )
+    case 'zora-collect':
+      return <ZoraCollect callback={callback} />
     case 'nft':
       return <CreateNFT callback={callback} />
     default:
