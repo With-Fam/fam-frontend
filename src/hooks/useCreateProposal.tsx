@@ -5,6 +5,7 @@ import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { ERROR_CODE } from '@/modules/create-activity/components/review-proposal/schema'
 import { useProposalStore } from '@/modules/create-activity/stores'
 import { TransactionType } from '@/modules/create-activity/types'
+import getZoraCreateProposalData from '@/utils/party/getZoraCreateProposalData'
 import getSendEthProposalData from '@/utils/party/getSendEthProposalData'
 import getZoraCollectProposalData from '@/utils/party/getZoraCollectProposalData'
 import { getPublicClient } from '@/utils/viem'
@@ -40,6 +41,9 @@ const useCreateProposal: any = (community: Address) => {
           showAdvancedOfZoraCollect ? ethPrice : 0,
           showAdvancedOfZoraCollect ? tokenId : 1n
         )
+
+      if (type === TransactionType.ZORA_CREATE)
+        proposalData = getZoraCreateProposalData(target)
 
       const args = [proposalData, latestSnapIndex] as any
       const contractConfig = {

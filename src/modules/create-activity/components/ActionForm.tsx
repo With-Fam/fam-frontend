@@ -9,6 +9,7 @@ import {
 } from '@/modules/create-activity'
 import { AddressType } from '@/types'
 import { ZoraCollect } from '@/modules/create-activity/components/zora-collect'
+import { ZoraCreate } from '@/modules/create-activity/components/zora-create'
 
 export type ActionFormProps = {
   action: TransactionType
@@ -37,6 +38,8 @@ export function ActionForm({
       )
     case 'zora-collect':
       return <ZoraCollect callback={callback} />
+    case 'zora-create':
+      return <ZoraCreate callback={callback} />
     case 'nft':
       return <CreateNFT callback={callback} />
     default:

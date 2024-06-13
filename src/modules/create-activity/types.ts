@@ -5,6 +5,7 @@ export enum TransactionType {
   CROWD_FUND = 'crowd-fund',
   AIRDROP = 'airdrop',
   UPDATE_COMMUNITY = 'update-community',
+  ZORA_CREATE = 'zora-create',
   ZORA_COLLECT = 'zora-collect',
   CUSTOM = 'custom',
   UPGRADE = 'upgrade',
@@ -56,5 +57,10 @@ export const TRANSACTION_TYPES = {
     title: 'Zora Collect',
     subTitle: 'Bring your own party. collect on zora.',
     image: '/assets/images/create-activity/pyramid.jpg',
+  },
+  [TransactionType.ZORA_CREATE]: {
+    title: 'Zora Create',
+    subTitle: 'Bring your own party. collect on zora.',
+    image: '/assets/images/create-activity/spring.jpg',
   },
 } as TransactionTypesPropsMap
