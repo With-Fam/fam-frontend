@@ -35,7 +35,7 @@ const RevenueSplit = () => {
         </div>
       </div>
       <div className="flex w-full items-center justify-between pr-4">
-        <div className="w-[30%]">
+        <div className="w-full">
           <Controller
             name="revenueSplit"
             control={control}
@@ -49,13 +49,11 @@ const RevenueSplit = () => {
                 }}
                 min={0}
                 max={30}
-                className="!p-0 !py-4 !pl-4"
                 suffix="%"
               />
             )}
           />
         </div>
-        <div className="mr-4 mt-1 h-0.5 w-[70%] bg-grey-light" />
         <Paragraph as="p3" className="whitespace-nowrap">
           {selectedSplit}%
         </Paragraph>
