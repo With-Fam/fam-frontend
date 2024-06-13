@@ -8,7 +8,7 @@ const JoinButton = () => {
     await checkJoining()
   }
 
-  if (!joined) return <div />
+  if (joined) return <div />
 
   return (
     <button

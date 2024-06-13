@@ -4,7 +4,7 @@ import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { getPublicClient } from '@/utils/viem'
 import { useParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
-import { Address, erc721Abi, parseEther } from 'viem'
+import { Address, erc721Abi } from 'viem'
 import { crowdfundFactoryAbi } from '@/data/contract/abis/CrowdfundFactory'
 import toast from 'react-hot-toast'
 
@@ -70,6 +70,7 @@ const useCommunityJoin = () => {
       }
       setLoading(false)
       toast.success('joined!')
+      setJoined(true)
       return transaction
     } catch (error) {
       setLoading(false)
