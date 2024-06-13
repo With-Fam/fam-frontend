@@ -50,7 +50,6 @@ export function ZoraCreate({
 
     const builderTransaction = {
       type: TransactionType.ZORA_CREATE,
-      summary: `Bring your own party ${walletSnippet(target)}. create on zora.`,
       transactions: [
         {
           functionSignature: 'zoraCreate(address)',
