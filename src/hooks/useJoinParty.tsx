@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Address } from 'viem'
 import { crowdfundFactoryAbi } from '@/data/contract/abis/CrowdfundFactory'
 import toast from 'react-hot-toast'
-import getCrowdfundPrice from '@/utils/party/getCrowdFundPrice'
+import getCrowdfundPrice from '@/utils/party/getCrowdfundPrice'
 import getCrowdfundContract from '@/utils/party/getCrowdfundContract'
 import balanceOf from '@/utils/balanceOf'
 
