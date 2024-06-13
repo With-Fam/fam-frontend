@@ -5,11 +5,11 @@ import { getPublicClient } from '@/utils/viem'
 import { useParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { Address } from 'viem'
-import { crowdfundFactoryAbi } from '@/data/contract/abis/CrowdfundFactory'
 import toast from 'react-hot-toast'
 import getCrowdfundPrice from '@/utils/party/getCrowdfundPrice'
 import getCrowdfundContract from '@/utils/party/getCrowdfundContract'
 import balanceOf from '@/utils/balanceOf'
+import { initialETHCrowdfundAbi } from '@/data/contract/abis/InitialETHCrowdfund'
 
 const useJoinParty = () => {
   const { community } = useParams()
@@ -38,7 +38,7 @@ const useJoinParty = () => {
 
       const contractConfig = {
         account: walletClient.account,
-        abi: crowdfundFactoryAbi,
+        abi: initialETHCrowdfundAbi,
         functionName: 'contribute',
         address: crowdfundContract,
         chain: CHAIN,
