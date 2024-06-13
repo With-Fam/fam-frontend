@@ -1,7 +1,10 @@
 import { Address, encodeFunctionData } from 'viem'
-import { zoraCreator1155FactoryImplABI } from '@zoralabs/protocol-deployments'
+import {
+  zoraCreator1155FactoryImplABI,
+  zoraCreator1155FactoryImplAddress,
+} from '@zoralabs/protocol-deployments'
 import getProposalBytecode from './getProposalBytecode'
-import { ZORA_FACTORY_PROXY } from '@/constants/addresses'
+import { CHAIN_ID } from '@/constants/defaultChains'
 
 const getZoraCreateProposalBytecode = (recipient: Address) => {
   const newContractURI = 'ipfs://'
@@ -26,7 +29,7 @@ const getZoraCreateProposalBytecode = (recipient: Address) => {
     ],
   })
   const encodedBytecodeProposalData = getProposalBytecode(
-    ZORA_FACTORY_PROXY,
+    zoraCreator1155FactoryImplAddress[CHAIN_ID],
     value,
     data
   )
