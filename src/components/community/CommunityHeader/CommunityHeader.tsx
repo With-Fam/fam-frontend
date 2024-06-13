@@ -4,8 +4,17 @@ import ActivityButton from '@/components/community/CommunityHeader/ActivityButto
 import TopMembers from '@/components/community/CommunityHeader/TopMembers'
 import ShareButton from '@/components/community/CommunityHeader/ShareButton'
 import Image from 'next/image'
+import JoinButton from '@/components/community/CommunityHeader/JoinButton'
+import useJoinParty from '@/hooks/useJoinParty'
 
 const CommunityHeader = () => {
+  const { join, checkJoining, joined, loading } = useJoinParty()
+
+  const onJoin = async () => {
+    await join()
+    await checkJoining()
+  }
+
   return (
     <section
       className="relative mx-auto max-w-[936px]
@@ -24,6 +33,11 @@ const CommunityHeader = () => {
         <TopMembers />
         <div className="flex items-center gap-2">
           <ShareButton />
+          {!joined && (
+            <JoinButton onClick={onJoin}>
+              {loading ? 'Joining...' : 'Join'}
+            </JoinButton>
+          )}
           <ActivityButton />
         </div>
       </div>
