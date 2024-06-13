@@ -88,7 +88,7 @@ const CreateActivityProvider = ({
   children,
   params,
 }: ActivityProviderProps): JSX.Element => {
-  const { authenticated } = usePrivy()
+  const { authenticated, ready } = usePrivy()
   const { network, community } = params
   const [loading, setLoading] = useState<boolean>(false)
   const [loadingMessage, setLoadingMessage] =
@@ -186,7 +186,7 @@ const CreateActivityProvider = ({
     return [action, transaction, proposal]
   }, [proposalDefault, activityType, community, next, setActivityType])
 
-  if (!authenticated) {
+  if (!authenticated && ready) {
     return (
       <CreateActivityContext.Provider
         value={{
