@@ -47,8 +47,8 @@ const RevenueSplit = () => {
                   field.onChange(value, index)
                   setSelectedSplit(100 - value)
                 }}
-                min={30}
-                max={70}
+                min={0}
+                max={30}
                 suffix="%"
               />
             )}
