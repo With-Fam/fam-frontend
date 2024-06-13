@@ -30,6 +30,7 @@ const getZoraPurchaseProposalBytecode = (
     functionName: 'mintWithRewards',
     args: [minter, tokenId, quantity, minterArguments, mintReferral],
   })
+
   const encodedBytecodeProposalData = getProposalBytecode(
     collectionAddress,
     value,

@@ -5,8 +5,8 @@ export enum TransactionType {
   CROWD_FUND = 'crowd-fund',
   AIRDROP = 'airdrop',
   UPDATE_COMMUNITY = 'update-community',
-  ZOAR_COLLECT = 'zora-collect',
   ZORA_CREATE = 'zora-create',
+  ZORA_COLLECT = 'zora-collect',
   CUSTOM = 'custom',
   UPGRADE = 'upgrade',
   UPDATE_MINTER = 'update-minter',
@@ -53,7 +53,7 @@ export const TRANSACTION_TYPES = {
     subTitle: 'Edit your settings and artwork',
     image: '/assets/images/create-activity/tube.jpg',
   },
-  [TransactionType.ZOAR_COLLECT]: {
+  [TransactionType.ZORA_COLLECT]: {
     title: 'Zora Collect',
     subTitle: 'Bring your own party. collect on zora.',
     image: '/assets/images/create-activity/pyramid.jpg',
