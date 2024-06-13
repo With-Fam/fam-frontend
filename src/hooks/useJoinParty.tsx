@@ -31,6 +31,7 @@ const useJoinParty = () => {
 
       if (!crowdfundContract) {
         setLoading(false)
+        console.log('SWEETS')
         return false
       }
 
