@@ -4,11 +4,14 @@ import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { getPublicClient } from '@/utils/viem'
 import { useParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
-import { Address, erc721Abi } from 'viem'
+import { Address } from 'viem'
 import { crowdfundFactoryAbi } from '@/data/contract/abis/CrowdfundFactory'
 import toast from 'react-hot-toast'
+import getCrowdfundPrice from '@/utils/party/getCrowdFundPrice'
+import getCrowdfundContract from '@/utils/party/getCrowdfundContract'
+import balanceOf from '@/utils/balanceOf'
 
-const useCommunityJoin = () => {
+const useJoinParty = () => {
   const { community } = useParams()
   const [joined, setJoined] = useState(false)
   const { walletClient } = usePrivyWalletClient()
@@ -21,39 +24,23 @@ const useCommunityJoin = () => {
 
     setLoading(true)
     try {
-      const publicClient = getPublicClient(CHAIN_ID)
-      const events = crowdfundFactoryAbi.filter(
-        (item) => item.name === 'InitialETHCrowdfundCreated'
+      const crowdfundContract = await getCrowdfundContract(
+        connectedWallet as Address,
+        community as Address
       )
 
-      const logs = await publicClient.getLogs({
-        event: events[0] as any,
-        args: {
-          creator: connectedWallet as Address,
-          party: community as Address,
-        },
-        fromBlock: BigInt(0),
-        toBlock: 'latest',
-      })
-
-      const event = logs[0] as any
-      const crowFundContract = event?.args?.crowdfund
-      if (!crowFundContract) {
+      if (!crowdfundContract) {
         setLoading(false)
         return false
       }
 
-      const price = await publicClient.readContract({
-        abi: crowdfundFactoryAbi,
-        functionName: 'minContribution',
-        address: crowFundContract,
-      })
+      const price = await getCrowdfundPrice(crowdfundContract)
 
       const contractConfig = {
         account: walletClient.account,
         abi: crowdfundFactoryAbi,
         functionName: 'contribute',
-        address: crowFundContract,
+        address: crowdfundContract,
         chain: CHAIN,
         args: [connectedWallet, '0x'],
         value: price,
@@ -80,14 +67,12 @@ const useCommunityJoin = () => {
 
   const checkJoining = useCallback(async () => {
     if (!community || !connectedWallet) return
-    const response = await publicClient.readContract({
-      address: community as Address,
-      functionName: 'balanceOf',
-      abi: erc721Abi,
-      args: [connectedWallet as Address],
-    })
+    const balance = await balanceOf(
+      community as Address,
+      connectedWallet as Address
+    )
 
-    if (response > 0) {
+    if (balance > 0) {
       setJoined(true)
       return
     }
@@ -106,4 +91,4 @@ const useCommunityJoin = () => {
   }
 }
 
-export default useCommunityJoin
+export default useJoinParty
