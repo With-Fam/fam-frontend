@@ -1,22 +1,21 @@
 'use client'
 
 import { FormProvider, useForm } from 'react-hook-form'
-import { Address, getAddress } from 'viem'
+import { Address } from 'viem'
 import _get from 'lodash.get'
 import { useDaoStore } from '@/modules/dao'
 import { useBalance } from 'wagmi'
 import { useProposalStore } from '@/modules/create-activity/stores'
 import { TransactionType } from '@/modules/create-activity/types'
 import { useChainStore } from '@/utils/stores/useChainStore'
-import { getEnsAddress } from '@/utils/ens'
-import { getProvider } from '@/utils/provider'
 import { walletSnippet } from '@/utils/helpers'
-import { AddressType, CHAIN_ID } from '@/types'
+import { AddressType } from '@/types'
 import { TextInput } from '@/components/forms'
 import { AddActionButton } from '../action'
 import { SendEthValues } from './SendEthForm.schema'
 import { Transaction } from '@/modules/create-activity/stores'
 import { ActionFormProps } from '@/modules/create-activity'
+import getEnsAddress from '@/utils/getEnsAddress'
 
 function hasChanged(
   values: SendEthValues,

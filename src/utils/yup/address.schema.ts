@@ -1,9 +1,7 @@
 import { debounce } from 'lodash'
 import * as Yup from 'yup'
 
-import { CHAIN_ID } from '@/types'
-import { isValidAddress } from '@/utils/ens'
-import { getProvider } from '@/utils/provider'
+import { isAddress } from 'viem'
 
 const validateAddress = async (
   value: string | undefined,
@@ -12,13 +10,12 @@ const validateAddress = async (
 ) => {
   try {
     if (!value) return res(false)
-    const { data: isValid, error } = await isValidAddress(
-      value,
-      getProvider(CHAIN_ID.ETHEREUM)
-    )
-    console.log(isValid, error)
-    if (error) {
-      return res(ctx.createError({ message: error, path: ctx.path }))
+    const isValid = isAddress(value)
+
+    if (!isValid) {
+      return res(
+        ctx.createError({ message: 'invalid address', path: ctx.path })
+      )
     }
     res(isValid)
   } catch (err) {

@@ -1,19 +1,10 @@
 'use client'
 
-// Framework
 import { twMerge } from 'tailwind-merge'
-import useSWR from 'swr'
-
 import { DetailedHTMLProps, InputHTMLAttributes } from 'react'
-
-// Local Components
 import ErrorMessage from '@/components/forms/ErrorMessage'
 import { useFormContext } from 'react-hook-form'
-import { getEnsName } from '@/utils/ens'
-import SWR_KEYS from '@/constants/swrKeys'
-
-// Types
-import { Maybe } from '@/types'
+import useEnsName from '@/hooks/useEnsName'
 
 export interface InputProps
   extends Omit<
@@ -26,12 +17,6 @@ export interface InputProps
   label: string
 }
 
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
-
 export function InputENSAddress({
   className,
   label,
@@ -40,10 +25,7 @@ export function InputENSAddress({
   value,
   ..._props
 }: InputProps): JSX.Element {
-  const { data: ensName } = useSWR(
-    [SWR_KEYS.ENS, value ?? null],
-    async () => await getEnsName(value as string)
-  )
+  const { ensName } = useEnsName(value as string)
   const { clearErrors } = useFormContext()
 
   return (
