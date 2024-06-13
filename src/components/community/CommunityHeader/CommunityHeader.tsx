@@ -4,6 +4,7 @@ import ActivityButton from '@/components/community/CommunityHeader/ActivityButto
 import TopMembers from '@/components/community/CommunityHeader/TopMembers'
 import ShareButton from '@/components/community/CommunityHeader/ShareButton'
 import Image from 'next/image'
+import JoinButton from '@/components/community/CommunityHeader/JoinButton'
 
 const CommunityHeader = () => {
   return (
@@ -24,6 +25,7 @@ const CommunityHeader = () => {
         <TopMembers />
         <div className="flex items-center gap-2">
           <ShareButton />
+          <JoinButton />
           <ActivityButton />
         </div>
       </div>

@@ -3284,4 +3284,41 @@ export const crowdfundFactoryAbi = [
     name: 'ERC1167FailedCreateClone',
     inputs: [],
   },
+  {
+    type: 'function',
+    name: 'minContribution',
+    inputs: [],
+    outputs: [
+      {
+        type: 'uint96',
+        name: '',
+        internalType: 'uint96',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'contribute',
+    inputs: [
+      {
+        type: 'address',
+        name: 'initialDelegate',
+        internalType: 'address',
+      },
+      {
+        type: 'bytes',
+        name: 'gateData',
+        internalType: 'bytes',
+      },
+    ],
+    outputs: [
+      {
+        type: 'uint96',
+        name: 'votingPower',
+        internalType: 'uint96',
+      },
+    ],
+    stateMutability: 'payable',
+  },
 ] as const
