@@ -7,7 +7,7 @@ import { Address } from 'viem'
 
 const getSetupActions = (
   adminWallet: Address,
-  ipfsCid: string,
+  ifpsUri: string,
   pricePerToken: bigint,
   totalSupply: string,
   payoutAddress: Address
@@ -43,7 +43,7 @@ const getSetupActions = (
     erc20Address: payoutAddress,
   })
   const callSaleArgs = [dummyNextTokenId, SALE_STRATEGY[CHAIN_ID], data]
-  const setupNewTokenArgs = [`ipfs://${ipfsCid}`, totalSupply]
+  const setupNewTokenArgs = [ifpsUri, totalSupply]
   const setupNewTokenCall = iface.encodeFunctionData(
     'setupNewToken',
     setupNewTokenArgs
