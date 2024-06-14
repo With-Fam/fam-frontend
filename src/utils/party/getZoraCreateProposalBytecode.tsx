@@ -5,28 +5,40 @@ import {
 } from '@zoralabs/protocol-deployments'
 import getProposalBytecode from './getProposalBytecode'
 import { CHAIN_ID } from '@/constants/defaultChains'
+import getSetupActions from '@/utils/zora/getSetupActions'
 
-const getZoraCreateProposalBytecode = (recipient: Address) => {
-  const newContractURI = 'ipfs://'
-  const name = 'Based in Colombia 🇨🇴'
-  const defaultRoyaltyConfiguration = {
-    royaltyMintSchedule: 0,
-    royaltyBPS: 500,
-    royaltyRecipient: recipient,
-  }
-  const defaultAdmin = recipient
-  const setupActions = [] as any[]
+const getZoraCreateProposalBytecode = (
+  recipient: Address,
+  uri: string,
+  name: string,
+  pricePerToken: bigint,
+  payoutAddress: Address
+) => {
+  const setupActions = getSetupActions(
+    recipient,
+    uri,
+    pricePerToken,
+    '1000000',
+    payoutAddress
+  )
+
+  const args = [
+    uri,
+    name,
+    {
+      royaltyMintSchedule: 0,
+      royaltyBPS: 500,
+      royaltyRecipient: recipient,
+    },
+    recipient,
+    setupActions,
+  ] as any
+
   const value = 0n
   const data = encodeFunctionData({
     abi: zoraCreator1155FactoryImplABI,
     functionName: 'createContract',
-    args: [
-      newContractURI,
-      name,
-      defaultRoyaltyConfiguration,
-      defaultAdmin,
-      setupActions,
-    ],
+    args,
   })
   const encodedBytecodeProposalData = getProposalBytecode(
     zoraCreator1155FactoryImplAddress[CHAIN_ID],

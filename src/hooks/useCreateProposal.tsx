@@ -11,13 +11,22 @@ import getZoraCollectProposalData from '@/utils/party/getZoraCollectProposalData
 import { getPublicClient } from '@/utils/viem'
 import { usePrivy } from '@privy-io/react-auth'
 import toast from 'react-hot-toast'
-import { Address } from 'viem'
+import { Address, parseEther } from 'viem'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
   const { transactions, showAdvancedOfZoraCollect } = useProposalStore()
   const { logout } = usePrivy()
-  const { target, value, ethPrice, tokenId } = transactions[0].transactions[0]
+  const {
+    target,
+    value,
+    ethPrice,
+    tokenId,
+    collectionImage,
+    title,
+    description,
+    pricePerEdition,
+  } = transactions[0].transactions[0]
   const { type } = transactions[0]
 
   const create = async () => {
@@ -42,8 +51,21 @@ const useCreateProposal: any = (community: Address) => {
           showAdvancedOfZoraCollect ? tokenId : 1n
         )
 
-      if (type === TransactionType.ZORA_CREATE)
-        proposalData = getZoraCreateProposalData(target)
+      if (
+        type === TransactionType.ZORA_CREATE &&
+        title &&
+        description &&
+        collectionImage &&
+        pricePerEdition
+      )
+        proposalData = await getZoraCreateProposalData(
+          target,
+          title,
+          description,
+          collectionImage,
+          parseEther(pricePerEdition.toString()),
+          '0x'
+        )
 
       const args = [proposalData, latestSnapIndex] as any
       const contractConfig = {

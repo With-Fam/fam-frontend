@@ -1,23 +1,40 @@
 'use client'
 
-import { FormProvider, useForm } from 'react-hook-form'
-import { Address } from 'viem'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { Address, zeroAddress } from 'viem'
 import _get from 'lodash.get'
 import { useProposalStore } from '@/modules/create-activity/stores'
 import { TransactionType } from '@/modules/create-activity/types'
-import { walletSnippet } from '@/utils/helpers'
-import { TextInput } from '@/components/forms'
+import { TextArea, TextInput } from '@/components/forms'
 import { AddActionButton } from '../action'
 import { ZoraCreateValues } from './ZoraCreateForm.schema'
 import { Transaction } from '@/modules/create-activity/stores'
 import { ActionFormProps } from '@/modules/create-activity'
 import { useParams } from 'next/navigation'
+import { UploadIPFSImage } from '@/components/ipfs/UploadIPFSImage'
+import Advanced from '@/modules/create-activity/components/zora-create/Advanced'
 
 function hasChanged(
   values: ZoraCreateValues,
-  previous: Pick<Transaction, 'target'>
+  previous: Pick<
+    Transaction,
+    | 'target'
+    | 'collectionImage'
+    | 'title'
+    | 'description'
+    | 'pricePerEdition'
+    | 'duration'
+    | 'payoutAddress'
+  >
 ) {
-  return values.party !== previous.target
+  return (
+    values.pricePerEdition !== previous.pricePerEdition ||
+    values.collectionImage !== previous.collectionImage ||
+    values.title !== previous.title ||
+    values.description !== previous.description ||
+    values.duration !== previous.duration ||
+    values.payoutAddress !== previous.payoutAddress
+  )
 }
 
 export function ZoraCreate({
@@ -26,35 +43,54 @@ export function ZoraCreate({
   const { addTransaction, editTransaction, transactions } = useProposalStore()
   const exists = transactions.find(({ type }) => type === 'zora-create')
   const { community } = useParams()
-  const defaultValues: Pick<Transaction, 'target'> = _get(
-    exists,
-    'transactions[0]',
-    {
-      target: community as Address,
-    }
-  )
+  const defaultValues: Pick<
+    Transaction,
+    | 'target'
+    | 'collectionImage'
+    | 'title'
+    | 'description'
+    | 'pricePerEdition'
+    | 'duration'
+    | 'payoutAddress'
+  > = _get(exists, 'transactions[0]', {
+    target: community as Address,
+    collectionImage: '',
+    title: '',
+    description: '',
+    pricePerEdition: 0.0001,
+    duration: 0,
+    payoutAddress: zeroAddress,
+  })
 
   const methods = useForm<ZoraCreateValues>({
     defaultValues: {
-      party: defaultValues.target,
+      collectionImage: defaultValues.collectionImage,
+      title: defaultValues.title,
+      description: defaultValues.description,
+      pricePerEdition: defaultValues.pricePerEdition,
+      duration: defaultValues.duration,
+      payoutAddress: defaultValues.payoutAddress,
     },
   })
   const onSubmit = async (values: ZoraCreateValues) => {
-    if (!values.party) return
     if (exists && defaultValues && !hasChanged(values, defaultValues)) {
       callback()
       return
     }
-
-    const target = values.party
 
     const builderTransaction = {
       type: TransactionType.ZORA_CREATE,
       transactions: [
         {
           functionSignature: 'zoraCreate(address)',
-          target,
+          target: community as Address,
           value: '',
+          collectionImage: values.collectionImage,
+          title: values.title,
+          description: values.description,
+          pricePerEdition: values.pricePerEdition,
+          duration: values.duration,
+          payoutAddress: values.payoutAddress,
           calldata: '0x',
         },
       ],
@@ -69,26 +105,43 @@ export function ZoraCreate({
     callback()
   }
 
-  const { handleSubmit } = methods
+  const { handleSubmit, control } = methods
+
   return (
     <FormProvider {...methods}>
       <form
         id="__zora_collect"
         onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto w-full max-w-[668px]"
+        className="mx-auto mb-4 w-full max-w-[668px]"
       >
         <div className="flex flex-col gap-2">
-          <div className="relative z-0">
-            <TextInput
-              name="party"
-              label="Party"
-              type="text"
-              placeholder="Party"
-              className="block w-full text-lg outline-0"
-              readOnly
-            />
-          </div>
+          <Controller
+            name="collectionImage"
+            control={control}
+            render={({ field }) => (
+              <UploadIPFSImage
+                name={field.name}
+                onChange={field.onChange}
+                value={field.value}
+              />
+            )}
+          />
+          <TextInput name="title" placeholder="Title" label="Title" />
+          <TextArea
+            name="description"
+            label="Description"
+            placeholder="Tell the world about your collection"
+          />
+          <TextInput
+            name="pricePerEdition"
+            type="number"
+            step="0.0001"
+            label="Price per edition"
+            placeholder="0 ETH"
+            min={0.0001}
+          />
         </div>
+        <Advanced control={control} />
         <AddActionButton />
       </form>
     </FormProvider>
