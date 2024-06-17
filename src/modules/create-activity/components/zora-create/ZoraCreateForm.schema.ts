@@ -7,4 +7,6 @@ export interface ZoraCreateValues {
   pricePerEdition: number
   duration: number
   payoutAddress: Address
+  customLimit: number
+  customEditionSize: number
 }

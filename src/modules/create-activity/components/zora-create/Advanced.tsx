@@ -43,9 +43,9 @@ const Advanced = ({ control }: any) => {
                       onChange={(value, index) => {
                         field.onChange(value, index)
                       }}
-                      min={0}
-                      max={100}
-                      suffix="%"
+                      min={7}
+                      max={90}
+                      suffix=" days"
                     />
                   )}
                 />

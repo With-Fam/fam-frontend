@@ -8,7 +8,6 @@ type GetCallSaleDataType = {
   maxTokensPerAddress: string | number | bigint
   pricePerToken: string | number | bigint
   fundsRecipient: string
-  erc20Address: string
 }
 
 const getCallSaleData = ({
@@ -18,7 +17,6 @@ const getCallSaleData = ({
   maxTokensPerAddress,
   pricePerToken,
   fundsRecipient,
-  erc20Address,
 }: GetCallSaleDataType) => {
   const iface = new Interface(zoraCreatorFixedPriceSaleStrategyABI)
 

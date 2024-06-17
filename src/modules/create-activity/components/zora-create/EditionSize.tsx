@@ -1,5 +1,7 @@
+import { TextInput } from '@/components/forms'
 import SelectButton from '@/modules/create-activity/components/zora-create/SelectButton'
 import { EDITON_SIZE, useProposalStore } from '@/modules/create-activity/stores'
+import { maxUint64 } from 'viem'
 
 const EditionSize = () => {
   const { editionSize, setEditionSize } = useProposalStore()
@@ -25,6 +27,17 @@ const EditionSize = () => {
           label="Fixed"
           onClick={() => setEditionSize(EDITON_SIZE.FIXED)}
         />
+        {editionSize === EDITON_SIZE.FIXED && (
+          <TextInput
+            name="customEditionSize"
+            placeholder="Fixed Edition Size"
+            label="Fixed Size"
+            type="number"
+            step="1"
+            max={maxUint64.toString()}
+            min={1}
+          />
+        )}
       </div>
     </section>
   )
