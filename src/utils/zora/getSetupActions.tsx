@@ -4,6 +4,7 @@ import { SALE_STRATEGY } from '@/constants/addresses'
 import { CHAIN_ID } from '@/constants/defaultChains'
 import getCallSaleData from '@/utils/zora/getCallSaleData'
 import { Address } from 'viem'
+import getEnsAddress from '@/utils/getEnsAddress'
 
 const getSetupActions = (
   ifpsUri: string,

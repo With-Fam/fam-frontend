@@ -16,6 +16,7 @@ import { getPublicClient } from '@/utils/viem'
 import { usePrivy } from '@privy-io/react-auth'
 import toast from 'react-hot-toast'
 import { Address, maxUint256, parseEther } from 'viem'
+import getEnsAddress from '@/utils/getEnsAddress'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -82,6 +83,8 @@ const useCreateProposal: any = (community: Address) => {
         let sizeLimit: bigint | number = 0
         if (limitPerAddress === LIMIT.CUSTOM) sizeLimit = customLimit
 
+        const payoutEnsAddress = await getEnsAddress(payoutAddress)
+
         proposalData = await getZoraCreateProposalData(
           target,
           title,
@@ -91,7 +94,7 @@ const useCreateProposal: any = (community: Address) => {
           sizeEdition,
           sizeLimit,
           duration,
-          payoutAddress
+          payoutEnsAddress || payoutAddress
         )
       }
 
