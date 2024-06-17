@@ -17,21 +17,11 @@ const getSetupActions = (
   const dummyNextTokenId = 1
   const dummySaleStart = 0
 
-  const adminPermissionArgs = [0, adminWallet, 2]
-  const minterPermissionArgs = [0, SALE_STRATEGY[CHAIN_ID], 2]
-  const minterPermissionArgs2 = [dummyNextTokenId, SALE_STRATEGY[CHAIN_ID], 2]
+  const minterPermissionArgs2 = [dummyNextTokenId, SALE_STRATEGY[CHAIN_ID], 4]
   const iface = new Interface(dropAbi)
-  const minterPermissionCall = iface.encodeFunctionData(
-    'addPermission',
-    minterPermissionArgs
-  )
   const minterPermissionCall2 = iface.encodeFunctionData(
     'addPermission',
     minterPermissionArgs2
-  )
-  const adminPermissionCall = iface.encodeFunctionData(
-    'addPermission',
-    adminPermissionArgs
   )
 
   const data = getCallSaleData({
@@ -50,13 +40,7 @@ const getSetupActions = (
     setupNewTokenArgs
   )
   const callSaleCall = iface.encodeFunctionData('callSale', callSaleArgs)
-  const setupActions = [
-    adminPermissionCall,
-    minterPermissionCall,
-    minterPermissionCall2,
-    setupNewTokenCall,
-    callSaleCall,
-  ]
+  const setupActions = [minterPermissionCall2, setupNewTokenCall, callSaleCall]
   return setupActions
 }
 

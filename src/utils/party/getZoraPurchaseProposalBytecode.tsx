@@ -24,6 +24,7 @@ const getZoraPurchaseProposalBytecode = (
     parseAbiParameters('address x, string y'),
     [recipient, 'Based in Colombia 🇨🇴']
   )
+
   const mintReferral = recipient
   const data = encodeFunctionData({
     abi: zoraCreator1155ImplABI,
