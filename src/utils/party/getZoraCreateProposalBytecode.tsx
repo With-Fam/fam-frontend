@@ -18,7 +18,6 @@ const getZoraCreateProposalBytecode = (
   payoutAddress: Address
 ) => {
   const setupActions = getSetupActions(
-    recipient,
     uri,
     pricePerToken,
     editionSize,

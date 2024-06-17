@@ -15,7 +15,7 @@ import getZoraCollectProposalData from '@/utils/party/getZoraCollectProposalData
 import { getPublicClient } from '@/utils/viem'
 import { usePrivy } from '@privy-io/react-auth'
 import toast from 'react-hot-toast'
-import { Address, maxUint64, parseEther } from 'viem'
+import { Address, maxUint256, maxUint64, parseEther } from 'viem'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -75,7 +75,7 @@ const useCreateProposal: any = (community: Address) => {
         typeof duration !== 'undefined' &&
         payoutAddress
       ) {
-        let sizeEdition: bigint | number = maxUint64
+        let sizeEdition: bigint | number = maxUint256
         if (editionSize === EDITON_SIZE.ONEOFONE) sizeEdition = 1
         if (editionSize === EDITON_SIZE.FIXED) sizeEdition = customEditionSize
 

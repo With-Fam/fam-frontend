@@ -6,7 +6,6 @@ import getCallSaleData from '@/utils/zora/getCallSaleData'
 import { Address } from 'viem'
 
 const getSetupActions = (
-  adminWallet: Address,
   ifpsUri: string,
   pricePerToken: bigint,
   editionSize: bigint | number,
