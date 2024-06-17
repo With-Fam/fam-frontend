@@ -79,7 +79,7 @@ const useCreateProposal: any = (community: Address) => {
         if (editionSize === EDITON_SIZE.ONEOFONE) sizeEdition = 1
         if (editionSize === EDITON_SIZE.FIXED) sizeEdition = customEditionSize
 
-        let sizeLimit: bigint | number = maxUint64
+        let sizeLimit: bigint | number = 0
         if (limitPerAddress === LIMIT.CUSTOM) sizeLimit = customLimit
 
         proposalData = await getZoraCreateProposalData(
