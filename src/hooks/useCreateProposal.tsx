@@ -42,7 +42,6 @@ const useCreateProposal: any = (community: Address) => {
   } = transactions[0].transactions[0]
   const { type } = transactions[0]
 
-  console.log('ZIAD', transactions[0])
   const create = async () => {
     try {
       if (!walletClient) {
