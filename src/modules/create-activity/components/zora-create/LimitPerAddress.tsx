@@ -28,6 +28,7 @@ const LimitPerAddress = () => {
             label="Custom Limit"
             type="number"
             step="1"
+            min={1}
           />
         )}
       </div>

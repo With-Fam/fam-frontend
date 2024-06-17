@@ -51,10 +51,10 @@ const useZoraCreateProposalForm = (callback: any) => {
     title: '',
     description: '',
     pricePerEdition: 0.0001,
-    duration: 0,
+    duration: 7,
     payoutAddress: community as Address,
-    customLimit: 0,
-    customEditionSize: 0,
+    customLimit: 1,
+    customEditionSize: 1000,
   })
 
   const methods = useForm<ZoraCreateValues>({

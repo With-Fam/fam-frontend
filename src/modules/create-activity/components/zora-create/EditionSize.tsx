@@ -35,6 +35,7 @@ const EditionSize = () => {
             type="number"
             step="1"
             max={maxUint64.toString()}
+            min={1}
           />
         )}
       </div>
