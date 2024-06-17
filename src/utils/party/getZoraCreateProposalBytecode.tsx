@@ -12,13 +12,18 @@ const getZoraCreateProposalBytecode = (
   uri: string,
   name: string,
   pricePerToken: bigint,
+  editionSize: bigint | number,
+  limitPerAddress: bigint | number,
+  duration: number,
   payoutAddress: Address
 ) => {
   const setupActions = getSetupActions(
     recipient,
     uri,
     pricePerToken,
-    '1000000',
+    editionSize,
+    limitPerAddress,
+    duration,
     payoutAddress
   )
 

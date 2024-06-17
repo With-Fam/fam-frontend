@@ -1,3 +1,4 @@
+import { TextInput } from '@/components/forms'
 import SelectButton from '@/modules/create-activity/components/zora-create/SelectButton'
 import { LIMIT, useProposalStore } from '@/modules/create-activity/stores'
 
@@ -20,6 +21,15 @@ const LimitPerAddress = () => {
           label="Custom"
           onClick={() => setLimitPerAddress(LIMIT.CUSTOM)}
         />
+        {limitPerAddress === LIMIT.CUSTOM && (
+          <TextInput
+            name="customLimit"
+            placeholder="Custom Limit Per Address"
+            label="Custom Limit"
+            type="number"
+            step="1"
+          />
+        )}
       </div>
     </section>
   )

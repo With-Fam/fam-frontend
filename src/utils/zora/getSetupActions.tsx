@@ -9,7 +9,9 @@ const getSetupActions = (
   adminWallet: Address,
   ifpsUri: string,
   pricePerToken: bigint,
-  totalSupply: string,
+  editionSize: bigint | number,
+  limitPerAddress: bigint | number,
+  duration: number,
   payoutAddress: Address
 ) => {
   const dummyNextTokenId = 1
@@ -31,19 +33,18 @@ const getSetupActions = (
     'addPermission',
     adminPermissionArgs
   )
-  const openEdition = 0
-  const maxUint64 = '18446744073709551615'
+
   const data = getCallSaleData({
     tokenId: dummyNextTokenId,
     saleStart: dummySaleStart,
-    saleEnd: maxUint64,
-    maxTokensPerAddress: openEdition,
+    saleEnd:
+      parseInt(Number(Date.now() / 1000).toFixed(0)) + duration * 60 * 60 * 24,
+    maxTokensPerAddress: limitPerAddress,
     pricePerToken,
-    fundsRecipient: adminWallet,
-    erc20Address: payoutAddress,
+    fundsRecipient: payoutAddress,
   })
   const callSaleArgs = [dummyNextTokenId, SALE_STRATEGY[CHAIN_ID], data]
-  const setupNewTokenArgs = [ifpsUri, totalSupply]
+  const setupNewTokenArgs = [ifpsUri, editionSize.toString()]
   const setupNewTokenCall = iface.encodeFunctionData(
     'setupNewToken',
     setupNewTokenArgs

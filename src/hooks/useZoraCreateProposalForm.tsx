@@ -1,6 +1,6 @@
 import { useProposalStore } from '@/modules/create-activity/stores'
 import { TransactionType } from '@/modules/create-activity/types'
-import { Address, zeroAddress } from 'viem'
+import { Address } from 'viem'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'next/navigation'
 import _get from 'lodash.get'
@@ -43,6 +43,8 @@ const useZoraCreateProposalForm = (callback: any) => {
     | 'pricePerEdition'
     | 'duration'
     | 'payoutAddress'
+    | 'customLimit'
+    | 'customEditionSize'
   > = _get(exists, 'transactions[0]', {
     target: community as Address,
     collectionImage: '',
@@ -51,6 +53,8 @@ const useZoraCreateProposalForm = (callback: any) => {
     pricePerEdition: 0.0001,
     duration: 0,
     payoutAddress: community as Address,
+    customLimit: 0,
+    customEditionSize: 0,
   })
 
   const methods = useForm<ZoraCreateValues>({
@@ -61,6 +65,8 @@ const useZoraCreateProposalForm = (callback: any) => {
       pricePerEdition: defaultValues.pricePerEdition,
       duration: defaultValues.duration,
       payoutAddress: defaultValues.payoutAddress,
+      customLimit: defaultValues.customLimit,
+      customEditionSize: defaultValues.customEditionSize,
     },
   })
   const onSubmit = async (values: ZoraCreateValues) => {
@@ -82,6 +88,8 @@ const useZoraCreateProposalForm = (callback: any) => {
           pricePerEdition: values.pricePerEdition,
           duration: values.duration,
           payoutAddress: values.payoutAddress,
+          customLimit: values.customLimit,
+          customEditionSize: values.customEditionSize,
           calldata: '0x',
         },
       ],

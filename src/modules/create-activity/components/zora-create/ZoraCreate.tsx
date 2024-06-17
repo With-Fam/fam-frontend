@@ -13,7 +13,6 @@ export function ZoraCreate({
   callback,
 }: Pick<ActionFormProps, 'callback'>): JSX.Element {
   const { methods, onSubmit } = useZoraCreateProposalForm(callback)
-
   const { handleSubmit, control } = methods
 
   return (

@@ -10,6 +10,9 @@ const getZoraCreateProposalData = async (
   description: string,
   image: string,
   pricePerToken: bigint,
+  editionSize: bigint | number,
+  limitPerAddress: bigint | number,
+  duration: number,
   payoutAddress: Address
 ) => {
   const jsonString = JSON.stringify({
@@ -26,6 +29,9 @@ const getZoraCreateProposalData = async (
     uri,
     title,
     pricePerToken,
+    editionSize,
+    limitPerAddress,
+    duration,
     payoutAddress
   )
   const hexEncodedSelector = pad(toHex(ProposalType.ArbitraryCalls), {
