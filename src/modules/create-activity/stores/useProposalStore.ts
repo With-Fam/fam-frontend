@@ -27,6 +27,8 @@ export type Transaction = {
   pricePerEdition?: number
   duration?: number
   payoutAddress?: Address
+  customLimit?: number
+  customEditionSize?: number
 }
 
 export type BuilderTransaction = {
