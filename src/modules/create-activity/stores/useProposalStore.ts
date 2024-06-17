@@ -1,16 +1,34 @@
 import { create } from 'zustand'
 
-import { AddressType } from '@/types'
-
 import { TransactionType } from '../types'
+import { Address } from 'viem'
+
+export enum EDITON_SIZE {
+  OPEN,
+  ONEOFONE,
+  FIXED,
+}
+
+export enum LIMIT {
+  UNLIMITED,
+  CUSTOM,
+}
 
 export type Transaction = {
   functionSignature: string
-  target: AddressType
+  target: Address
   value: string
   calldata: string
   tokenId?: bigint
   ethPrice?: number
+  collectionImage?: string
+  title?: string
+  description?: string
+  pricePerEdition?: number
+  duration?: number
+  payoutAddress?: Address
+  customLimit?: number
+  customEditionSize?: number
 }
 
 export type BuilderTransaction = {
@@ -25,10 +43,16 @@ interface State {
   title?: string
   summary?: string
   showAdvancedOfZoraCollect: boolean
+  showAdvancedOfZoraCreate: boolean
+  editionSize: number
+  limitPerAddress: number
 }
 
 interface Actions {
   setShowAdvancedOfZoraCollect: (showAdvanced: boolean) => void
+  setShowAdvancedOfZoraCreate: (showAdvanced: boolean) => void
+  setEditionSize: (editionSize: number) => void
+  setLimitPerAddress: (limitPerAddress: number) => void
   addTransaction: (builderTransaction: BuilderTransaction) => void
   addTransactions: (builderTransactions: BuilderTransaction[]) => void
   editTransaction: (
@@ -52,6 +76,9 @@ const initialState: State = {
   disabled: false,
   transactions: [],
   showAdvancedOfZoraCollect: false,
+  showAdvancedOfZoraCreate: false,
+  editionSize: EDITON_SIZE.OPEN,
+  limitPerAddress: LIMIT.UNLIMITED,
 }
 
 export const useProposalStore = create<State & Actions>((set) => ({
@@ -63,6 +90,10 @@ export const useProposalStore = create<State & Actions>((set) => ({
   },
   setShowAdvancedOfZoraCollect: (showAdvancedOfZoraCollect: boolean) =>
     set({ showAdvancedOfZoraCollect }),
+  setEditionSize: (editionSize: number) => set({ editionSize }),
+  setLimitPerAddress: (limitPerAddress: number) => set({ limitPerAddress }),
+  setShowAdvancedOfZoraCreate: (showAdvancedOfZoraCreate: boolean) =>
+    set({ showAdvancedOfZoraCreate }),
   addTransactions: (transaction: BuilderTransaction[]) => {
     set((state) => ({
       transactions: [...state.transactions, ...transaction],

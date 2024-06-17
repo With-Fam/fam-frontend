@@ -2,9 +2,38 @@ import getMaxExecutableTime from '@/utils/party/getMaxExecutableTime'
 import { pad, toHex, concatHex, Address, zeroAddress } from 'viem'
 import { ProposalType } from '@/types/partyTypes'
 import getZoraCreateProposalBytecode from '@/utils/party/getZoraCreateProposalBytecode'
+import { uploadFile } from '@/utils/ipfs-service'
 
-const getZoraCreateProposalData = (recipient: Address = zeroAddress) => {
-  const encodedBytecodeProposalData = getZoraCreateProposalBytecode(recipient)
+const getZoraCreateProposalData = async (
+  recipient: Address = zeroAddress,
+  title: string,
+  description: string,
+  image: string,
+  pricePerToken: bigint,
+  editionSize: bigint | number,
+  limitPerAddress: bigint | number,
+  duration: number,
+  payoutAddress: Address
+) => {
+  const jsonString = JSON.stringify({
+    name: title,
+    description,
+    image,
+  })
+  const metadata = new Blob([jsonString], { type: 'application/json' })
+  const file = new File([metadata], 'metdata', { type: 'application/json' })
+  const { uri } = await uploadFile(file)
+
+  const encodedBytecodeProposalData = getZoraCreateProposalBytecode(
+    recipient,
+    uri,
+    title,
+    pricePerToken,
+    editionSize,
+    limitPerAddress,
+    duration,
+    payoutAddress
+  )
   const hexEncodedSelector = pad(toHex(ProposalType.ArbitraryCalls), {
     size: 4,
   })

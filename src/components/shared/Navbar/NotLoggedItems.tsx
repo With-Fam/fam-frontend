@@ -1,22 +1,9 @@
-// Third Parties
 import { usePrivy } from '@privy-io/react-auth'
-
-// Local Components
 import Paragraph from '@/stories/Paragraph'
 
-// Helpers
-import { useCheckAuth } from '@/hooks/useCheckAuth'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
-
 const NotLoggedItems = (): JSX.Element => {
-  const {
-    privyData: { login },
-  } = useCheckAuth()
+  const { login } = usePrivy()
+
   return (
     <button onClick={login} className="pointer-events-auto">
       <Paragraph
