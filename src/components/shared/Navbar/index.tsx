@@ -15,6 +15,7 @@ import NotLoggedItems from '@/components/shared/Navbar/NotLoggedItems'
 // Helpers
 import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { usePrivy } from '@privy-io/react-auth'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
 
 /*--------------------------------------------------------------------*/
 
@@ -24,6 +25,7 @@ import { usePrivy } from '@privy-io/react-auth'
 
 const Navbar = (): JSX.Element => {
   const { authenticated, ready } = usePrivy()
+  const { connectedWallet } = useConnectedWallet()
   const path = usePathname()
   const isHome = path === '/'
 
@@ -38,7 +40,11 @@ const Navbar = (): JSX.Element => {
       <div className="flex h-12 items-center justify-end gap-3">
         {ready && (
           <Fragment>
-            {authenticated ? <LoggedItems /> : <NotLoggedItems />}
+            {authenticated && connectedWallet ? (
+              <LoggedItems />
+            ) : (
+              <NotLoggedItems />
+            )}
           </Fragment>
         )}
       </div>
