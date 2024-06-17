@@ -46,7 +46,7 @@ export function ZoraCreate({
             step="0.0001"
             label="Price per edition"
             placeholder="0 ETH"
-            min={0.0001}
+            min={0}
           />
         </div>
         <Advanced control={control} />
