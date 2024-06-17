@@ -15,7 +15,7 @@ import getZoraCollectProposalData from '@/utils/party/getZoraCollectProposalData
 import { getPublicClient } from '@/utils/viem'
 import { usePrivy } from '@privy-io/react-auth'
 import toast from 'react-hot-toast'
-import { Address, maxUint256, maxUint64, parseEther } from 'viem'
+import { Address, maxUint256, parseEther } from 'viem'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
