@@ -1,27 +1,13 @@
 'use client'
 
-// Framework
 import { usePathname } from 'next/navigation'
 import { Fragment } from 'react'
-
-// Third parties
 import { twJoin } from 'tailwind-merge'
-
-// Local Components
 import { Logo } from '@/components/shared'
 import LoggedItems from '@/components/shared/Navbar/LoggedItems'
 import NotLoggedItems from '@/components/shared/Navbar/NotLoggedItems'
-
-// Helpers
-import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { usePrivy } from '@privy-io/react-auth'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 const Navbar = (): JSX.Element => {
   const { authenticated, ready } = usePrivy()
