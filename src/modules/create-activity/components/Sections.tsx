@@ -1,13 +1,5 @@
 import { useCreateActivityContext } from '@/contexts/create-activity/CreateActivityContext'
-
-// Local Components
 import { AnimatePresence, motion } from 'framer-motion'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 export function Sections(): JSX.Element {
   const { section } = useCreateActivityContext()
