@@ -3,11 +3,16 @@ import EnsAddress from '@/components/shared/EnsAddress'
 import useProposalComments from '@/hooks/useProposalComments'
 import { Paragraph } from '@/stories'
 import getDiffFormattedDuration from '@/utils/getDiffFormattedDuration'
-import Image from 'next/image'
+import dynamic from 'next/dynamic'
 import { useParams } from 'next/navigation'
+const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
+  ssr: false,
+})
 
 const Proposal = ({ data }: any) => {
-  const status = data.passedTime > 0 ? 'passed' : 'voting'
+  const status =
+    data.completedTime > 0 ? 'completed' : data.passedTime > 0 ? 'passed' : ''
+
   const { community } = useParams()
   const { proposalComments } = useProposalComments(community, data.proposalId)
 
@@ -15,12 +20,7 @@ const Proposal = ({ data }: any) => {
     <section className="rounded-md bg-white p-4">
       <div className="flex justify-between">
         <div className="flex items-center gap-1">
-          <Image
-            src="https://i.imgur.com/94JxQHK.png"
-            width={16}
-            height={16}
-            alt=""
-          />
+          <UserAvatar address={data.proposerAddress} width={16} height={16} />
           <Paragraph as="p5" className="text-gray-dark">
             <EnsAddress address={data.proposerAddress} />
           </Paragraph>
@@ -29,19 +29,18 @@ const Proposal = ({ data }: any) => {
           </p>
         </div>
         <div className="flex items-center gap-1">
-          {status === 'voting' && (
+          {status === 'passed' && (
             <>
-              <Icon id="archieve" fill="#ffffff" />
               <Paragraph as="p5" className="text-status-purple">
-                Voting
+                Passed
               </Paragraph>
             </>
           )}
-          {status === 'passed' && (
+          {status === 'completed' && (
             <>
               <Icon id="check" fill="#45D039" />
               <Paragraph as="p5" className="text-status-green">
-                Passed
+                Completed
               </Paragraph>
             </>
           )}
