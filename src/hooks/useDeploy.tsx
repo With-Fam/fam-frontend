@@ -9,8 +9,6 @@ import toast from 'react-hot-toast'
 const useDeploy = () => {
   const { createInitialETHCrowdfund } = useCreateParty()
   const {
-    founderAllocation,
-    contributionAllocation,
     setActiveSection,
     activeSection,
     setDeployedDao,
@@ -24,15 +22,6 @@ const useDeploy = () => {
   const handleDeploy = async () => {
     setIsLoading(true)
     setDeploymentError(undefined)
-
-    if (
-      [...founderAllocation, ...contributionAllocation].find(
-        (founder) => typeof founder.allocationPercentage === 'undefined'
-      )
-    ) {
-      setDeploymentError(DEPLOYMENT_ERROR.INVALID_ALLOCATION_PERCENTAGE)
-      return
-    }
 
     setIsPendingTransaction(true)
     const transaction = await createInitialETHCrowdfund()
