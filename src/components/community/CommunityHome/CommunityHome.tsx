@@ -20,7 +20,7 @@ const CommunityHome = () => {
         <div className="flex justify-center">
           <button
             type="button"
-            onClick={getProposals}
+            onClick={() => getProposals(nextOffset)}
             className="rounded-full bg-blue-light px-3 py-1 font-abcMedium text-white"
           >
             Load More

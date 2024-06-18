@@ -12,8 +12,6 @@ const getDiffFormattedDuration = (time1: any, time2: any) => {
   const minutes = Math.abs(d.minutes())
   const seconds = Math.abs(d.seconds())
 
-  console.log('ziad day', days, hours, minutes, seconds)
-
   const formattedDuration = `${days ? `${days}d ` : ''}${hours ? `${hours}h ` : ''}${minutes ? `${minutes}m ` : ''}${seconds ? `${seconds}s` : ''} ago`
 
   return formattedDuration
