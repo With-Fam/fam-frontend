@@ -47,6 +47,7 @@ const config: Config = {
         },
         blue: {
           DEFAULT: '#2E6CE4',
+          light: '#00b2d9',
         },
         grey: {
           light: '#EBEBEB',
