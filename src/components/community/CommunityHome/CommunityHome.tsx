@@ -1,16 +1,32 @@
 'use client'
 
-import Joined from './Joined'
-import General from './General'
-import DroppedOn from './DroppedOn'
+import { useParams } from 'next/navigation'
+import useProposals from '@/hooks/useProposals'
+import Proposal from '@/components/community/CommunityHome/Proposal'
+import { Loading } from '@/components/shared'
 
 const CommunityHome = () => {
+  const { community } = useParams()
+  const { proposals, loading, nextOffset, getProposals } =
+    useProposals(community)
+
   return (
     <main className="relative mx-auto max-w-[936px] px-2 pb-4">
-      <General status="voting" />
-      <Joined />
-      <DroppedOn />
-      <General status="passed" />
+      {proposals.map((proposal: any) => (
+        <Proposal key={proposal.proposalId} data={proposal} />
+      ))}
+      {loading && <Loading />}
+      {nextOffset !== -1 && !loading && (
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={() => getProposals(nextOffset)}
+            className="rounded-full bg-blue-light px-3 py-1 font-abcMedium text-white"
+          >
+            Load More
+          </button>
+        </div>
+      )}
     </main>
   )
 }
