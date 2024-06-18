@@ -1,15 +1,9 @@
-import { FounderFormValues } from '@/modules/create-community/components/auctions/AuctionForm.schema'
 import {
   ArtworkFormValues,
   GeneralFormValues,
 } from '@/modules/create-community'
 
 import { AuctionSettingsFormValues } from './types'
-/*--------------------------------------------------------------------*/
-
-/**
- * Variables
- */
 
 export const auctionSettingsDefaultValues: AuctionSettingsFormValues = {
   auctionDuration: {
@@ -42,7 +36,6 @@ export const initialState = {
     daoWebsite: '',
   } as GeneralFormValues,
   auctionSettings: auctionSettingsDefaultValues as AuctionSettingsFormValues,
-  founderAllocation: [] as FounderFormValues['founderAllocation'],
   contributionAllocation: [],
   vetoPower: undefined,
   vetoerAddress: '',

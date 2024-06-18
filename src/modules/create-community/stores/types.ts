@@ -1,24 +1,10 @@
-// Third Parties
 import { StateCreator } from 'zustand'
 import { PersistOptions } from 'zustand/middleware'
-
-// Hooks
 import { IPFSUpload } from '@/hooks'
-
-// Components
 import type { OrderedTraits } from '@/components/create-community/artwork/TraitsAccordian'
 import { GeneralFormValues, ArtworkFormValues } from '../components'
-
-// Types
-import { type TokenAllocation } from '@/modules/create-community/components/auctions/AuctionForm.schema'
 import type { DaoContractAddresses } from '@/modules/dao'
 import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Types
- */
 
 export interface Duration {
   seconds?: number
@@ -52,12 +38,6 @@ export interface FormStoreState {
   setVetoPower: (vetoPower: boolean) => void
   vetoerAddress: string
   setVetoerAddress: (vetoerAddress: string) => void
-  founderAllocation: Array<TokenAllocation>
-  setFounderAllocation: (founderAllocation: Array<TokenAllocation>) => void
-  contributionAllocation: Array<TokenAllocation>
-  setContributionAllocation: (
-    contributionAllocation: Array<TokenAllocation>
-  ) => void
   auctionSettings: AuctionSettingsFormValues
   setReservePrice: (
     auctionReservePrice: AuctionSettingsFormValues['auctionReservePrice']

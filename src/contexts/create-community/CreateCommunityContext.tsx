@@ -1,6 +1,5 @@
 'use client'
 
-// Framework
 import {
   createContext,
   PropsWithChildren,
@@ -10,8 +9,6 @@ import {
   useContext,
   useEffect,
 } from 'react'
-
-// Components
 import { ErrorBox, Loading } from '@/components/shared'
 import { CreateContextNavigation } from '../CreateContextNavigation'
 import { useFormStore } from '@/modules/create-community'
@@ -22,9 +19,11 @@ import {
   GeneralFormValues,
   MembershipForm,
 } from '@/modules/create-community/components'
-
-// Types
 import type { CreateSection } from '@/modules/create-community/types'
+import { usePrivy } from '@privy-io/react-auth'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
+import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
+
 export interface CreateCommunityContextType {
   loading: boolean
   section: CreateSection
@@ -43,13 +42,8 @@ const CreateCommunityContext = createContext<CreateCommunityContextType>({
   title: '',
 })
 
-// Helpers
-import { usePrivy } from '@privy-io/react-auth'
-import useConnectedWallet from '@/hooks/useConnectedWallet'
-import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
 let sections: CreateSection[] = []
 
-// IMPORTANT: Create loading component
 const CreateCommunityProvider = ({
   children,
 }: PropsWithChildren): JSX.Element => {
@@ -60,12 +54,10 @@ const CreateCommunityProvider = ({
     activeSection,
     general: gDefault,
     membership: mDefault,
-    founderAllocation,
     vetoPower,
     vetoerAddress,
     auctionSettings,
     setActiveSection,
-    setFounderAllocation,
     setGeneral,
     setVetoPower,
     setVetoerAddress,
@@ -144,11 +136,9 @@ const CreateCommunityProvider = ({
     vetoPower,
     vetoerAddress,
     gDefault,
-    founderAllocation,
     navigate,
     setGeneral,
     setReservePrice,
-    setFounderAllocation,
     setVetoPower,
     setVetoerAddress,
     address,

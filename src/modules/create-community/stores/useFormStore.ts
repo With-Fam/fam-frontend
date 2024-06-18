@@ -6,7 +6,6 @@ import { IPFSUpload } from '@/hooks'
 import type { DaoContractAddresses } from '@/modules/dao'
 import { FormStoreState, AuctionSettingsFormValues } from './types'
 import { ArtworkFormValues, GeneralFormValues } from '../components'
-import { TokenAllocation } from '@/modules/create-community/components/auctions/AuctionForm.schema'
 import type { OrderedTraits } from '@/components/create-community/artwork/TraitsAccordian'
 import { auctionSettingsDefaultValues, initialState } from './variables'
 import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
@@ -32,11 +31,6 @@ export const useFormStore = create(
       setShowAdvanced: (showAdvanced: boolean) => set({ showAdvanced }),
       setVetoPower: (vetoPower: boolean) => set({ vetoPower }),
       setVetoerAddress: (vetoerAddress: string) => set({ vetoerAddress }),
-      setFounderAllocation: (founderAllocation: Array<TokenAllocation>) =>
-        set({ founderAllocation }),
-      setContributionAllocation: (
-        contributionAllocation: Array<TokenAllocation>
-      ) => set({ contributionAllocation }),
       setReservePrice: (
         auctionReservePrice: AuctionSettingsFormValues['auctionReservePrice']
       ) =>
