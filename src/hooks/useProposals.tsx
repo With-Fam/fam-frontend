@@ -17,6 +17,7 @@ const useProposals = (party: any) => {
     }
     if (!data.nextProposalOffset) {
       setNextOffset(-1)
+      setLoading(false)
       return
     }
     setNextOffset(data.nextProposalOffset)
