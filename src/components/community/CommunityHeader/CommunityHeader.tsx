@@ -23,9 +23,11 @@ const CommunityHeader = () => {
   const { authenticated, ready } = usePrivy()
   const { connectedWallet } = useConnectedWallet()
   const isAuthenticated = authenticated && ready && connectedWallet
-  
+
   const shouldHide =
-    balance <= 0 || crowfundLifecyle !== CrowdfundLifecycle.Active || !isAuthenticated
+    balance <= 0 ||
+    crowfundLifecyle !== CrowdfundLifecycle.Active ||
+    !isAuthenticated
 
   const onJoin = async () => {
     await join()
@@ -65,7 +67,7 @@ const CommunityHeader = () => {
               {loading ? 'Joining...' : 'Join'}
             </JoinButton>
           )}
-          <ActivityButton />
+          {isAuthenticated && <ActivityButton />}
         </div>
       </div>
     </section>
