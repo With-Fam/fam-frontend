@@ -78,7 +78,8 @@ export default function CommunityProposal(): JSX.Element {
           </div>
           <div className="flex items-center justify-between">
             <ProposalInfo proposal={proposal} />
-            {proposal.proposalState === PROPOSAL_STATUS.Ready &&
+            {(proposal.proposalState === PROPOSAL_STATUS.Ready ||
+              proposal.proposalState === PROPOSAL_STATUS.Passed) &&
               isAuthenticated && (
                 <ExecuteButton
                   proposal={proposal}
