@@ -8,9 +8,11 @@ import JoinButton from '@/components/community/CommunityHeader/JoinButton'
 import useJoinParty from '@/hooks/useJoinParty'
 import usePartyInfo from '@/hooks/usePartyInfo'
 import { useParams } from 'next/navigation'
-import getIpfsLink from '@/utils/getIpfsLink'
 import useBalance from '@/hooks/useBalance'
 import useCrowdfund, { CrowdfundLifecycle } from '@/hooks/useCrowdfund'
+import getPartyDaoIpfsLink from '@/utils/getPartyDaoIpfsLink'
+import { usePrivy } from '@privy-io/react-auth'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
 
 const CommunityHeader = () => {
   const { community } = useParams()
@@ -18,9 +20,12 @@ const CommunityHeader = () => {
   const { partyInfo, members } = usePartyInfo(community)
   const { balance } = useBalance()
   const { crowfundLifecyle } = useCrowdfund(community)
-
+  const { authenticated, ready } = usePrivy()
+  const { connectedWallet } = useConnectedWallet()
+  const isAuthenticated = authenticated && ready && connectedWallet
+  
   const shouldHide =
-    balance <= 0 || crowfundLifecyle !== CrowdfundLifecycle.Active
+    balance <= 0 || crowfundLifecyle !== CrowdfundLifecycle.Active || !isAuthenticated
 
   const onJoin = async () => {
     await join()
@@ -35,7 +40,7 @@ const CommunityHeader = () => {
       <div className="flex items-center gap-3">
         {partyInfo?.image && (
           <Image
-            src={getIpfsLink(partyInfo?.image)}
+            src={getPartyDaoIpfsLink(partyInfo?.image)}
             alt=""
             width={64}
             height={64}

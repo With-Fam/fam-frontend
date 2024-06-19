@@ -131,7 +131,6 @@ const useCreateParty = () => {
       }
       return transaction
     } catch (error) {
-      console.log('ZIAD', error)
       return { error }
     }
   }
