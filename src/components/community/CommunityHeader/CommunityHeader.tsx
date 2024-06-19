@@ -8,7 +8,6 @@ import JoinButton from '@/components/community/CommunityHeader/JoinButton'
 import useJoinParty from '@/hooks/useJoinParty'
 import usePartyInfo from '@/hooks/usePartyInfo'
 import { useParams } from 'next/navigation'
-import useBalance from '@/hooks/useBalance'
 import useCrowdfund, { CrowdfundLifecycle } from '@/hooks/useCrowdfund'
 import getPartyDaoIpfsLink from '@/utils/getPartyDaoIpfsLink'
 import { usePrivy } from '@privy-io/react-auth'
@@ -18,15 +17,15 @@ const CommunityHeader = () => {
   const { community } = useParams()
   const { join, checkJoining, joined, loading } = useJoinParty()
   const { partyInfo, members } = usePartyInfo(community)
-  const { balance } = useBalance(community)
   const { crowfundLifecyle } = useCrowdfund(community)
   const { authenticated, ready } = usePrivy()
   const { connectedWallet } = useConnectedWallet()
   const isAuthenticated = authenticated && ready && connectedWallet
 
   const shouldHide =
-    balance === 0 ||
-    crowfundLifecyle !== CrowdfundLifecycle.Active ||
+    !joined ||
+    crowfundLifecyle === CrowdfundLifecycle.Invalid ||
+    crowfundLifecyle === CrowdfundLifecycle.Lost ||
     !isAuthenticated
 
   const onJoin = async () => {
