@@ -24,8 +24,7 @@ const CommunityHeader = () => {
 
   const shouldHide =
     !joined ||
-    crowfundLifecyle === CrowdfundLifecycle.Invalid ||
-    crowfundLifecyle === CrowdfundLifecycle.Lost ||
+    crowfundLifecyle !== CrowdfundLifecycle.Finalized ||
     !isAuthenticated
 
   const onJoin = async () => {
