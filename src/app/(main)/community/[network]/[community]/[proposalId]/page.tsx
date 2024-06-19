@@ -120,7 +120,7 @@ export default function CommunityProposal(): JSX.Element {
                 />
               )}
           </div>
-          <ProposalComments proposal={proposal} />
+          {isAuthenticated && <ProposalComments proposal={proposal} />}
         </>
       ) : (
         <>Loading...</>
