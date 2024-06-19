@@ -1,6 +1,7 @@
 import {
   CROWDFUND_PARTY_FACTORY,
   INITIAL_ETH_CROWDFUND,
+  METADATA_PROVIDER,
 } from '@/constants/addresses'
 import { crowdfundFactoryAbi } from '@/data/contract/abis/CrowdfundFactory'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
@@ -9,9 +10,10 @@ import { getPublicClient } from '@/utils/viem'
 import getViemNetwork from '@/utils/viem/getViemNetwork'
 import { CHAIN_ID } from '@/constants/defaultChains'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
-import { isAddress, zeroAddress } from 'viem'
+import { isAddress, parseEther, toBytes, zeroAddress } from 'viem'
 import getEnsAddress from '@/utils/getEnsAddress'
-import { ethers } from 'ethers'
+import { AbiCoder, ethers } from 'ethers'
+import getEncodedPartyMetadata from '@/utils/party/getEncodedPartyMetadata'
 
 const useCreateParty = () => {
   const chainId = CHAIN_ID
@@ -21,6 +23,7 @@ const useCreateParty = () => {
 
   const createInitialETHCrowdfund = async () => {
     if (!walletClient) return { error: 'Wallet client not found' }
+
     const totalVotingPower = 100000000000000000000n
     const passThreshold =
       ((membership.threshold / 100) * Number(totalVotingPower)) / 1e18
@@ -85,15 +88,35 @@ const useCreateParty = () => {
         symbol: general.daoSymbol,
       }
       const createGateCallData = zeroAddress
+
+      const metadata = {
+        name: general.daoName,
+        description: toBytes(general.projectDescription as string),
+        externalURL: toBytes(general.daoWebsite as string),
+        image: toBytes(general.daoAvatar as string),
+        banner: toBytes(general.daoAvatar as string),
+        animationURL: toBytes(general.daoAvatar as string),
+        collectionName: general.daoName,
+        collectionDescription: toBytes(general.projectDescription as string),
+        collectionExternalURL: toBytes(general.daoWebsite as string),
+        royaltyReceiver: address,
+        royaltyAmount: 0,
+        renderingMethod: 0,
+      }
+
+      const encodedMetadata = getEncodedPartyMetadata(metadata)
+
       const contractConfig = {
         address: CROWDFUND_PARTY_FACTORY[chainId],
         chain: getViemNetwork(chainId),
         abi: crowdfundFactoryAbi,
-        functionName: 'createInitialETHCrowdfund',
+        functionName: 'createInitialETHCrowdfundWithMetadata',
         args: [
           INITIAL_ETH_CROWDFUND[chainId],
           crowdfundOpts,
           partyOpts,
+          METADATA_PROVIDER[chainId],
+          encodedMetadata,
           createGateCallData,
         ],
       } as any
@@ -108,6 +131,7 @@ const useCreateParty = () => {
       }
       return transaction
     } catch (error) {
+      console.log('ZIAD', error)
       return { error }
     }
   }
