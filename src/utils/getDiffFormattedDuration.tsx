@@ -12,7 +12,7 @@ const getDiffFormattedDuration = (time1: any, time2: any) => {
   const minutes = Math.abs(d.minutes())
   const seconds = Math.abs(d.seconds())
 
-  const formattedDuration = `${days ? `${days}d ` : ''}${hours ? `${hours}h ` : ''}${minutes ? `${minutes}m ` : ''}${seconds ? `${seconds}s` : ''} ago`
+  const formattedDuration = `${days ? `${days}d ` : ''}${hours || days ? `${hours}h ` : ''}${minutes || hours ? `${minutes}m ` : ''}${seconds ? `${seconds}s` : ''}`
 
   return formattedDuration
 }
