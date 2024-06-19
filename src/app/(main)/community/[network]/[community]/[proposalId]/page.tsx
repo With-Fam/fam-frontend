@@ -1,13 +1,18 @@
 'use client'
 
 import { Icon } from '@/components/Icon'
+import ExecuteButton from '@/components/community/CommuntiyProposal/ExecuteButton'
+import ProposalComments from '@/components/community/CommuntiyProposal/ProposalComments'
 import ProposalInfo from '@/components/community/CommuntiyProposal/ProposalInfo'
+import VetoButton from '@/components/community/CommuntiyProposal/VetoButton'
 import ProposalStatus from '@/components/community/ProposalStatus'
 import { UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
 import { useProposalProvider } from '@/contexts/ProposalProvider'
+import { PROPOSAL_STATUS } from '@/hooks/useProposalData'
 import getProposalStatus from '@/utils/getProposalStatus'
 import { useParams, useRouter } from 'next/navigation'
+import { Address } from 'viem'
 
 export default function CommunityProposal(): JSX.Element {
   const { proposal } = useProposalProvider() as any
@@ -44,13 +49,10 @@ export default function CommunityProposal(): JSX.Element {
           24h 33m 22s
         </div>
       </div>
-      <div className="flex flex-col items-center gap-4 py-12">
-        <p className="text-grey">You can veto this activity</p>
-        <button className="rounded-full bg-red px-4 py-2 text-white">
-          Veto
-        </button>
-      </div>
-      <p className="font-abcMedium text-[18px] leading-[160%]">
+      {proposal.proposalState === PROPOSAL_STATUS.Ready && (
+        <VetoButton community={community} proposalId={proposal.proposalId} />
+      )}
+      <p className="mt-8 font-abcMedium text-[18px] leading-[160%]">
         PC Music has a storied history of disrupting the music scene,
         continuously pushing the boundaries of what's possible in the worlds of
         electronic and pop music. With the 44th release, we plan to take another
@@ -66,7 +68,13 @@ export default function CommunityProposal(): JSX.Element {
         <p className="text-[16px]">Action</p>{' '}
         <Icon id="arrowTopRight" fill="#f54d18" />
       </div>
-      <ProposalInfo proposal={proposal} />
+      <div className="flex items-center justify-between">
+        <ProposalInfo proposal={proposal} />
+        {proposal.proposalState === PROPOSAL_STATUS.Ready && (
+          <ExecuteButton proposal={proposal} community={community as Address} />
+        )}
+      </div>
+      <ProposalComments proposal={proposal} />
     </main>
   )
 }

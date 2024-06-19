@@ -18,6 +18,7 @@ const useProposalComments = (party: any, proposalId: any) => {
 
   return {
     proposalComments,
+    getProposalComments,
   }
 }
 

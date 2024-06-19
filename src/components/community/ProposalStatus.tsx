@@ -5,10 +5,17 @@ import { Paragraph } from '@/stories'
 const ProposalStatus = ({ status }: any) => {
   return (
     <div className="flex items-center items-center">
-      {status === PROPOSAL_STATUS.Passed && (
+      {status === PROPOSAL_STATUS.Ready && (
         <>
           <Paragraph as="p5" className="text-status-purple">
-            Passed
+            Ready
+          </Paragraph>
+        </>
+      )}
+      {status === PROPOSAL_STATUS.Defeated && (
+        <>
+          <Paragraph as="p5" className="text-red">
+            Defeated
           </Paragraph>
         </>
       )}

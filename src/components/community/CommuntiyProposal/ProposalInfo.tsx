@@ -8,7 +8,8 @@ const ProposalInfo = ({ proposal }: any) => {
 
   return (
     <div className="mt-8">
-      {(proposalInfo?.type === TransactionType.ZORA_COLLECT || proposalInfo?.type === TransactionType.ZORA_CREATE) && (
+      {(proposalInfo?.type === TransactionType.ZORA_COLLECT ||
+        proposalInfo?.type === TransactionType.ZORA_CREATE) && (
         <ZoraProposal info={proposalInfo} />
       )}
       {proposalInfo?.type === TransactionType.SEND_ETH && (

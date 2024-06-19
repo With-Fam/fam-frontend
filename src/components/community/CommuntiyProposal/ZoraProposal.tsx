@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 const ZoraProposal = ({ info }: any) => {
   return (
-    <div className="flex items-center gap-2 border p-4 w-fit rounded-md">
+    <div className="flex w-fit items-center gap-2 rounded-md border p-4">
       <Image
         src={getIpfsLink(info.collectionImage)}
         width={64}
