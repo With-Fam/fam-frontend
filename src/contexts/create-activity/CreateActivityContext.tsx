@@ -110,7 +110,7 @@ const CreateActivityProvider = ({
   useEffect(() => {
     if (loadingMessage === 'Proposal posted. Redirecting...') {
       setLoadingMessage('Setting the vibes')
-      window.location.href = `/community/${network}/${community}/activity`
+      window.location.href = `/community/${network}/${community}`
     }
   }, [loadingMessage])
 

@@ -1,4 +1,5 @@
 import { AddressType, CHAIN_ID } from '@/types'
+import { Address } from 'viem'
 
 export type L2ChainType =
   | CHAIN_ID.OPTIMISM
@@ -43,6 +44,12 @@ export const INITIAL_ETH_CROWDFUND = {
   [CHAIN_ID.BASE]: '0x5a5Ae30930953AB7F33fbDed8ca4d67120d3Ce19' as AddressType,
   [CHAIN_ID.BASE_SEPOLIA]:
     '0xE864Aa11D58492cEab10eE7Ea03200D4dA78363C' as AddressType,
+}
+
+export const METADATA_PROVIDER = {
+  [CHAIN_ID.BASE]: '0x39244498E639C4B24910E73DFa3622881D456724' as Address,
+  [CHAIN_ID.BASE_SEPOLIA]:
+    '0x51fD9005F3b9606D1aa8bd6F7455020b051E1d91' as Address,
 }
 
 export const PUBLIC_L1_BRIDGE_ADDRESS = {

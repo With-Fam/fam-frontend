@@ -6,9 +6,26 @@ import ShareButton from '@/components/community/CommunityHeader/ShareButton'
 import Image from 'next/image'
 import JoinButton from '@/components/community/CommunityHeader/JoinButton'
 import useJoinParty from '@/hooks/useJoinParty'
+import usePartyInfo from '@/hooks/usePartyInfo'
+import { useParams } from 'next/navigation'
+import useCrowdfund, { CrowdfundLifecycle } from '@/hooks/useCrowdfund'
+import getPartyDaoIpfsLink from '@/utils/getPartyDaoIpfsLink'
+import { usePrivy } from '@privy-io/react-auth'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
 
 const CommunityHeader = () => {
+  const { community } = useParams()
   const { join, checkJoining, joined, loading } = useJoinParty()
+  const { partyInfo, members } = usePartyInfo(community)
+  const { crowfundLifecyle } = useCrowdfund(community)
+  const { authenticated, ready } = usePrivy()
+  const { connectedWallet } = useConnectedWallet()
+  const isAuthenticated = authenticated && ready && connectedWallet
+
+  const shouldHide =
+    !joined ||
+    crowfundLifecyle !== CrowdfundLifecycle.Finalized ||
+    !isAuthenticated
 
   const onJoin = async () => {
     await join()
@@ -21,16 +38,26 @@ const CommunityHeader = () => {
       space-y-6 px-4 pb-0 sm:pb-2"
     >
       <div className="flex items-center gap-3">
-        <div className="relative h-10 w-10 overflow-hidden rounded-full md:h-16 md:w-16">
-          <Image src="/assets/images/community/m4.jpeg" alt="" layout="fill" />
-        </div>
-        <div className="space-y-1">
-          <p className="text-md font-abcWide md:text-2xl">PC Music Club</p>
+        {partyInfo?.image && (
+          <Image
+            src={getPartyDaoIpfsLink(partyInfo?.image)}
+            alt=""
+            width={64}
+            height={64}
+          />
+        )}
+        <div className="grow space-y-1">
+          <p className="text-md font-abcWide md:text-2xl">
+            {partyInfo?.name || ''}
+          </p>
+          <p className="md:text-md break-normal font-abcWide text-sm text-grey	">
+            {partyInfo?.description || ''}
+          </p>
           <p className="text-md font-abc text-grey md:hidden">23,450 members</p>
         </div>
       </div>
       <div className="hidden w-full justify-between md:flex">
-        <TopMembers />
+        <TopMembers members={members.slice(0, 3)} />
         <div className="flex items-center gap-2">
           <ShareButton />
           {!joined && (
@@ -38,7 +65,7 @@ const CommunityHeader = () => {
               {loading ? 'Joining...' : 'Join'}
             </JoinButton>
           )}
-          <ActivityButton />
+          {!shouldHide && <ActivityButton />}
         </div>
       </div>
     </section>

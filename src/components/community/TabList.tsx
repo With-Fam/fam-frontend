@@ -1,17 +1,9 @@
-// Framework
 import { PropsWithChildren } from 'react'
-
-// Types
 import TabButton, { type TabButtonProps } from './TabButton'
+
 type TabProviderProps = PropsWithChildren<{
   items: TabButtonProps[]
 }>
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 const TabList = ({ items }: TabProviderProps): JSX.Element => {
   return (

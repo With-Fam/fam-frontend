@@ -1,10 +1,5 @@
 export * from './action'
-export * from './airdrop'
 export * from './review-proposal'
 export * from './Sections'
-export * from './crowdfund'
-export * from './nft'
-export * from './update-community'
 export * from './send-eth'
-
 export * from './ActionForm'
