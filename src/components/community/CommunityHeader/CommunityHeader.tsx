@@ -67,7 +67,7 @@ const CommunityHeader = () => {
               {loading ? 'Joining...' : 'Join'}
             </JoinButton>
           )}
-          {isAuthenticated && <ActivityButton />}
+          {isAuthenticated && balance > 0 && <ActivityButton />}
         </div>
       </div>
     </section>
