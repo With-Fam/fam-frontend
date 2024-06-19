@@ -54,6 +54,9 @@ const config: Config = {
           DEFAULT: '#A7A7A7',
           dark: '#7A7A7A',
         },
+        red: {
+          DEFAULT: '#FF0000',
+        },
         background: {
           DEFAULT: '#F7F7F7',
           secondary: '#F3F3F3',
