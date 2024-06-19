@@ -21,8 +21,6 @@ export async function POST(request: NextRequest) {
       commentType: 'proposal',
     }
 
-    console.log('ZIAD', payload)
-
     const response = await fetch(
       `${PARTY_APP_ENDPOINT[CHAIN_ID]}/api/signed_message?signedMessageVariant=comment`,
       {
@@ -43,7 +41,6 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     )
   } catch (error) {
-    console.log('ZIAD', error)
     return NextResponse.json(error, { status: 500 })
   }
 }

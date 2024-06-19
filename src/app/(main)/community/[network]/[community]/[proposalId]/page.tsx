@@ -6,15 +6,22 @@ import ProposalComments from '@/components/community/CommuntiyProposal/ProposalC
 import ProposalInfo from '@/components/community/CommuntiyProposal/ProposalInfo'
 import VetoButton from '@/components/community/CommuntiyProposal/VetoButton'
 import ProposalStatus from '@/components/community/ProposalStatus'
-import { IconsRow, UserAvatar } from '@/components/shared'
+import { UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
 import { useProposalProvider } from '@/contexts/ProposalProvider'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { PROPOSAL_STATUS } from '@/hooks/useProposalData'
+import getDiffFormattedDuration from '@/utils/getDiffFormattedDuration'
 import getProposalStatus from '@/utils/getProposalStatus'
+import { usePrivy } from '@privy-io/react-auth'
 import { useParams, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { Address } from 'viem'
 
 export default function CommunityProposal(): JSX.Element {
+  const { ready, authenticated } = usePrivy()
+  const { connectedWallet } = useConnectedWallet()
+  const isAuthenticated = ready && authenticated && connectedWallet
   const { proposals } = useProposalProvider() as any
   const { proposalId } = useParams()
   const filteredProposals = proposals.filter(
@@ -24,6 +31,28 @@ export default function CommunityProposal(): JSX.Element {
   const status = getProposalStatus(proposal)
   const { push } = useRouter()
   const { community, network } = useParams()
+
+  const [countdown, setCountdown] = useState('')
+
+  useEffect(() => {
+    if (!proposal) return
+    const timer = setInterval(() => {
+      if (Date.now() >= proposal.maxExecutableTime * 1000) {
+        clearInterval(timer)
+        setCountdown('Finished')
+        return
+      }
+      const diff = getDiffFormattedDuration(
+        Date.now(),
+        new Date(proposal.maxExecutableTime * 1000)
+      )
+      setCountdown(diff)
+    }, 1000)
+
+    return () => {
+      clearInterval(timer)
+    }
+  }, [proposal])
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">
@@ -55,15 +84,16 @@ export default function CommunityProposal(): JSX.Element {
               {proposal.votes.length} <span className="text-[20px]">votes</span>
             </p>
             <div className="flex items-center justify-center rounded-full bg-grey px-4 py-1 text-grey-light">
-              24h 33m 22s
+              {countdown}
             </div>
           </div>
-          {proposal.proposalState === PROPOSAL_STATUS.Ready && (
-            <VetoButton
-              community={community}
-              proposalId={proposal.proposalId}
-            />
-          )}
+          {proposal.proposalState === PROPOSAL_STATUS.Ready &&
+            isAuthenticated && (
+              <VetoButton
+                community={community}
+                proposalId={proposal.proposalId}
+              />
+            )}
           <p className="mt-8 font-abcMedium text-[18px] leading-[160%]">
             {`PC Music has a storied history of disrupting the music scene,
             continuously pushing the boundaries of what's possible in the worlds
@@ -82,12 +112,13 @@ export default function CommunityProposal(): JSX.Element {
           </div>
           <div className="flex items-center justify-between">
             <ProposalInfo proposal={proposal} />
-            {proposal.proposalState === PROPOSAL_STATUS.Ready && (
-              <ExecuteButton
-                proposal={proposal}
-                community={community as Address}
-              />
-            )}
+            {proposal.proposalState === PROPOSAL_STATUS.Ready &&
+              isAuthenticated && (
+                <ExecuteButton
+                  proposal={proposal}
+                  community={community as Address}
+                />
+              )}
           </div>
           <ProposalComments proposal={proposal} />
         </>
