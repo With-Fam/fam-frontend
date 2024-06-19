@@ -1,15 +1,12 @@
 import AddComment from '@/components/community/CommuntiyProposal/AddComment'
 import { UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
-import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import useProposalComments from '@/hooks/useProposalComments'
 import getDiffFormattedDuration from '@/utils/getDiffFormattedDuration'
 import { useParams } from 'next/navigation'
-import { Address, hashMessage, hashTypedData } from 'viem'
 
 const ProposalComments = ({ proposal }: any) => {
   const { community } = useParams()
-  const { walletClient } = usePrivyWalletClient() as any
 
   const { proposalComments, getProposalComments } = useProposalComments(
     community,
@@ -41,7 +38,8 @@ const ProposalComments = ({ proposal }: any) => {
               {getDiffFormattedDuration(
                 Date.now(),
                 new Date(comment.createdAt).getTime()
-              )}
+              )}{' '}
+              ago
             </p>
           </div>
         ))}

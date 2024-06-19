@@ -8,7 +8,7 @@ import JoinButton from '@/components/community/CommunityHeader/JoinButton'
 import useJoinParty from '@/hooks/useJoinParty'
 import usePartyInfo from '@/hooks/usePartyInfo'
 import { useParams } from 'next/navigation'
-import getIpfsLink from '@/utils/getIpfsLink'
+import getPartyDaoIpfsLink from '@/utils/getPartyDaoIpfsLink'
 
 const CommunityHeader = () => {
   const { community } = useParams()
@@ -28,7 +28,7 @@ const CommunityHeader = () => {
       <div className="flex items-center gap-3">
         {partyInfo?.image && (
           <Image
-            src={getIpfsLink(partyInfo?.image)}
+            src={getPartyDaoIpfsLink(partyInfo?.image)}
             alt=""
             width={64}
             height={64}

@@ -19,6 +19,7 @@ const nextConfig = {
       'cloudflare-ipfs.com',
       'media.discordapp.net',
       'i.imgur.com',
+      'partydao.mypinata.cloud',
     ],
     // remotePatterns: [
     //   {
