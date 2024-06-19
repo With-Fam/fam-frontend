@@ -25,7 +25,7 @@ const ProposalComments = ({ proposal }: any) => {
       <AddComment proposalId={proposal.proposalId} onClick={addComment} />
       <div className="mt-4 space-y-6">
         {proposalComments.map((comment: any) => (
-          <div className="flex justify-between">
+          <div className="flex justify-between" key={comment.id}>
             <div className="flex gap-2">
               <UserAvatar
                 address={comment.signerAddress}
