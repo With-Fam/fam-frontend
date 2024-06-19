@@ -62,11 +62,13 @@ const CommunityHeader = () => {
         <TopMembers members={members.slice(0, 3)} />
         <div className="flex items-center gap-2">
           <ShareButton />
-          {!joined && !shouldHide && (
+          {!shouldHide && (
             <>
-              <JoinButton onClick={onJoin}>
-                {loading ? 'Joining...' : 'Join'}
-              </JoinButton>
+              {!joined && (
+                <JoinButton onClick={onJoin}>
+                  {loading ? 'Joining...' : 'Join'}
+                </JoinButton>
+              )}
               <ActivityButton />
             </>
           )}
