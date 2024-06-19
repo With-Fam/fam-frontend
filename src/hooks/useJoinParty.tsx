@@ -24,10 +24,9 @@ const useJoinParty = () => {
 
     setLoading(true)
     try {
-      const crowdfundContract = await getCrowdfundContract(
-        connectedWallet as Address,
-        community as Address
-      )
+      await walletClient.switchChain({ id: CHAIN_ID })
+
+      const crowdfundContract = await getCrowdfundContract(community as Address)
 
       if (!crowdfundContract) {
         setLoading(false)
