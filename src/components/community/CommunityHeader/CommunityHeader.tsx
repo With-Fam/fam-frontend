@@ -8,6 +8,7 @@ import JoinButton from '@/components/community/CommunityHeader/JoinButton'
 import useJoinParty from '@/hooks/useJoinParty'
 import usePartyInfo from '@/hooks/usePartyInfo'
 import { useParams } from 'next/navigation'
+import useCrowdfund, { CrowdfundLifecycle } from '@/hooks/useCrowdfund'
 import getPartyDaoIpfsLink from '@/utils/getPartyDaoIpfsLink'
 import { usePrivy } from '@privy-io/react-auth'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
@@ -16,10 +17,15 @@ const CommunityHeader = () => {
   const { community } = useParams()
   const { join, checkJoining, joined, loading } = useJoinParty()
   const { partyInfo, members } = usePartyInfo(community)
+  const { crowfundLifecyle } = useCrowdfund(community)
   const { authenticated, ready } = usePrivy()
   const { connectedWallet } = useConnectedWallet()
-
   const isAuthenticated = authenticated && ready && connectedWallet
+
+  const shouldHide =
+    !joined ||
+    crowfundLifecyle !== CrowdfundLifecycle.Finalized ||
+    !isAuthenticated
 
   const onJoin = async () => {
     await join()
@@ -54,12 +60,12 @@ const CommunityHeader = () => {
         <TopMembers members={members.slice(0, 3)} />
         <div className="flex items-center gap-2">
           <ShareButton />
-          {!joined && isAuthenticated && (
+          {!joined && (
             <JoinButton onClick={onJoin}>
               {loading ? 'Joining...' : 'Join'}
             </JoinButton>
           )}
-          <ActivityButton />
+          {!shouldHide && <ActivityButton />}
         </div>
       </div>
     </section>
