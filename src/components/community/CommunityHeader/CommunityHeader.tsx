@@ -9,11 +9,18 @@ import useJoinParty from '@/hooks/useJoinParty'
 import usePartyInfo from '@/hooks/usePartyInfo'
 import { useParams } from 'next/navigation'
 import getIpfsLink from '@/utils/getIpfsLink'
+import useBalance from '@/hooks/useBalance'
+import useCrowdfund, { CrowdfundLifecycle } from '@/hooks/useCrowdfund'
 
 const CommunityHeader = () => {
   const { community } = useParams()
   const { join, checkJoining, joined, loading } = useJoinParty()
   const { partyInfo, members } = usePartyInfo(community)
+  const { balance } = useBalance()
+  const { crowfundLifecyle } = useCrowdfund(community)
+
+  const shouldHide =
+    balance <= 0 || crowfundLifecyle !== CrowdfundLifecycle.Active
 
   const onJoin = async () => {
     await join()
@@ -48,7 +55,7 @@ const CommunityHeader = () => {
         <TopMembers members={members.slice(0, 3)} />
         <div className="flex items-center gap-2">
           <ShareButton />
-          {!joined && (
+          {!joined && !shouldHide && (
             <JoinButton onClick={onJoin}>
               {loading ? 'Joining...' : 'Join'}
             </JoinButton>
