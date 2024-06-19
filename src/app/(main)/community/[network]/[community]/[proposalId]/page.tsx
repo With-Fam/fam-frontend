@@ -12,11 +12,9 @@ import { useProposalProvider } from '@/contexts/ProposalProvider'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { PROPOSAL_STATUS } from '@/hooks/useProposalData'
 import useProposalTimer from '@/hooks/useProposalTimer'
-import getDiffFormattedDuration from '@/utils/getDiffFormattedDuration'
 import getProposalStatus from '@/utils/getProposalStatus'
 import { usePrivy } from '@privy-io/react-auth'
 import { useParams, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
 import { Address } from 'viem'
 
 export default function CommunityProposal(): JSX.Element {
@@ -74,18 +72,6 @@ export default function CommunityProposal(): JSX.Element {
                 proposalId={proposal.proposalId}
               />
             )}
-          <p className="mt-8 font-abcMedium text-[18px] leading-[160%]">
-            {`PC Music has a storied history of disrupting the music scene,
-            continuously pushing the boundaries of what's possible in the worlds
-            of electronic and pop music. With the 44th release, we plan to take
-            another quantum leap, further solidifying our reputation as pioneers
-            in musical innovation.`}
-            <br />
-            <br />
-            {`We’ve put together a detailed budget for the release here and are
-            requesting $10,000 to cover marketing expenses and a launch party in
-            Los Angeles on the 22nd August`}
-          </p>
           <div className="mt-8 flex items-center text-orange">
             <p className="text-[16px]">Action</p>{' '}
             <Icon id="arrowTopRight" fill="#f54d18" />
