@@ -2,10 +2,9 @@ import { usePrivy } from '@privy-io/react-auth'
 import Paragraph from '@/stories/Paragraph'
 
 const NotLoggedItems = (): JSX.Element => {
-  const { login, logout } = usePrivy()
+  const { login } = usePrivy()
 
   const connect = async () => {
-    await logout()
     login()
   }
   return (
