@@ -63,11 +63,13 @@ const CommunityHeader = () => {
         <div className="flex items-center gap-2">
           <ShareButton />
           {!joined && !shouldHide && (
-            <JoinButton onClick={onJoin}>
-              {loading ? 'Joining...' : 'Join'}
-            </JoinButton>
+            <>
+              <JoinButton onClick={onJoin}>
+                {loading ? 'Joining...' : 'Join'}
+              </JoinButton>
+              <ActivityButton />
+            </>
           )}
-          {isAuthenticated && balance > 0 && <ActivityButton />}
         </div>
       </div>
     </section>
