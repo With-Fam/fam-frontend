@@ -18,14 +18,14 @@ const CommunityHeader = () => {
   const { community } = useParams()
   const { join, checkJoining, joined, loading } = useJoinParty()
   const { partyInfo, members } = usePartyInfo(community)
-  const { balance } = useBalance()
+  const { balance } = useBalance(community)
   const { crowfundLifecyle } = useCrowdfund(community)
   const { authenticated, ready } = usePrivy()
   const { connectedWallet } = useConnectedWallet()
   const isAuthenticated = authenticated && ready && connectedWallet
 
   const shouldHide =
-    balance <= 0 ||
+    balance === 0 ||
     crowfundLifecyle !== CrowdfundLifecycle.Active ||
     !isAuthenticated
 
@@ -62,16 +62,12 @@ const CommunityHeader = () => {
         <TopMembers members={members.slice(0, 3)} />
         <div className="flex items-center gap-2">
           <ShareButton />
-          {!shouldHide && (
-            <>
-              {!joined && (
-                <JoinButton onClick={onJoin}>
-                  {loading ? 'Joining...' : 'Join'}
-                </JoinButton>
-              )}
-              <ActivityButton />
-            </>
+          {!joined && (
+            <JoinButton onClick={onJoin}>
+              {loading ? 'Joining...' : 'Join'}
+            </JoinButton>
           )}
+          {!shouldHide && <ActivityButton />}
         </div>
       </div>
     </section>
