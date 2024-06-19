@@ -1,3 +1,5 @@
+import { CHAIN_ID } from '@/constants/defaultChains'
+import { PARTY_APP_ENDPOINT } from '@/constants/party'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
@@ -5,7 +7,7 @@ export async function GET(request: NextRequest) {
   const nextOffset = request.nextUrl.searchParams.get('nextOffset') as string
 
   const response = await fetch(
-    `https://base-sepolia.party.app/api/proposals?partyGovtAddress=${party}&proposalOffset=${nextOffset}`
+    `${PARTY_APP_ENDPOINT[CHAIN_ID]}/api/proposals?partyGovtAddress=${party}&proposalOffset=${nextOffset}`
   )
   const data = await response.json()
 
