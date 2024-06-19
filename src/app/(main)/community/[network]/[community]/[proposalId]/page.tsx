@@ -65,16 +65,16 @@ export default function CommunityProposal(): JSX.Element {
             />
           )}
           <p className="mt-8 font-abcMedium text-[18px] leading-[160%]">
-            PC Music has a storied history of disrupting the music scene,
+            {`PC Music has a storied history of disrupting the music scene,
             continuously pushing the boundaries of what's possible in the worlds
             of electronic and pop music. With the 44th release, we plan to take
             another quantum leap, further solidifying our reputation as pioneers
-            in musical innovation.
+            in musical innovation.`}
             <br />
             <br />
-            We’ve put together a detailed budget for the release here and are
+            {`We’ve put together a detailed budget for the release here and are
             requesting $10,000 to cover marketing expenses and a launch party in
-            Los Angeles on the 22nd August
+            Los Angeles on the 22nd August`}
           </p>
           <div className="mt-8 flex items-center text-orange">
             <p className="text-[16px]">Action</p>{' '}
