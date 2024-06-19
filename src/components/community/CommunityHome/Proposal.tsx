@@ -12,10 +12,10 @@ const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
   ssr: false,
 })
 
-const Proposal = ({ data }: any) => {
+const Proposal = ({ data, proposalIndex }: any) => {
   const { push } = useRouter()
   const { network, community } = useParams()
-  const { setProposal } = useProposalProvider() as any
+  const { setProposal, setSelectedProposalIndex } = useProposalProvider() as any
 
   const status = getProposalStatus(data)
 
@@ -23,6 +23,7 @@ const Proposal = ({ data }: any) => {
 
   const goToProposal = () => {
     setProposal(data)
+    setSelectedProposalIndex(proposalIndex)
     push(`/community/${network}/${community}/${data.proposalId}`)
   }
 

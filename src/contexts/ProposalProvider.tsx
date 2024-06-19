@@ -21,7 +21,7 @@ export const useProposalProvider = () => {
   const context = useContext(ProposalContext)
   if (!context) {
     throw new Error(
-      'useAppleMusicProvider must be used within an ProposalProvider'
+      'useProposalsProvider must be used within an ProposalProvider'
     )
   }
   return context

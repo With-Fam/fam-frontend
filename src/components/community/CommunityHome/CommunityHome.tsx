@@ -1,22 +1,24 @@
 'use client'
 
-import { useParams } from 'next/navigation'
-import useProposals from '@/hooks/useProposals'
 import Proposal from '@/components/community/CommunityHome/Proposal'
 import { Loading } from '@/components/shared'
+import { useProposalProvider } from '@/contexts/ProposalProvider'
 
 const CommunityHome = () => {
-  const { community } = useParams()
-  const { proposals, loading, nextOffset, getProposals } =
-    useProposals(community)
+  const { proposals, proposalsLoading, getProposals, nextOffset } =
+    useProposalProvider() as any
 
   return (
     <main className="relative mx-auto max-w-[936px] px-2 pb-4">
-      {proposals.map((proposal: any) => (
-        <Proposal key={proposal.proposalId} data={proposal} />
+      {proposals.map((proposal: any, index: any) => (
+        <Proposal
+          key={proposal.proposalId}
+          data={proposal}
+          proposalIndex={index}
+        />
       ))}
-      {loading && <Loading />}
-      {nextOffset !== -1 && !loading && (
+      {proposalsLoading && <Loading />}
+      {nextOffset !== -1 && !proposalsLoading && (
         <div className="flex justify-center">
           <button
             type="button"
