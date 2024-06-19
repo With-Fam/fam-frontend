@@ -11,6 +11,8 @@ const getProposalStatus = (proposal: any) => {
     return PROPOSAL_STATUS.Ready
   if (proposal.proposalState === PROPOSAL_STATUS.Defeated)
     return PROPOSAL_STATUS.Defeated
+  if (proposal.proposalState === PROPOSAL_STATUS.Voting)
+    return PROPOSAL_STATUS.Voting
   return 0
 }
 

@@ -5,11 +5,13 @@ import ExecuteButton from '@/components/community/CommuntiyProposal/ExecuteButto
 import ProposalComments from '@/components/community/CommuntiyProposal/ProposalComments'
 import ProposalInfo from '@/components/community/CommuntiyProposal/ProposalInfo'
 import VetoButton from '@/components/community/CommuntiyProposal/VetoButton'
+import VoteButton from '@/components/community/CommuntiyProposal/VoteButton'
 import ProposalStatus from '@/components/community/ProposalStatus'
 import { UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
 import { useProposalProvider } from '@/contexts/ProposalProvider'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
+import useIsHost from '@/hooks/useIsHost'
 import { PROPOSAL_STATUS } from '@/hooks/useProposalData'
 import useProposalTimer from '@/hooks/useProposalTimer'
 import getProposalStatus from '@/utils/getProposalStatus'
@@ -30,7 +32,8 @@ export default function CommunityProposal(): JSX.Element {
   const status = getProposalStatus(proposal)
   const { push } = useRouter()
   const { community, network } = useParams()
-  const { countdown } = useProposalTimer(proposal)
+  const { countdown, shouldBeVote } = useProposalTimer(proposal)
+  const { isHost } = useIsHost(community)
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">
@@ -66,7 +69,8 @@ export default function CommunityProposal(): JSX.Element {
             </div>
           </div>
           {proposal.proposalState === PROPOSAL_STATUS.Ready &&
-            isAuthenticated && (
+            isAuthenticated &&
+            isHost && (
               <VetoButton
                 community={community}
                 proposalId={proposal.proposalId}
@@ -80,11 +84,21 @@ export default function CommunityProposal(): JSX.Element {
             <ProposalInfo proposal={proposal} />
             {(proposal.proposalState === PROPOSAL_STATUS.Ready ||
               proposal.proposalState === PROPOSAL_STATUS.Passed) &&
-              isAuthenticated && (
-                <ExecuteButton
-                  proposal={proposal}
-                  community={community as Address}
-                />
+              isAuthenticated &&
+              isHost && (
+                <>
+                  {shouldBeVote ? (
+                    <VoteButton
+                      proposal={proposal}
+                      community={community as Address}
+                    />
+                  ) : (
+                    <ExecuteButton
+                      proposal={proposal}
+                      community={community as Address}
+                    />
+                  )}
+                </>
               )}
           </div>
           {isAuthenticated && <ProposalComments proposal={proposal} />}
