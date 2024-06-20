@@ -1,6 +1,5 @@
 'use client'
 
-// Framework
 import {
   createContext,
   useCallback,
@@ -8,15 +7,19 @@ import {
   useState,
   useContext,
   useEffect,
-  useRef,
   type PropsWithChildren,
 } from 'react'
 import dynamic from 'next/dynamic'
-
-// Components
 import { ErrorBox, Loading } from '@/components/shared'
 import { CreateContextNavigation } from '../CreateContextNavigation'
-
+import { useActivityFormStore } from '@/modules/create-activity/stores'
+import {
+  TRANSACTION_TYPES,
+  type TransactionType,
+} from '@/modules/create-activity/types'
+import type { CreateSection } from '@/modules/create-community/types'
+import type { AddressType } from '@/types'
+import { usePrivy } from '@privy-io/react-auth'
 const ActionForm = dynamic(
   () =>
     import('@/modules/create-activity/components/ActionForm').then(
@@ -31,58 +34,17 @@ const ActionSection = dynamic(
     ).then(({ ActionSection }) => ActionSection),
   { ssr: false }
 )
-const ReviewProposalForm = dynamic(
-  () =>
-    import(
-      '@/modules/create-activity/components/review-proposal/ReviewProposalForm'
-    ).then(({ ReviewProposalForm }) => ReviewProposalForm),
-  { ssr: false }
-)
-const SubmitProposal = dynamic(
-  () =>
-    import('@/modules/create-activity/components/action/SubmitProposal').then(
-      ({ SubmitProposal }) => SubmitProposal
-    ),
-  { ssr: false }
-)
 
-// Helpers
-import { useActivityFormStore } from '@/modules/create-activity/stores'
-import {
-  TRANSACTION_TYPES,
-  type TransactionType,
-} from '@/modules/create-activity/types'
-let sections: CreateSection[] = []
-
-// Types
-import type { CreateSection } from '@/modules/create-community/types'
-import type { AddressType, Maybe } from '@/types'
-import { usePrivy } from '@privy-io/react-auth'
 type ActivityProviderProps = PropsWithChildren<{
   params: {
     community: string
     network: string
   }
 }>
-export interface CreateActivityContextType {
-  loading: boolean
-  section: CreateSection
-  step: number
-  next: () => void
-  prev: () => void
-  title: string
-}
 
-const CreateActivityContext = createContext<CreateActivityContextType>({
-  loading: false,
-  section: { order: -1, title: '', key: '', content: <></> },
-  step: 0,
-  next: () => null,
-  prev: () => null,
-  title: '',
-})
+let sections: CreateSection[] = []
 
-/*--------------------------------------------------------------------*/
+const CreateActivityContext = createContext<any>(null)
 
 const CreateActivityProvider = ({
   children,
@@ -93,7 +55,6 @@ const CreateActivityProvider = ({
   const [loading, setLoading] = useState<boolean>(false)
   const [loadingMessage, setLoadingMessage] =
     useState<string>('Setting the vibes')
-  const reviewFormRef = useRef<Maybe<HTMLFormElement>>(null)
   const {
     activeSection,
     setActiveSection,
@@ -152,38 +113,9 @@ const CreateActivityProvider = ({
       order: 1,
       title: activityTransaction?.title ?? '',
       key: activityType as string,
-      content: (
-        <ActionForm
-          callback={next}
-          action={activityType as TransactionType}
-          collectionAddress={community as AddressType}
-        />
-      ),
+      content: <ActionForm action={activityType as TransactionType} />,
     }
-
-    const proposal: CreateSection = {
-      action: (
-        <SubmitProposal
-          formRef={reviewFormRef}
-          loading={loading}
-          setLoadingMessage={setLoadingMessage}
-          setLoading={setLoading}
-        />
-      ),
-      order: 2,
-      title: 'New activity',
-      key: 'proposal',
-      content: (
-        <ReviewProposalForm
-          formRef={reviewFormRef}
-          community={community as AddressType}
-          defaultValues={proposalDefault}
-          setLoading={setLoading}
-          setLoadingMessage={setLoadingMessage}
-        />
-      ),
-    }
-    return [action, transaction, proposal]
+    return [action, transaction]
   }, [proposalDefault, activityType, community, next, setActivityType])
 
   if (!authenticated && ready) {
@@ -196,6 +128,8 @@ const CreateActivityProvider = ({
           next,
           prev,
           title: sections[activeSection]?.title,
+          setLoadingMessage,
+          setLoading,
         }}
       >
         <ErrorBox
@@ -216,6 +150,8 @@ const CreateActivityProvider = ({
         next,
         prev,
         title: sections[activeSection]?.title,
+        setLoadingMessage,
+        setLoading,
       }}
     >
       {loading ? (
@@ -227,7 +163,6 @@ const CreateActivityProvider = ({
         <>
           <CreateContextNavigation
             action={sections[activeSection]?.action}
-            // exitPath={`/community/${network}/${community}/activity`}
             step={activeSection}
             prev={prev}
             title={sections[activeSection]?.title}
@@ -239,8 +174,7 @@ const CreateActivityProvider = ({
   )
 }
 
-const useCreateActivityContext = (): CreateActivityContextType =>
-  useContext(CreateActivityContext)
+const useCreateActivityContext = () => useContext(CreateActivityContext)
 
 export {
   CreateActivityContext,

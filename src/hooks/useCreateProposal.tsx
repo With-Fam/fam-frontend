@@ -2,7 +2,6 @@ import { SALE_STRATEGY } from '@/constants/addresses'
 import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
-import { ERROR_CODE } from '@/modules/create-activity/components/review-proposal/schema'
 import {
   EDITON_SIZE,
   LIMIT,
@@ -14,41 +13,39 @@ import getSendEthProposalData from '@/utils/party/getSendEthProposalData'
 import getZoraCollectProposalData from '@/utils/party/getZoraCollectProposalData'
 import { getPublicClient } from '@/utils/viem'
 import { usePrivy } from '@privy-io/react-auth'
-import toast from 'react-hot-toast'
 import { Address, maxUint256, parseEther } from 'viem'
 import getEnsAddress from '@/utils/getEnsAddress'
+import handleTxError from '@/utils/handleTxError'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
-  const {
-    transactions,
-    showAdvancedOfZoraCollect,
-    limitPerAddress,
-    editionSize,
-  } = useProposalStore()
+  const { showAdvancedOfZoraCollect, limitPerAddress, editionSize } =
+    useProposalStore()
   const { logout } = usePrivy()
-  const {
-    target,
-    value,
-    ethPrice,
-    tokenId,
-    collectionImage,
-    title,
-    description,
-    pricePerEdition,
-    customEditionSize,
-    customLimit,
-    duration,
-    payoutAddress,
-  } = transactions[0].transactions[0]
-  const { type } = transactions[0]
 
-  const create = async () => {
+  const create = async (transaction: any) => {
+    const {
+      target,
+      value,
+      ethPrice,
+      tokenId,
+      collectionImage,
+      title,
+      description,
+      pricePerEdition,
+      customEditionSize,
+      customLimit,
+      duration,
+      payoutAddress,
+      type,
+    } = transaction
+
     try {
       if (!walletClient) {
         await logout()
         return false
       }
+
       await walletClient.switchChain({ id: CHAIN_ID })
 
       const latestSnapIndex = 0n
@@ -120,23 +117,8 @@ const useCreateProposal: any = (community: Address) => {
       }
       return transaction
     } catch (err: any) {
-      console.error(err)
-
-      if (err.name === 'ConnectorNotFoundError') {
-        toast.error(ERROR_CODE.CONNECTOR_NOT_FOUND)
-        return false
-      }
-
-      if (err.shortMessage === 'User rejected the request.') {
-        toast.error(ERROR_CODE.REJECTED)
-        return false
-      }
-      if (err.code === 'ACTION_REJECTED') {
-        toast.error(ERROR_CODE.REJECTED)
-        return false
-      }
-      toast.error(err.messageD)
-      return false
+      handleTxError(err)
+      return { error: err }
     }
   }
 

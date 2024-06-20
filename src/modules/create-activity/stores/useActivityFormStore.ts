@@ -1,13 +1,11 @@
 'use client'
 import { create } from 'zustand'
 
-import { ReviewProposalFormValues } from '@/modules/create-activity/components/review-proposal/schema'
 import { TransactionType } from '@/modules/create-activity/types'
 import { Maybe } from '@/types'
 
 export type FundraisingTargetValues = {
   amount: number
-  // number or date?
   votingPeriod: number
   hosts: string[]
 }
@@ -21,8 +19,6 @@ export interface ActivityFormStoreState {
   setFulfilledSections: (section: string) => void
   proposal: ReviewProposalFormValues
   setProposal: (proposal: ReviewProposalFormValues) => void
-  // fundraising: FundraisingTargetValues
-  // setFundraising: (fundraising: FundraisingTargetValues) => void
   resetForm: () => void
 }
 
@@ -44,8 +40,6 @@ export interface ActivityFormStoreState {
   setActivityType: (activity: Maybe<TransactionType>) => void
   fulfilledSections: string[]
   setFulfilledSections: (section: string) => void
-  // fundraising: FundraisingTargetValues
-  // setFundraising: (fundraising: FundraisingTargetValues) => void
   proposal: ReviewProposalFormValues
   setProposal: (proposal: ReviewProposalFormValues) => void
   resetForm: () => void

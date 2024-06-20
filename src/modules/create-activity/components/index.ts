@@ -1,5 +1,4 @@
 export * from './action'
-export * from './review-proposal'
 export * from './Sections'
 export * from './send-eth'
 export * from './ActionForm'
