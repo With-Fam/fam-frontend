@@ -11,7 +11,6 @@ import { UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
 import { useProposalProvider } from '@/contexts/ProposalProvider'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
-import useIsHost from '@/hooks/useIsHost'
 import { PROPOSAL_STATUS } from '@/hooks/useProposalData'
 import useProposalTimer from '@/hooks/useProposalTimer'
 import getProposalStatus from '@/lib/getProposalStatus'
@@ -33,7 +32,6 @@ export default function CommunityProposal(): JSX.Element {
   const { push } = useRouter()
   const { community, network } = useParams()
   const { countdown, isActiveVoting } = useProposalTimer(proposal)
-  const { isHost } = useIsHost(community, connectedWallet as Address)
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">
@@ -69,8 +67,7 @@ export default function CommunityProposal(): JSX.Element {
             </div>
           </div>
           {proposal.proposalState === PROPOSAL_STATUS.Ready &&
-            isAuthenticated &&
-            isHost && (
+            isAuthenticated && (
               <VetoButton
                 community={community}
                 proposalId={proposal.proposalId}
