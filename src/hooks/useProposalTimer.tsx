@@ -1,10 +1,11 @@
 import useConnectedWallet from '@/hooks/useConnectedWallet'
+import { PROPOSAL_STATUS } from '@/hooks/useProposalData'
 import getDiffFormattedDuration from '@/utils/getDiffFormattedDuration'
 import { useEffect, useState } from 'react'
 
 const useProposalTimer = (proposal: any) => {
   const [countdown, setCountdown] = useState('')
-  const [shouldBeVote, setShouldBeVote] = useState(false)
+  const [isActiveVoting, setIsActiveVoting] = useState(false)
   const [voteCountdown, setVoteCountdown] = useState('')
   const { connectedWallet } = useConnectedWallet()
 
@@ -24,8 +25,8 @@ const useProposalTimer = (proposal: any) => {
 
     const votes = proposal.votes
     const myVote = votes.filter((vote: any) => vote.address === connectedWallet)
-    if (myVote.length) {
-      setShouldBeVote(false)
+    if (myVote.length || proposal.proposalState === PROPOSAL_STATUS.Ready) {
+      setIsActiveVoting(false)
       return
     }
     const voteTimer = setInterval(() => {
@@ -35,12 +36,12 @@ const useProposalTimer = (proposal: any) => {
       if (currentTime > expectedTime) {
         clearInterval(voteTimer)
         setVoteCountdown('Finished')
-        setShouldBeVote(false)
+        setIsActiveVoting(false)
         return
       }
       const diff = getDiffFormattedDuration(currentTime, expectedTime)
       setVoteCountdown(diff)
-      setShouldBeVote(true)
+      setIsActiveVoting(true)
     }, 1000)
 
     return () => {
@@ -51,7 +52,7 @@ const useProposalTimer = (proposal: any) => {
 
   return {
     countdown,
-    shouldBeVote,
+    isActiveVoting,
     voteCountdown,
   }
 }
