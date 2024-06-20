@@ -9,12 +9,12 @@ import { AddressType } from '@/types'
 import { SendEthValues } from '@/modules/create-activity/components/send-eth/SendEthForm.schema'
 import getEnsAddress from '@/utils/getEnsAddress'
 import useCreateProposal from '@/hooks/useCreateProposal'
-import { useCreateActivityContext } from '@/contexts'
+import { useCreateActivityProvider } from '@/contexts/CreateActivityProvider'
 import { useParams } from 'next/navigation'
 
 const useSendEthProposalForm = () => {
   const { community } = useParams()
-  const { setLoadingMessage, setLoading } = useCreateActivityContext()
+  const { setLoadingMessage, setLoading } = useCreateActivityProvider()
   const { create } = useCreateProposal(community)
   const defaultValues = {
     target: '' as AddressType,

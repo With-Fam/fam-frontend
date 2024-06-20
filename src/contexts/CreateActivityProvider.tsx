@@ -11,14 +11,13 @@ import {
 } from 'react'
 import dynamic from 'next/dynamic'
 import { ErrorBox, Loading } from '@/components/shared'
-import { CreateContextNavigation } from '../CreateContextNavigation'
+import { CreateContextNavigation } from './CreateContextNavigation'
 import { useActivityFormStore } from '@/modules/create-activity/stores'
 import {
   TRANSACTION_TYPES,
   type TransactionType,
 } from '@/modules/create-activity/types'
 import type { CreateSection } from '@/modules/create-community/types'
-import type { AddressType } from '@/types'
 import { usePrivy } from '@privy-io/react-auth'
 const ActionForm = dynamic(
   () =>
@@ -59,7 +58,6 @@ const CreateActivityProvider = ({
     activeSection,
     setActiveSection,
     setFulfilledSections,
-    proposal: proposalDefault,
     activityType,
     setActivityType,
   } = useActivityFormStore()
@@ -116,7 +114,7 @@ const CreateActivityProvider = ({
       content: <ActionForm action={activityType as TransactionType} />,
     }
     return [action, transaction]
-  }, [proposalDefault, activityType, community, next, setActivityType])
+  }, [activityType, community, next, setActivityType])
 
   if (!authenticated && ready) {
     return (
@@ -174,10 +172,6 @@ const CreateActivityProvider = ({
   )
 }
 
-const useCreateActivityContext = () => useContext(CreateActivityContext)
+const useCreateActivityProvider = () => useContext(CreateActivityContext)
 
-export {
-  CreateActivityContext,
-  CreateActivityProvider,
-  useCreateActivityContext,
-}
+export { CreateActivityProvider, useCreateActivityProvider }

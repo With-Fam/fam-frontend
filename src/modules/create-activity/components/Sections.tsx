@@ -1,8 +1,8 @@
-import { useCreateActivityContext } from '@/contexts/create-activity/CreateActivityContext'
+import { useCreateActivityProvider } from '@/contexts/CreateActivityProvider'
 import { AnimatePresence, motion } from 'framer-motion'
 
 export function Sections(): JSX.Element {
-  const { section } = useCreateActivityContext()
+  const { section } = useCreateActivityProvider()
   return (
     <AnimatePresence mode="wait">
       <motion.div

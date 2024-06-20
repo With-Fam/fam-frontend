@@ -5,12 +5,12 @@ import { useParams } from 'next/navigation'
 import _get from 'lodash.get'
 import { ZoraCreateValues } from '@/modules/create-activity/components/zora-create/ZoraCreateForm.schema'
 import useCreateProposal from '@/hooks/useCreateProposal'
-import { useCreateActivityContext } from '@/contexts'
+import { useCreateActivityProvider } from '@/contexts/CreateActivityProvider'
 
 const useZoraCreateProposalForm = () => {
   const { community } = useParams()
   const { create } = useCreateProposal(community)
-  const { setLoadingMessage, setLoading } = useCreateActivityContext()
+  const { setLoadingMessage, setLoading } = useCreateActivityProvider()
   const defaultValues = {
     target: community as Address,
     collectionImage: '',

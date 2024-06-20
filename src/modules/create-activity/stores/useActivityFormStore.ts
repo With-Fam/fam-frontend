@@ -17,8 +17,6 @@ export interface ActivityFormStoreState {
   setAction: (action: string) => void
   fulfilledSections: string[]
   setFulfilledSections: (section: string) => void
-  proposal: ReviewProposalFormValues
-  setProposal: (proposal: ReviewProposalFormValues) => void
   resetForm: () => void
 }
 
@@ -40,8 +38,6 @@ export interface ActivityFormStoreState {
   setActivityType: (activity: Maybe<TransactionType>) => void
   fulfilledSections: string[]
   setFulfilledSections: (section: string) => void
-  proposal: ReviewProposalFormValues
-  setProposal: (proposal: ReviewProposalFormValues) => void
   resetForm: () => void
 }
 
@@ -62,6 +58,5 @@ export const useActivityFormStore = create<ActivityFormStoreState>((set) => ({
         : [...state.fulfilledSections],
     }))
   },
-  setProposal: (proposal) => set({ proposal }),
   resetForm: () => set({ ...initialState }),
 }))

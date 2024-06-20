@@ -5,10 +5,10 @@ import { TransactionType } from '@/modules/create-activity/types'
 import { ZoraCollectValues } from '@/modules/create-activity/components/zora-collect/ZoraCollectForm.schema'
 import { useParams } from 'next/navigation'
 import useCreateProposal from '@/hooks/useCreateProposal'
-import { useCreateActivityContext } from '@/contexts'
+import { useCreateActivityProvider } from '@/contexts/CreateActivityProvider'
 
 const useZoraCollectProposalForm = () => {
-  const { setLoadingMessage, setLoading } = useCreateActivityContext()
+  const { setLoadingMessage, setLoading } = useCreateActivityProvider()
   const { community } = useParams()
   const { create } = useCreateProposal(community)
   const defaultValues = {
