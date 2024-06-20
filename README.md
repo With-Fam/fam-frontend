@@ -1,4 +1,4 @@
-This is a Next.js project
+# FAM
 
 Getting Started
 First, run the development server:

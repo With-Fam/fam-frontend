@@ -32,7 +32,7 @@ export default function CommunityProposal(): JSX.Element {
   const status = getProposalStatus(proposal)
   const { push } = useRouter()
   const { community, network } = useParams()
-  const { countdown, shouldBeVote } = useProposalTimer(proposal)
+  const { countdown, isActiveVoting } = useProposalTimer(proposal)
   const { isHost } = useIsHost(community, connectedWallet as Address)
 
   return (
@@ -84,10 +84,9 @@ export default function CommunityProposal(): JSX.Element {
             <ProposalInfo proposal={proposal} />
             {(proposal.proposalState === PROPOSAL_STATUS.Ready ||
               proposal.proposalState === PROPOSAL_STATUS.Passed) &&
-              isAuthenticated &&
-              isHost && (
+              isAuthenticated && (
                 <>
-                  {shouldBeVote ? (
+                  {isActiveVoting ? (
                     <VoteButton
                       proposal={proposal}
                       community={community as Address}
