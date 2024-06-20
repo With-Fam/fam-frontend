@@ -1,13 +1,9 @@
 'use client'
 
-// Local Components
 import { Paragraph } from '@/stories'
 import { CommunityIcon } from '@/components/create-community'
-
-// Types
 import { IconProps } from '@/types/create-community'
-// import { useFormContext } from 'react-hook-form'
-import { useCreateCommunityProvider } from '@/contexts/create-community'
+import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
 import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -20,14 +16,8 @@ interface CommunityTypeCardProps {
   }
 }
 
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 const CommunityTypeCard = ({ item }: CommunityTypeCardProps): JSX.Element => {
-  // const { setValue } = useFormContext()
   const { next } = useCreateCommunityProvider()
   const [type, setType] = useState<string>('')
 
