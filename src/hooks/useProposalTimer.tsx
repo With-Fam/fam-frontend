@@ -29,6 +29,10 @@ const useProposalTimer = (proposal: any) => {
       setIsActiveVoting(false)
       return
     }
+    if (!myVote.length && proposal.proposalState === PROPOSAL_STATUS.Passed) {
+      setIsActiveVoting(true)
+      return
+    }
     const voteTimer = setInterval(() => {
       const currentTime = Date.now()
       const expectedTime =

@@ -67,6 +67,7 @@ export default function CommunityProposal(): JSX.Element {
             </div>
           </div>
           {proposal.proposalState === PROPOSAL_STATUS.Ready &&
+            proposal.proposerAddress !== connectedWallet &&
             isAuthenticated && (
               <VetoButton
                 community={community}
