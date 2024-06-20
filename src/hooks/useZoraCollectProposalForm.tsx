@@ -14,16 +14,12 @@ const useZoraCollectProposalForm = () => {
   const defaultValues = {
     target: community as Address,
     value: '' as Address,
-    ethPrice: 0,
-    tokenId: 1n,
   }
 
   const methods = useForm<ZoraCollectValues>({
     defaultValues: {
       tokenRecipient: defaultValues.target,
       collectionAddress: defaultValues.value as Address,
-      ethPrice: defaultValues.ethPrice,
-      tokenId: defaultValues.tokenId,
     },
   })
 
@@ -32,16 +28,12 @@ const useZoraCollectProposalForm = () => {
     setLoading(true)
     const target = values.tokenRecipient
     const value = values.collectionAddress
-    const tokenId = values.tokenId
-    const ethPrice = values.ethPrice
 
     const builderTransaction = {
       type: TransactionType.ZORA_COLLECT,
       functionSignature: 'zoraCollect(address)',
       target,
       value,
-      tokenId,
-      ethPrice,
       calldata: '0x',
     }
 

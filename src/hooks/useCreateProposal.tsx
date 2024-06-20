@@ -16,19 +16,17 @@ import { usePrivy } from '@privy-io/react-auth'
 import { Address, maxUint256, parseEther } from 'viem'
 import getEnsAddress from '@/lib/getEnsAddress'
 import handleTxError from '@/lib/handleTxError'
+import getAddressOfZora from '@/lib/getAddressOfZora'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
-  const { showAdvancedOfZoraCollect, limitPerAddress, editionSize } =
-    useProposalStore()
+  const { limitPerAddress, editionSize } = useProposalStore()
   const { logout } = usePrivy()
 
   const create = async (transaction: any) => {
     const {
       target,
       value,
-      ethPrice,
-      tokenId,
       collectionImage,
       title,
       description,
@@ -53,14 +51,16 @@ const useCreateProposal: any = (community: Address) => {
       if (type === TransactionType.SEND_ETH)
         proposalData = getSendEthProposalData(target, value)
 
-      if (type === TransactionType.ZORA_COLLECT)
+      if (type === TransactionType.ZORA_COLLECT) {
+        const collectionAddress = getAddressOfZora(value)
         proposalData = getZoraCollectProposalData(
-          value as Address,
+          collectionAddress as Address,
           SALE_STRATEGY[CHAIN.id],
           target,
-          showAdvancedOfZoraCollect ? ethPrice : 0,
-          showAdvancedOfZoraCollect ? tokenId : 1n
+          0,
+          1n
         )
+      }
 
       if (
         type === TransactionType.ZORA_CREATE &&

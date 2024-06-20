@@ -16,7 +16,6 @@ interface CommunityTypeCardProps {
   }
 }
 
-
 const CommunityTypeCard = ({ item }: CommunityTypeCardProps): JSX.Element => {
   const { next } = useCreateCommunityProvider()
   const [type, setType] = useState<string>('')
