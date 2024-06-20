@@ -1,5 +1,5 @@
-import getCrowdfundContract from '@/utils/party/getCrowdfundContract'
-import getCrowfundLifecycle from '@/utils/party/getCrowfundLifecycle'
+import getCrowdfundContract from '@/lib/party/getCrowdfundContract'
+import getCrowfundLifecycle from '@/lib/party/getCrowfundLifecycle'
 import { useEffect, useState } from 'react'
 
 export enum CrowdfundLifecycle {

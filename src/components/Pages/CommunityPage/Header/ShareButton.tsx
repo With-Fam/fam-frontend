@@ -1,7 +1,7 @@
 'use client'
 
 import { Upload } from '@/components/icons'
-import copyToClipboard from '@/utils/copyToClipboard'
+import copyToClipboard from '@/lib/copyToClipboard'
 import toast from 'react-hot-toast'
 
 const ShareButton = () => {

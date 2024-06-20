@@ -7,7 +7,7 @@ import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { useState } from 'react'
 import { useRouter, useParams, usePathname } from 'next/navigation'
 import { useAccount, useSwitchChain } from 'wagmi'
-import { useChainStore } from '@/utils/stores/useChainStore'
+import { useChainStore } from '@/lib/stores/useChainStore'
 
 // Props
 type MenuListProps = {

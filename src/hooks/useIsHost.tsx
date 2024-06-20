@@ -1,6 +1,6 @@
 import { CHAIN_ID } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
-import { getPublicClient } from '@/utils/viem'
+import { getPublicClient } from '@/lib/viem'
 import { useEffect, useState } from 'react'
 import { Address } from 'viem'
 

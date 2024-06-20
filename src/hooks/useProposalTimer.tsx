@@ -1,6 +1,6 @@
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { PROPOSAL_STATUS } from '@/hooks/useProposalData'
-import getDiffFormattedDuration from '@/utils/getDiffFormattedDuration'
+import getDiffFormattedDuration from '@/lib/getDiffFormattedDuration'
 import { useEffect, useState } from 'react'
 
 const useProposalTimer = (proposal: any) => {

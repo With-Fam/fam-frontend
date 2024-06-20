@@ -26,7 +26,7 @@ export interface AuctionSettingsFormValues {
   auctionReservePrice?: number
   proposalThreshold: number
   quorumThreshold?: number
-  votingPeriod: Duration
+  vetoPeriod: Duration
   votingDelay: Duration
   executionDelay: number
 }
@@ -37,8 +37,8 @@ export interface FormStoreState {
   fulfilledSections: string[]
   setFulfilledSections: (section: string) => void
   general: GeneralFormValues
-  votePeriod: number
-  setVotePeriod: (votePeriod: number) => void
+  vetoPeriod: number
+  setVetoPeriod: (vetoPeriod: number) => void
   membership: MembershipFormValues
   setGeneral: (general: GeneralFormValues) => void
   setMembership: (membership: MembershipFormValues) => void

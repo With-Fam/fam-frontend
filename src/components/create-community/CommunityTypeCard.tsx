@@ -7,7 +7,7 @@ import { CommunityIcon } from '@/components/create-community'
 // Types
 import { IconProps } from '@/types/create-community'
 // import { useFormContext } from 'react-hook-form'
-import { useCreateCommunityContext } from '@/contexts/create-community'
+import { useCreateCommunityProvider } from '@/contexts/create-community'
 import { useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -28,7 +28,7 @@ interface CommunityTypeCardProps {
 
 const CommunityTypeCard = ({ item }: CommunityTypeCardProps): JSX.Element => {
   // const { setValue } = useFormContext()
-  const { next } = useCreateCommunityContext()
+  const { next } = useCreateCommunityProvider()
   const [type, setType] = useState<string>('')
 
   const handleClick = () => {

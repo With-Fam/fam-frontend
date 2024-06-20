@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from '@privy-io/wagmi'
 import { base, baseSepolia } from 'wagmi/chains'
-import { mapChainIdToEndpoint } from '@/utils/alchemy/mapChainIdToEndpoint'
+import { mapChainIdToEndpoint } from '@/lib/alchemy/mapChainIdToEndpoint'
 
 const queryClient = new QueryClient()
 

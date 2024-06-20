@@ -1,4 +1,3 @@
-export * from './activity'
 export { default as DROPS_DATA } from './drops'
 export { default as FOUNDERS_DATA } from './founders'
 export { default as LINKS_DATA } from './links'

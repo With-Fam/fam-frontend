@@ -3,10 +3,10 @@ import {
   IPFSUploadResponse,
   getFetchableUrl,
   uploadDirectory,
-} from '@/utils/ipfs-service'
+} from '@/lib/ipfs-service'
 
 import { ArtworkType } from '@/modules/create-community/components/artwork/schema'
-import { sanitizeFileName } from '@/utils/sanitize'
+import { sanitizeFileName } from '@/lib/sanitize'
 
 export interface IPFSUpload {
   name: string

@@ -1,4 +1,4 @@
-import getIpfsLink from '@/utils/getIpfsLink'
+import getIpfsLink from '@/lib/getIpfsLink'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {

@@ -1,4 +1,4 @@
-import { normalizeIPFSUrl } from '@/utils/ipfs-service'
+import { normalizeIPFSUrl } from '@/lib/ipfs-service'
 
 import { IPFSUpload } from '@/hooks'
 

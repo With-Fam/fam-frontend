@@ -1,4 +1,4 @@
-import getZora1155Uri from '@/utils/zora/getZora1155Uri'
+import getZora1155Uri from '@/lib/zora/getZora1155Uri'
 import { useEffect, useState } from 'react'
 
 const usePartyInfo = (community: any) => {

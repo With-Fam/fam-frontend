@@ -1,5 +1,5 @@
 import { DetailedHTMLProps, ImgHTMLAttributes } from 'react'
-import { getFetchableUrl } from '@/utils/ipfs-service'
+import { getFetchableUrl } from '@/lib/ipfs-service'
 
 import { Maybe } from '@/types'
 

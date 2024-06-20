@@ -22,7 +22,7 @@ const UserName = dynamic(() => import('@/components/shared/UserName'), {
 
 // Utils
 import SWR_KEYS from '@/constants/swrKeys'
-import { walletSnippet } from '@/utils/helpers'
+import { walletSnippet } from '@/lib/helpers'
 
 // Types
 type UsersProfileProps = {

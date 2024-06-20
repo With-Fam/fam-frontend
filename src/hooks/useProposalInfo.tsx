@@ -1,4 +1,4 @@
-import getProposalInfo from '@/utils/party/getProposalInfo'
+import getProposalInfo from '@/lib/party/getProposalInfo'
 import { useEffect, useState } from 'react'
 
 const useProposalInfo = (proposal: any) => {

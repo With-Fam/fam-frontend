@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { type CommunityProps } from '@/utils/explore/communities'
+import { type CommunityProps } from '@/lib/explore/communities'
 
 // Components
 import Paragraph from '@/stories/Paragraph'

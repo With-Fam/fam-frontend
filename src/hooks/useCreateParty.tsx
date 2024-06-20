@@ -6,18 +6,18 @@ import {
 import { crowdfundFactoryAbi } from '@/data/contract/abis/CrowdfundFactory'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { useFormStore } from '@/modules/create-community'
-import { getPublicClient } from '@/utils/viem'
-import getViemNetwork from '@/utils/viem/getViemNetwork'
+import { getPublicClient } from '@/lib/viem'
+import getViemNetwork from '@/lib/viem/getViemNetwork'
 import { CHAIN_ID } from '@/constants/defaultChains'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
-import { isAddress, parseEther, toBytes, zeroAddress } from 'viem'
-import getEnsAddress from '@/utils/getEnsAddress'
-import { AbiCoder, ethers } from 'ethers'
-import getEncodedPartyMetadata from '@/utils/party/getEncodedPartyMetadata'
+import { isAddress, toBytes, zeroAddress } from 'viem'
+import getEnsAddress from '@/lib/getEnsAddress'
+import { ethers } from 'ethers'
+import getEncodedPartyMetadata from '@/lib/party/getEncodedPartyMetadata'
 
 const useCreateParty = () => {
   const chainId = CHAIN_ID
-  const { general, membership, votePeriod } = useFormStore()
+  const { general, membership, vetoPeriod } = useFormStore()
   const { connectedWallet: address } = useConnectedWallet()
   const { walletClient } = usePrivyWalletClient()
 
@@ -65,7 +65,7 @@ const useCreateParty = () => {
         partyFactory: '0xB418f5B001Af94A91daB2cE641E39722e1d9dDAC',
         partyImpl: '0xeFA4054F3Db3D1f5e981513a3d8A33D91FC97dc1',
         passThresholdBps: passThresholdBps,
-        voteDuration: votePeriod,
+        voteDuration: vetoPeriod,
       }
       const proposalEngineOpts = {
         allowArbCallsToSpendPartyEth: true,

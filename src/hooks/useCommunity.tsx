@@ -1,8 +1,8 @@
 import { CHAIN_ID } from '@/constants/defaultChains'
-import { getPublicClient } from '@/utils/viem'
+import { getPublicClient } from '@/lib/viem'
 import { useEffect, useState } from 'react'
 import { Address } from 'viem'
-import erc721Abi from '@/utils/abi/erc721Abi.json'
+import erc721Abi from '@/lib/abi/erc721Abi.json'
 
 const useCommunity = (community: Address): any => {
   const [data, setData] = useState(null)

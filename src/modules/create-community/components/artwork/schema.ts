@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { nonEmptyString } from '@/utils/zod'
+import { nonEmptyString } from '@/lib/zod'
 
 export interface ArtworkType {
   trait: string

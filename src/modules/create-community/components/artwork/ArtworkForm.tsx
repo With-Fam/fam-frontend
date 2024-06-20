@@ -6,11 +6,11 @@ import schema, { type ArtworkFormValues } from './schema'
 import { FormProvider } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArtworkUpload } from './ArtworkUpload'
-import { useCreateCommunityContext } from '@/contexts/create-community'
+import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
 import ContinueButton from '@/components/ContinueButton'
 
 export function Artwork(): JSX.Element {
-  const { next } = useCreateCommunityContext()
+  const { next } = useCreateCommunityProvider()
   const { setUpArtwork } = useFormStore()
   const { artwork } = setUpArtwork
   const initialValues = {

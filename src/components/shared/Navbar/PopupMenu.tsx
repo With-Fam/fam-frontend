@@ -16,7 +16,7 @@ import { Close } from '@/components/icons'
 import { UserAvatar } from '@/components/shared'
 
 // Helpers
-import { formatCryptoVal } from '@/utils/numbers'
+import { formatCryptoVal } from '@/lib/numbers'
 import { useCheckAuth } from '@/hooks/useCheckAuth'
 
 /*--------------------------------------------------------------------*/

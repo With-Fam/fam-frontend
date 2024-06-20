@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 
-import { urlValidationSchema } from '@/utils/yup'
+import { urlValidationSchema } from '@/lib/yup'
 
 export interface GeneralFormValues {
   daoAvatar?: string

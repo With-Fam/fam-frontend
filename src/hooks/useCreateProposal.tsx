@@ -8,14 +8,14 @@ import {
   useProposalStore,
 } from '@/modules/create-activity/stores'
 import { TransactionType } from '@/modules/create-activity/types'
-import getZoraCreateProposalData from '@/utils/party/getZoraCreateProposalData'
-import getSendEthProposalData from '@/utils/party/getSendEthProposalData'
-import getZoraCollectProposalData from '@/utils/party/getZoraCollectProposalData'
-import { getPublicClient } from '@/utils/viem'
+import getZoraCreateProposalData from '@/lib/party/getZoraCreateProposalData'
+import getSendEthProposalData from '@/lib/party/getSendEthProposalData'
+import getZoraCollectProposalData from '@/lib/party/getZoraCollectProposalData'
+import { getPublicClient } from '@/lib/viem'
 import { usePrivy } from '@privy-io/react-auth'
 import { Address, maxUint256, parseEther } from 'viem'
-import getEnsAddress from '@/utils/getEnsAddress'
-import handleTxError from '@/utils/handleTxError'
+import getEnsAddress from '@/lib/getEnsAddress'
+import handleTxError from '@/lib/handleTxError'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)

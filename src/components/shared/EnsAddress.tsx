@@ -1,5 +1,5 @@
 import useEnsName from '@/hooks/useEnsName'
-import truncateAddress from '@/utils/truncateAddress'
+import truncateAddress from '@/lib/truncateAddress'
 
 const EnsAddress = ({ address }: any) => {
   const { ensName } = useEnsName(address)

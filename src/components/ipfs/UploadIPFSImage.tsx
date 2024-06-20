@@ -2,7 +2,7 @@
 
 import { BaseSyntheticEvent, useRef, useState } from 'react'
 
-import { uploadFile } from '@/utils/ipfs-service'
+import { uploadFile } from '@/lib/ipfs-service'
 import { twMerge } from 'tailwind-merge'
 import { IPFSImage } from '@/components/ipfs/IPFSImage'
 import { Loading } from '@/components/shared'

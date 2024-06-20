@@ -1,5 +1,5 @@
 import { CHAIN_ID } from '@/constants/defaultChains'
-import { getPublicClient } from '@/utils/viem'
+import { getPublicClient } from '@/lib/viem'
 import { useEffect, useState } from 'react'
 import { Address, formatEther } from 'viem'
 

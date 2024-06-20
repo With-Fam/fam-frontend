@@ -1,8 +1,8 @@
-import { useCreateCommunityContext } from '@/contexts/create-community'
+import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
 import { AnimatePresence, motion } from 'framer-motion'
 
 export function Sections(): JSX.Element {
-  const { section } = useCreateCommunityContext()
+  const { section } = useCreateCommunityProvider()
   return (
     <AnimatePresence mode="wait">
       <motion.div

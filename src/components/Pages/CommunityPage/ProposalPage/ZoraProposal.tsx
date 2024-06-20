@@ -1,4 +1,4 @@
-import getIpfsLink from '@/utils/getIpfsLink'
+import getIpfsLink from '@/lib/getIpfsLink'
 import Image from 'next/image'
 
 const ZoraProposal = ({ info }: any) => {
