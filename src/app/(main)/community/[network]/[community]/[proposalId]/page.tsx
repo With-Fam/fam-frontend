@@ -84,8 +84,7 @@ export default function CommunityProposal(): JSX.Element {
             <ProposalInfo proposal={proposal} />
             {(proposal.proposalState === PROPOSAL_STATUS.Ready ||
               proposal.proposalState === PROPOSAL_STATUS.Passed) &&
-              isAuthenticated &&
-              isHost && (
+              isAuthenticated && (
                 <>
                   {shouldBeVote ? (
                     <VoteButton
