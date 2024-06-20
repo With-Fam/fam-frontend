@@ -1,17 +1,8 @@
-// Local Components
 import Paragraph from '@/stories/Paragraph'
-import { Button } from '@/components/shared'
 
-// Types
 type WalletComponentProps = {
   userBalance: string
 }
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 const WalletComponent = ({
   userBalance,
@@ -22,14 +13,9 @@ const WalletComponent = ({
         Wallet balance
       </Paragraph>
       <Paragraph as="p3" className="text-black">
-        {userBalance}
+        {Number(userBalance).toFixed(4)} ETH
       </Paragraph>
     </div>
-    {false /* as requested, implemented, but hidden for now */ && (
-      <Button type="button" className="h-min px-3 py-2">
-        <Paragraph as="p5">Add Funds</Paragraph>
-      </Button>
-    )}
   </div>
 )
 

@@ -1,46 +1,24 @@
 'use client'
 
-// Framework
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
-
-// Third parties
-import { useBalance } from 'wagmi'
 import { motion } from 'framer-motion'
-
-// Local Components
 import MenuList from '@/components/shared/Navbar/MenuList'
 import WalletComponent from '@/components/shared/Navbar/WalletComponent'
 import MenuUserRow from '@/components/shared/Navbar/MenuUserRow'
 import { Close } from '@/components/icons'
 import { UserAvatar } from '@/components/shared'
-
-// Helpers
-import { formatCryptoVal } from '@/lib/numbers'
-import { useCheckAuth } from '@/hooks/useCheckAuth'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
+import useConnectedWallet from '@/hooks/useConnectedWallet'
+import useEthBalance from '@/hooks/useEthBalance'
+import { Address } from 'viem'
 
 const PopupMenu = (): JSX.Element => {
-  const {
-    wagmiData: { address },
-  } = useCheckAuth()
+  const { connectedWallet } = useConnectedWallet()
   const [open, setOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const popoverRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
-
-  const { data: balance } = useBalance({
-    address: address as `0x${string}`,
-  })
-
-  const userBalance = balance?.formatted
-    ? `${Number(formatCryptoVal(balance?.formatted)).toFixed(2)} ETH`
-    : undefined
+  const { ethBalance } = useEthBalance(connectedWallet as Address)
 
   useEffect(() => {
     setOpen(false)
@@ -103,12 +81,16 @@ const PopupMenu = (): JSX.Element => {
     closed: { y: '100%', opacity: 1, scale: 1 },
   }
 
-  if (!address) return <></>
+  if (!connectedWallet) return <></>
 
   return (
     <div className="pointer-events-auto relative h-12">
       <button onClick={() => setOpen(true)} aria-label="open users menu">
-        <UserAvatar width={48} height={48} address={address as string} />
+        <UserAvatar
+          width={48}
+          height={48}
+          address={connectedWallet as string}
+        />
       </button>
       <motion.div
         initial="closed"
@@ -124,9 +106,11 @@ const PopupMenu = (): JSX.Element => {
         >
           <Close className="h-6 w-6" />
         </button>
-        {address && <MenuUserRow address={address} />}
-        {userBalance && <WalletComponent userBalance={userBalance} />}
-        <MenuList address={address} />
+        {connectedWallet && (
+          <MenuUserRow address={connectedWallet as Address} />
+        )}
+        {ethBalance && <WalletComponent userBalance={ethBalance} />}
+        <MenuList address={connectedWallet as Address} />
       </motion.div>
     </div>
   )
