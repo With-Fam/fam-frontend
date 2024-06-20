@@ -33,7 +33,7 @@ export default function CommunityProposal(): JSX.Element {
   const { push } = useRouter()
   const { community, network } = useParams()
   const { countdown, shouldBeVote } = useProposalTimer(proposal)
-  const { isHost } = useIsHost(community)
+  const { isHost } = useIsHost(community, connectedWallet as Address)
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">

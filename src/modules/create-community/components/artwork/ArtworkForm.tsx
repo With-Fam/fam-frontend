@@ -5,9 +5,9 @@ import { useFormStore } from '@/modules/create-community/stores'
 import schema, { type ArtworkFormValues } from './schema'
 import { FormProvider } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import ContinueButton from '@/modules/ContinueButton'
 import { ArtworkUpload } from './ArtworkUpload'
 import { useCreateCommunityContext } from '@/contexts/create-community'
+import ContinueButton from '@/components/ContinueButton'
 
 export function Artwork(): JSX.Element {
   const { next } = useCreateCommunityContext()

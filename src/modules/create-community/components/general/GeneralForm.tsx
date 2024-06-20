@@ -1,16 +1,14 @@
 'use client'
-// Forms
+
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
   generalValidationSchema,
   GeneralFormValues,
 } from './GeneralForm.schema'
-
-// Components
 import { TextArea, TextInput } from '@/components/forms'
 import { UploadIPFSImage } from '@/components/ipfs/UploadIPFSImage'
-import ContinueButton from '../../../ContinueButton'
+import ContinueButton from '@/components/ContinueButton'
 import { useEffect } from 'react'
 
 type GeneralFormProps = {

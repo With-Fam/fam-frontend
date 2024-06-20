@@ -1,12 +1,10 @@
 import { CHAIN_ID } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
-import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { getPublicClient } from '@/utils/viem'
 import { useEffect, useState } from 'react'
 import { Address } from 'viem'
 
-const useIsHost = (community: any) => {
-  const { connectedWallet } = useConnectedWallet()
+const useIsHost = (community: any, address: Address) => {
   const [isHost, setIsHost] = useState(false)
 
   useEffect(() => {
@@ -16,13 +14,13 @@ const useIsHost = (community: any) => {
         address: community as Address,
         abi: partyAbi,
         functionName: 'isHost',
-        args: [connectedWallet as Address],
+        args: [address as Address],
       })
       setIsHost(data)
     }
-    if (!connectedWallet || !community) return
+    if (!address || !community) return
     init()
-  }, [connectedWallet, community])
+  }, [address, community])
 
   return {
     isHost,

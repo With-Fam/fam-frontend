@@ -1,7 +1,8 @@
 'use client'
+
+import ContinueButton from '@/components/ContinueButton'
 import { Paragraph } from '@/stories'
 import { MembershipTypes } from '@/types/create-community'
-import ContinueButton from '@/modules/ContinueButton'
 import { FormProvider, useForm } from 'react-hook-form'
 import {
   MembershipFormValues,
