@@ -3,7 +3,7 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { IPFSUpload } from '@/hooks'
-import type { DaoContractAddresses } from '@/modules/dao'
+import { DaoContractAddresses } from './types'
 import { FormStoreState, AuctionSettingsFormValues } from './types'
 import { ArtworkFormValues, GeneralFormValues } from '../components'
 import type { OrderedTraits } from '@/components/create-community/artwork/TraitsAccordian'

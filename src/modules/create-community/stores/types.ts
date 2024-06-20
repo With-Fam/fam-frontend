@@ -3,8 +3,16 @@ import { PersistOptions } from 'zustand/middleware'
 import { IPFSUpload } from '@/hooks'
 import type { OrderedTraits } from '@/components/create-community/artwork/TraitsAccordian'
 import { GeneralFormValues, ArtworkFormValues } from '../components'
-import type { DaoContractAddresses } from '@/modules/dao'
 import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
+import { Address } from 'viem'
+
+export interface DaoContractAddresses {
+  token?: Address
+  metadata?: Address
+  auction?: Address
+  treasury?: Address
+  governor?: Address
+}
 
 export interface Duration {
   seconds?: number

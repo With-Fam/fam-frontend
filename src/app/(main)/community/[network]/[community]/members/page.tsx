@@ -1,25 +1,21 @@
-import { CommunityMembers, TabList } from '@/components/community'
-import CommunityHeader from '@/components/community/CommunityHeader'
+import { CommunityMembers, TabList } from '@/components/Pages/CommunityPage'
+import Header from '@/components/Pages/CommunityPage/Header'
 import { TOGGLE_DATA } from '@/content/community'
+
+import { getChainId } from '@/utils/getChainId'
+import getOwners from '@/utils/party/getMembers'
+import { Address } from 'viem'
+
 type CommunityProfileProps = {
   params: { community: string; network: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
-import { getChainId } from '@/utils/getChainId'
-import getOwners from '@/utils/party/getMembers'
-import { Address } from 'viem'
 
 async function getMemberData(chainId: number, collection: Address) {
   const daotokenOwners = await getOwners(collection)
   const dao = { daotokenOwners }
   return dao
 }
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Page
- */
 
 export default async function CommunityProfile(
   _props: CommunityProfileProps
@@ -30,7 +26,7 @@ export default async function CommunityProfile(
   const data: any = await getMemberData(chainId, community as Address)
   return (
     <>
-      <CommunityHeader />
+      <Header />
       <TabList items={TOGGLE_DATA} />
       <CommunityMembers data={data as any} />
     </>

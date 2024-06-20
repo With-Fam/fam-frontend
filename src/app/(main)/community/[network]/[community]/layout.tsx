@@ -1,8 +1,11 @@
+import CommunityProvider from '@/contexts/CommunityProvider'
 import ProposalProvider from '@/contexts/ProposalProvider'
 import type { PropsWithChildren } from 'react'
 
 const RootLayout = ({ children }: PropsWithChildren): JSX.Element => (
-  <ProposalProvider>{children}</ProposalProvider>
+  <CommunityProvider>
+    <ProposalProvider>{children}</ProposalProvider>
+  </CommunityProvider>
 )
 
 export default RootLayout

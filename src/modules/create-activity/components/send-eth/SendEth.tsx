@@ -3,15 +3,12 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { Address } from 'viem'
 import _get from 'lodash.get'
-import { useDaoStore } from '@/modules/dao'
-import { useBalance } from 'wagmi'
 import { useProposalStore } from '@/modules/create-activity/stores'
 import { TransactionType } from '@/modules/create-activity/types'
-import { useChainStore } from '@/utils/stores/useChainStore'
 import { walletSnippet } from '@/utils/helpers'
 import { AddressType } from '@/types'
 import { TextInput } from '@/components/forms'
-import { AddActionButton } from '../action'
+import AddActionButton from '@/components/AddActionButton'
 import { SendEthValues } from './SendEthForm.schema'
 import { Transaction } from '@/modules/create-activity/stores'
 import { ActionFormProps } from '@/modules/create-activity'
@@ -30,8 +27,6 @@ function hasChanged(
 export function SendEth({
   callback,
 }: Pick<ActionFormProps, 'callback'>): JSX.Element {
-  const { treasury } = useDaoStore((state) => state.addresses)
-  const chain = useChainStore((x) => x.chain)
   const { addTransaction, editTransaction, transactions } = useProposalStore()
   const exists = transactions.find(({ type }) => type === 'send-eth')
 
@@ -43,11 +38,6 @@ export function SendEth({
       value: '0',
     }
   )
-
-  const { data: treasuryBalance } = useBalance({
-    address: treasury,
-    chainId: chain.id,
-  })
 
   const methods = useForm<SendEthValues>({
     defaultValues: {

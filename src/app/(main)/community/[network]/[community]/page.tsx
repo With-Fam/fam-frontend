@@ -1,11 +1,11 @@
 'use client'
 
-import { TabList } from '@/components/community'
-import CommunityHeader from '@/components/community/CommunityHeader'
-import CommunityHome from '@/components/community/CommunityHome'
+import { TabList } from '@/components/Pages/CommunityPage'
+import Header from '@/components/Pages/CommunityPage/Header'
 import { TOGGLE_DATA } from '@/content/community'
 import { useFormStore } from '@/modules/create-community'
 import { useEffect } from 'react'
+import HomePage from '@/components/Pages/CommunityPage/HomePage'
 
 type CommunityProfileProps = {
   params: { community: string; network: string }
@@ -24,11 +24,9 @@ export default function CommunityProfile(
 
   return (
     <>
-      <CommunityHeader />
+      <Header />
       <TabList items={TOGGLE_DATA} />
-      <div>
-        <CommunityHome />
-      </div>
+      <HomePage />
     </>
   )
 }

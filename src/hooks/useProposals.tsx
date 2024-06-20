@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 const useProposals = (party: any) => {
   const [proposals, setProposals] = useState<any>([])
   const [nextOffset, setNextOffset] = useState(0)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const getProposals = useCallback(
     async (offset: number) => {
