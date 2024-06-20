@@ -12,7 +12,7 @@ const MembersPage = (): JSX.Element => {
       px-4 pb-4 sm:pb-10"
     >
       {members.map((member: any) => (
-        <Member data={member} />
+        <Member data={member} key={member.id} />
       ))}
     </section>
   )
