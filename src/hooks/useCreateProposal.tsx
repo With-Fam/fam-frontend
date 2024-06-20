@@ -67,7 +67,6 @@ const useCreateProposal: any = (community: Address) => {
         title &&
         description &&
         collectionImage &&
-        pricePerEdition &&
         typeof customEditionSize !== 'undefined' &&
         typeof customLimit !== 'undefined' &&
         typeof duration !== 'undefined' &&
