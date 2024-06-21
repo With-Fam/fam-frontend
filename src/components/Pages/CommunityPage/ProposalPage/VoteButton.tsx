@@ -1,6 +1,5 @@
 'use client'
 
-import { useProposalProvider } from '@/contexts/ProposalProvider'
 import useVoteProposal from '@/hooks/useVoteProposal'
 import { useState } from 'react'
 import { Address } from 'viem'
@@ -8,17 +7,21 @@ import { Address } from 'viem'
 interface VoteButtonProps {
   proposal: any
   community: Address
+  callback: any
 }
 
-const VoteButton = ({ proposal, community }: VoteButtonProps): JSX.Element => {
+const VoteButton = ({
+  proposal,
+  community,
+  callback,
+}: VoteButtonProps): JSX.Element => {
   const { vote } = useVoteProposal()
   const [loading, setLoading] = useState(false)
-  const { getProposals } = useProposalProvider() as any
 
   const handleClick = async () => {
     setLoading(true)
     await vote(proposal, community)
-    getProposals()
+    callback()
     setLoading(false)
   }
 

@@ -7,25 +7,23 @@ import { Address } from 'viem'
 interface ExecuteButtonProps {
   proposal: any
   community: Address
+  callback: any
 }
 
 const ExecuteButton = ({
   proposal,
   community,
+  callback,
 }: ExecuteButtonProps): JSX.Element => {
   const { execute } = useExecuteProposal()
-  const [isExecuted, setIsExecuted] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const handleClick = async () => {
     setLoading(true)
-    const response = await execute(proposal, community)
-    const { error } = response as any
-    if (!error) setIsExecuted(true)
+    await execute(proposal, community)
+    callback()
     setLoading(false)
   }
-
-  if (isExecuted) return <div />
 
   return (
     <button
