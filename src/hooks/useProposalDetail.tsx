@@ -12,10 +12,11 @@ const useProposalDetail = (
   proposalBlocknumber: any
 ) => {
   const [proposalDetail, setProposalDetail] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
   const getProposalDetail = useCallback(async () => {
     if (!proposalId || !community || !proposalBlocknumber) return
-
+    setLoading(true)
     const publicClient = getPublicClient(CHAIN_ID)
     const response = await publicClient.readContract({
       address: community as Address,
@@ -39,6 +40,7 @@ const useProposalDetail = (
       name: `Proposal ${proposalId}`,
       proposalState: response[0],
       numVotes: proposalStateValues.votes.toString(),
+      createdTimestamp: proposalStateValues.proposedTime,
     }
     const eventData = await getProposedEvent(community, proposalBlocknumber)
     const votes = await getProposalVoteEvent(
@@ -51,6 +53,7 @@ const useProposalDetail = (
       ...eventData,
       votes,
     })
+    setLoading(false)
   }, [proposalId, community, proposalBlocknumber])
 
   useEffect(() => {
@@ -60,6 +63,7 @@ const useProposalDetail = (
   return {
     proposalDetail,
     getProposalDetail,
+    loading,
   }
 }
 

@@ -7,9 +7,10 @@ import ProposalInfo from '@/components/Pages/CommunityPage/ProposalPage/Proposal
 import VetoButton from '@/components/Pages/CommunityPage/ProposalPage/VetoButton'
 import VoteButton from '@/components/Pages/CommunityPage/ProposalPage/VoteButton'
 import ProposalStatus from '@/components/Pages/CommunityPage/ProposalStatus'
-import { UserAvatar } from '@/components/shared'
+import { Loading, UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
+import useIsHost from '@/hooks/useIsHost'
 import { PROPOSAL_STATUS } from '@/hooks/useProposalData'
 import useProposalDetail from '@/hooks/useProposalDetail'
 import useProposalTimer from '@/hooks/useProposalTimer'
@@ -26,18 +27,34 @@ export default function CommunityProposal(): JSX.Element {
   const searchParams = useSearchParams()
   const blockNumber = searchParams.get('blockNumber')
   const { community, network } = useParams()
-  const { proposalDetail, getProposalDetail } = useProposalDetail(
+  const { proposalDetail, getProposalDetail, loading } = useProposalDetail(
     community,
     proposalId,
     blockNumber
   )
+  const { isHost } = useIsHost(community, connectedWallet as Address)
   const status = getProposalStatus(proposalDetail)
   const { push } = useRouter()
   const { countdown, isActiveVoting } = useProposalTimer(proposalDetail)
+  const canExecute =
+    proposalDetail?.proposalState === PROPOSAL_STATUS.Ready &&
+    isAuthenticated &&
+    !isActiveVoting
+  const canVeto =
+    proposalDetail?.proposalState === PROPOSAL_STATUS.Ready &&
+    proposalDetail?.proposerAddress !== connectedWallet &&
+    isAuthenticated &&
+    isHost
+  const canVote =
+    proposalDetail?.proposalState === PROPOSAL_STATUS.Passed &&
+    isAuthenticated &&
+    isActiveVoting
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">
-      {proposalDetail ? (
+      {loading ? (
+        <Loading />
+      ) : (
         <>
           <button
             className="my-3 flex items-center gap-2 font-abcMedium text-grey"
@@ -69,45 +86,36 @@ export default function CommunityProposal(): JSX.Element {
               {countdown}
             </div>
           </div>
-          {proposalDetail.proposalState === PROPOSAL_STATUS.Ready &&
-            proposalDetail.proposerAddress !== connectedWallet &&
-            isAuthenticated && (
-              <VetoButton
-                community={community}
-                proposalId={proposalDetail.proposalId}
-                callback={getProposalDetail}
-              />
-            )}
+          {canVeto && (
+            <VetoButton
+              community={community}
+              proposalId={proposalDetail.proposalId}
+              callback={getProposalDetail}
+            />
+          )}
           <div className="mt-8 flex items-center text-orange">
             <p className="text-[16px]">Action</p>{' '}
             <Icon id="arrowTopRight" fill="#f54d18" />
           </div>
           <div className="flex items-center justify-between">
             <ProposalInfo proposal={proposalDetail} />
-            {(proposalDetail.proposalState === PROPOSAL_STATUS.Ready ||
-              proposalDetail.proposalState === PROPOSAL_STATUS.Passed) &&
-              isAuthenticated && (
-                <>
-                  {isActiveVoting ? (
-                    <VoteButton
-                      proposal={proposalDetail}
-                      community={community as Address}
-                      callback={getProposalDetail}
-                    />
-                  ) : (
-                    <ExecuteButton
-                      proposal={proposalDetail}
-                      community={community as Address}
-                      callback={getProposalDetail}
-                    />
-                  )}
-                </>
-              )}
+            {canVote && (
+              <VoteButton
+                proposal={proposalDetail}
+                community={community as Address}
+                callback={getProposalDetail}
+              />
+            )}
+            {canExecute && (
+              <ExecuteButton
+                proposal={proposalDetail}
+                community={community as Address}
+                callback={getProposalDetail}
+              />
+            )}
           </div>
           {isAuthenticated && <ProposalComments proposal={proposalDetail} />}
         </>
-      ) : (
-        <>Loading...</>
       )}
     </main>
   )
