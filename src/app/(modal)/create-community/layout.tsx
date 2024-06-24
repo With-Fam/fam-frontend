@@ -1,5 +1,5 @@
-import { ModalLayout } from '@/layouts'
 import type { Metadata } from 'next'
+import ModalLayout from '@/components/Layout/ModalLayout'
 
 export const metadata: Metadata = {
   title: 'Create New Community',
@@ -27,8 +27,5 @@ export const metadata: Metadata = {
     images: [{ url: '/img/favicon.png', width: 128, height: 128 }],
   },
 }
-/**
- * Layout
- */
 
 export default ModalLayout

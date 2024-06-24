@@ -1,12 +1,5 @@
-// Framework
 import { Metadata } from 'next'
-
-// Components
-import { ModalLayout } from '@/layouts'
-
-/**
- * Page
- */
+import ModalLayout from '@/components/Layout/ModalLayout'
 
 export const metadata: Metadata = {
   title: 'Create New Activity',
