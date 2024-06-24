@@ -52,10 +52,10 @@ const useCreateProposal: any = (community: Address) => {
         proposalData = getSendEthProposalData(target, value)
 
       if (type === TransactionType.ZORA_COLLECT) {
-        const collection = getAddressFromZoraLink(value)
-        if (!isAddress(collection)) return
+        const collectionAddress = getAddressFromZoraLink(value)
+        if (!isAddress(collectionAddress)) return false
         proposalData = getZoraCollectProposalData(
-          collection as Address,
+          collectionAddress as Address,
           SALE_STRATEGY[CHAIN.id],
           target,
           0,
