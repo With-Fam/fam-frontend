@@ -1,12 +1,11 @@
-import type { Metadata } from 'next'
-import { WalletContext } from '@/contexts/WalletContext'
-import type { PropsWithChildren } from 'react'
 import '@/styles/global.scss'
 import '@/styles/quill-default.scss'
 import '@/styles/quill-editor.scss'
 import '@/styles/quill-toolbar.scss'
 
-import { MockStoreProvider } from '@/contexts/mock-store'
+import type { Metadata } from 'next'
+import { WalletContext } from '@/contexts/WalletContext'
+import type { PropsWithChildren } from 'react'
 import { ProgressBar } from '@/components/shared'
 
 export const metadata: Metadata = {
@@ -20,9 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="flex min-h-screen flex-col bg-background font-abc">
         <ProgressBar />
-        <WalletContext>
-          <MockStoreProvider>{children}</MockStoreProvider>
-        </WalletContext>
+        <WalletContext>{children}</WalletContext>
       </body>
     </html>
   )

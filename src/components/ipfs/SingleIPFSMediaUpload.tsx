@@ -3,7 +3,7 @@
 import { BaseSyntheticEvent, useRef, useState } from 'react'
 import _get from 'lodash.get'
 
-import { uploadFile } from '@/utils/ipfs-service'
+import { uploadFile } from '@/lib/ipfs-service'
 import { twMerge } from 'tailwind-merge'
 import { Upload } from '@/components/icons'
 import { useFormContext } from 'react-hook-form'

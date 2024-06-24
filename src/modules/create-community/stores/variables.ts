@@ -16,7 +16,7 @@ export const auctionSettingsDefaultValues: AuctionSettingsFormValues = {
   executionDelay: 24,
   proposalThreshold: 5,
   quorumThreshold: 10,
-  votingPeriod: {
+  vetoPeriod: {
     seconds: 0,
     days: 1,
     hours: 0,
@@ -63,6 +63,6 @@ export const initialState = {
     founders: [],
     threshold: 25,
   },
-  votePeriod: 8 * 3600,
+  vetoPeriod: 8 * 3600,
   showAdvanced: false,
 }

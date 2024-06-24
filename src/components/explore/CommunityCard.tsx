@@ -6,7 +6,7 @@ import Paragraph from '@/stories/Paragraph'
 import { FamImage } from '@/components/shared'
 import { Address } from 'viem'
 import useCommunity from '@/hooks/useCommunity'
-import getIpfsLink from '@/utils/getIpfsLink'
+import getIpfsLink from '@/lib/getIpfsLink'
 
 type CommunityCardProps = {
   community: Address

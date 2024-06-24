@@ -1,4 +1,4 @@
-import getSortedUniqueProposals from '@/utils/getSortedUniqueProposals'
+import getSortedUniqueProposals from '@/lib/getSortedUniqueProposals'
 import { useCallback, useEffect, useState } from 'react'
 
 const useProposals = (party: any) => {

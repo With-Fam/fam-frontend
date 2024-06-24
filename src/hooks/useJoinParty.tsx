@@ -1,14 +1,14 @@
 import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
-import { getPublicClient } from '@/utils/viem'
+import { getPublicClient } from '@/lib/viem'
 import { useParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { Address } from 'viem'
 import toast from 'react-hot-toast'
-import getCrowdfundPrice from '@/utils/party/getCrowdfundPrice'
-import getCrowdfundContract from '@/utils/party/getCrowdfundContract'
-import balanceOf from '@/utils/balanceOf'
+import getCrowdfundPrice from '@/lib/party/getCrowdfundPrice'
+import getCrowdfundContract from '@/lib/party/getCrowdfundContract'
+import balanceOf from '@/lib/balanceOf'
 import { initialETHCrowdfundAbi } from '@/data/contract/abis/InitialETHCrowdfund'
 
 const useJoinParty = () => {

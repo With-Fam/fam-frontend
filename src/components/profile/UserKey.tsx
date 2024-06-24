@@ -7,7 +7,7 @@ import { Paragraph } from '@/stories'
 import { Copy } from '@/components/icons'
 
 // Utils
-import { shortenString } from '@/utils/user-profile'
+import { shortenString } from '@/lib/user-profile'
 
 // Types
 interface UserKeyProps {

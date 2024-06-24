@@ -4,7 +4,6 @@ import { FormProvider } from 'react-hook-form'
 import _get from 'lodash.get'
 import { TextInput } from '@/components/forms'
 import AddActionButton from '@/components/AddActionButton'
-import Advanced from '@/modules/create-activity/components/zora-collect/Advanced'
 import useZoraCollectProposalForm from '@/hooks/useZoraCollectProposalForm'
 
 export function ZoraCollect(): JSX.Element {
@@ -36,7 +35,6 @@ export function ZoraCollect(): JSX.Element {
             className="block w-full text-lg outline-0"
           />
         </div>
-        <Advanced />
         <AddActionButton />
       </form>
     </FormProvider>

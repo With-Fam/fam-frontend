@@ -1,4 +1,4 @@
-import getEthPrice from '@/utils/getEthPrice'
+import getEthPrice from '@/lib/getEthPrice'
 import { useState, useEffect } from 'react'
 
 const useEthPrice = () => {

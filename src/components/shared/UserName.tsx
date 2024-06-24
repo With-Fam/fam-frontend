@@ -15,7 +15,7 @@ type UserNameProps = {
 import { Paragraph } from '@/stories'
 
 // Helpers
-import { walletSnippet } from '@/utils/helpers'
+import { walletSnippet } from '@/lib/helpers'
 
 /*--------------------------------------------------------------------*/
 

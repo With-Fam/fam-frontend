@@ -1,6 +1,6 @@
 import { Icon } from '@/components/Icon'
-import copyToClipboard from '@/utils/copyToClipboard'
-import truncateAddress from '@/utils/truncateAddress'
+import copyToClipboard from '@/lib/copyToClipboard'
+import truncateAddress from '@/lib/truncateAddress'
 import { Paragraph } from '@zoralabs/zord'
 import { useParams } from 'next/navigation'
 import toast from 'react-hot-toast'

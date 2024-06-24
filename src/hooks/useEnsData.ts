@@ -1,7 +1,7 @@
 'use client'
 
 import { useConnect, useEnsAddress, useEnsAvatar, useEnsName } from 'wagmi'
-import { walletSnippet } from '@/utils/helpers'
+import { walletSnippet } from '@/lib/helpers'
 import { CHAIN_ID } from '@/types'
 
 type UseEnsDataResponse = {

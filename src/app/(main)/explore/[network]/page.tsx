@@ -3,9 +3,9 @@ import {
   ExploreHeader,
   ExploreHeaderMobile,
 } from '@/components/explore'
-import { getChainId } from '@/utils/getChainId'
+import { getChainId } from '@/lib/getChainId'
 import type { Metadata } from 'next'
-import getAllParties from '@/utils/party/getAllParties'
+import getAllParties from '@/lib/party/getAllParties'
 
 type ExplorePageProps = {
   searchParams: {

@@ -19,8 +19,6 @@ export type Transaction = {
   target: Address
   value: string
   calldata: string
-  tokenId?: bigint
-  ethPrice?: number
   collectionImage?: string
   title?: string
   description?: string
@@ -42,14 +40,12 @@ interface State {
   disabled: boolean
   title?: string
   summary?: string
-  showAdvancedOfZoraCollect: boolean
   showAdvancedOfZoraCreate: boolean
   editionSize: number
   limitPerAddress: number
 }
 
 interface Actions {
-  setShowAdvancedOfZoraCollect: (showAdvanced: boolean) => void
   setShowAdvancedOfZoraCreate: (showAdvanced: boolean) => void
   setEditionSize: (editionSize: number) => void
   setLimitPerAddress: (limitPerAddress: number) => void
@@ -75,7 +71,6 @@ const initialState: State = {
   title: undefined,
   disabled: false,
   transactions: [],
-  showAdvancedOfZoraCollect: false,
   showAdvancedOfZoraCreate: false,
   editionSize: EDITON_SIZE.OPEN,
   limitPerAddress: LIMIT.UNLIMITED,
@@ -88,8 +83,6 @@ export const useProposalStore = create<State & Actions>((set) => ({
       transactions: [...state.transactions, transaction],
     }))
   },
-  setShowAdvancedOfZoraCollect: (showAdvancedOfZoraCollect: boolean) =>
-    set({ showAdvancedOfZoraCollect }),
   setEditionSize: (editionSize: number) => set({ editionSize }),
   setLimitPerAddress: (limitPerAddress: number) => set({ limitPerAddress }),
   setShowAdvancedOfZoraCreate: (showAdvancedOfZoraCreate: boolean) =>

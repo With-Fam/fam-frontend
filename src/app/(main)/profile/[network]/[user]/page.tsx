@@ -10,7 +10,7 @@ interface UsersProfileProps {
 
 // Content
 import ProfileClientPage from '@/components/profile/ProfileClientPage'
-import { getChainId } from '@/utils/getChainId'
+import { getChainId } from '@/lib/getChainId'
 
 /*--------------------------------------------------------------------*/
 

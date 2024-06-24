@@ -2,7 +2,7 @@ import AddComment from './AddComment'
 import { UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
 import useProposalComments from '@/hooks/useProposalComments'
-import getDiffFormattedDuration from '@/utils/getDiffFormattedDuration'
+import getDiffFormattedDuration from '@/lib/getDiffFormattedDuration'
 import { useParams } from 'next/navigation'
 
 const ProposalComments = ({ proposal }: any) => {
