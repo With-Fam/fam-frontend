@@ -3,6 +3,7 @@ import ProposalStatus from '@/components/Pages/CommunityPage/ProposalStatus'
 import EnsAddress from '@/components/shared/EnsAddress'
 import { useProposalProvider } from '@/contexts/ProposalProvider'
 import useProposalComments from '@/hooks/useProposalComments'
+import useProposalTimer from '@/hooks/useProposalTimer'
 import { Paragraph } from '@/stories'
 import getDiffFormattedDuration from '@/utils/getDiffFormattedDuration'
 import getProposalStatus from '@/utils/getProposalStatus'
@@ -16,7 +17,7 @@ const Proposal = ({ data, proposalIndex }: any) => {
   const { push } = useRouter()
   const { network, community } = useParams()
   const { setProposal, setSelectedProposalIndex } = useProposalProvider() as any
-
+  const { countdown } = useProposalTimer(data)
   const status = getProposalStatus(data)
 
   const { proposalComments } = useProposalComments(community, data.proposalId)
@@ -52,12 +53,9 @@ const Proposal = ({ data, proposalIndex }: any) => {
           {data.name}
         </button>
         <div className="rounded-full bg-orange-light px-3 py-1">
-          <p className="text-[12px] text-orange">23hr 14m</p>
+          <p className="text-[12px] text-orange">{countdown}</p>
         </div>
       </div>
-      <Paragraph as="p4" className="mt-4 font-abcMedium">
-        {`PC Music has a storied history of disrupting the music scene, continuously pushing the boundaries of what's possible in the worlds of electronic and pop music. With the 44th release, we plan to take another quantum leap, further solidifying our reputation as pioneers in musical innovation.`}
-      </Paragraph>
       <div className="mt-4 flex justify-between">
         <div className="flex items-center gap-1">
           <Icon id="check" fill="#45D039" />
