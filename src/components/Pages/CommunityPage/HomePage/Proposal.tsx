@@ -23,9 +23,10 @@ const Proposal = ({ data, proposalIndex }: any) => {
   const { proposalComments } = useProposalComments(community, data.proposalId)
 
   const goToProposal = () => {
-    setProposal(data)
     setSelectedProposalIndex(proposalIndex)
-    push(`/community/${network}/${community}/${data.proposalId}`)
+    push(
+      `/community/${network}/${community}/${data.proposalId}?blockNumber=${data.createdBlockNumber}`
+    )
   }
 
   return (
