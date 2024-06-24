@@ -1,4 +1,3 @@
-import AddComment from './AddComment'
 import { UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
 import useProposalComments from '@/hooks/useProposalComments'
@@ -8,18 +7,13 @@ import { useParams } from 'next/navigation'
 const ProposalComments = ({ proposal }: any) => {
   const { community } = useParams()
 
-  const { proposalComments, getProposalComments } = useProposalComments(
+  const { proposalComments } = useProposalComments(
     community,
     proposal.proposalId
   )
 
-  const addComment = async () => {
-    getProposalComments()
-  }
-
   return (
     <>
-      <AddComment proposalId={proposal.proposalId} onClick={addComment} />
       <div className="mt-4 space-y-6">
         {proposalComments.map((comment: any) => (
           <div className="flex justify-between" key={comment.id}>
