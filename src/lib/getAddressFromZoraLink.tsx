@@ -1,6 +1,6 @@
 import { isAddress } from 'viem'
 
-const getAddressOfZora = (zoralink: any) => {
+const getAddressFromZoraLink = (zoralink: any) => {
   if (isAddress(zoralink)) {
     return zoralink
   }
@@ -12,9 +12,9 @@ const getAddressOfZora = (zoralink: any) => {
   if (match) {
     const address = match[0].split(':')[1]
     return address
-  } else {
-    return null
   }
+
+  return zoralink
 }
 
-export default getAddressOfZora
+export default getAddressFromZoraLink
