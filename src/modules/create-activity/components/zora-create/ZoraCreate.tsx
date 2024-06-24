@@ -3,7 +3,7 @@
 import { Controller, FormProvider } from 'react-hook-form'
 import _get from 'lodash.get'
 import { TextArea, TextInput } from '@/components/forms'
-import { AddActionButton } from '../action'
+import AddActionButton from '@/components/AddActionButton'
 import { ActionFormProps } from '@/modules/create-activity'
 import { UploadIPFSImage } from '@/components/ipfs/UploadIPFSImage'
 import Advanced from '@/modules/create-activity/components/zora-create/Advanced'

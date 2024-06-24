@@ -1,17 +1,9 @@
-// Framework
 import Image from 'next/image'
 
-// Local Components
 import { AddActionButton, InputSlider } from '.'
 import { Button, ImageUpload, PhaseName } from '@/components/shared'
 import { TextInput } from '@/components/forms'
 import { Paragraph } from '@/stories'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 export const CrowdFund = (): JSX.Element => (
   <>

@@ -1,11 +1,6 @@
 import type { Metadata } from 'next'
 import { WalletContext } from '@/contexts/WalletContext'
-import { DaoContext } from '@/contexts/DaoContext'
-
-// Types
 import type { PropsWithChildren } from 'react'
-
-// Styles
 import '@/styles/global.scss'
 import '@/styles/quill-default.scss'
 import '@/styles/quill-editor.scss'
@@ -26,9 +21,7 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col bg-background font-abc">
         <ProgressBar />
         <WalletContext>
-          <DaoContext>
-            <MockStoreProvider>{children}</MockStoreProvider>
-          </DaoContext>
+          <MockStoreProvider>{children}</MockStoreProvider>
         </WalletContext>
       </body>
     </html>

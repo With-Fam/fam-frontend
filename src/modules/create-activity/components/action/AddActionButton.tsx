@@ -1,13 +1,6 @@
 'use client'
 
-// Components
 import { Button } from '@/components/shared'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Form
- */
 
 export function AddActionButton(): JSX.Element {
   return (
