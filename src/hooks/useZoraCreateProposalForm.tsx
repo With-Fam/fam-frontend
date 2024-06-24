@@ -1,51 +1,17 @@
-import { useProposalStore } from '@/modules/create-activity/stores'
 import { TransactionType } from '@/modules/create-activity/types'
 import { Address } from 'viem'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'next/navigation'
 import _get from 'lodash.get'
-import { Transaction } from '@/modules/create-activity/stores'
 import { ZoraCreateValues } from '@/modules/create-activity/components/zora-create/ZoraCreateForm.schema'
+import useCreateProposal from '@/hooks/useCreateProposal'
+import { useCreateActivityProvider } from '@/contexts/CreateActivityProvider'
 
-function hasChanged(
-  values: ZoraCreateValues,
-  previous: Pick<
-    Transaction,
-    | 'target'
-    | 'collectionImage'
-    | 'title'
-    | 'description'
-    | 'pricePerEdition'
-    | 'duration'
-    | 'payoutAddress'
-  >
-) {
-  return (
-    values.pricePerEdition !== previous.pricePerEdition ||
-    values.collectionImage !== previous.collectionImage ||
-    values.title !== previous.title ||
-    values.description !== previous.description ||
-    values.duration !== previous.duration ||
-    values.payoutAddress !== previous.payoutAddress
-  )
-}
-
-const useZoraCreateProposalForm = (callback: any) => {
-  const { addTransaction, editTransaction, transactions } = useProposalStore()
-  const exists = transactions.find(({ type }) => type === 'zora-create')
+const useZoraCreateProposalForm = () => {
   const { community } = useParams()
-  const defaultValues: Pick<
-    Transaction,
-    | 'target'
-    | 'collectionImage'
-    | 'title'
-    | 'description'
-    | 'pricePerEdition'
-    | 'duration'
-    | 'payoutAddress'
-    | 'customLimit'
-    | 'customEditionSize'
-  > = _get(exists, 'transactions[0]', {
+  const { create } = useCreateProposal(community)
+  const { setLoadingMessage, setLoading } = useCreateActivityProvider()
+  const defaultValues = {
     target: community as Address,
     collectionImage: '',
     title: '',
@@ -55,7 +21,7 @@ const useZoraCreateProposalForm = (callback: any) => {
     payoutAddress: community as Address,
     customLimit: 1,
     customEditionSize: 1000,
-  })
+  }
 
   const methods = useForm<ZoraCreateValues>({
     defaultValues: {
@@ -69,39 +35,29 @@ const useZoraCreateProposalForm = (callback: any) => {
       customEditionSize: defaultValues.customEditionSize,
     },
   })
-  const onSubmit = async (values: ZoraCreateValues) => {
-    if (exists && defaultValues && !hasChanged(values, defaultValues)) {
-      callback()
-      return
-    }
 
+  const onSubmit = async (values: ZoraCreateValues) => {
+    setLoading(true)
     const builderTransaction = {
       type: TransactionType.ZORA_CREATE,
-      transactions: [
-        {
-          functionSignature: 'zoraCreate(address)',
-          target: community as Address,
-          value: '',
-          collectionImage: values.collectionImage,
-          title: values.title,
-          description: values.description,
-          pricePerEdition: values.pricePerEdition,
-          duration: values.duration,
-          payoutAddress: values.payoutAddress,
-          customLimit: values.customLimit,
-          customEditionSize: values.customEditionSize,
-          calldata: '0x',
-        },
-      ],
+      functionSignature: 'zoraCreate(address)',
+      target: community as Address,
+      value: '',
+      collectionImage: values.collectionImage,
+      title: values.title,
+      description: values.description,
+      pricePerEdition: values.pricePerEdition,
+      duration: values.duration,
+      payoutAddress: values.payoutAddress,
+      customLimit: values.customLimit,
+      customEditionSize: values.customEditionSize,
+      calldata: '0x',
     }
 
-    if (exists) {
-      const idx = transactions.indexOf(exists)
-      editTransaction(idx, builderTransaction)
-    } else {
-      addTransaction(builderTransaction)
-    }
-    callback()
+    const response = await create(builderTransaction)
+    const { error } = response as any
+    if (!error) setLoadingMessage('Proposal posted. Redirecting...')
+    setLoading(false)
   }
 
   return {

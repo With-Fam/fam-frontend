@@ -1,13 +1,11 @@
 'use client'
 import { create } from 'zustand'
 
-import { ReviewProposalFormValues } from '@/modules/create-activity/components/review-proposal/schema'
 import { TransactionType } from '@/modules/create-activity/types'
 import { Maybe } from '@/types'
 
 export type FundraisingTargetValues = {
   amount: number
-  // number or date?
   votingPeriod: number
   hosts: string[]
 }
@@ -19,10 +17,6 @@ export interface ActivityFormStoreState {
   setAction: (action: string) => void
   fulfilledSections: string[]
   setFulfilledSections: (section: string) => void
-  proposal: ReviewProposalFormValues
-  setProposal: (proposal: ReviewProposalFormValues) => void
-  // fundraising: FundraisingTargetValues
-  // setFundraising: (fundraising: FundraisingTargetValues) => void
   resetForm: () => void
 }
 
@@ -44,10 +38,6 @@ export interface ActivityFormStoreState {
   setActivityType: (activity: Maybe<TransactionType>) => void
   fulfilledSections: string[]
   setFulfilledSections: (section: string) => void
-  // fundraising: FundraisingTargetValues
-  // setFundraising: (fundraising: FundraisingTargetValues) => void
-  proposal: ReviewProposalFormValues
-  setProposal: (proposal: ReviewProposalFormValues) => void
   resetForm: () => void
 }
 
@@ -68,6 +58,5 @@ export const useActivityFormStore = create<ActivityFormStoreState>((set) => ({
         : [...state.fulfilledSections],
     }))
   },
-  setProposal: (proposal) => set({ proposal }),
   resetForm: () => set({ ...initialState }),
 }))
