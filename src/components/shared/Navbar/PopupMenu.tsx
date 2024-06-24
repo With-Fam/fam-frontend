@@ -81,8 +81,6 @@ const PopupMenu = (): JSX.Element => {
     closed: { y: '100%', opacity: 1, scale: 1 },
   }
 
-  if (!connectedWallet) return <></>
-
   return (
     <div className="pointer-events-auto relative h-12">
       <button onClick={() => setOpen(true)} aria-label="open users menu">
