@@ -104,9 +104,7 @@ const PopupMenu = (): JSX.Element => {
         >
           <Close className="h-6 w-6" />
         </button>
-        {connectedWallet && (
-          <MenuUserRow address={connectedWallet as Address} />
-        )}
+        <MenuUserRow address={connectedWallet as Address} />
         {ethBalance && <WalletComponent userBalance={ethBalance} />}
         <MenuList address={connectedWallet as Address} />
       </motion.div>
