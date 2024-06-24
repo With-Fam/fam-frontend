@@ -13,7 +13,7 @@ import getSendEthProposalData from '@/lib/party/getSendEthProposalData'
 import getZoraCollectProposalData from '@/lib/party/getZoraCollectProposalData'
 import { getPublicClient } from '@/lib/viem'
 import { usePrivy } from '@privy-io/react-auth'
-import { Address, maxUint256, parseEther } from 'viem'
+import { Address, isAddress, maxUint256, parseEther } from 'viem'
 import getEnsAddress from '@/lib/getEnsAddress'
 import handleTxError from '@/lib/handleTxError'
 import getAddressFromZoraLink from '@/lib/getAddressFromZoraLink'
@@ -52,9 +52,10 @@ const useCreateProposal: any = (community: Address) => {
         proposalData = getSendEthProposalData(target, value)
 
       if (type === TransactionType.ZORA_COLLECT) {
-        const collectionAddress = getAddressFromZoraLink(value)
+        const collection = getAddressFromZoraLink(value)
+        if (!isAddress(collection)) return
         proposalData = getZoraCollectProposalData(
-          collectionAddress as Address,
+          collection as Address,
           SALE_STRATEGY[CHAIN.id],
           target,
           0,
