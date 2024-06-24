@@ -44,7 +44,7 @@ export default function CommunityProposal(): JSX.Element {
     proposalDetail?.proposalState === PROPOSAL_STATUS.Ready &&
     isAuthenticated &&
     isHost
-  const canVote =
+  const canApprove =
     proposalDetail?.proposalState === PROPOSAL_STATUS.Passed &&
     isAuthenticated &&
     isActiveVoting
@@ -98,7 +98,7 @@ export default function CommunityProposal(): JSX.Element {
           </div>
           <div className="flex items-center justify-between">
             <ProposalInfo proposal={proposalDetail} />
-            {canVote && (
+            {canApprove && (
               <VoteButton
                 proposal={proposalDetail}
                 community={community as Address}
