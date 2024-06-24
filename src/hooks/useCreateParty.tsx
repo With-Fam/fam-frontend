@@ -2,6 +2,8 @@ import {
   CROWDFUND_PARTY_FACTORY,
   INITIAL_ETH_CROWDFUND,
   METADATA_PROVIDER,
+  PARTY_FACTORY,
+  PARTY_IMPLEMENTATION,
 } from '@/constants/addresses'
 import { crowdfundFactoryAbi } from '@/data/contract/abis/CrowdfundFactory'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
@@ -31,8 +33,6 @@ const useCreateParty = () => {
     const passThresholdBps = passThreshold * BPS_MULTIPLIER
     const price = ethers.parseEther(membership.membershipPrice.toString())
     try {
-      const ONE_HOUR = 60 * 60
-      const MINIMUM_VOTE_DURATION = ONE_HOUR
       const publicClient = getPublicClient(chainId)
       const crowdfundOpts = {
         disableContributingForExistingCard: true,
@@ -62,8 +62,8 @@ const useCreateParty = () => {
         feeBps: membership.revenueSplit * 100,
         feeRecipient: '0x0e63D6f414b40BaFCa676810ef1aBf05ECc8E459',
         hosts,
-        partyFactory: '0xB418f5B001Af94A91daB2cE641E39722e1d9dDAC',
-        partyImpl: '0xeFA4054F3Db3D1f5e981513a3d8A33D91FC97dc1',
+        partyFactory: PARTY_FACTORY[chainId],
+        partyImpl: PARTY_IMPLEMENTATION[chainId],
         passThresholdBps: passThresholdBps,
         voteDuration: vetoPeriod,
       }
