@@ -1,22 +1,6 @@
-// Types
 import type { Metadata } from 'next'
-interface UsersProfileProps {
-  searchParams: {
-    type: string
-    page: string
-  }
-  params: { user: string; network: string }
-}
-
-// Content
-import ProfileClientPage from '@/components/profile/ProfileClientPage'
-import { getChainId } from '@/lib/getChainId'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Page
- */
+import { Address } from 'viem'
+import ProfilePage from '@/components/Pages/ProfilePage'
 
 export const metadata: Metadata = {
   title: 'User Profile',
@@ -45,25 +29,18 @@ export const metadata: Metadata = {
   },
 }
 
-const UserPage = ({ params, searchParams }: UsersProfileProps): JSX.Element => {
-  const { type = 'communities', page } = searchParams
-  const { user, network } = params
+interface UsersProfileProps {
+  params: { user: Address; network: number }
+}
 
-  const chainID = getChainId(network.toUpperCase().replace('-', '_'))
+const Profile = ({ params }: UsersProfileProps): JSX.Element => {
+  const { user } = params
 
   if (!user) {
     return <div className="px-16">User not found</div>
   }
 
-  return (
-    <ProfileClientPage
-      type={type}
-      user={user}
-      page={page}
-      chainID={chainID}
-      network={network}
-    />
-  )
+  return <ProfilePage />
 }
 
-export default UserPage
+export default Profile

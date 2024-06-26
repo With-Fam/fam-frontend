@@ -1,24 +1,15 @@
-// Local Components
 import { Cross, ExitIcon, EyeIcon, MemberIcon } from '@/components/icons'
 import MenuItem from '@/components/shared/Navbar/MenuItem'
-
-// Helpers
 import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { useState } from 'react'
 import { useRouter, useParams, usePathname } from 'next/navigation'
 import { useAccount, useSwitchChain } from 'wagmi'
 import { useChainStore } from '@/lib/stores/useChainStore'
+import { CHAIN_ID } from '@/constants/defaultChains'
 
-// Props
 type MenuListProps = {
   address: `0x${string}`
 }
-
-/*-------------------------------------------------------------------*/
-
-/**
- * Component
- */
 
 const MenuList = ({ address }: MenuListProps): JSX.Element => {
   const { logout } = useCheckAuth()
@@ -58,7 +49,7 @@ const MenuList = ({ address }: MenuListProps): JSX.Element => {
       </MenuItem>
       <MenuItem
         icon={<MemberIcon className="h-6 w-6" color="#000000" />}
-        href={`/profile/${selectedNetwork?.slug}/${address}`}
+        href={`/profile/${CHAIN_ID}/${address}`}
       >
         Profile
       </MenuItem>
