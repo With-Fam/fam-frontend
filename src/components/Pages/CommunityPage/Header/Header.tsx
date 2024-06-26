@@ -12,20 +12,26 @@ import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
 import { usePrivy } from '@privy-io/react-auth'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
+import FinalizeButton from '@/components/Pages/CommunityPage/Header/FinalizeButton'
+import useIsHost from '@/hooks/useIsHost'
+import { Address } from 'viem'
 
 const Header = () => {
   const { community } = useParams()
   const { join, checkJoining, joined, loading } = useJoinParty()
   const { partyInfo, members } = useCommunityProvider() as any
-  const { crowfundLifecyle } = useCrowdfund(community)
+  const { crowfundLifecyle, getCrowdfundLifeCyle } = useCrowdfund(community)
   const { authenticated, ready } = usePrivy()
   const { connectedWallet } = useConnectedWallet()
   const isAuthenticated = authenticated && ready && connectedWallet
-
+  const { isHost } = useIsHost(community, connectedWallet as Address)
   const shouldHide =
     !joined ||
     crowfundLifecyle !== CrowdfundLifecycle.Finalized ||
     !isAuthenticated
+
+  const canFinalize =
+    crowfundLifecyle !== CrowdfundLifecycle.Finalized && isHost
 
   const onJoin = async () => {
     await join()
@@ -65,6 +71,7 @@ const Header = () => {
               {loading ? 'Joining...' : 'Join'}
             </JoinButton>
           )}
+          {canFinalize && <FinalizeButton callback={getCrowdfundLifeCyle} />}
           {!shouldHide && <ActivityButton />}
         </div>
       </div>

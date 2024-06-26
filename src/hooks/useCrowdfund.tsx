@@ -1,6 +1,6 @@
 import getCrowdfundContract from '@/lib/party/getCrowdfundContract'
 import getCrowfundLifecycle from '@/lib/party/getCrowfundLifecycle'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export enum CrowdfundLifecycle {
   Invalid,
@@ -14,20 +14,22 @@ const useCrowdfund = (community: any) => {
   const [crowfundAddress, setCrowdfundAddress] = useState(null)
   const [crowfundLifecyle, setCrowdfundLifecyle] = useState<any>(null)
 
-  useEffect(() => {
-    const init = async () => {
-      const crowdfund = await getCrowdfundContract(community)
-      setCrowdfundAddress(crowdfund)
-      const lifecyle = await getCrowfundLifecycle(crowdfund)
-      setCrowdfundLifecyle(lifecyle)
-    }
+  const getCrowdfundLifeCyle = useCallback(async () => {
     if (!community) return
-    init()
+    const crowdfund = await getCrowdfundContract(community)
+    setCrowdfundAddress(crowdfund)
+    const lifecyle = await getCrowfundLifecycle(crowdfund)
+    setCrowdfundLifecyle(lifecyle)
   }, [community])
+
+  useEffect(() => {
+    getCrowdfundLifeCyle()
+  }, [getCrowdfundLifeCyle])
 
   return {
     crowfundAddress,
     crowfundLifecyle,
+    getCrowdfundLifeCyle,
   }
 }
 
