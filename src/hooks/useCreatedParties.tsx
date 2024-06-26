@@ -6,7 +6,7 @@ import { Address } from 'viem'
 
 type ChainId = 8453 | 84532
 
-const useCreatedParites = (chainId: number, address: Address) => {
+const useCreatedParties = (chainId: number, address: Address) => {
   const [parties, setParties] = useState<any>([])
   const [loading, setLoading] = useState(true)
 
@@ -40,4 +40,4 @@ const useCreatedParites = (chainId: number, address: Address) => {
   }
 }
 
-export default useCreatedParites
+export default useCreatedParties

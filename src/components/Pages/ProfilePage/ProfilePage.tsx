@@ -4,7 +4,7 @@ import React from 'react'
 import PartyCard from '@/components/Pages/ProfilePage/PartyCard'
 import { Loading, UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
-import useCreatedParites from '@/hooks/useCreatedParties'
+import useCreatedParties from '@/hooks/useCreatedParties'
 import { Heading } from '@/stories'
 import { useParams } from 'next/navigation'
 import { Address } from 'viem'
@@ -12,7 +12,7 @@ import { Address } from 'viem'
 const ProfilePage = () => {
   const { network, user } = useParams()
 
-  const { parties, loading } = useCreatedParites(
+  const { parties, loading } = useCreatedParties(
     parseInt(network as string, 10),
     user as Address
   )
