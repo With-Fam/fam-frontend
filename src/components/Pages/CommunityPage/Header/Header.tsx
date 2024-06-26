@@ -31,7 +31,7 @@ const Header = () => {
     !isAuthenticated
 
   const canFinalize =
-    crowfundLifecyle !== CrowdfundLifecycle.Finalized && isHost
+    crowfundLifecyle !== CrowdfundLifecycle.Finalized && isHost && joined
 
   const onJoin = async () => {
     await join()
