@@ -1,9 +1,11 @@
 import {
   CROWDFUND_PARTY_FACTORY,
+  GOVERNANCE_OPT_FEE_RECIPIENT,
   INITIAL_ETH_CROWDFUND,
   METADATA_PROVIDER,
   PARTY_FACTORY,
   PARTY_IMPLEMENTATION,
+  PARTY_OPT_AUTHORITIES,
 } from '@/constants/addresses'
 import { crowdfundFactoryAbi } from '@/data/contract/abis/CrowdfundFactory'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
@@ -59,8 +61,8 @@ const useCreateParty = () => {
 
       const governanceOpts = {
         executionDelay: 604800,
-        feeBps: membership.revenueSplit * 100,
-        feeRecipient: '0x0e63D6f414b40BaFCa676810ef1aBf05ECc8E459',
+        feeBps: 250,
+        feeRecipient: GOVERNANCE_OPT_FEE_RECIPIENT[CHAIN_ID],
         hosts,
         partyFactory: PARTY_FACTORY[chainId],
         partyImpl: PARTY_IMPLEMENTATION[chainId],
@@ -74,11 +76,8 @@ const useCreateParty = () => {
         enableAddAuthorityProposal: true,
       }
       const partyOpts = {
-        authorities: [
-          '0xD73a81cD18928b98A22008f1e28c81bb97202deE',
-          '0x8723B021b008dD370FBEc1C791C390A2BC957654',
-        ],
-        customizationPresetId: 2n,
+        authorities: PARTY_OPT_AUTHORITIES[CHAIN_ID],
+        customizationPresetId: 1n,
         governanceOpts,
         name: general.daoName,
         preciousTokens: [],
