@@ -38,7 +38,7 @@ const AcceptanceThreshold = () => {
                   field.onChange(value, index)
                   setSelectedThreshold(value)
                 }}
-                min={0}
+                min={1}
                 max={100}
                 suffix="%"
               />
