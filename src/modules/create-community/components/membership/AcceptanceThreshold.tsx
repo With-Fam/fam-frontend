@@ -12,7 +12,6 @@ const AcceptanceThreshold = () => {
   const [selectedThreshold, setSelectedThreshold] = useState(
     membership.threshold
   )
-
   return (
     <section className="mt-4 rounded-md bg-white">
       <div className="flex items-center gap-1 px-4 pt-4 text-left font-abcMedium text-sm">
@@ -38,7 +37,7 @@ const AcceptanceThreshold = () => {
                   field.onChange(value, index)
                   setSelectedThreshold(value)
                 }}
-                min={0}
+                min={1}
                 max={100}
                 suffix="%"
               />
