@@ -14,6 +14,8 @@ export interface Chain extends ViemChain {
   icon: string
 }
 
+export type ChainId = 8453 | 84532
+
 export type AddressType = `0x${string}`
 
 export type BytesType = `0x${string}`
