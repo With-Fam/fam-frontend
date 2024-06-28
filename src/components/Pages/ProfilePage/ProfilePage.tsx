@@ -4,7 +4,7 @@ import React from 'react'
 import PartyCard from '@/components/Pages/ProfilePage/PartyCard'
 import { Loading, UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
-import useCreatedParties from '@/hooks/useCreatedParties'
+import useJoinedParties from '@/hooks/useJoinedParties'
 import { Heading } from '@/stories'
 import { useParams } from 'next/navigation'
 import { Address } from 'viem'
@@ -12,7 +12,7 @@ import { Address } from 'viem'
 const ProfilePage = () => {
   const { network, user } = useParams()
 
-  const { parties, loading } = useCreatedParties(
+  const { parties, loading, hasNextPage, loadMore } = useJoinedParties(
     parseInt(network as string, 10),
     user as Address
   )
@@ -35,6 +35,17 @@ const ProfilePage = () => {
           parties.map((party: any) => <PartyCard party={party} key={party} />)
         )}
       </div>
+      {hasNextPage && !loading && (
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            onClick={loadMore}
+            className="rounded-full bg-blue-light px-3 py-1 font-abcMedium text-white"
+          >
+            Load More
+          </button>
+        </div>
+      )}
     </main>
   )
 }
