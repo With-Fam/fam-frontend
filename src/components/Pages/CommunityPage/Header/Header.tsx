@@ -59,11 +59,15 @@ const Header = () => {
           <p className="md:text-md break-normal font-abcWide text-sm text-grey	">
             {partyInfo?.description || ''}
           </p>
-          <p className="text-md font-abc text-grey md:hidden">23,450 members</p>
+          <div className="block md:hidden">
+            <TopMembers members={members.slice(0, 3)} />
+          </div>
         </div>
       </div>
-      <div className="hidden w-full justify-between md:flex">
-        <TopMembers members={members.slice(0, 3)} />
+      <div className="w-full justify-between md:flex">
+        <div className="hidden md:block">
+          <TopMembers members={members.slice(0, 3)} />
+        </div>
         <div className="flex items-center gap-2">
           <ShareButton />
           {!joined && (
