@@ -13,7 +13,7 @@ const Member = ({ data }: any) => {
 
   return (
     <Link
-      href={`/profile/${network}/${data.owner}`}
+      href={`/profile/${network}/${data.userAddress}`}
       key={data.id}
       className="mb-2 block rounded-lg bg-white p-4 sm:flex sm:items-center sm:justify-between"
     >
