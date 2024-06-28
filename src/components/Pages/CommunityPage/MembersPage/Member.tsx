@@ -3,17 +3,18 @@ import dynamic from 'next/dynamic'
 import EnsAddress from '@/components/shared/EnsAddress'
 import { useParams } from 'next/navigation'
 import useIsHost from '@/hooks/useIsHost'
+import { CHAIN_ID } from '@/constants/defaultChains'
 const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
   ssr: false,
 })
 
 const Member = ({ data }: any) => {
-  const { network, community } = useParams()
+  const { community } = useParams()
   const { isHost } = useIsHost(community, data.userAddress)
 
   return (
     <Link
-      href={`/profile/${network}/${data.owner}`}
+      href={`/profile/${CHAIN_ID}/${data.userAddress}`}
       key={data.id}
       className="mb-2 block rounded-lg bg-white p-4 sm:flex sm:items-center sm:justify-between"
     >
