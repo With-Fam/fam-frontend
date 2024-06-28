@@ -1,12 +1,10 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import toast from 'react-hot-toast'
 import schema, { type ConfirmFormValues } from './schema'
-import ConfirmCheckbox from './ConfirmCheckbox'
 import ContinueButton from '@/components/ContinueButton'
 import useDeploy from '@/hooks/useDeploy'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
@@ -57,14 +55,6 @@ export function ConfirmForm(): JSX.Element {
       <form onSubmit={handleSubmit(handleDeploy)}>
         <ProfileConfirmation />
         <MembershipConfirmation />
-        <div className="mt-10">
-          <ConfirmCheckbox name="deployDaoAcceptance">
-            I have acknowledged and agree to the{' '}
-            <Link href="#" className="text-orange">
-              Fam Terms of Service
-            </Link>
-          </ConfirmCheckbox>
-        </div>
         {isCorrectChain ? (
           <ContinueButton title="Create my Community" loading={isLoading} />
         ) : (
