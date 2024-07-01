@@ -41,8 +41,7 @@ export default function CommunityProposal(): JSX.Element {
     isAuthenticated &&
     !isActiveVoting
   const canVeto =
-    proposalDetail?.proposalState !== PROPOSAL_STATUS.Complete &&
-    proposalDetail?.proposalState !== PROPOSAL_STATUS.Defeated &&
+    proposalDetail?.proposalState === PROPOSAL_STATUS.Ready &&
     isAuthenticated &&
     isHost
   const canApprove =
