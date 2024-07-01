@@ -25,19 +25,20 @@ const useSendEthProposalForm = () => {
   const methods = useForm<SendEthValues>({
     defaultValues: {
       recipientAddress: defaultValues.target,
-      amount: Number(defaultValues.value),
+      amount: defaultValues.value,
     },
   })
   const onSubmit = async (values: SendEthValues) => {
     if (!(values.amount && values.recipientAddress)) return
-    if (values.amount <= 0) {
+    const amount = parseFloat(values.amount)
+    if (amount <= 0) {
       handleTxError({ message: 'Amount must be greater than zero.' })
       return
     }
     setLoading(true)
     const ensAddress = await getEnsAddress(values.recipientAddress)
     const target = (ensAddress || values.recipientAddress) as Address
-    const value = values.amount.toString()
+    const value = amount.toString()
 
     const builderTransaction = {
       type: TransactionType.SEND_ETH,
