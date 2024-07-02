@@ -33,6 +33,8 @@ const Header = () => {
   const canFinalize =
     crowfundLifecyle !== CrowdfundLifecycle.Finalized && isHost && joined
 
+  const canJoin = crowfundLifecyle !== CrowdfundLifecycle.Finalized && !joined
+
   const onJoin = async () => {
     await join()
     await checkJoining()
@@ -70,7 +72,7 @@ const Header = () => {
         </div>
         <div className="flex items-center gap-2">
           <ShareButton />
-          {!joined && (
+          {canJoin && (
             <JoinButton onClick={onJoin}>
               {loading ? 'Joining...' : 'Join'}
             </JoinButton>
