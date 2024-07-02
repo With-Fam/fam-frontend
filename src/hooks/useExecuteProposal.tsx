@@ -2,7 +2,7 @@ import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { getPublicClient } from '@/lib/viem'
-import { Address, parseEther } from 'viem'
+import { Address } from 'viem'
 
 const useExecuteProposal = (): any => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
