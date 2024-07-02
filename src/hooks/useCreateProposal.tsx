@@ -16,7 +16,7 @@ import { usePrivy } from '@privy-io/react-auth'
 import { Address, isAddress, maxUint256, parseEther } from 'viem'
 import getEnsAddress from '@/lib/getEnsAddress'
 import handleTxError from '@/lib/handleTxError'
-import getAddressFromZoraLink from '@/lib/getAddressFromZoraLink'
+import getCollectionInfoFromZoraLink from '@/lib/getCollectionInfoFromZoraLink'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -52,14 +52,18 @@ const useCreateProposal: any = (community: Address) => {
         proposalData = getSendEthProposalData(target, value)
 
       if (type === TransactionType.ZORA_COLLECT) {
-        const collectionAddress = getAddressFromZoraLink(value)
-        if (!isAddress(collectionAddress)) return false
+        const collectionInfo = getCollectionInfoFromZoraLink(value)
+        if (
+          !isAddress(collectionInfo.collectionAddress) ||
+          !collectionInfo.tokenId
+        )
+          return false
         proposalData = getZoraCollectProposalData(
-          collectionAddress as Address,
+          collectionInfo.collectionAddress as Address,
           SALE_STRATEGY[CHAIN.id],
           target,
           0,
-          1n
+          collectionInfo.tokenId
         )
       }
 
