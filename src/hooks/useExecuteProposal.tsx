@@ -34,7 +34,6 @@ const useExecuteProposal = (): any => {
           progressData,
           extraData,
         ],
-        value: parseEther('0'),
       })
       const publicClient = getPublicClient(CHAIN_ID)
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
