@@ -60,7 +60,7 @@ const useCreateParty = () => {
       const hosts = await Promise.all(hostsPromise)
 
       const governanceOpts = {
-        executionDelay: 604800,
+        executionDelay: vetoPeriod,
         feeBps: 250,
         feeRecipient: GOVERNANCE_OPT_FEE_RECIPIENT[CHAIN_ID],
         hosts,
