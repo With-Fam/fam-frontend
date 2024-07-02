@@ -21,11 +21,8 @@ export function SendEth(): JSX.Element {
             <TextInput
               name="amount"
               label="Amount"
-              type="number"
               defaultValue="1"
-              step="0.000001"
               className="block w-full text-lg outline-0"
-              min={0}
             />
           </div>
           <TextInput
