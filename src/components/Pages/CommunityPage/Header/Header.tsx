@@ -18,22 +18,34 @@ import { Address } from 'viem'
 
 const Header = () => {
   const { community } = useParams()
-  const { join, checkJoining, joined, loading } = useJoinParty()
+  const { join, checkJoining, joined, loading: joinLoading } = useJoinParty()
   const { partyInfo, members } = useCommunityProvider() as any
-  const { crowfundLifecyle, getCrowdfundLifeCyle } = useCrowdfund(community)
+  const {
+    crowfundLifecyle,
+    getCrowdfundLifeCyle,
+    loading: crowdfundLoading,
+  } = useCrowdfund(community)
   const { authenticated, ready } = usePrivy()
   const { connectedWallet } = useConnectedWallet()
   const isAuthenticated = authenticated && ready && connectedWallet
-  const { isHost } = useIsHost(community, connectedWallet as Address)
-  const shouldHide =
-    !joined ||
-    crowfundLifecyle !== CrowdfundLifecycle.Finalized ||
-    !isAuthenticated
+  const { isHost, loading: hostLoading } = useIsHost(
+    community,
+    connectedWallet as Address
+  )
 
+  const loading = joinLoading || hostLoading || crowdfundLoading
+  const canActivity =
+    joined &&
+    crowfundLifecyle === CrowdfundLifecycle.Finalized &&
+    isAuthenticated &&
+    !loading
   const canFinalize =
-    crowfundLifecyle !== CrowdfundLifecycle.Finalized && isHost && joined
-
-  const canJoin = crowfundLifecyle !== CrowdfundLifecycle.Finalized && !joined
+    crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
+    isHost &&
+    joined &&
+    !loading
+  const canJoin =
+    crowfundLifecyle !== CrowdfundLifecycle.Finalized && !joined && !loading
 
   const onJoin = async () => {
     await join()
@@ -74,11 +86,11 @@ const Header = () => {
           <ShareButton />
           {canJoin && (
             <JoinButton onClick={onJoin}>
-              {loading ? 'Joining...' : 'Join'}
+              {joinLoading ? 'Joining...' : 'Join'}
             </JoinButton>
           )}
           {canFinalize && <FinalizeButton callback={getCrowdfundLifeCyle} />}
-          {!shouldHide && <ActivityButton />}
+          {!canActivity && <ActivityButton />}
         </div>
       </div>
     </section>

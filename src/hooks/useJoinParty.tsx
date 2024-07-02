@@ -17,7 +17,7 @@ const useJoinParty = () => {
   const { walletClient } = usePrivyWalletClient()
   const { connectedWallet } = useConnectedWallet()
   const publicClient = getPublicClient(CHAIN_ID)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const join = async () => {
     if (!walletClient || !connectedWallet) return
@@ -66,6 +66,7 @@ const useJoinParty = () => {
 
   const checkJoining = useCallback(async () => {
     if (!community || !connectedWallet) return
+    setLoading(true)
     const balance = await balanceOf(
       community as Address,
       connectedWallet as Address
@@ -76,6 +77,7 @@ const useJoinParty = () => {
       return
     }
     setJoined(false)
+    setLoading(false)
   }, [community, connectedWallet])
 
   useEffect(() => {

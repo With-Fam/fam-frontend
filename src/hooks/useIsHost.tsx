@@ -6,9 +6,11 @@ import { Address } from 'viem'
 
 const useIsHost = (community: any, address: Address) => {
   const [isHost, setIsHost] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const init = async () => {
+      setLoading(true)
       const publicClient = getPublicClient(CHAIN_ID)
       const data = await publicClient.readContract({
         address: community as Address,
@@ -17,6 +19,7 @@ const useIsHost = (community: any, address: Address) => {
         args: [address as Address],
       })
       setIsHost(data)
+      setLoading(false)
     }
     if (!address || !community) return
     init()
@@ -24,6 +27,7 @@ const useIsHost = (community: any, address: Address) => {
 
   return {
     isHost,
+    loading,
   }
 }
 
