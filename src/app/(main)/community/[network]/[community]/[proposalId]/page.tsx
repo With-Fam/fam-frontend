@@ -30,7 +30,11 @@ export default function CommunityProposal(): JSX.Element {
   const { push } = useRouter()
   const { countdown, isActiveVoting } = useProposalTimer(proposalDetail)
 
-  const { canApprove, canExecute, canVeto, isAuthenticated } = useProposalState(community, proposalDetail, isActiveVoting)
+  const { canApprove, canExecute, canVeto, isAuthenticated } = useProposalState(
+    community,
+    proposalDetail,
+    isActiveVoting
+  )
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">
