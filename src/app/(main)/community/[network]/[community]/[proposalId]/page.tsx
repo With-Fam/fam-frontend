@@ -9,20 +9,14 @@ import VoteButton from '@/components/Pages/CommunityPage/ProposalPage/VoteButton
 import ProposalStatus from '@/components/Pages/CommunityPage/ProposalStatus'
 import { Loading, UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
-import useConnectedWallet from '@/hooks/useConnectedWallet'
-import useIsHost from '@/hooks/useIsHost'
-import { PROPOSAL_STATUS } from '@/hooks/useProposalData'
 import useProposalDetail from '@/hooks/useProposalDetail'
+import useProposalState from '@/hooks/useProposalState'
 import useProposalTimer from '@/hooks/useProposalTimer'
 import getProposalStatus from '@/lib/getProposalStatus'
-import { usePrivy } from '@privy-io/react-auth'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { Address } from 'viem'
 
 export default function CommunityProposal(): JSX.Element {
-  const { ready, authenticated } = usePrivy()
-  const { connectedWallet } = useConnectedWallet()
-  const isAuthenticated = ready && authenticated && connectedWallet
   const { proposalId } = useParams()
   const searchParams = useSearchParams()
   const blockNumber = searchParams.get('blockNumber')
@@ -32,22 +26,15 @@ export default function CommunityProposal(): JSX.Element {
     proposalId,
     blockNumber
   )
-  const { isHost } = useIsHost(community, connectedWallet as Address)
   const status = getProposalStatus(proposalDetail)
   const { push } = useRouter()
   const { countdown, isActiveVoting } = useProposalTimer(proposalDetail)
-  const canExecute =
-    proposalDetail?.proposalState === PROPOSAL_STATUS.Ready &&
-    isAuthenticated &&
-    !isActiveVoting
-  const canVeto =
-    proposalDetail?.proposalState === PROPOSAL_STATUS.Ready &&
-    isAuthenticated &&
-    isHost
-  const canApprove =
-    proposalDetail?.proposalState === PROPOSAL_STATUS.Passed &&
-    isAuthenticated &&
+
+  const { canApprove, canExecute, canVeto, isAuthenticated } = useProposalState(
+    community,
+    proposalDetail,
     isActiveVoting
+  )
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">
