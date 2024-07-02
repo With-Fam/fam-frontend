@@ -11,6 +11,7 @@ import getEnsAddress from '@/lib/getEnsAddress'
 import useCreateProposal from '@/hooks/useCreateProposal'
 import { useCreateActivityProvider } from '@/contexts/CreateActivityProvider'
 import { useParams } from 'next/navigation'
+import handleTxError from '@/lib/handleTxError'
 
 const useSendEthProposalForm = () => {
   const { community } = useParams()
@@ -18,21 +19,26 @@ const useSendEthProposalForm = () => {
   const { create } = useCreateProposal(community)
   const defaultValues = {
     target: '' as AddressType,
-    value: '0',
+    value: '0.000001',
   }
 
   const methods = useForm<SendEthValues>({
     defaultValues: {
       recipientAddress: defaultValues.target,
-      amount: Number(defaultValues.value),
+      amount: defaultValues.value,
     },
   })
   const onSubmit = async (values: SendEthValues) => {
     if (!(values.amount && values.recipientAddress)) return
+    const amount = parseFloat(values.amount)
+    if (amount <= 0) {
+      handleTxError({ message: 'Amount must be greater than zero.' })
+      return
+    }
     setLoading(true)
     const ensAddress = await getEnsAddress(values.recipientAddress)
     const target = (ensAddress || values.recipientAddress) as Address
-    const value = values.amount.toString()
+    const value = amount.toString()
 
     const builderTransaction = {
       type: TransactionType.SEND_ETH,
