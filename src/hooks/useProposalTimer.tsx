@@ -13,7 +13,8 @@ const useProposalTimer = (proposal: any) => {
     if (!proposal || !connectedWallet) return
     const executeTimer = setInterval(() => {
       const currentTime = Date.now()
-      const expectedTime = proposal.maxExecutableTime * 1000
+      const expectedTime =
+        (proposal.proposedTime + proposal.vetoDurationSeconds) * 1000
       if (currentTime >= expectedTime) {
         clearInterval(executeTimer)
         setCountdown('Finished')
