@@ -5,40 +5,24 @@ import TopMembers from '@/components/Pages/CommunityPage/Header/TopMembers'
 import ShareButton from '@/components/Pages/CommunityPage/Header/ShareButton'
 import Image from 'next/image'
 import JoinButton from '@/components/Pages/CommunityPage/Header/JoinButton'
-import useJoinParty from '@/hooks/useJoinParty'
 import { useParams } from 'next/navigation'
-import useCrowdfund, { CrowdfundLifecycle } from '@/hooks/useCrowdfund'
 import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
-import { usePrivy } from '@privy-io/react-auth'
-import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
 import FinalizeButton from '@/components/Pages/CommunityPage/Header/FinalizeButton'
-import useIsHost from '@/hooks/useIsHost'
+import useCommunityButtons from '@/hooks/useCommunityButtons'
 import { Address } from 'viem'
 
 const Header = () => {
   const { community } = useParams()
-  const { join, checkJoining, joined, loading } = useJoinParty()
   const { partyInfo, members } = useCommunityProvider() as any
-  const { crowfundLifecyle, getCrowdfundLifeCyle } = useCrowdfund(community)
-  const { authenticated, ready } = usePrivy()
-  const { connectedWallet } = useConnectedWallet()
-  const isAuthenticated = authenticated && ready && connectedWallet
-  const { isHost } = useIsHost(community, connectedWallet as Address)
-  const shouldHide =
-    !joined ||
-    crowfundLifecyle !== CrowdfundLifecycle.Finalized ||
-    !isAuthenticated
-
-  const canFinalize =
-    crowfundLifecyle !== CrowdfundLifecycle.Finalized && isHost && joined
-
-  const canJoin = crowfundLifecyle !== CrowdfundLifecycle.Finalized && !joined
-
-  const onJoin = async () => {
-    await join()
-    await checkJoining()
-  }
+  const {
+    canCreateActivity,
+    canFinalize,
+    canJoin,
+    handleJoin,
+    getCrowdfundLifeCyle,
+    joinLoading,
+  } = useCommunityButtons(community as Address)
 
   return (
     <section
@@ -73,12 +57,12 @@ const Header = () => {
         <div className="flex items-center gap-2">
           <ShareButton />
           {canJoin && (
-            <JoinButton onClick={onJoin}>
-              {loading ? 'Joining...' : 'Join'}
+            <JoinButton onClick={handleJoin}>
+              {joinLoading ? 'Joining...' : 'Join'}
             </JoinButton>
           )}
           {canFinalize && <FinalizeButton callback={getCrowdfundLifeCyle} />}
-          {!shouldHide && <ActivityButton />}
+          {canCreateActivity && <ActivityButton />}
         </div>
       </div>
     </section>

@@ -13,13 +13,16 @@ export enum CrowdfundLifecycle {
 const useCrowdfund = (community: any) => {
   const [crowfundAddress, setCrowdfundAddress] = useState(null)
   const [crowfundLifecyle, setCrowdfundLifecyle] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
   const getCrowdfundLifeCyle = useCallback(async () => {
     if (!community) return
+    setLoading(true)
     const crowdfund = await getCrowdfundContract(community)
     setCrowdfundAddress(crowdfund)
     const lifecyle = await getCrowfundLifecycle(crowdfund)
     setCrowdfundLifecyle(lifecyle)
+    setLoading(false)
   }, [community])
 
   useEffect(() => {
@@ -30,6 +33,7 @@ const useCrowdfund = (community: any) => {
     crowfundAddress,
     crowfundLifecyle,
     getCrowdfundLifeCyle,
+    loading,
   }
 }
 
