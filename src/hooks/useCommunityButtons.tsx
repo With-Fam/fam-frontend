@@ -21,7 +21,7 @@ const useCommunityButtons = (community: Address) => {
   )
 
   const loading = joinLoading || hostLoading || crowdfundLoading
-  const canActivity =
+  const canCreateActivity =
     joined &&
     crowfundLifecyle === CrowdfundLifecycle.Finalized &&
     isAuthenticated &&
@@ -43,7 +43,7 @@ const useCommunityButtons = (community: Address) => {
     handleJoin,
     canFinalize,
     canJoin,
-    canActivity,
+    canCreateActivity,
     getCrowdfundLifeCyle,
     joinLoading,
   }

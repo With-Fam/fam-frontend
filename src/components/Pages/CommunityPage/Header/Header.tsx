@@ -16,7 +16,7 @@ const Header = () => {
   const { community } = useParams()
   const { partyInfo, members } = useCommunityProvider() as any
   const {
-    canActivity,
+    canCreateActivity,
     canFinalize,
     canJoin,
     handleJoin,
@@ -62,7 +62,7 @@ const Header = () => {
             </JoinButton>
           )}
           {canFinalize && <FinalizeButton callback={getCrowdfundLifeCyle} />}
-          {!canActivity && <ActivityButton />}
+          {!canCreateActivity && <ActivityButton />}
         </div>
       </div>
     </section>
