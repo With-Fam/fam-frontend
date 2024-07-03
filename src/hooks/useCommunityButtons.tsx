@@ -39,6 +39,7 @@ const useCommunityButtons = (community: Address) => {
   const handleJoin = async () => {
     await join()
     await checkJoining()
+    await getCrowdfundLifeCyle()
   }
 
   return {
