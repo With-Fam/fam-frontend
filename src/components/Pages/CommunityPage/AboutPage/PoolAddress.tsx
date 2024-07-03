@@ -21,9 +21,9 @@ const PoolAddress = () => {
           Community pool address
         </Paragraph>
         <a
-        href={`https://basescan.org/address/${community}`}
-        target="_blank"˝
-        rel="noopener noreferrer"
+        href={`https://basescan.org/address/${community as Address}`}
+        target="_blank"
+
       >
         <Icon id="external-link" fill="#ffffff" />
       </a>
