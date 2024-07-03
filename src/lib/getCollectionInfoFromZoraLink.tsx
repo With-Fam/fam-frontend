@@ -1,13 +1,4 @@
-import { isAddress } from 'viem'
-
 const getCollectionInfoFromZoraLink = (zoralink: string) => {
-  if (isAddress(zoralink)) {
-    return {
-      collectionAddress: zoralink,
-      tokenId: 1n,
-    }
-  }
-
   const addressPattern = /(?:base|bsep):0x[a-fA-F0-9]{40}\/(\d+)/
   const match = zoralink.match(addressPattern)
 
