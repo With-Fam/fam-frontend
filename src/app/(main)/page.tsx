@@ -18,6 +18,7 @@ import { Suspense } from 'react'
  */
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://withfam.xyz'),
   title: 'Your fam, onchain',
   description:
     'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
@@ -36,13 +37,11 @@ export const metadata: Metadata = {
     'Music Community Building',
   ],
   openGraph: {
-    type: 'website',
-    url: 'https://app.withfam.xyz',
-    title: 'Fam',
+    url: 'https://withfam.xyz',
+    title: 'Your fam, onchain',
     description:
       'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
-    siteName: 'Fam',
-    images: [{ url: 'https://app.withfam.xyz/opengraph-image.png', width: 128, height: 128 }],
+    images: ['/opengraph-image.png'],
   },
 }
 
