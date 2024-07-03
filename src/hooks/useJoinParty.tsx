@@ -74,6 +74,7 @@ const useJoinParty = () => {
 
     if (balance > 0) {
       setJoined(true)
+      setLoading(false)
       return
     }
     setJoined(false)
