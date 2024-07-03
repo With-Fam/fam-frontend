@@ -62,7 +62,7 @@ const Header = () => {
             </JoinButton>
           )}
           {canFinalize && <FinalizeButton callback={getCrowdfundLifeCyle} />}
-          {!canCreateActivity && <ActivityButton />}
+          {canCreateActivity && <ActivityButton />}
         </div>
       </div>
     </section>

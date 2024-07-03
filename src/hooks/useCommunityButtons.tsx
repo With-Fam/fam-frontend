@@ -26,11 +26,13 @@ const useCommunityButtons = (community: Address) => {
     crowfundLifecyle === CrowdfundLifecycle.Finalized &&
     isAuthenticated &&
     !loading
+
   const canFinalize =
     crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
     isHost &&
     joined &&
     !loading
+
   const canJoin =
     crowfundLifecyle !== CrowdfundLifecycle.Finalized && !joined && !loading
 
