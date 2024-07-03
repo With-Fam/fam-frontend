@@ -37,12 +37,12 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: 'website',
-    url: 'https://todo.dev',
-    title: 'todo.dev',
+    url: 'https://app.withfam.xyz',
+    title: 'Fam',
     description:
       'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
-    siteName: 'todo.dev',
-    images: [{ url: '/img/favicon.png', width: 128, height: 128 }],
+    siteName: 'Fam',
+    images: [{ url: 'https://app.withfam.xyz/opengraph-image.png', width: 128, height: 128 }],
   },
 }
 
