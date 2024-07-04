@@ -1,6 +1,7 @@
 'use client'
 
 import { Icon } from '@/components/Icon'
+import { LongArrow } from '@/components/icons'
 import ProposalAction from '@/components/Pages/CommunityPage/ProposalPage/ProposalAction'
 import ProposalComments from '@/components/Pages/CommunityPage/ProposalPage/ProposalComments'
 import ProposalInfo from '@/components/Pages/CommunityPage/ProposalPage/ProposalInfo'
@@ -41,10 +42,10 @@ export default function CommunityProposal(): JSX.Element {
       ) : (
         <>
           <button
-            className="my-3 flex items-center gap-2 font-abcMedium text-grey"
+            className="mb-8 flex h-8 w-8 cursor-pointer flex-col items-center justify-center rounded-full bg-grey-light"
             onClick={() => push(`/community/${network}/${community}`)}
           >
-            <Icon id="arrowLeft" fill="#a7a7a7" /> Back
+            <LongArrow />
           </button>
           <div className="flex justify-between font-abc text-grey">
             <div className="flex items-center gap-2">
