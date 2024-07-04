@@ -11,7 +11,7 @@ import { Loading, UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
 import useProposalDetail from '@/hooks/useProposalDetail'
 import useProposalState from '@/hooks/useProposalState'
-import useProposalVoteTimer from '@/hooks/useProposalVoteTimer'
+import useProposalVetoTimer from '@/hooks/useProposalVetoTimer'
 import getProposalStatus from '@/lib/getProposalStatus'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { Address } from 'viem'
@@ -28,7 +28,7 @@ export default function CommunityProposal(): JSX.Element {
   )
   const status = getProposalStatus(proposalDetail)
   const { push } = useRouter()
-  const { voteCountdown } = useProposalVoteTimer(proposalDetail)
+  const { vetoCountdown } = useProposalVetoTimer(proposalDetail)
 
   const { canApprove, canExecute, canVeto, isAuthenticated } = useProposalState(
     community,
@@ -68,7 +68,7 @@ export default function CommunityProposal(): JSX.Element {
               <span className="text-[20px]">votes</span>
             </p>
             <div className="flex items-center justify-center rounded-full bg-grey px-4 py-1 text-grey-light">
-              {voteCountdown}
+              {vetoCountdown}
             </div>
           </div>
           {canVeto && (

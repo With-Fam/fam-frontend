@@ -1,13 +1,11 @@
-import useConnectedWallet from '@/hooks/useConnectedWallet'
 import getDiffFormattedDuration from '@/lib/getDiffFormattedDuration'
 import { useEffect, useState } from 'react'
 
 const useProposalVoteTimer = (proposal: any) => {
   const [voteCountdown, setVoteCountdown] = useState('')
-  const { connectedWallet } = useConnectedWallet()
 
   useEffect(() => {
-    if (!proposal || !connectedWallet) return
+    if (!proposal) return
 
     const voteTimer = setInterval(() => {
       const currentTime = Date.now()
@@ -25,7 +23,7 @@ const useProposalVoteTimer = (proposal: any) => {
     return () => {
       clearInterval(voteTimer)
     }
-  }, [proposal, connectedWallet])
+  }, [proposal])
 
   return {
     voteCountdown,
