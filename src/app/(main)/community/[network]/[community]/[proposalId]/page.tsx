@@ -18,34 +18,7 @@ import getProposalStatus from '@/lib/getProposalStatus'
 import { usePrivy } from '@privy-io/react-auth'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { Address } from 'viem'
-import { LongArrow } from '@/components/icons'
-import { AnimatePresence, motion } from 'framer-motion'
-import { PropsWithChildren } from 'react'
-
-const variants = {
-  initial: {
-    opacity: 0,
-    top: -5,
-  },
-  enter: {
-    opacity: 1,
-    top: 0,
-  },
-}
-
-const MotionSVG = ({ children }: PropsWithChildren): JSX.Element => {
-  return (
-    <motion.div
-      variants={variants}
-      initial="initial"
-      animate="enter"
-      exit="initial"
-      transition={{ duration: 0.1 }}
-    >
-      {children}
-    </motion.div>
-  )
-}
+import { CreateContextNavigation } from '@/components/shared'
 
 export default function CommunityProposal(): JSX.Element {
   const { ready, authenticated } = usePrivy()
@@ -83,17 +56,11 @@ export default function CommunityProposal(): JSX.Element {
         <Loading />
       ) : (
         <>
-             <div
-            className="my-3 flex items-center gap-2 font-abcMedium text-grey cursor-pointer"
-            onClick={() => push(`/community/${network}/${community}`)}
-          >
-            <AnimatePresence>
-              <MotionSVG>
-                <LongArrow />
-              </MotionSVG>
-            </AnimatePresence>
-            <span>Back</span>
-          </div>
+             <CreateContextNavigation
+  step={0}
+  prev={() => push(`/community/${network}/${community}`)}
+  title={proposalDetail.name}
+/>
 
           <div className="flex justify-between font-abc text-grey">
             <div className="flex items-center gap-2">
