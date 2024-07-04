@@ -9,12 +9,12 @@ const useIsActiveVoting = (proposal: any) => {
   )
 
   const isActiveVoting =
-    (proposalState === PROPOSAL_STATUS.Passed ||
-      proposalState === PROPOSAL_STATUS.Voting) &&
-    !isVoter
+    proposalState === PROPOSAL_STATUS.Passed ||
+    proposalState === PROPOSAL_STATUS.Voting
 
   return {
     isActiveVoting,
+    isVoter,
   }
 }
 

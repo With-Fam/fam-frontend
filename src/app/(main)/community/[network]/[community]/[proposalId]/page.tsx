@@ -15,7 +15,6 @@ import useProposalVetoTimer from '@/hooks/useProposalVetoTimer'
 import getProposalStatus from '@/lib/getProposalStatus'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { Address } from 'viem'
-import useIsActiveVoting from '@/hooks/useIsActiveVoting'
 
 export default function CommunityProposal(): JSX.Element {
   const { proposalId } = useParams()
@@ -30,11 +29,10 @@ export default function CommunityProposal(): JSX.Element {
   const status = getProposalStatus(proposalDetail)
   const { push } = useRouter()
   const { vetoCountdown } = useProposalVetoTimer(proposalDetail)
-  const { isActiveVoting } = useIsActiveVoting(proposalDetail)
+
   const { canApprove, canExecute, canVeto, isAuthenticated } = useProposalState(
     community,
-    proposalDetail,
-    isActiveVoting
+    proposalDetail
   )
 
   return (
