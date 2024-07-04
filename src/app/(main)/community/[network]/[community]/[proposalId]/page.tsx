@@ -57,7 +57,7 @@ export default function CommunityProposal(): JSX.Element {
       ) : (
         <>
              <CreateContextNavigation
-  step={0}
+  step={1}
   prev={() => push(`/community/${network}/${community}`)}
   title={proposalDetail.name}
 />
