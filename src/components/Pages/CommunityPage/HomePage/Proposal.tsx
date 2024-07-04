@@ -9,6 +9,7 @@ import getProposalStatus from '@/lib/getProposalStatus'
 import dynamic from 'next/dynamic'
 import { useParams, useRouter } from 'next/navigation'
 import useProposalVoteTimer from '@/hooks/useProposalVoteTimer'
+import useIsActiveVoting from '@/hooks/useIsActiveVoting'
 const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
   ssr: false,
 })
@@ -17,7 +18,8 @@ const Proposal = ({ data, proposalIndex }: any) => {
   const { push } = useRouter()
   const { network, community } = useParams()
   const { setSelectedProposalIndex } = useProposalProvider() as any
-  const { voteCountdown, isActiveVoting } = useProposalVoteTimer(data)
+  const { voteCountdown } = useProposalVoteTimer(data)
+  const { isActiveVoting } = useIsActiveVoting(data)
   const status = getProposalStatus(data)
 
   const { proposalComments } = useProposalComments(community, data.proposalId)
