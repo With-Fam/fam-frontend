@@ -18,8 +18,34 @@ import getProposalStatus from '@/lib/getProposalStatus'
 import { usePrivy } from '@privy-io/react-auth'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { Address } from 'viem'
-import { Close, LongArrow } from '@/components/icons'
+import { LongArrow } from '@/components/icons'
 import { AnimatePresence, motion } from 'framer-motion'
+import { PropsWithChildren } from 'react'
+
+const variants = {
+  initial: {
+    opacity: 0,
+    top: -5,
+  },
+  enter: {
+    opacity: 1,
+    top: 0,
+  },
+}
+
+const MotionSVG = ({ children }: PropsWithChildren): JSX.Element => {
+  return (
+    <motion.div
+      variants={variants}
+      initial="initial"
+      animate="enter"
+      exit="initial"
+      transition={{ duration: 0.1 }}
+    >
+      {children}
+    </motion.div>
+  )
+}
 
 export default function CommunityProposal(): JSX.Element {
   const { ready, authenticated } = usePrivy()
@@ -57,7 +83,7 @@ export default function CommunityProposal(): JSX.Element {
         <Loading />
       ) : (
         <>
-           <div
+             <div
             className="my-3 flex items-center gap-2 font-abcMedium text-grey cursor-pointer"
             onClick={() => push(`/community/${network}/${community}`)}
           >
@@ -68,6 +94,7 @@ export default function CommunityProposal(): JSX.Element {
             </AnimatePresence>
             <span>Back</span>
           </div>
+
           <div className="flex justify-between font-abc text-grey">
             <div className="flex items-center gap-2">
               <UserAvatar
