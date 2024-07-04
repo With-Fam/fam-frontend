@@ -17,14 +17,6 @@ import { Suspense } from 'react'
  * Page
  */
 
-
-import React, { Suspense } from 'react';
-import Head from 'next/head';
-import { 
-  Hero,
-  TrendingSection,
-} from '@/components/home';
-
 export const metadata = {
   metadataBase: new URL('https://withfam.xyz'),
   title: 'Fam',
@@ -78,9 +70,11 @@ const Home = (): JSX.Element => {
         <meta property="og:image:alt" content={metadata.openGraph.images[0].alt} />
       </Head>
       <Suspense>
-        <Hero />
-        <TrendingSection />
-      </Suspense>
+      <Hero />
+      <CollectiveCulture />
+      <FeatureWidgets />
+      <FAQ />
+    </Suspense>
     </>
   );
 };
