@@ -5,6 +5,7 @@ import _get from 'lodash.get'
 import { TextInput } from '@/components/forms'
 import AddActionButton from '@/components/AddActionButton'
 import useZoraCollectProposalForm from '@/hooks/useZoraCollectProposalForm'
+import { Paragraph } from '@/stories'
 
 export function ZoraCollect(): JSX.Element {
   const { methods, handleSubmit, onSubmit } = useZoraCollectProposalForm()
@@ -17,7 +18,10 @@ export function ZoraCollect(): JSX.Element {
         className="mx-auto w-full max-w-[668px]"
       >
         <div className="flex flex-col gap-2">
-          <div className="relative z-0">
+        <Paragraph as="p4" className="mt-0 text-grey-dark sm:mt-10">
+        Paste the URL of the NFT you’d like to collect on Zora. We currently only support collecting on Base
+    </Paragraph>
+          <div className="relative z-0" style={{ display: 'none' }}>
             <TextInput
               name="tokenRecipient"
               label="Party"

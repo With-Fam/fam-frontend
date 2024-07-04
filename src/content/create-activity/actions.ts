@@ -16,8 +16,8 @@ const ACTIONS_DATA = [
   },
   {
     id: 'zora-collect',
-    title: 'Zora Collect',
-    description: 'Bring your own party. collect on zora.',
+    title: 'Collect on Zora',
+    description: 'Collect onchain media with your community',
     image: '/assets/images/create-activity/pyramid.jpg',
     href: '/create-activity/add/zoracollect',
   },
