@@ -46,13 +46,19 @@ const Header = () => {
             {partyInfo?.description || ''}
           </p>
           <div className="block md:hidden">
-            <TopMembers members={members.slice(0, 3)} />
+            <TopMembers
+              topMembers={members.slice(0, 3)}
+              membersNum={members.length}
+            />
           </div>
         </div>
       </div>
       <div className="w-full justify-between md:flex">
         <div className="hidden md:block">
-          <TopMembers members={members.slice(0, 3)} />
+          <TopMembers
+            topMembers={members.slice(0, 3)}
+            membersNum={members.length}
+          />
         </div>
         <div className="flex items-center gap-2">
           <ShareButton />
