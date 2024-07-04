@@ -6,12 +6,15 @@ import ProposalComments from '@/components/Pages/CommunityPage/ProposalPage/Prop
 import ProposalInfo from '@/components/Pages/CommunityPage/ProposalPage/ProposalInfo'
 import VetoButton from '@/components/Pages/CommunityPage/ProposalPage/VetoButton'
 import VoteButton from '@/components/Pages/CommunityPage/ProposalPage/VoteButton'
+import VotesBar from '@/components/Pages/CommunityPage/ProposalPage/VotesBar'
 import ProposalStatus from '@/components/Pages/CommunityPage/ProposalStatus'
 import { Loading, UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
 import useProposalDetail from '@/hooks/useProposalDetail'
 import useProposalState from '@/hooks/useProposalState'
 import useProposalVetoTimer from '@/hooks/useProposalVetoTimer'
+import useProposalVoteTimer from '@/hooks/useProposalVoteTimer'
+import useVotingStatus from '@/hooks/useVotingStatus'
 import getProposalStatus from '@/lib/getProposalStatus'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { Address } from 'viem'
@@ -28,8 +31,10 @@ export default function CommunityProposal(): JSX.Element {
   )
   const status = getProposalStatus(proposalDetail)
   const { push } = useRouter()
+  const { voteCountdown } = useProposalVoteTimer(proposalDetail)
   const { vetoCountdown } = useProposalVetoTimer(proposalDetail)
-
+  const { isActiveVoting, displayedPercent, needToPassNum } =
+    useVotingStatus(proposalDetail)
   const { canApprove, canExecute, canVeto, isAuthenticated } = useProposalState(
     community,
     proposalDetail
@@ -61,29 +66,19 @@ export default function CommunityProposal(): JSX.Element {
           <p className="mb-2 mt-4 font-abcMedium text-[24px]">
             {proposalDetail.name}
           </p>
-          <ProposalStatus status={status} />
-          <div className="mt-8 flex justify-between">
+          <div className="flex items-center gap-2">
+            <ProposalStatus status={status} />
+            {isActiveVoting && (
+              <div className="flex items-center justify-center rounded-full bg-orange-light px-2 py-1 text-[14px] text-orange">
+                {voteCountdown}
+              </div>
+            )}
+          </div>
+          <div className="mt-8 flex items-center justify-between">
             <p className="text-[24px] text-green">
               {proposalDetail.votes.length}{' '}
               <span className="text-[20px]">votes</span>
             </p>
-            <div className="flex items-center justify-center rounded-full bg-grey px-4 py-1 text-grey-light">
-              {vetoCountdown}
-            </div>
-          </div>
-          {canVeto && (
-            <VetoButton
-              community={community}
-              proposalId={proposalDetail.proposalId}
-              callback={getProposalDetail}
-            />
-          )}
-          <div className="mt-8 flex items-center text-orange">
-            <p className="text-[16px]">Action</p>{' '}
-            <Icon id="arrowTopRight" fill="#f54d18" />
-          </div>
-          <div className="flex items-center justify-between">
-            <ProposalInfo proposal={proposalDetail} />
             {canApprove && (
               <VoteButton
                 proposal={proposalDetail}
@@ -98,7 +93,32 @@ export default function CommunityProposal(): JSX.Element {
                 callback={getProposalDetail}
               />
             )}
+            {!isActiveVoting && !canExecute && (
+              <div className="flex items-center justify-center rounded-full bg-orange-light px-2 py-1 text-[14px] text-orange">
+                {vetoCountdown}
+              </div>
+            )}
           </div>
+          <p className="w-fit rounded-full bg-grey-light px-2 py-1 text-grey">
+            {isActiveVoting ? (
+              <>{needToPassNum} votes needed to pass.</>
+            ) : (
+              'Waiting to be finalized.'
+            )}
+          </p>
+          <VotesBar value={displayedPercent} />
+          {canVeto && (
+            <VetoButton
+              community={community}
+              proposalId={proposalDetail.proposalId}
+              callback={getProposalDetail}
+            />
+          )}
+          <div className="mt-8 flex items-center text-orange">
+            <p className="text-[16px]">Action</p>{' '}
+            <Icon id="arrowTopRight" fill="#f54d18" />
+          </div>
+          <ProposalInfo proposal={proposalDetail} />
           {isAuthenticated && <ProposalComments proposal={proposalDetail} />}
         </>
       )}
