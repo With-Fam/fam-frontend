@@ -18,6 +18,8 @@ import getProposalStatus from '@/lib/getProposalStatus'
 import { usePrivy } from '@privy-io/react-auth'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { Address } from 'viem'
+import { Close, LongArrow } from '@/components/icons'
+import { AnimatePresence, motion } from 'framer-motion'
 
 export default function CommunityProposal(): JSX.Element {
   const { ready, authenticated } = usePrivy()
@@ -55,12 +57,17 @@ export default function CommunityProposal(): JSX.Element {
         <Loading />
       ) : (
         <>
-          <button
-            className="my-3 flex items-center gap-2 font-abcMedium text-grey"
+           <div
+            className="my-3 flex items-center gap-2 font-abcMedium text-grey cursor-pointer"
             onClick={() => push(`/community/${network}/${community}`)}
           >
-            <Icon id="arrowLeft" fill="#a7a7a7" /> Back
-          </button>
+            <AnimatePresence>
+              <MotionSVG>
+                <LongArrow />
+              </MotionSVG>
+            </AnimatePresence>
+            <span>Back</span>
+          </div>
           <div className="flex justify-between font-abc text-grey">
             <div className="flex items-center gap-2">
               <UserAvatar
