@@ -17,7 +17,7 @@ export function ZoraCollect(): JSX.Element {
         className="mx-auto w-full max-w-[668px]"
       >
         <div className="flex flex-col gap-2">
-          <div className="relative z-0">
+          <div className="relative z-0" style={{ display: 'none' }}>
             <TextInput
               name="tokenRecipient"
               label="Party"

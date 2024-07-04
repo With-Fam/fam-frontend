@@ -20,10 +20,14 @@ import { Suspense } from 'react'
 
 import React, { Suspense } from 'react';
 import Head from 'next/head';
+import { 
+  Hero,
+  TrendingSection,
+} from '@/components/home';
 
 export const metadata = {
   metadataBase: new URL('https://withfam.xyz'),
-  title: 'Your fam, onchain',
+  title: 'Fam',
   description:
     'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
   keywords: [
@@ -60,7 +64,7 @@ const Home = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>{metadata.title ?? 'Default Title'}</title>
+        <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
         <meta name="keywords" content={metadata.keywords.join(', ')} />
 
@@ -75,9 +79,7 @@ const Home = (): JSX.Element => {
       </Head>
       <Suspense>
         <Hero />
-        <CollectiveCulture />
-        <FeatureWidgets />
-        <FAQ />
+        <TrendingSection />
       </Suspense>
     </>
   );
