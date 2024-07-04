@@ -5,6 +5,7 @@ import _get from 'lodash.get'
 import { TextInput } from '@/components/forms'
 import AddActionButton from '@/components/AddActionButton'
 import useZoraCollectProposalForm from '@/hooks/useZoraCollectProposalForm'
+import { Paragraph } from '@/stories'
 
 export function ZoraCollect(): JSX.Element {
   const { methods, handleSubmit, onSubmit } = useZoraCollectProposalForm()
