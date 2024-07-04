@@ -1,3 +1,4 @@
+import { useCommunityProvider } from '@/contexts/CommunityProvider'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import useIsActiveVoting from '@/hooks/useIsActiveVoting'
 import useIsHost from '@/hooks/useIsHost'
@@ -9,6 +10,11 @@ const useProposalState = (community: any, proposalDetail: any) => {
   const { ready, authenticated } = usePrivy()
   const { connectedWallet } = useConnectedWallet()
   const { isActiveVoting, isVoter } = useIsActiveVoting(proposalDetail)
+  const { members } = useCommunityProvider() as any
+  const isMember = members?.some(
+    (user: any) =>
+      user.userAddress.toLowerCase() === connectedWallet?.toLocaleLowerCase()
+  )
 
   const { isHost } = useIsHost(community, connectedWallet as Address)
   const isAuthenticated = ready && authenticated && connectedWallet
@@ -16,7 +22,9 @@ const useProposalState = (community: any, proposalDetail: any) => {
   const canExecute =
     proposalDetail?.proposalState === PROPOSAL_STATUS.Ready &&
     isAuthenticated &&
-    !isActiveVoting
+    !isActiveVoting &&
+    isMember
+
   const canVeto =
     proposalDetail?.proposalState !== PROPOSAL_STATUS.Complete &&
     proposalDetail?.proposalState !== PROPOSAL_STATUS.Defeated &&
