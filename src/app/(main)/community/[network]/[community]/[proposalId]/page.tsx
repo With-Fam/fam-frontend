@@ -18,7 +18,7 @@ import getProposalStatus from '@/lib/getProposalStatus'
 import { usePrivy } from '@privy-io/react-auth'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { Address } from 'viem'
-import { CreateContextNavigation } from '@/components/shared'
+import { CreateContextNavigation } from '@/contexts/CreateContextNavigation'
 
 export default function CommunityProposal(): JSX.Element {
   const { ready, authenticated } = usePrivy()
