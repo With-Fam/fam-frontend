@@ -21,7 +21,7 @@ const ProposalAction = ({ proposal, getProposalDetail }: any) => {
   return (
     <>
       <div className="border-gray-light mt-4 rounded-[8px] border px-5 py-3">
-        <div className="mt-8 flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <p className="text-[24px] text-green">
             {proposal.votes.length} <span className="text-[20px]">votes</span>
           </p>
