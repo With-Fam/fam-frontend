@@ -35,10 +35,8 @@ export default function CommunityProposal(): JSX.Element {
   const { vetoCountdown } = useProposalVetoTimer(proposalDetail)
   const { isActiveVoting, displayedPercent, needToPassNum } =
     useVotingStatus(proposalDetail)
-  const { canApprove, canExecute, canVeto, isAuthenticated } = useProposalState(
-    community,
-    proposalDetail
-  )
+  const { canApprove, canExecute, canVeto, isAuthenticated, isCompleted } =
+    useProposalState(community, proposalDetail)
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">
@@ -74,39 +72,43 @@ export default function CommunityProposal(): JSX.Element {
               </div>
             )}
           </div>
-          <div className="mt-8 flex items-center justify-between">
-            <p className="text-[24px] text-green">
-              {proposalDetail.votes.length}{' '}
-              <span className="text-[20px]">votes</span>
-            </p>
-            {canApprove && (
-              <VoteButton
-                proposal={proposalDetail}
-                community={community as Address}
-                callback={getProposalDetail}
-              />
+          <div className="border-gray-light mt-4 rounded-[8px] border px-5 py-3">
+            <div className="mt-8 flex items-center justify-between">
+              <p className="text-[24px] text-green">
+                {proposalDetail.votes.length}{' '}
+                <span className="text-[20px]">votes</span>
+              </p>
+              {canApprove && (
+                <VoteButton
+                  proposal={proposalDetail}
+                  community={community as Address}
+                  callback={getProposalDetail}
+                />
+              )}
+              {canExecute && (
+                <ExecuteButton
+                  proposal={proposalDetail}
+                  community={community as Address}
+                  callback={getProposalDetail}
+                />
+              )}
+              {!isActiveVoting && !canExecute && !isCompleted && (
+                <div className="flex items-center justify-center rounded-full bg-orange-light px-2 py-1 text-[14px] text-orange">
+                  {vetoCountdown}
+                </div>
+              )}
+            </div>
+            {!isCompleted && (
+              <p className="w-fit rounded-full bg-grey-light px-2 py-1 text-grey">
+                {isActiveVoting ? (
+                  <>{needToPassNum} votes needed to pass.</>
+                ) : (
+                  'Waiting to be finalized.'
+                )}
+              </p>
             )}
-            {canExecute && (
-              <ExecuteButton
-                proposal={proposalDetail}
-                community={community as Address}
-                callback={getProposalDetail}
-              />
-            )}
-            {!isActiveVoting && !canExecute && (
-              <div className="flex items-center justify-center rounded-full bg-orange-light px-2 py-1 text-[14px] text-orange">
-                {vetoCountdown}
-              </div>
-            )}
+            <VotesBar value={displayedPercent} />
           </div>
-          <p className="w-fit rounded-full bg-grey-light px-2 py-1 text-grey">
-            {isActiveVoting ? (
-              <>{needToPassNum} votes needed to pass.</>
-            ) : (
-              'Waiting to be finalized.'
-            )}
-          </p>
-          <VotesBar value={displayedPercent} />
           {canVeto && (
             <VetoButton
               community={community}

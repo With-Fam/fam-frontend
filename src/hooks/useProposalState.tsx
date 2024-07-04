@@ -21,6 +21,7 @@ const useProposalState = (community: any, proposalDetail: any) => {
   const vetoFinishedTime =
     (proposalDetail?.proposedTime + proposalDetail?.vetoDurationSeconds) * 1000
 
+  const isCompleted = proposalDetail?.proposalState === PROPOSAL_STATUS.Complete
   const canExecute =
     proposalDetail?.proposalState === PROPOSAL_STATUS.Ready &&
     (proposalDetail?.numHostsAccepted === proposalDetail?.numHosts ||
@@ -39,6 +40,7 @@ const useProposalState = (community: any, proposalDetail: any) => {
     canVeto,
     canApprove,
     isAuthenticated,
+    isCompleted,
   }
 }
 
