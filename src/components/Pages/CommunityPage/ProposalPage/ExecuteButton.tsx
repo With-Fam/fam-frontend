@@ -28,10 +28,10 @@ const ExecuteButton = ({
   return (
     <button
       onClick={handleClick}
-      className="rounded-full border px-4 py-1 text-green"
+      className="rounded-full border bg-black px-6 py-3 text-[20px] text-white"
       disabled={loading}
     >
-      {loading ? 'Executing...' : 'Execute'}
+      {loading ? 'Finalizing...' : 'Finalize'}
     </button>
   )
 }
