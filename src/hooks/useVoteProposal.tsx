@@ -13,6 +13,7 @@ const useVoteProposal = (): any => {
     const latestSnapIndex = 0n
 
     try {
+      await walletClient.switchChain({ id: CHAIN_ID })
       const hash = await walletClient.writeContract({
         account: walletClient.account?.address as Address,
         address: community,
