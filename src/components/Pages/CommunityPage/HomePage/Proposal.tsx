@@ -14,7 +14,7 @@ const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
   ssr: false,
 })
 
-const formatElapsedTime = (proposedTime) => {
+const formatElapsedTime = (proposedTime: number) => {
   const now = Date.now();
   const elapsed = now - proposedTime * 1000; // Convert to milliseconds
   
