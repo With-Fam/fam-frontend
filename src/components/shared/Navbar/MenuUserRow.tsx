@@ -44,17 +44,17 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
   }, [])
 
   return (
-    <div className="border-gray-light flex w-full justify-between rounded-xl border p-2">
+    <div className="border-gray-light flex w-full justify-between rounded-xl border p-4">
       <div className="flex items-center gap-2">
         <Link href="/profile" passHref aria-label="go to profile page">
           <UserAvatar address={address} width={40} height={40} />
         </Link>
-        <div className="ml-2 flex flex-1 flex-col justify-center">
+        <div className="flex flex-1 flex-col justify-center">
           <Paragraph as="p4" className="font-abcMedium">
             <EnsAddress address={address} />
           </Paragraph>
           <Paragraph as="p5" className="flex font-abcMedium text-gray-500">
-            <span className="mr-1.5">
+            <span className="">
               <UserName address={address as `0x${string}`} addressFallback />
             </span>
             <button onClick={handleCopyClick} aria-label="copy user name">

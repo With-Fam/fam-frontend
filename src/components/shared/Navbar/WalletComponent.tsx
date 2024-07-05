@@ -9,7 +9,7 @@ type WalletComponentProps = {
 const WalletComponent = ({
   userBalance,
 }: WalletComponentProps): JSX.Element => (
-  <div className="flex items-center justify-between rounded-xl bg-background p-3">
+  <div className="flex items-center justify-between gap-2 rounded-xl bg-background">
     <ChainIcon chainId={CHAIN_ID} />
     <Paragraph as="p3" className="text-black">
       {Number(userBalance).toFixed(2)} ETH
