@@ -4,11 +4,12 @@ import ProposalStatus from '@/components/Pages/CommunityPage/ProposalStatus'
 import EnsAddress from '@/components/shared/EnsAddress'
 import { useProposalProvider } from '@/contexts/ProposalProvider'
 import useProposalComments from '@/hooks/useProposalComments'
-import useProposalTimer from '@/hooks/useProposalTimer'
 import { Paragraph } from '@/stories'
 import getProposalStatus from '@/lib/getProposalStatus'
 import dynamic from 'next/dynamic'
 import { useParams, useRouter } from 'next/navigation'
+import useProposalVoteTimer from '@/hooks/useProposalVoteTimer'
+import useVotingStatus from '@/hooks/useVotingStatus'
 const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
   ssr: false,
 })
@@ -37,8 +38,9 @@ const Proposal = ({ data, proposalIndex }: any) => {
   const [elapsedTime, setElapsedTime] = useState(formatElapsedTime(data.proposedTime));
   const { push } = useRouter()
   const { network, community } = useParams()
-  const { setProposal, setSelectedProposalIndex } = useProposalProvider() as any
-  const { countdown } = useProposalTimer(data)
+  const { setSelectedProposalIndex } = useProposalProvider() as any
+  const { voteCountdown } = useProposalVoteTimer(data)
+  const { isActiveVoting } = useVotingStatus(data)
   const status = getProposalStatus(data)
 
   const { proposalComments } = useProposalComments(community, data.proposalId)
@@ -82,9 +84,11 @@ const Proposal = ({ data, proposalIndex }: any) => {
         >
           {data.name}
         </button>
-        <div className="rounded-full bg-orange-light px-3 py-1">
-          <p className="text-[12px] text-orange">{countdown}</p>
-        </div>
+        {isActiveVoting && (
+          <div className="rounded-full bg-orange-light px-3 py-1">
+            <p className="text-[12px] text-orange">{voteCountdown}</p>
+          </div>
+        )}
       </div>
       <div className="mt-4 flex justify-between">
         <div className="flex items-center gap-1">

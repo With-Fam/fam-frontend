@@ -14,7 +14,6 @@ const useExecuteProposal = (): any => {
     const preciousTokenIds = [] as any[]
     const progressData = '0x'
     const extraData = '0x'
-    const value = proposal.proposalData[0].value
 
     try {
       const hash = await walletClient.writeContract({
@@ -35,7 +34,6 @@ const useExecuteProposal = (): any => {
           progressData,
           extraData,
         ],
-        value,
       })
       const publicClient = getPublicClient(CHAIN_ID)
       const receipt = await publicClient.waitForTransactionReceipt({ hash })

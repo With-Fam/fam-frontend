@@ -1,29 +1,22 @@
 'use client'
 
 import { Icon } from '@/components/Icon'
-import ExecuteButton from '@/components/Pages/CommunityPage/ProposalPage/ExecuteButton'
+import { LongArrow } from '@/components/icons'
+import ProposalAction from '@/components/Pages/CommunityPage/ProposalPage/ProposalAction'
 import ProposalComments from '@/components/Pages/CommunityPage/ProposalPage/ProposalComments'
 import ProposalInfo from '@/components/Pages/CommunityPage/ProposalPage/ProposalInfo'
-import VetoButton from '@/components/Pages/CommunityPage/ProposalPage/VetoButton'
-import VoteButton from '@/components/Pages/CommunityPage/ProposalPage/VoteButton'
 import ProposalStatus from '@/components/Pages/CommunityPage/ProposalStatus'
 import { Loading, UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
-import useIsHost from '@/hooks/useIsHost'
-import { PROPOSAL_STATUS } from '@/hooks/useProposalData'
 import useProposalDetail from '@/hooks/useProposalDetail'
-import useProposalTimer from '@/hooks/useProposalTimer'
+import useProposalVoteTimer from '@/hooks/useProposalVoteTimer'
+import useVotingStatus from '@/hooks/useVotingStatus'
 import getProposalStatus from '@/lib/getProposalStatus'
 import { usePrivy } from '@privy-io/react-auth'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { Address } from 'viem'
-import { CreateContextNavigation } from '@/contexts/CreateContextNavigation'
 
 export default function CommunityProposal(): JSX.Element {
-  const { ready, authenticated } = usePrivy()
-  const { connectedWallet } = useConnectedWallet()
-  const isAuthenticated = ready && authenticated && connectedWallet
   const { proposalId } = useParams()
   const searchParams = useSearchParams()
   const blockNumber = searchParams.get('blockNumber')
@@ -33,22 +26,14 @@ export default function CommunityProposal(): JSX.Element {
     proposalId,
     blockNumber
   )
-  const { isHost } = useIsHost(community, connectedWallet as Address)
   const status = getProposalStatus(proposalDetail)
   const { push } = useRouter()
-  const { countdown, isActiveVoting } = useProposalTimer(proposalDetail)
-  const canExecute =
-    proposalDetail?.proposalState === PROPOSAL_STATUS.Ready &&
-    isAuthenticated &&
-    !isActiveVoting
-  const canVeto =
-    proposalDetail?.proposalState === PROPOSAL_STATUS.Ready &&
-    isAuthenticated &&
-    isHost
-  const canApprove =
-    proposalDetail?.proposalState === PROPOSAL_STATUS.Passed &&
-    isAuthenticated &&
-    isActiveVoting
+  const { voteCountdown } = useProposalVoteTimer(proposalDetail)
+  const { isActiveVoting } = useVotingStatus(proposalDetail)
+  const { ready, authenticated } = usePrivy()
+  const { connectedWallet } = useConnectedWallet()
+
+  const isAuthenticated = ready && authenticated && connectedWallet
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">
@@ -56,12 +41,12 @@ export default function CommunityProposal(): JSX.Element {
         <Loading />
       ) : (
         <>
-             <CreateContextNavigation
-  step={1}
-  prev={() => push(`/community/${network}/${community}`)}
-  title={proposalDetail.name}
-/>
-
+          <button
+            className="mb-8 flex h-8 w-8 cursor-pointer flex-col items-center justify-center rounded-full bg-grey-light"
+            onClick={() => push(`/community/${network}/${community}`)}
+          >
+            <LongArrow />
+          </button>
           <div className="flex justify-between font-abc text-grey">
             <div className="flex items-center gap-2">
               <UserAvatar
@@ -76,44 +61,23 @@ export default function CommunityProposal(): JSX.Element {
           <p className="mb-2 mt-4 font-abcMedium text-[24px]">
             {proposalDetail.name}
           </p>
-          <ProposalStatus status={status} />
-          <div className="mt-8 flex justify-between">
-            <p className="text-[24px] text-green">
-              {proposalDetail.votes.length}{' '}
-              <span className="text-[20px]">votes</span>
-            </p>
-            <div className="flex items-center justify-center rounded-full bg-grey px-4 py-1 text-grey-light">
-              {countdown}
-            </div>
+          <div className="flex items-center gap-2">
+            <ProposalStatus status={status} />
+            {isActiveVoting && (
+              <div className="flex items-center justify-center rounded-full bg-orange-light px-2 py-1 text-[14px] text-orange">
+                {voteCountdown}
+              </div>
+            )}
           </div>
-          {canVeto && (
-            <VetoButton
-              community={community}
-              proposalId={proposalDetail.proposalId}
-              callback={getProposalDetail}
-            />
-          )}
+          <ProposalAction
+            proposal={proposalDetail}
+            getProposalDetail={getProposalDetail}
+          />
           <div className="mt-8 flex items-center text-orange">
             <p className="text-[16px]">Action</p>{' '}
             <Icon id="arrowTopRight" fill="#f54d18" />
           </div>
-          <div className="flex items-center justify-between">
-            <ProposalInfo proposal={proposalDetail} />
-            {canApprove && (
-              <VoteButton
-                proposal={proposalDetail}
-                community={community as Address}
-                callback={getProposalDetail}
-              />
-            )}
-            {canExecute && (
-              <ExecuteButton
-                proposal={proposalDetail}
-                community={community as Address}
-                callback={getProposalDetail}
-              />
-            )}
-          </div>
+          <ProposalInfo proposal={proposalDetail} />
           {isAuthenticated && <ProposalComments proposal={proposalDetail} />}
         </>
       )}

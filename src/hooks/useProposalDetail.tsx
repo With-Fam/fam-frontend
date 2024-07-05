@@ -26,6 +26,7 @@ const useProposalDetail = (
     })
 
     const proposalStateValues = response[1]
+
     const detail = {
       completedTime: proposalStateValues.completedTime,
       executeTime: proposalStateValues.executedTime,

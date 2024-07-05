@@ -13,9 +13,6 @@ const getProposalVoteEvent = async (
     address: party,
     abi: partyAbi,
     eventName: 'ProposalAccepted',
-    args: {
-      proposalId,
-    },
     fromBlock: BigInt(proposalBlocknumber),
     toBlock: 'latest',
   })
@@ -25,9 +22,14 @@ const getProposalVoteEvent = async (
     blockNumber: log.blockNumber.toString(),
     txnHash: log.transactionHash,
     weight: log.args.weight.toString(),
+    proposalId: log.args.proposalId.toString(),
   }))
 
-  return events
+  const filteredEvents = events.filter(
+    (evt: any) => evt.proposalId === proposalId
+  )
+
+  return filteredEvents
 }
 
 export default getProposalVoteEvent

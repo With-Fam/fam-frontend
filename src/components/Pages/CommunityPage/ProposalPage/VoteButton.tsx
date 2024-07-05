@@ -1,5 +1,6 @@
 'use client'
 
+import useVotingStatus from '@/hooks/useVotingStatus'
 import useVoteProposal from '@/hooks/useVoteProposal'
 import { useState } from 'react'
 import { Address } from 'viem'
@@ -17,8 +18,11 @@ const VoteButton = ({
 }: VoteButtonProps): JSX.Element => {
   const { vote } = useVoteProposal()
   const [loading, setLoading] = useState(false)
+  const { isVoter } = useVotingStatus(proposal)
+  const buttonLabel = isVoter ? 'Voted' : 'Vote Yes'
 
   const handleClick = async () => {
+    if (isVoter) return
     setLoading(true)
     await vote(proposal, community)
     callback()
@@ -28,10 +32,10 @@ const VoteButton = ({
   return (
     <button
       onClick={handleClick}
-      className="rounded-full border px-4 py-1 text-green"
+      className="rounded-full border bg-black px-6 py-3 text-[20px] text-white"
       disabled={loading}
     >
-      {loading ? 'Voting...' : 'Vote'}
+      {loading ? 'Voting...' : buttonLabel}
     </button>
   )
 }

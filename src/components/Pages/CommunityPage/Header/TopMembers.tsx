@@ -1,10 +1,10 @@
 import { UserAvatar } from '@/components/shared'
 
-const TopMembers = ({ members }: any) => {
+const TopMembers = ({ topMembers, membersNum }: any) => {
   return (
     <div className="flex items-center gap-2">
       <div className="relative flex">
-        {members.map((member: any, i: any) => (
+        {topMembers.map((member: any, i: any) => (
           <div
             key={member.userAddress}
             className="relative rounded-full"
@@ -18,7 +18,7 @@ const TopMembers = ({ members }: any) => {
         ))}
       </div>
       <p className="text-md -translate-x-3 font-abc text-grey">
-        &nbsp;{members?.length} members
+        &nbsp;{membersNum} members
       </p>
     </div>
   )
