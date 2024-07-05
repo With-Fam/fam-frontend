@@ -22,7 +22,7 @@ const getZoraPurchaseProposalBytecode = (
   const quantity = 1n
   const minterArguments = encodeAbiParameters(
     parseAbiParameters('address x, string y'),
-    [recipient, 'Based in Colombia 🇨🇴']
+    [recipient, 'Collected on Fam']
   )
 
   const mintReferral = recipient
