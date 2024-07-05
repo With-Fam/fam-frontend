@@ -19,7 +19,8 @@ const WIDGET_DATA = [
   {
     imageAlt: '',
     title: 'Grow your pool',
-    description: 'Memberships help to grow a share pool of funds owned by the community',
+    description:
+      'Memberships help to grow a share pool of funds owned by the community',
     service: {
       type: 'membership',
       image: '/assets/images/widgets/w2.png',

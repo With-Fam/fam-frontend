@@ -9,7 +9,7 @@ export function ipfsGatewayUrl(
 ): string | undefined {
   if (!url || typeof url !== 'string') return undefined
   const normalizedIPFSUrl = normalizeIPFSUrl(url)
-  console.log("SWEET")
+  console.log('SWEET')
   if (normalizedIPFSUrl) {
     return normalizedIPFSUrl.replace('ipfs://', `${IPFS_GATEWAY}/ipfs/`)
   }

@@ -8,6 +8,8 @@ const getProposalInfo = async (proposal: any) => {
     const proposalData: any = proposal.proposalData[0]
     const proposalHexdata = proposalData.data
 
+    console.log('ZIAD', proposalHexdata.length)
+
     if (proposalHexdata === '0x') {
       return {
         value: proposalData.value,
