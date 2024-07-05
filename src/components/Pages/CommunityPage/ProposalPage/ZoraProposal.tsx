@@ -1,11 +1,11 @@
-import getIpfsLink from '@/lib/getIpfsLink'
+import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
 import Image from 'next/image'
 
 const ZoraProposal = ({ info }: any) => {
   return (
     <div className="flex w-fit items-center gap-2 rounded-md border p-4">
       <Image
-        src={getIpfsLink(info.collectionImage)}
+        src={getPartyDaoIpfsLink(info.collectionImage)}
         width={64}
         height={64}
         className="overflow-hidden rounded-md"
