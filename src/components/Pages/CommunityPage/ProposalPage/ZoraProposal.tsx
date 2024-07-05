@@ -1,18 +1,22 @@
 import getIpfsLink from '@/lib/getIpfsLink'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const ZoraProposal = ({ info }: any) => {
   const [imgSrc, setImgSrc] = useState(getIpfsLink(info.collectionImage))
   const [isError, setIsError] = useState(false)
 
-  const handleError = (event: any) => {
+  useEffect(() => {
+    setImgSrc(getIpfsLink(info.collectionImage))
+    setIsError(false)
+  }, [info.collectionImage])
+
+  const handleError = () => {
     if (!isError) {
       setImgSrc('/fallback-image.png')
       setIsError(true)
     }
   }
-
 
   return (
     <div className="flex w-fit items-center gap-2 rounded-md border p-4">
@@ -21,7 +25,7 @@ const ZoraProposal = ({ info }: any) => {
         width={64}
         height={64}
         className="overflow-hidden rounded-md"
-        alt=""
+        alt={info.title}
         onError={handleError}
       />
       <div className="space-y-1">
