@@ -53,8 +53,8 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
           <Paragraph as="p4" className="font-abcMedium">
             <EnsAddress address={address} />
           </Paragraph>
-          <Paragraph as="p5" className="flex font-abcMedium text-gray-500">
-            <span className="">
+          <Paragraph as="p5" className="flex text-gray-500">
+            <span className="pr-1">
               <UserName address={address as `0x${string}`} addressFallback />
             </span>
             <button onClick={handleCopyClick} aria-label="copy user name">
