@@ -14,7 +14,7 @@ const useVotingStatus = (proposal: any) => {
     proposal?.totalVotingPower || 1n
   ).toBigInt()
   const isActiveVoting =
-    proposalState === PROPOSAL_STATUS.Passed ||
+    (proposal && proposalState === PROPOSAL_STATUS.Passed) ||
     proposalState === PROPOSAL_STATUS.Voting
 
   const currentVotedPower = BigNumber.from(proposal?.numVotes || '0').toBigInt()
