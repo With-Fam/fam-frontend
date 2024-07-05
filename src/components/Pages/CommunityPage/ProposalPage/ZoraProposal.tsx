@@ -4,6 +4,15 @@ import { useState } from 'react'
 
 const ZoraProposal = ({ info }: any) => {
   const [imgSrc, setImgSrc] = useState(getIpfsLink(info.collectionImage))
+  const [isError, setIsError] = useState(false)
+
+  const handleError = (event: any) => {
+    if (!isError) {
+      setImgSrc('/fallback-image.png')
+      setIsError(true)
+    }
+  }
+
 
   return (
     <div className="flex w-fit items-center gap-2 rounded-md border p-4">
@@ -13,7 +22,7 @@ const ZoraProposal = ({ info }: any) => {
         height={64}
         className="overflow-hidden rounded-md"
         alt=""
-        onError={() => setImgSrc('/fallback-image.png')}
+        onError={handleError}
       />
       <div className="space-y-1">
         <p className="font-abcMedium text-[20px]">{info.title}</p>
