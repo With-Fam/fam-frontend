@@ -4,12 +4,9 @@ import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import MenuList from '@/components/shared/Navbar/MenuList'
-import WalletComponent from '@/components/shared/Navbar/WalletComponent'
 import MenuUserRow from '@/components/shared/Navbar/MenuUserRow'
-import { Close } from '@/components/icons'
 import { UserAvatar } from '@/components/shared'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
-import useEthBalance from '@/hooks/useEthBalance'
 import { Address } from 'viem'
 
 const PopupMenu = (): JSX.Element => {
@@ -18,7 +15,6 @@ const PopupMenu = (): JSX.Element => {
   const [isMobile, setIsMobile] = useState(false)
   const popoverRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
-  const { ethBalance } = useEthBalance(connectedWallet as Address)
 
   useEffect(() => {
     setOpen(false)
@@ -95,17 +91,11 @@ const PopupMenu = (): JSX.Element => {
         animate={open ? 'open' : 'closed'}
         variants={isMobile ? variantsMobile : variantsDesktop}
         ref={popoverRef}
-        className="fixed bottom-0 left-0 h-max w-full origin-top-right rounded-b-none rounded-t-3xl bg-white p-6 sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:top-0 sm:w-[375px] sm:rounded-b-3xl"
+        className="border-gray-light fixed left-0 top-full h-max
+        w-full rounded-3xl border-[1px]
+        bg-white p-6 sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:w-[375px]"
       >
-        <button
-          onClick={() => setOpen(false)}
-          aria-label="close users menu"
-          className="absolute right-4 top-4 z-10"
-        >
-          <Close className="h-6 w-6" />
-        </button>
         <MenuUserRow address={connectedWallet as Address} />
-        {ethBalance && <WalletComponent userBalance={ethBalance} />}
         <MenuList address={connectedWallet as Address} />
       </motion.div>
     </div>
