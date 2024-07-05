@@ -63,7 +63,7 @@ export default function CommunityProposal(): JSX.Element {
           </p>
           <div className="flex items-center gap-2">
             <ProposalStatus status={status} />
-            {isActiveVoting && (
+            {isActiveVoting && isAuthenticated && (
               <div className="flex items-center justify-center rounded-full bg-orange-light px-2 py-1 text-[14px] text-orange">
                 {voteCountdown}
               </div>
