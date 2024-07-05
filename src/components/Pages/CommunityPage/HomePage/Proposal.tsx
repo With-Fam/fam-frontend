@@ -61,7 +61,7 @@ const Proposal = ({ data, proposalIndex }: any) => {
   }
 
   return (
-    <section className="rounded-md bg-white p-4">
+    <section className="rounded-md bg-white p-4 mb-4">
       <div className="flex justify-between">
         <div className="flex items-center gap-1">
           <UserAvatar address={data.proposerAddress} width={16} height={16} />

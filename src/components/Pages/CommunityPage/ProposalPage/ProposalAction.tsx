@@ -46,7 +46,7 @@ const ProposalAction = ({ proposal, getProposalDetail }: any) => {
           )}
         </div>
         {!isCompleted && (
-          <p className="w-fit rounded-full bg-grey-light px-2 py-1 text-grey">
+          <p className="text-grey">
             {isActiveVoting ? (
               <>{needToPassNum} votes needed to pass.</>
             ) : (
