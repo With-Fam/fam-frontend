@@ -1,3 +1,5 @@
+import ChainIcon from '@/components/ChainIcon'
+import { CHAIN_ID } from '@/constants/defaultChains'
 import Paragraph from '@/stories/Paragraph'
 
 type WalletComponentProps = {
@@ -7,15 +9,11 @@ type WalletComponentProps = {
 const WalletComponent = ({
   userBalance,
 }: WalletComponentProps): JSX.Element => (
-  <div className="mt-6 flex w-full items-center justify-between rounded-xl bg-background p-3">
-    <div className="flex-1">
-      <Paragraph as="p4" className="mb-2 text-grey">
-        Wallet balance
-      </Paragraph>
-      <Paragraph as="p3" className="text-black">
-        {Number(userBalance).toFixed(4)} ETH
-      </Paragraph>
-    </div>
+  <div className="flex items-center justify-between rounded-xl bg-background p-3">
+    <ChainIcon chainId={CHAIN_ID} />
+    <Paragraph as="p3" className="text-black">
+      {Number(userBalance).toFixed(2)} ETH
+    </Paragraph>
   </div>
 )
 

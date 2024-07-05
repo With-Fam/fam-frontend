@@ -1,13 +1,16 @@
 'use client'
 
-// Framework
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
-
-// Local Components
 import Paragraph from '@/stories/Paragraph'
-import { ConfigIcon, Copy } from '@/components/icons'
+import { Copy } from '@/components/icons'
+import EnsAddress from '@/components/shared/EnsAddress'
+import useEthBalance from '@/hooks/useEthBalance'
+import WalletComponent from '@/components/shared/Navbar/WalletComponent'
+import { Address } from 'viem'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
+
 const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
   ssr: false,
 })
@@ -15,23 +18,15 @@ const UserName = dynamic(() => import('@/components/shared/UserName'), {
   ssr: false,
 })
 
-// Types
 type MenuUserRowProps = {
   address: `0x${string}`
 }
 
-//Helpers
-import { walletSnippet } from '@/lib/helpers'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
-
 const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
   const [copySuccess, setCopySuccess] = useState(false)
   const copiedTimeout = useRef<NodeJS.Timeout | null>(null)
+  const { connectedWallet } = useConnectedWallet()
+  const { ethBalance } = useEthBalance(connectedWallet as Address)
 
   const handleCopyClick = async () => {
     await navigator.clipboard.writeText(address)
@@ -49,13 +44,16 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
   }, [])
 
   return (
-    <div className="flex w-full">
-      <div className="flex w-full justify-between">
+    <div className="border-gray-light flex w-full justify-between rounded-xl border p-2">
+      <div className="flex items-center gap-2">
         <Link href="/profile" passHref aria-label="go to profile page">
           <UserAvatar address={address} width={40} height={40} />
         </Link>
         <div className="ml-2 flex flex-1 flex-col justify-center">
-          <Paragraph as="p4" className="flex font-abcMedium font-bold">
+          <Paragraph as="p4" className="font-abcMedium">
+            <EnsAddress address={address} />
+          </Paragraph>
+          <Paragraph as="p5" className="flex font-abcMedium text-gray-500">
             <span className="mr-1.5">
               <UserName address={address as `0x${string}`} addressFallback />
             </span>
@@ -63,16 +61,9 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
               <Copy color={copySuccess ? '#F54D18' : undefined} />
             </button>
           </Paragraph>
-          <Paragraph as="p5" className="text-gray-500">
-            {walletSnippet(address)}
-          </Paragraph>
         </div>
-        {false /* as requested, implemented, but hidden for now */ && (
-          <button aria-label="open config" className="h-min cursor-pointer">
-            <ConfigIcon />
-          </button>
-        )}
       </div>
+      {ethBalance && <WalletComponent userBalance={ethBalance} />}
     </div>
   )
 }
