@@ -1,20 +1,44 @@
+import React, { useState, useEffect } from 'react'
 import { Icon } from '@/components/Icon'
 import ProposalStatus from '@/components/Pages/CommunityPage/ProposalStatus'
 import EnsAddress from '@/components/shared/EnsAddress'
 import { useProposalProvider } from '@/contexts/ProposalProvider'
 import useProposalComments from '@/hooks/useProposalComments'
 import { Paragraph } from '@/stories'
-import getDiffFormattedDuration from '@/lib/getDiffFormattedDuration'
 import getProposalStatus from '@/lib/getProposalStatus'
 import dynamic from 'next/dynamic'
 import { useParams, useRouter } from 'next/navigation'
 import useVotingStatus from '@/hooks/useVotingStatus'
 import VoteCountdown from '@/components/Pages/CommunityPage/HomePage/VoteCountdown'
+import getDiffFormattedDuration from '@/lib/getDiffFormattedDuration'
 const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
   ssr: false,
 })
 
+const formatElapsedTime = (proposedTime: number) => {
+  const now = Date.now()
+  const elapsed = now - proposedTime * 1000 // Convert to milliseconds
+
+  const seconds = Math.floor(elapsed / 1000)
+  const minutes = Math.floor(seconds / 60)
+  const hours = Math.floor(minutes / 60)
+  const days = Math.floor(hours / 24)
+
+  if (seconds < 60) {
+    return '< 1m ago'
+  } else if (minutes < 60) {
+    return `${minutes}m ago`
+  } else if (hours < 24) {
+    return `${hours}h ago`
+  } else {
+    return `${days}d ago`
+  }
+}
+
 const Proposal = ({ data, proposalIndex }: any) => {
+  const [elapsedTime, setElapsedTime] = useState(
+    formatElapsedTime(data.proposedTime)
+  )
   const { push } = useRouter()
   const { network, community } = useParams()
   const { setSelectedProposalIndex } = useProposalProvider() as any
@@ -22,6 +46,14 @@ const Proposal = ({ data, proposalIndex }: any) => {
   const status = getProposalStatus(data)
   const currentDateTime = Date.now()
   const { proposalComments } = useProposalComments(community, data.proposalId)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setElapsedTime(formatElapsedTime(data.proposedTime))
+    }, 60000) // Update every minute
+
+    return () => clearInterval(timer)
+  }, [data.proposedTime])
 
   const goToProposal = () => {
     setSelectedProposalIndex(proposalIndex)
@@ -31,7 +63,7 @@ const Proposal = ({ data, proposalIndex }: any) => {
   }
 
   return (
-    <section className="rounded-md bg-white p-4">
+    <section className="mb-4 rounded-md bg-white p-4">
       <div className="flex justify-between">
         <div className="flex items-center gap-1">
           <UserAvatar address={data.proposerAddress} width={16} height={16} />
