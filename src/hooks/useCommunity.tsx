@@ -14,7 +14,7 @@ const useCommunity = (community: any): any => {
   useEffect(() => {
     const init = async () => {
       const publicClient = getPublicClient(CHAIN_ID)
-      let contributedEvent = await getContributedEvent(
+      const contributedEvent = await getContributedEvent(
         connectedWallet as Address,
         community.crowdfund,
         community.blockNumber,
