@@ -154,6 +154,19 @@ textarea {
   margin: 0;
 }
 
+input {
+  outline: none !important;
+  border: none !important;
+}
+input:focus {
+  outline: none !important;
+  border: none !important;
+}
+input:active {
+  outline: none !important;
+  border: none !important;
+}
+
 button,
 input {
   overflow: visible;
