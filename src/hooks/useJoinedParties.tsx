@@ -1,7 +1,7 @@
 import getContributedPartyEvents from '@/lib/party/getContributedPartyEvents'
 import getCreatedPartyEvents from '@/lib/party/getCreatedPartyEvents'
 import { ChainId } from '@/types/chain'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Address } from 'viem'
 
 const useJoinedParties = (chainId: number, address: Address) => {
@@ -22,9 +22,14 @@ const useJoinedParties = (chainId: number, address: Address) => {
         address,
         chainId as ChainId
       )
-      const joinedParties = [
-        ...new Set([...createdParties, ...contributedParties]),
-      ]
+      const joinedParties = [...contributedParties]
+      createdParties.map((partyInfo: any) => {
+        const existingItem = joinedParties.find(
+          (item: any) =>
+            partyInfo.party.toLowerCase() === item.party.toLowerCase()
+        )
+        if (!existingItem) joinedParties.push(partyInfo)
+      })
 
       setParties(joinedParties)
 
