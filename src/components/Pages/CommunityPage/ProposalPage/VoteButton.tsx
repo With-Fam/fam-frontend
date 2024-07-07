@@ -4,6 +4,7 @@ import useVotingStatus from '@/hooks/useVotingStatus'
 import useVoteProposal from '@/hooks/useVoteProposal'
 import { useState } from 'react'
 import { Address } from 'viem'
+import { Icon } from '@/components/Icon'
 
 interface VoteButtonProps {
   proposal: any
@@ -19,7 +20,17 @@ const VoteButton = ({
   const { vote } = useVoteProposal()
   const [loading, setLoading] = useState(false)
   const { isVoter } = useVotingStatus(proposal)
-  const buttonLabel = isVoter ? 'Voted' : 'Vote Yes'
+  const buttonLabel = isVoter ? (
+    <div className="flex items-center gap-1">
+      <Icon id="check" fill="#45D039" />
+      Voted
+    </div>
+  ) : (
+    'Vote Yes'
+  )
+  const className = isVoter
+    ? 'text-green bg-green-light'
+    : 'text-white bg-black'
 
   const handleClick = async () => {
     if (isVoter) return
@@ -32,7 +43,7 @@ const VoteButton = ({
   return (
     <button
       onClick={handleClick}
-      className="rounded-full border bg-black px-6 py-3 text-[20px] text-white"
+      className={`rounded-full px-6 py-3 text-[20px] ${className}`}
       disabled={loading}
     >
       {loading ? 'Voting...' : buttonLabel}
