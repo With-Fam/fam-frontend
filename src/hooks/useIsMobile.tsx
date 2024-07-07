@@ -19,7 +19,7 @@ const useIsMobile = (callback = () => {}) => {
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  }, [callback])
+  }, [])
 
   return {
     isMobile,
