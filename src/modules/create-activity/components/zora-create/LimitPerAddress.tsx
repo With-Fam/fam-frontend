@@ -1,9 +1,14 @@
 import { TextInput } from '@/components/forms'
 import SelectButton from '@/modules/create-activity/components/zora-create/SelectButton'
 import { LIMIT, useProposalStore } from '@/modules/create-activity/stores'
+import { useEffect } from 'react'
 
-const LimitPerAddress = () => {
+const LimitPerAddress = ({ duration }: any) => {
   const { limitPerAddress, setLimitPerAddress } = useProposalStore()
+
+  useEffect(() => {
+    if (duration === 90) setLimitPerAddress(LIMIT.UNLIMITED)
+  }, [duration])
 
   return (
     <section className="mt-4 rounded-md bg-white pb-3">
@@ -19,7 +24,10 @@ const LimitPerAddress = () => {
         <SelectButton
           isActive={limitPerAddress === LIMIT.CUSTOM}
           label="Custom"
-          onClick={() => setLimitPerAddress(LIMIT.CUSTOM)}
+          onClick={() => {
+            if (duration === 90) return
+            setLimitPerAddress(LIMIT.CUSTOM)
+          }}
         />
         {limitPerAddress === LIMIT.CUSTOM && (
           <TextInput

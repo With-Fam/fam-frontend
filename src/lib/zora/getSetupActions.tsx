@@ -27,8 +27,7 @@ const getSetupActions = (
   const data = getCallSaleData({
     tokenId: dummyNextTokenId,
     saleStart: dummySaleStart,
-    saleEnd:
-      parseInt(Number(Date.now() / 1000).toFixed(0)) + duration * 60 * 60 * 24,
+    saleEnd: parseInt(Number(Date.now() / 1000).toFixed(0)) + duration,
     maxTokensPerAddress: limitPerAddress,
     pricePerToken,
     fundsRecipient: payoutAddress,

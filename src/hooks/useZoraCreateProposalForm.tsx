@@ -1,5 +1,5 @@
 import { TransactionType } from '@/modules/create-activity/types'
-import { Address } from 'viem'
+import { Address, maxUint64 } from 'viem'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'next/navigation'
 import _get from 'lodash.get'
@@ -38,6 +38,8 @@ const useZoraCreateProposalForm = () => {
 
   const onSubmit = async (values: ZoraCreateValues) => {
     setLoading(true)
+    console.log(values.duration, maxUint64, 'ZIAD')
+
     const builderTransaction = {
       type: TransactionType.ZORA_CREATE,
       functionSignature: 'zoraCreate(address)',
@@ -47,7 +49,7 @@ const useZoraCreateProposalForm = () => {
       title: values.title,
       description: values.description,
       pricePerEdition: values.pricePerEdition,
-      duration: values.duration,
+      duration: values.duration * 60 * 60 * 24,
       payoutAddress: values.payoutAddress,
       customLimit: values.customLimit,
       customEditionSize: values.customEditionSize,

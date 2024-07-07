@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Icon } from '@/components/Icon'
 import { useProposalStore } from '@/modules/create-activity/stores'
 import EditionSize from '@/modules/create-activity/components/zora-create/EditionSize'
@@ -10,6 +10,7 @@ import LimitPerAddress from '@/modules/create-activity/components/zora-create/Li
 const Advanced = ({ control }: any) => {
   const { showAdvancedOfZoraCreate, setShowAdvancedOfZoraCreate } =
     useProposalStore()
+  const [duration, setDuration] = useState(7)
   return (
     <>
       <button
@@ -42,6 +43,7 @@ const Advanced = ({ control }: any) => {
                       value={field.value}
                       onChange={(value, index) => {
                         field.onChange(value, index)
+                        setDuration(value)
                       }}
                       min={7}
                       max={90}
@@ -52,7 +54,7 @@ const Advanced = ({ control }: any) => {
               </div>
             </div>
           </section>
-          <LimitPerAddress />
+          <LimitPerAddress duration={duration} />
           <TextInput
             name="payoutAddress"
             placeholder="Payout address"
