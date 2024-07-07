@@ -1,4 +1,5 @@
 import useCommunity from '@/hooks/useCommunity'
+import useIsMobile from '@/hooks/useIsMobile'
 import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
 import { Paragraph } from '@/stories'
 import Image from 'next/image'
@@ -8,29 +9,32 @@ import { useParams } from 'next/navigation'
 const PartyCard = ({ partyInfo }: any) => {
   const { network } = useParams()
   const { data, name } = useCommunity(partyInfo)
+  const { isMobile } = useIsMobile()
 
   return (
     <Link href={`/community/${network}/${partyInfo?.party}`}>
-      <div className="flex flex-col bg-white">
+      <div className="flex flex-row items-center gap-2 bg-white md:flex-col">
         {data && (
           <>
-            <div className="flex aspect-[1/1] w-[200px] items-center justify-center overflow-hidden">
+            <div className="flex aspect-[1/1] w-[80px] items-center justify-center overflow-hidden md:w-[200px]">
               <Image
                 src={getPartyDaoIpfsLink(data?.image)}
                 alt=""
-                width={200}
-                height={200}
+                width={isMobile ? 80 : 200}
+                height={isMobile ? 80 : 200}
               />
             </div>
-            <Paragraph as="p3" className="mt-2 text-wrap">
-              {name}
-            </Paragraph>
-            {data?.contributedEvent && (
-              <Paragraph as="p5" className="text-grey">
-                Joined{' '}
-                {new Date(data.contributedEvent.timestamp).toDateString()}
+            <div>
+              <Paragraph as="p3" className="text-wrap">
+                {name}
               </Paragraph>
-            )}
+              {data?.contributedEvent && (
+                <Paragraph as="p5" className="text-grey">
+                  {isMobile ? 'Since' : 'Joined'}&nbsp;
+                  {new Date(data.contributedEvent.timestamp).toDateString()}
+                </Paragraph>
+              )}
+            </div>
           </>
         )}
       </div>
