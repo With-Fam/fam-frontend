@@ -14,7 +14,7 @@ const getProposalInfo = async (proposal: any) => {
         receiver: proposalData.target,
         sender: proposal.proposerAddress,
         type: TransactionType.SEND_ETH,
-        title: 'Send ETH',
+        title: 'Send Funds',
       }
     }
 
@@ -30,7 +30,7 @@ const getProposalInfo = async (proposal: any) => {
         collectionImage: metadata?.image || '',
         collectionDesc: metadata?.description || '',
         type: TransactionType.ZORA_COLLECT,
-        title: 'Zora Collect',
+        title: 'Collect on Zora',
       }
     }
 
