@@ -8,35 +8,18 @@ import MenuUserRow from '@/components/shared/Navbar/MenuUserRow'
 import { UserAvatar } from '@/components/shared'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { Address } from 'viem'
+import useIsMobile from '@/hooks/useIsMobile'
 
 const PopupMenu = (): JSX.Element => {
   const { connectedWallet } = useConnectedWallet()
   const [open, setOpen] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
   const popoverRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
+  const { isMobile } = useIsMobile(() => setOpen(false))
 
   useEffect(() => {
     setOpen(false)
   }, [pathname])
-
-  useEffect(() => {
-    const handleResize = () => {
-      setOpen(false)
-      if (window.innerWidth <= 640) {
-        setIsMobile(true)
-      } else {
-        setIsMobile(false)
-      }
-    }
-
-    handleResize()
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
