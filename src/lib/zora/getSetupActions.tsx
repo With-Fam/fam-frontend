@@ -15,9 +15,6 @@ const getSetupActions = (
   duration: number,
   payoutAddress: Address
 ) => {
-  let isFreeMint = true
-  if (pricePerToken !== 0n) isFreeMint = false
-
   const dummyNextTokenId = 1n
   const dummySaleStart = 0
 
@@ -37,10 +34,9 @@ const getSetupActions = (
     fundsRecipient: payoutAddress,
   })
   const callSaleArgs = [dummyNextTokenId, SALE_STRATEGY[CHAIN_ID], data]
-  const setupNewTokenArgs = [ifpsUri, editionSize.toString()]
-  if (isFreeMint) setupNewTokenArgs.push(FAM)
+  const setupNewTokenArgs = [ifpsUri, editionSize.toString(), FAM]
   const setupNewTokenCall = iface.encodeFunctionData(
-    isFreeMint ? 'setupNewTokenWithCreateReferral' : 'setupNewToken',
+    'setupNewTokenWithCreateReferral',
     setupNewTokenArgs
   )
   const adminMintCall = getAdminMintCall(dummyNextTokenId, payoutAddress)

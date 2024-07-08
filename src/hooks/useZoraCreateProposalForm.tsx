@@ -38,8 +38,6 @@ const useZoraCreateProposalForm = () => {
 
   const onSubmit = async (values: ZoraCreateValues) => {
     setLoading(true)
-    console.log(values.duration, maxUint64, 'ZIAD')
-
     const builderTransaction = {
       type: TransactionType.ZORA_CREATE,
       functionSignature: 'zoraCreate(address)',

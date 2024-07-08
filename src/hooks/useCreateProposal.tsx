@@ -64,7 +64,6 @@ const useCreateProposal: any = (community: Address) => {
           collectionInfo.tokenId
         )
         const tokenPrice = saleConfig.pricePerToken
-        console.log('ZIAD', tokenPrice)
         proposalData = getZoraCollectProposalData(
           collectionInfo.collectionAddress as Address,
           SALE_STRATEGY[CHAIN.id],
