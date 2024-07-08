@@ -58,13 +58,18 @@ const useCreateProposal: any = (community: Address) => {
           !collectionInfo.tokenId
         )
           return false
-        proposalData = getZoraCollectProposalData(
-          collectionInfo.collectionAddress as Address,
-          SALE_STRATEGY[CHAIN.id],
-          target,
-          0,
-          collectionInfo.tokenId
-        )
+          const saleConfig = await getSaleConfig(
+            collectionInfo.collectionAddress,
+            collectionInfo.tokenId
+          )
+          const tokenPrice = saleConfig.pricePerToken
+          proposalData = getZoraCollectProposalData(
+            collectionInfo.collectionAddress as Address,
+            SALE_STRATEGY[CHAIN.id],
+            target,
+            tokenPrice,
+            collectionInfo.tokenId
+          )
       }
 
       if (
