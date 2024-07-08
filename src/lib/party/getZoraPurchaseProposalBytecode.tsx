@@ -7,6 +7,7 @@ import {
 } from 'viem'
 import { zoraCreator1155ImplABI } from '@zoralabs/protocol-deployments'
 import getProposalBytecode from '@/lib/party/getProposalBytecode'
+import FAM from '@/constants/fam'
 
 const getZoraPurchaseProposalBytecode = (
   collectionAddress: Address,
@@ -24,7 +25,8 @@ const getZoraPurchaseProposalBytecode = (
     [recipient, 'Collected on Fam']
   )
 
-  const mintReferral = recipient
+  const mintReferral = FAM
+
   const data = encodeFunctionData({
     abi: zoraCreator1155ImplABI,
     functionName: 'mintWithRewards',
