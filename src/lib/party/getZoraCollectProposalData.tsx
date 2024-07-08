@@ -7,7 +7,7 @@ const getZoraCollectProposalData = (
   collectionAddress: Address = zeroAddress,
   minter: Address = zeroAddress,
   recipient: Address = zeroAddress,
-  ethPrice: number = 0,
+  ethPrice: bigint,
   tokenId: bigint = 1n
 ) => {
   const encodedBytecodeProposalData = getZoraPurchaseProposalBytecode(
