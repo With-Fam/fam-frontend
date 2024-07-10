@@ -9,7 +9,8 @@ import { Loading } from '@/components/shared'
 import { Upload } from '@/components/icons'
 import { Maybe } from '@/types'
 import { Paragraph } from '@/stories'
-import { IPFSMedia } from '@/components/ipfs/IPFSMedia'
+import IPFSMedia from '@/components/ipfs/IPFSMedia'
+import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
 
 type UploadIPFSProps = {
   value?: string
@@ -65,7 +66,11 @@ const UploadMedia = ({
   return (
     <div className="mt-10 flex w-full items-center justify-center">
       {isMedia ? (
-        <>{value && <IPFSMedia src={value} onCancel={onCancel} />}</>
+        <>
+          {value && (
+            <IPFSMedia src={getPartyDaoIpfsLink(value)} onCancel={onCancel} />
+          )}
+        </>
       ) : (
         <label
           htmlFor={name}
