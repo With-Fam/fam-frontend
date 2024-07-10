@@ -2,7 +2,7 @@ import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { getPublicClient } from '@/lib/viem'
-import { Address } from 'viem'
+import { Address, encodeFunctionData } from 'viem'
 
 const useExecuteProposal = (): any => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -16,26 +16,41 @@ const useExecuteProposal = (): any => {
     const extraData = '0x'
 
     try {
+      const publicClient = getPublicClient(CHAIN_ID)
+      const args = [
+        proposalId,
+        {
+          maxExecutableTime: proposal.maxExecutableTime,
+          proposalData: proposal.rawProposalData,
+          cancelDelay: 0,
+        },
+        preciousTokens,
+        preciousTokenIds,
+        progressData,
+        extraData,
+      ] as any
+
+      const data = encodeFunctionData({
+        abi: partyAbi,
+        functionName: 'execute',
+        args,
+      })
+
+      const gas = await publicClient.estimateGas({
+        account: walletClient.account?.address as Address,
+        to: walletClient.account?.address as Address,
+        data,
+      })
+
       const hash = await walletClient.writeContract({
         account: walletClient.account?.address as Address,
         address: community,
         abi: partyAbi,
         functionName: 'execute',
         chain: CHAIN,
-        args: [
-          proposalId,
-          {
-            maxExecutableTime: proposal.maxExecutableTime,
-            proposalData: proposal.rawProposalData,
-            cancelDelay: 0,
-          },
-          preciousTokens,
-          preciousTokenIds,
-          progressData,
-          extraData,
-        ],
+        args,
+        gas,
       })
-      const publicClient = getPublicClient(CHAIN_ID)
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
       return receipt
     } catch (error) {
