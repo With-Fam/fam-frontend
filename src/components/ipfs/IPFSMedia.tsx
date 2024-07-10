@@ -8,8 +8,8 @@ const Waveform = ({ src, onCancel }: any) => {
   const { wavesurfer, isPlaying } = useWavesurfer({
     container: containerRef,
     height: 30,
-    progressColor: '#000000',
-    waveColor: '#d2d2d2',
+    progressColor: '#d2d2d2',
+    waveColor: '#DDE1F0',
     url: src,
   })
 
