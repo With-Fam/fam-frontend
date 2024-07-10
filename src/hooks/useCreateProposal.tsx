@@ -28,7 +28,8 @@ const useCreateProposal: any = (community: Address) => {
     const {
       target,
       value,
-      collectionImage,
+      ipfsImage,
+      ipfsMedia,
       title,
       description,
       pricePerEdition,
@@ -77,7 +78,7 @@ const useCreateProposal: any = (community: Address) => {
         type === TransactionType.ZORA_CREATE &&
         title &&
         description &&
-        collectionImage &&
+        ipfsImage &&
         typeof customEditionSize !== 'undefined' &&
         typeof customLimit !== 'undefined' &&
         typeof duration !== 'undefined' &&
@@ -96,7 +97,8 @@ const useCreateProposal: any = (community: Address) => {
           target,
           title,
           description,
-          collectionImage,
+          ipfsImage,
+          ipfsMedia,
           parseEther(pricePerEdition.toString()),
           sizeEdition,
           sizeLimit,

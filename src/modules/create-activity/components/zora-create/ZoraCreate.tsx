@@ -4,13 +4,16 @@ import { Controller, FormProvider } from 'react-hook-form'
 import _get from 'lodash.get'
 import { TextArea, TextInput } from '@/components/forms'
 import AddActionButton from '@/components/AddActionButton'
-import { UploadIPFSImage } from '@/components/ipfs/UploadIPFSImage'
 import Advanced from '@/modules/create-activity/components/zora-create/Advanced'
 import useZoraCreateProposalForm from '@/hooks/useZoraCreateProposalForm'
+import UploadMedia from '@/modules/create-activity/components/zora-create/UploadMedia'
+import { useState } from 'react'
+import UploadImage from '@/modules/create-activity/components/zora-create/UploadImage'
 
 export function ZoraCreate(): JSX.Element {
   const { methods, onSubmit } = useZoraCreateProposalForm()
   const { handleSubmit, control } = methods
+  const [audioUploaded, setAudioUploaded] = useState(false)
 
   return (
     <FormProvider {...methods}>
@@ -21,16 +24,31 @@ export function ZoraCreate(): JSX.Element {
       >
         <div className="flex flex-col gap-2">
           <Controller
-            name="collectionImage"
+            name="ipfsMedia"
             control={control}
             render={({ field }) => (
-              <UploadIPFSImage
+              <UploadMedia
                 name={field.name}
                 onChange={field.onChange}
                 value={field.value}
+                callback={setAudioUploaded}
+                isMedia={audioUploaded}
               />
             )}
           />
+          {audioUploaded && (
+            <Controller
+              name="ipfsImage"
+              control={control}
+              render={({ field }) => (
+                <UploadImage
+                  name={field.name}
+                  onChange={field.onChange}
+                  value={field.value}
+                />
+              )}
+            />
+          )}
           <TextInput name="title" placeholder="Title" label="Title" />
           <TextArea
             name="description"
