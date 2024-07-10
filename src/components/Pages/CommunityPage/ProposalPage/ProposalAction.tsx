@@ -39,7 +39,7 @@ const ProposalAction = ({ proposal, getProposalDetail }: any) => {
               callback={getProposalDetail}
             />
           )}
-          {!isActiveVoting && !canExecute && !isCompleted && (
+          {!canExecute && !isCompleted && (
             <div className="flex items-center justify-center rounded-full bg-orange-light px-2 py-1 text-[14px] text-orange">
               {vetoCountdown}
             </div>
