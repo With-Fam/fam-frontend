@@ -43,6 +43,7 @@ const getZoraCreateProposalData = async (
     hexEncodedSelector,
     encodedBytecodeProposalData as Address,
   ])
+
   const proposalStruct: any = {
     cancelDelay: '0',
     maxExecutableTime: getMaxExecutableTime(),
