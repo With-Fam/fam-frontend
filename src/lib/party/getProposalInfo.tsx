@@ -34,7 +34,7 @@ const getProposalInfo = async (proposal: any) => {
       }
     }
 
-    if (proposalHexdata.length === 2762) {
+    if (proposalHexdata.length === 3338) {
       const decodedData = decodeFunctionData({
         abi: zoraCreator1155FactoryImplABI,
         data: proposalHexdata,
