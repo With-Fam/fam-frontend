@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from '@privy-io/wagmi'
 import { base, baseSepolia } from 'wagmi/chains'
 import { mapChainIdToEndpoint } from '@/lib/alchemy/mapChainIdToEndpoint'
+import { AirstackProvider } from '@airstack/airstack-react'
 
 const queryClient = new QueryClient()
 
@@ -21,25 +22,27 @@ export const config = createConfig({
 
 export const WalletContext = ({ children }: PropsWithChildren): JSX.Element => {
   return (
-    <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
-      config={{
-        walletConnectCloudProjectId: 'a2ca754e356641b9ab15dae82876d257',
-        loginMethods: ['wallet', 'email'],
-        appearance: {
-          showWalletLoginFirst: true,
-          theme: 'light',
-          accentColor: '#E35A30',
-          logo: '/assets/images/logo.svg',
-        },
-      }}
-    >
-      <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={config}>
-          <Toaster />
-          {children}
-        </WagmiProvider>
-      </QueryClientProvider>
-    </PrivyProvider>
+    <AirstackProvider apiKey={process.env.NEXT_PUBLIC_AIRSTACK_API_KEY ?? ''}>
+      <PrivyProvider
+        appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
+        config={{
+          walletConnectCloudProjectId: 'a2ca754e356641b9ab15dae82876d257',
+          loginMethods: ['wallet', 'email'],
+          appearance: {
+            showWalletLoginFirst: true,
+            theme: 'light',
+            accentColor: '#E35A30',
+            logo: '/assets/images/logo.svg',
+          },
+        }}
+      >
+        <QueryClientProvider client={queryClient}>
+          <WagmiProvider config={config}>
+            <Toaster />
+            {children}
+          </WagmiProvider>
+        </QueryClientProvider>
+      </PrivyProvider>
+    </AirstackProvider>
   )
 }
