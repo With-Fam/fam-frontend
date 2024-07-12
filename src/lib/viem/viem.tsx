@@ -11,3 +11,12 @@ export const getPublicClient = (chainId: number) => {
   }) as PublicClient
   return publicClient
 }
+
+export const getPublicClientWithoutAlchemy = (chainId: number) => {
+  const chain = getViemNetwork(chainId)
+  const publicClient = createPublicClient({
+    chain: chain as Chain,
+    transport: http(),
+  }) as PublicClient
+  return publicClient
+}

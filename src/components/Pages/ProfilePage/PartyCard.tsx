@@ -8,17 +8,17 @@ import { useParams } from 'next/navigation'
 
 const PartyCard = ({ partyInfo }: any) => {
   const { network } = useParams()
-  const { data, name } = useCommunity(partyInfo)
   const { isMobile } = useIsMobile()
+  const { name } = useCommunity(partyInfo.address)
 
   return (
-    <Link href={`/community/${network}/${partyInfo?.party}`}>
+    <Link href={`/community/${network}/${partyInfo?.address}`}>
       <div className="flex flex-row items-center gap-2 bg-white md:flex-col">
-        {data && (
+        {partyInfo && (
           <>
             <div className="flex aspect-[1/1] w-[80px] items-center justify-center overflow-hidden md:w-[200px]">
               <Image
-                src={getPartyDaoIpfsLink(data?.image)}
+                src={getPartyDaoIpfsLink(partyInfo?.image)}
                 alt=""
                 width={isMobile ? 80 : 200}
                 height={isMobile ? 80 : 200}
@@ -26,14 +26,12 @@ const PartyCard = ({ partyInfo }: any) => {
             </div>
             <div>
               <Paragraph as="p3" className="text-wrap">
-                {name}
+                {partyInfo?.name || name}
               </Paragraph>
-              {data?.contributedEvent && (
-                <Paragraph as="p5" className="text-grey">
-                  {isMobile ? 'Since' : 'Joined'}&nbsp;
-                  {new Date(data.contributedEvent.timestamp).toDateString()}
-                </Paragraph>
-              )}
+              <Paragraph as="p5" className="text-grey">
+                {isMobile ? 'Since' : 'Joined'}&nbsp;
+                {new Date(partyInfo.joinedAt).toDateString()}
+              </Paragraph>
             </div>
           </>
         )}
