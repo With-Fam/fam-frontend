@@ -50,14 +50,9 @@ const PopupMenu = (): JSX.Element => {
     }
   }, [open])
 
-  const variantsDesktop = {
+  const variants = {
     open: { opacity: 1, scale: 1 },
     closed: { opacity: 0, scale: 0 },
-  }
-
-  const variantsMobile = {
-    open: { y: '0', opacity: 1, scale: 1 },
-    closed: { y: '100%', opacity: 1, scale: 1 },
   }
 
   return (
@@ -72,11 +67,11 @@ const PopupMenu = (): JSX.Element => {
       <motion.div
         initial="closed"
         animate={open ? 'open' : 'closed'}
-        variants={isMobile ? variantsMobile : variantsDesktop}
+        variants={variants}
         ref={popoverRef}
-        className="border-gray-light fixed left-0 top-full h-max
-        w-full rounded-3xl border-[1px]
-        bg-white p-6 sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:w-[375px]"
+        className="border-gray-light fixed left-0 top-auto h-max w-full
+        rounded-3xl border-[1px] bg-white
+        p-6 sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:w-[375px] md:top-full"
       >
         <MenuUserRow address={connectedWallet as Address} />
         <MenuList address={connectedWallet as Address} />
