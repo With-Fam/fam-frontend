@@ -26,7 +26,7 @@ const ProposalAction = ({ proposal, getProposalDetail }: any) => {
           <p className="text-[24px] text-green">
             {proposal.votes.length} <span className="text-[20px]">votes</span>
           </p>
-          {isVoter && <VotedLabel />}
+          {canApprove && isVoter && <VotedLabel />}
           {canApprove && !isVoter && (
             <VoteButton
               proposal={proposal}
