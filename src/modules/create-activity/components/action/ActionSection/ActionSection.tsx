@@ -14,7 +14,7 @@ interface ActionSectionProps {
 export function ActionSection({ onClick }: ActionSectionProps): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl">
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
         {ACTIONS.map((_action) => (
           <ActionCard
             key={_action.id}
