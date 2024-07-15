@@ -20,14 +20,7 @@ const VoteButton = ({
   const { vote } = useVoteProposal()
   const [loading, setLoading] = useState(false)
   const { isVoter } = useVotingStatus(proposal)
-  const buttonLabel = isVoter ? (
-    <div className="flex items-center gap-1">
-      <Icon id="check" fill="#45D039" />
-      Voted
-    </div>
-  ) : (
-    'Vote Yes'
-  )
+
   const className = isVoter
     ? 'text-green bg-green-light'
     : 'text-white bg-black'
@@ -46,7 +39,7 @@ const VoteButton = ({
       className={`rounded-full px-6 py-3 text-[20px] ${className}`}
       disabled={loading}
     >
-      {loading ? 'Voting...' : buttonLabel}
+      {loading ? 'Voting...' : 'Vote Yes'}
     </button>
   )
 }
