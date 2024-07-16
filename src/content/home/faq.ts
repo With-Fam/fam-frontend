@@ -17,7 +17,7 @@ const FAQ_DATA = [
       'When members propose new ideas they can add an onchain action which will trigger if the vote is successful. This allows communities to create and collaborate as a collective.',
       'Some examples of actions communities can do are:',
       [
-        'Collectively publish song, albums or videos.',
+        'Collectively publish songs, albums or videos.',
         'Send funds to contributors to put on a party, show or festival.',
         'Collect onchain media as a community',
       ],
