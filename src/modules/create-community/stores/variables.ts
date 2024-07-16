@@ -1,7 +1,4 @@
-import {
-  ArtworkFormValues,
-  GeneralFormValues,
-} from '@/modules/create-community'
+import { GeneralFormValues } from '@/modules/create-community'
 
 import { AuctionSettingsFormValues } from './types'
 
@@ -39,13 +36,6 @@ export const initialState = {
   contributionAllocation: [],
   vetoPower: undefined,
   vetoerAddress: '',
-  setUpArtwork: {
-    projectDescription: '',
-    artwork: [],
-    collectionName: '',
-    externalUrl: '',
-    filesLength: 0,
-  } as ArtworkFormValues,
   ipfsUpload: [],
   orderedLayers: [],
   isUploadingToIPFS: false,

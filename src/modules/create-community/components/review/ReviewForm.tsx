@@ -31,12 +31,6 @@ export function ReviewForm(): JSX.Element {
       toast.success('DAO Deployed!')
       setIsLoading(false)
 
-      createCommunity({
-        name: general.daoName,
-        community_id: deployedDao.token,
-        network: chain,
-      })
-
       const successUrl =
         `/community/${CHAIN_ID}/${deployedDao.token}?created=true` as any
       push(successUrl)

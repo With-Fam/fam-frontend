@@ -14,9 +14,6 @@ import useConnectedWallet from '@/hooks/useConnectedWallet'
 const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
   ssr: false,
 })
-const UserName = dynamic(() => import('@/components/shared/UserName'), {
-  ssr: false,
-})
 
 type MenuUserRowProps = {
   address: `0x${string}`
@@ -55,7 +52,7 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
           </Paragraph>
           <Paragraph as="p5" className="flex text-gray-500">
             <span className="pr-1">
-              <UserName address={address as `0x${string}`} addressFallback />
+              <EnsAddress address={address as `0x${string}`} addressFallback />
             </span>
             <button onClick={handleCopyClick} aria-label="copy user name">
               <Copy color={copySuccess ? '#F54D18' : undefined} />
