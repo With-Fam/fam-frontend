@@ -1,3 +1,4 @@
+import { MONTH_LABELS } from '@/constants/consts'
 import useCommunity from '@/hooks/useCommunity'
 import useIsMobile from '@/hooks/useIsMobile'
 import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
@@ -21,7 +22,7 @@ const PartyCard = ({ partyInfo }: any) => {
                 src={getPartyDaoIpfsLink(data?.image)}
                 alt=""
                 width={isMobile ? 80 : 200}
-                height={isMobile ? 80 : 200}
+                height={isMobile ? 80 : 200}                className="overflow-hidden rounded-[8px]"
               />
             </div>
             <div>
