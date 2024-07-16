@@ -32,7 +32,9 @@ const ProfilePage = () => {
             <Loading />
           </div>
         ) : (
-          parties.map((party: any) => <PartyCard party={party} key={party} />)
+          parties.map((data: any, i: number) => (
+            <PartyCard partyInfo={data} key={i} />
+          ))
         )}
       </div>
       {hasNextPage && !loading && (

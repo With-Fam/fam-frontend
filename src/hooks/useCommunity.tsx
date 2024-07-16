@@ -1,28 +1,40 @@
 import { CHAIN_ID } from '@/constants/defaultChains'
 import { getPublicClient } from '@/lib/viem'
 import { useEffect, useState } from 'react'
-import { Address } from 'viem'
 import erc721Abi from '@/lib/abi/erc721Abi.json'
+import getContributedEvent from '@/lib/party/getContributedEvent'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
+import { Address } from 'viem'
 
-const useCommunity = (community: Address): any => {
+const useCommunity = (community: any): any => {
   const [data, setData] = useState(null)
   const [name, setName] = useState('')
+  const { connectedWallet } = useConnectedWallet()
 
   useEffect(() => {
     const init = async () => {
       const publicClient = getPublicClient(CHAIN_ID)
+      const contributedEvent = await getContributedEvent(
+        connectedWallet as Address,
+        community.crowdfund,
+        community.blockNumber,
+        CHAIN_ID
+      )
       let response = await publicClient.readContract({
-        address: community,
+        address: community.party,
         functionName: 'contractURI',
         abi: erc721Abi,
       })
 
       const result = await fetch(response as string)
       const data = await result.json()
-      setData(data)
+      setData({
+        ...data,
+        contributedEvent,
+      })
 
       response = await publicClient.readContract({
-        address: community,
+        address: community.party,
         functionName: 'name',
         abi: erc721Abi,
       })
@@ -30,8 +42,9 @@ const useCommunity = (community: Address): any => {
       setName(response as string)
     }
 
+    if (!community || !connectedWallet) return
     init()
-  }, [community])
+  }, [community, connectedWallet])
 
   return {
     data,

@@ -9,7 +9,7 @@ const getContributedPartyEvents = async (
 ) => {
   const publicClient = getPublicClient(chainId)
 
-  const logs = await publicClient.getLogs({
+  const logs: any = await publicClient.getLogs({
     event: parseAbiItem(
       'event Contributed(address indexed sender, address indexed contributor, uint256 amount, address delegate)'
     ),
@@ -29,7 +29,11 @@ const getContributedPartyEvents = async (
     contracts: multicallCalls,
   })
 
-  const parties = response.map((result) => result.result)
+  const parties = response.map((result, i) => ({
+    party: result.result,
+    crowdfund: logs[i].address,
+    blockNumber: logs[i].blockNumber,
+  }))
 
   return parties
 }
