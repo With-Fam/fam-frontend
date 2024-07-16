@@ -71,7 +71,11 @@ const Proposal = ({ data, proposalIndex }: any) => {
             <EnsAddress address={data.proposerAddress} />
           </Paragraph>
           <p className="font-abc text-[12px] text-grey">
-            {elapsedTime}
+            {getDiffFormattedDuration(
+              currentDateTime,
+              data.proposedTime * 1000
+            )}{' '}
+            ago
           </p>
         </div>
         <div className="flex items-center gap-1">
