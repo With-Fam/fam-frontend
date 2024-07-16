@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { CollectiveCulture, FAQ, FeatureWidgets, Hero } from '@/components/home'
-import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://app.withfam.xyz'),
@@ -29,15 +28,13 @@ export const metadata: Metadata = {
   },
 }
 
-const Home = (): JSX.Element => {
-  return (
-    <Suspense>
-      <Hero />
-      <CollectiveCulture />
-      <FeatureWidgets />
-      <FAQ />
-    </Suspense>
-  )
-}
+const Home = () => (
+  <>
+    <Hero />
+    <CollectiveCulture />
+    <FeatureWidgets />
+    <FAQ />
+  </>
+)
 
 export default Home
