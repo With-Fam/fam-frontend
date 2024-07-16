@@ -17,6 +17,7 @@ import { Address, isAddress, maxUint256, parseEther } from 'viem'
 import getEnsAddress from '@/lib/getEnsAddress'
 import handleTxError from '@/lib/handleTxError'
 import getCollectionInfoFromZoraLink from '@/lib/getCollectionInfoFromZoraLink'
+import getSaleConfig from '@/lib/zora/getSaleConfig'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -58,11 +59,16 @@ const useCreateProposal: any = (community: Address) => {
           !collectionInfo.tokenId
         )
           return false
+        const saleConfig = await getSaleConfig(
+          collectionInfo.collectionAddress,
+          collectionInfo.tokenId
+        )
+        const tokenPrice = saleConfig.pricePerToken
         proposalData = getZoraCollectProposalData(
           collectionInfo.collectionAddress as Address,
           SALE_STRATEGY[CHAIN.id],
           target,
-          0,
+          tokenPrice,
           collectionInfo.tokenId
         )
       }

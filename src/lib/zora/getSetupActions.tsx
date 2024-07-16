@@ -4,6 +4,8 @@ import { SALE_STRATEGY } from '@/constants/addresses'
 import { CHAIN_ID } from '@/constants/defaultChains'
 import getCallSaleData from '@/lib/zora/getCallSaleData'
 import { Address } from 'viem'
+import getAdminMintCall from '@/lib/zora/getAdminMintCall'
+import FAM from '@/constants/fam'
 
 const getSetupActions = (
   ifpsUri: string,
@@ -13,12 +15,12 @@ const getSetupActions = (
   duration: number,
   payoutAddress: Address
 ) => {
-  const dummyNextTokenId = 1
+  const dummyNextTokenId = 1n
   const dummySaleStart = 0
 
   const minterPermissionArgs2 = [dummyNextTokenId, SALE_STRATEGY[CHAIN_ID], 4]
   const iface = new Interface(dropAbi)
-  const minterPermissionCall2 = iface.encodeFunctionData(
+  const minterPermissionCall = iface.encodeFunctionData(
     'addPermission',
     minterPermissionArgs2
   )
@@ -32,13 +34,20 @@ const getSetupActions = (
     fundsRecipient: payoutAddress,
   })
   const callSaleArgs = [dummyNextTokenId, SALE_STRATEGY[CHAIN_ID], data]
-  const setupNewTokenArgs = [ifpsUri, editionSize.toString()]
+  const setupNewTokenArgs = [ifpsUri, editionSize.toString(), FAM]
   const setupNewTokenCall = iface.encodeFunctionData(
-    'setupNewToken',
+    'setupNewTokenWithCreateReferral',
     setupNewTokenArgs
   )
+  const adminMintCall = getAdminMintCall(dummyNextTokenId, payoutAddress)
   const callSaleCall = iface.encodeFunctionData('callSale', callSaleArgs)
-  const setupActions = [minterPermissionCall2, setupNewTokenCall, callSaleCall]
+  const setupActions = [
+    minterPermissionCall,
+    setupNewTokenCall,
+    callSaleCall,
+    adminMintCall,
+  ]
+
   return setupActions
 }
 
