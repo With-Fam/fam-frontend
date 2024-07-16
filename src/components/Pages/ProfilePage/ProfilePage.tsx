@@ -11,7 +11,6 @@ import { Address } from 'viem'
 
 const ProfilePage = () => {
   const { network, user } = useParams()
-
   const { parties, loading, hasNextPage, loadMore } = useJoinedParties(
     parseInt(network as string, 10),
     user as Address
@@ -26,9 +25,9 @@ const ProfilePage = () => {
       <div className="mb-4 mt-2">
         <EnsAddress address={user as Address} />
       </div>
-      <div className="grid w-full grid-cols-3 gap-4">
+      <div className="grid w-full grid-cols-1 gap-4 px-3 md:grid-cols-3">
         {loading ? (
-          <div className="col-span-3 mt-8 flex justify-center">
+          <div className="mt-8 flex justify-center md:col-span-3">
             <Loading />
           </div>
         ) : (
