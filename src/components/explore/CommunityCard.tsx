@@ -1,15 +1,14 @@
-'use client';
+'use client'
 
-import React from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Paragraph } from '@/stories'
 import { useParams } from 'next/navigation'
+import Link from 'next/link'
+import Paragraph from '@/stories/Paragraph'
+import { FamImage } from '@/components/shared'
 import { Address } from 'viem'
 import useCommunity from '@/hooks/useCommunity'
-import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
+import getIpfsLink from '@/lib/getIpfsLink'
 
-interface CommunityCardProps {
+type CommunityCardProps = {
   community: Address
 }
 
@@ -18,26 +17,27 @@ const CommunityCard = ({ community }: CommunityCardProps): JSX.Element => {
   const { data, name } = useCommunity(community)
 
   return (
-    <Link href={`/community/${network}/${community}`}>
-      <div className="flex flex-col bg-white rounded-lg overflow-hidden">
-        {data && (
-          <>
-            <div className="aspect-square w-full">
-              <Image
-                src={getPartyDaoIpfsLink(data?.image)}
-                alt={name || data?.name}
-                width={300}
-                height={300}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="p-4">
-              <Paragraph as="p3" className="font-bold text-black">
-                {name || data?.name}
-              </Paragraph>
-            </div>
-          </>
-        )}
+    <Link
+      className="col-span-1 block h-full w-full grow"
+      href={{
+        pathname: `/community/${network}/${community}`,
+      }}
+      passHref
+    >
+      <div className="relative z-0 aspect-square w-full">
+        <FamImage
+          className="mx-auto h-auto w-full overflow-hidden rounded-lg object-cover"
+          fill
+          src={data?.image ? getIpfsLink(data?.image) : ''}
+          alt={data?.name}
+          sizes="50vw"
+        />
+      </div>
+      <div className="grid justify-between gap-3 py-3">
+        <Paragraph as="p3">{name}</Paragraph>
+        <Paragraph as="p4" className="text-grey">
+          {data?.name}
+        </Paragraph>
       </div>
     </Link>
   )
