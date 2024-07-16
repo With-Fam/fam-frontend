@@ -22,7 +22,8 @@ const PartyCard = ({ partyInfo }: any) => {
                 src={getPartyDaoIpfsLink(data?.image)}
                 alt=""
                 width={isMobile ? 80 : 200}
-                height={isMobile ? 80 : 200}                className="overflow-hidden rounded-[8px]"
+                height={isMobile ? 80 : 200}
+                className="overflow-hidden rounded-[8px]"
               />
             </div>
             <div>
