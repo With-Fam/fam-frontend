@@ -1,4 +1,4 @@
-import { Cross, ExitIcon, EyeIcon, MemberIcon } from '@/components/icons'
+import { Cross, ExitIcon, MemberIcon } from '@/components/icons'
 import MenuItem from '@/components/shared/Navbar/MenuItem'
 import { useCheckAuth } from '@/hooks/useCheckAuth'
 import { useSwitchChain } from 'wagmi'
