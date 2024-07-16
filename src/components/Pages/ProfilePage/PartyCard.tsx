@@ -18,16 +18,16 @@ const PartyCard = ({ partyInfo }: any) => {
       <div className="flex flex-row items-center gap-2 bg-white md:flex-col">
         {data && (
           <>
-            <div className="flex aspect-[1/1] w-[80px] items-center justify-center overflow-hidden md:w-[200px]">
+            <div className="flex aspect-[1/1] w-[100px] items-center justify-center overflow-hidden md:w-[200px]">
               <Image
                 src={getPartyDaoIpfsLink(data?.image)}
                 alt=""
-                width={isMobile ? 80 : 200}
-                height={isMobile ? 80 : 200}
+                width={isMobile ? 100 : 200}
+                height={isMobile ? 100 : 200}
                 className="overflow-hidden rounded-[8px]"
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Paragraph as="p3" className="text-wrap">
                 {name}
               </Paragraph>
