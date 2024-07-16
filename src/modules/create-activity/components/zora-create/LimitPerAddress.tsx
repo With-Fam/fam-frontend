@@ -2,7 +2,7 @@ import { TextInput } from '@/components/forms'
 import SelectButton from '@/modules/create-activity/components/zora-create/SelectButton'
 import { LIMIT, useProposalStore } from '@/modules/create-activity/stores'
 
-const LimitPerAddress = () => {
+const LimitPerAddress = ({ duration }: any) => {
   const { limitPerAddress, setLimitPerAddress } = useProposalStore()
 
   return (
