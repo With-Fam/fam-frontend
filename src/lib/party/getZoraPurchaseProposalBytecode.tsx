@@ -13,11 +13,11 @@ const getZoraPurchaseProposalBytecode = (
   collectionAddress: Address,
   minter: Address,
   recipient: Address,
-  ethPrice: bigint,
+  price: bigint,
   tokenId: bigint = 1n
 ) => {
   const zoraFee = parseEther('0.000777')
-  const value = ethPrice + zoraFee
+  const value = price + zoraFee
 
   const quantity = 1n
   const minterArguments = encodeAbiParameters(
