@@ -19,12 +19,13 @@ const PartyCard = ({ partyInfo }: any) => {
       >
         {data && (
           <>
-            <div className="flex aspect-[1/1] w-[200px] items-center justify-center overflow-hidden rounded-[8px]">
+            <div className="flex aspect-[1/1] w-[200px] items-center justify-center">
               <Image
                 src={getPartyDaoIpfsLink(data?.image)}
                 alt=""
                 width={200}
                 height={200}
+                className="overflow-hidden rounded-[8px]"
               />
             </div>
             <div className="w-full">
