@@ -11,7 +11,6 @@ import { Address } from 'viem'
 
 const ProfilePage = () => {
   const { network, user } = useParams()
-
   const { parties, loading, hasNextPage, loadMore } = useJoinedParties(
     parseInt(network as string, 10),
     user as Address
