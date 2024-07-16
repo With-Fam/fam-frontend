@@ -15,11 +15,10 @@ const PartyCard = ({ partyInfo }: any) => {
 
   return (
     <Link href={`/community/${network}/${partyInfo?.party}`}>
-      <div className="flex flex-col items-center rounded-[8px] bg-white 
-      px-3 py-2">
+      <div className="flex flex-row items-center gap-2 rounded-[8px] bg-white px-3 py-2 md:h-full md:flex-col">
         {data && (
           <>
-            <div className="flex aspect-[1/1] w-[100px] items-center justify-center overflow-hidden md:w-[200px]">
+            <div className="flex aspect-[1/1] w-[100px] items-center justify-center overflow-hidden rounded-[8px] md:w-[200px]">
               <Image
                 src={getPartyDaoIpfsLink(data?.image)}
                 alt=""
@@ -29,14 +28,13 @@ const PartyCard = ({ partyInfo }: any) => {
               />
             </div>
             <div className="space-y-2">
-              <Paragraph as="p3" className="text-wrap">
+              <Paragraph as="p3" className="mt-2 text-wrap">
                 {name}
               </Paragraph>
               {data?.contributedEvent && (
                 <Paragraph as="p5" className="text-grey">
-                  {isMobile ? 'Since' : 'Joined'}&nbsp;
-                  {MONTH_LABELS[joinedDate.getMonth()]} {joinedDate.getDate()},{' '}
-                  {joinedDate.getFullYear()}
+                  Joined {MONTH_LABELS[joinedDate.getMonth()]}{' '}
+                  {joinedDate.getDate()}, {joinedDate.getFullYear()}
                 </Paragraph>
               )}
             </div>
