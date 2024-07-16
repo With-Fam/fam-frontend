@@ -11,6 +11,7 @@ const PartyCard = ({ partyInfo }: any) => {
   const { network } = useParams()
   const { data, name } = useCommunity(partyInfo)
   const { isMobile } = useIsMobile()
+  const joinedDate = new Date(data?.contributedEvent?.timestamp || 0)
 
   return (
     <Link href={`/community/${network}/${partyInfo?.party}`}>
@@ -33,7 +34,8 @@ const PartyCard = ({ partyInfo }: any) => {
               {data?.contributedEvent && (
                 <Paragraph as="p5" className="text-grey">
                   {isMobile ? 'Since' : 'Joined'}&nbsp;
-                  {new Date(data.contributedEvent.timestamp).toDateString()}
+                  {MONTH_LABELS[joinedDate.getMonth()]} {joinedDate.getDate()},{' '}
+                  {joinedDate.getFullYear()}
                 </Paragraph>
               )}
             </div>
