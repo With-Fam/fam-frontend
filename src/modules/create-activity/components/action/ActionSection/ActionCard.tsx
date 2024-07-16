@@ -19,7 +19,7 @@ export function ActionCard({
 
   return (
     <div
-      className="flex h-auto w-full cursor-pointer gap-4 rounded-lg  bg-white p-2 hover:shadow-sm md:block md:gap-0"
+      className="flex w-full cursor-pointer items-center rounded-lg bg-white p-4 hover:shadow-sm md:block md:h-auto"
       onClick={onClick}
     >
       <div
@@ -31,10 +31,11 @@ export function ActionCard({
           layout="fill"
           src={isMobile ? mobile_image : image}
           alt={imageAlt ?? title}
+          objectFit="cover"
         />
       </div>
-      <div className="text-left">
-        <Paragraph as="p3" className="mb-2">
+      <div className="flex-grow text-left">
+        <Paragraph as="p3" className="mb-1 font-bold md:mb-2">
           {title}
         </Paragraph>
         <Paragraph as="p5" className="text-grey">
