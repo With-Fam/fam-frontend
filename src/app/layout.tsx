@@ -6,7 +6,6 @@ import '@/styles/quill-toolbar.scss'
 import { WalletContext } from '@/contexts/WalletContext'
 import type { PropsWithChildren } from 'react'
 import { ProgressBar } from '@/components/shared'
-import { Fathom } from '@/components/Fathom'
 
 export default function RootLayout({
   children,
