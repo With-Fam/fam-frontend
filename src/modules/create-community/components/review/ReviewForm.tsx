@@ -2,20 +2,17 @@
 
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useAccount } from 'wagmi'
 import toast from 'react-hot-toast'
 import { useFormStore } from '@/modules/create-community'
 import ContinueButton from '@/components/ContinueButton'
 import { useRouter } from 'next/navigation'
 import { CheckMark } from '@/components/icons'
-import createCommunity from '@/lib/createCommunity'
 import AddressCopy from '@/modules/create-community/components/review/AddressCopy'
 import { AddressType } from '@/types'
 import { CHAIN_ID } from '@/constants/defaultChains'
 
 export function ReviewForm(): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { chain } = useAccount()
   const { deployedDao, setFulfilledSections, general } = useFormStore()
   const { push } = useRouter()
   const methods = useForm()
