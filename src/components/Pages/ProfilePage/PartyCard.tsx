@@ -15,7 +15,7 @@ const PartyCard = ({ partyInfo }: any) => {
 
   return (
     <Link href={`/community/${network}/${partyInfo?.party}`}>
-      <div className="flex flex-row items-center gap-2 bg-white md:flex-col">
+      <div className="flex flex-row md:items-center gap-2 bg-white md:flex-col rounded-[8px] overflow-hidden px-3 py-2">
         {data && (
           <>
             <div className="flex aspect-[1/1] w-[100px] items-center justify-center overflow-hidden md:w-[200px]">
