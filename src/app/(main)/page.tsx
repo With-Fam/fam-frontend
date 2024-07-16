@@ -1,21 +1,6 @@
-// Framework
 import type { Metadata } from 'next'
-
-// Local Component
-import {
-  CollectiveCulture,
-  FAQ,
-  FeatureWidgets,
-  Hero,
-  TrendingSection,
-} from '@/components/home'
+import { CollectiveCulture, FAQ, FeatureWidgets, Hero } from '@/components/home'
 import { Suspense } from 'react'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Page
- */
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://app.withfam.xyz'),
@@ -41,7 +26,6 @@ export const metadata: Metadata = {
     title: 'Your fam, onchain',
     description:
       'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
-    images: ['/opengraph-image.png'],
   },
 }
 
