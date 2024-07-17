@@ -9,18 +9,18 @@ import { useParams } from 'next/navigation'
 
 const PartyCard = ({ partyInfo }: any) => {
   const { network } = useParams()
-  const { data, name } = useCommunity(partyInfo)
   const { isMobile } = useIsMobile()
-  const joinedDate = new Date(data?.contributedEvent?.timestamp || 0)
+  const joinedDate = new Date(partyInfo.joinedAt)
+  const { name } = useCommunity(partyInfo?.address)
 
   return (
     <Link href={`/community/${network}/${partyInfo?.party}`}>
       <div className="flex flex-row items-center gap-2 rounded-[8px] bg-white px-3 py-2 md:h-full md:flex-col">
-        {data && (
+        {partyInfo && (
           <>
             <div className="flex aspect-[1/1] w-[100px] items-center justify-center overflow-hidden rounded-[8px] md:w-[200px]">
               <Image
-                src={ipfsGatewayUrl(data?.image) as any}
+                src={ipfsGatewayUrl(partyInfo?.image) as any}
                 alt=""
                 width={isMobile ? 100 : 200}
                 height={isMobile ? 100 : 200}
@@ -31,7 +31,7 @@ const PartyCard = ({ partyInfo }: any) => {
               <Paragraph as="p3" className="mt-2 text-wrap">
                 {name}
               </Paragraph>
-              {data?.contributedEvent && (
+              {partyInfo && (
                 <Paragraph as="p5" className="text-grey">
                   Joined {MONTH_LABELS[joinedDate.getMonth()]}{' '}
                   {joinedDate.getDate()}, {joinedDate.getFullYear()}
