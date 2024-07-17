@@ -1,7 +1,7 @@
 import { MONTH_LABELS } from '@/constants/consts'
 import useCommunity from '@/hooks/useCommunity'
 import useIsMobile from '@/hooks/useIsMobile'
-import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
+import { ipfsGatewayUrl } from '@/lib/ipfs-service'
 import { Paragraph } from '@/stories'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -20,7 +20,7 @@ const PartyCard = ({ partyInfo }: any) => {
           <>
             <div className="flex aspect-[1/1] w-[100px] items-center justify-center overflow-hidden rounded-[8px] md:w-[200px]">
               <Image
-                src={getPartyDaoIpfsLink(data?.image)}
+                src={ipfsGatewayUrl(data?.image) as any}
                 alt=""
                 width={isMobile ? 100 : 200}
                 height={isMobile ? 100 : 200}
