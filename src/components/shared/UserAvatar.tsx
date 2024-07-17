@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useMemo, useState } from 'react'
 import { gradientForAddress } from '@/components/shared/gradient'
 import { twMerge } from 'tailwind-merge'
-import usePfpImage from '@/hooks/usePfpImage'
+import useEnsAvatar from '@/hooks/useEnsAvatar'
 import { Address } from 'viem'
 
 type UserAvatarProps = {
@@ -20,25 +20,25 @@ const UserAvatar = ({
   height,
   className,
 }: UserAvatarProps): JSX.Element => {
-  const { pfpImage } = usePfpImage(address as Address)
+  const { ensAvatar } = useEnsAvatar(address as Address)
   const [imageError, setImageError] = useState(false)
 
   const background = useMemo(() => {
-    if (address && !pfpImage) {
+    if (address && !ensAvatar) {
       const gradient = gradientForAddress(address)
       return `radial-gradient(75.29% 75.29% at 64.96% 24.36%, ${gradient[0]} 15.62%, ${gradient[1]} 39.58%, ${gradient[2]} 72.92%, ${gradient[3]} 90.62%, ${gradient[4]} 100%)`
-    } else if (pfpImage) {
+    } else if (ensAvatar) {
       return `#FFFFFF`
     } else {
       return 'transparent'
     }
-  }, [address, pfpImage])
+  }, [address, ensAvatar])
 
   return (
     <>
-      {pfpImage && !imageError ? (
+      {ensAvatar && !imageError ? (
         <Image
-          src={pfpImage}
+          src={ensAvatar}
           alt=""
           width={width}
           height={height}

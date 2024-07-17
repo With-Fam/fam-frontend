@@ -4,8 +4,8 @@ import { Address } from 'viem'
 import { mainnet } from 'viem/chains'
 import { normalize } from 'viem/ens'
 
-const usePfpImage = (address: Address) => {
-  const [pfpImage, setPfpImage] = useState('')
+const useEnsAvatar = (address: Address) => {
+  const [ensAvatar, setEnsAvatar] = useState('')
 
   useEffect(() => {
     const init = async () => {
@@ -18,15 +18,15 @@ const usePfpImage = (address: Address) => {
         name: normalize(ensName),
       })
       if (!ensUrl) return
-      setPfpImage(ensUrl)
+      setEnsAvatar(ensUrl)
     }
     if (!address) return
     init()
   }, [address])
 
   return {
-    pfpImage,
+    ensAvatar,
   }
 }
 
-export default usePfpImage
+export default useEnsAvatar
