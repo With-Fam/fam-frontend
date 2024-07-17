@@ -21,7 +21,6 @@ const UserAvatar = ({
   className,
 }: UserAvatarProps): JSX.Element => {
   const { pfpImage } = usePfpImage(address as Address)
-
   const [imageError, setImageError] = useState(false)
 
   const background = useMemo(() => {

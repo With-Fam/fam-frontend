@@ -11,7 +11,6 @@
     "format": "prettier --write \"**/*.{js,jsx,json,ts,tsx,md,mdx,yml,yaml}\""
   },
   "dependencies": {
-    "@airstack/airstack-react": "^0.6.4",
     "@ethersproject/bignumber": "^5.7.0",
     "@hookform/resolvers": "^3.3.4",
     "@privy-io/react-auth": "^1.62.0",
