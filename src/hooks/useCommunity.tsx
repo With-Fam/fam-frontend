@@ -1,3 +1,5 @@
+'use client'
+
 import { CHAIN_ID } from '@/constants/defaultChains'
 import { getPublicClient } from '@/lib/viem'
 import { useEffect, useState } from 'react'

@@ -1,4 +1,3 @@
-import { AuctionFragment } from '@/data/subgraph/sdk.generated'
 import { Chain as WagmiChain } from 'viem'
 
 export type Maybe<T> = T | null
@@ -38,8 +37,6 @@ export interface Chain extends WagmiChain {
 export type AddressType = `0x${string}`
 
 export type BytesType = `0x${string}`
-
-export type DaoProps = AuctionFragment['dao']
 
 export type FounderParameters = NonNullable<any>['args'][0]
 

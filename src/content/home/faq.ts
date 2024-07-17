@@ -8,7 +8,7 @@ const FAQ_DATA = [
   {
     question: 'Shared community pools',
     answer: [
-      'As more members join the community the proceeds from auctions help to grow the shared pool which can be used to fund new projects and ideas. Think of it like a shared bank account that no one person controls.',
+      'As more members join the community the proceeds from memberships help to grow the shared pool which can be used to fund new projects and ideas. Think of it like a shared bank account that no one person controls.',
     ],
   },
   {
@@ -17,8 +17,8 @@ const FAQ_DATA = [
       'When members propose new ideas they can add an onchain action which will trigger if the vote is successful. This allows communities to create and collaborate as a collective.',
       'Some examples of actions communities can do are:',
       [
-        'Collectively mint a song, album or video.',
-        'Send funds to contributors to put on an IRL event, show or festival.',
+        'Collectively publish songs, albums or videos.',
+        'Send funds to contributors to put on a party, show or festival.',
         'Collect onchain media as a community',
       ],
     ],

@@ -32,6 +32,7 @@ type InputSliderProps = ReactSliderProps & {
   suffix?: string
   level?: JSX.Element
   className?: string
+  customValue?: string
 }
 
 export function InputSlider({
@@ -41,6 +42,7 @@ export function InputSlider({
   onChange,
   step = 1,
   value,
+  customValue,
   suffix,
   level,
   className = '',
@@ -55,7 +57,7 @@ export function InputSlider({
       </label>
       <div className="flex w-full gap-4">
         <Paragraph as="p3" className="whitespace-nowrap">
-          {value}
+          {customValue || value}
           {suffix}
         </Paragraph>
         <ReactSlider
