@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { CollectiveCulture, FAQ, FeatureWidgets, Hero } from '@/components/home'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://app.withfam.xyz'),
   title: 'Your fam, onchain',
   description:
     'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
@@ -20,12 +19,6 @@ export const metadata: Metadata = {
     'Innovative Music Community',
     'Music Community Building',
   ],
-  openGraph: {
-    url: 'https://app.withfam.xyz',
-    title: 'Your fam, onchain',
-    description:
-      'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
-  },
 }
 
 const Home = () => (

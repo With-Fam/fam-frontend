@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { CHAIN_ID } from '@/constants/defaultChains'
 import { getPublicClient } from '@/lib/viem'

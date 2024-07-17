@@ -1,10 +1,7 @@
 'use client'
 
-// Local Components
 import { Sections } from '@/modules/create-activity'
 import { CreateActivityProvider } from '@/contexts/CreateActivityProvider'
-
-/*--------------------------------------------------------------------*/
 
 type CreateActivityPageProps = {
   params: {
