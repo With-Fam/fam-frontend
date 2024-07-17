@@ -32,6 +32,7 @@ const UploadMedia = ({
   callback,
   isMedia,
 }: UploadIPFSProps): JSX.Element => {
+  const [mediaUrl, setMediaUrl] = useState<any>(null)
   const inputRef = useRef<Maybe<HTMLInputElement>>(null)
   const [{ loading, progress }, setUploadState] = useState<UploadState>({
     loading: false,
@@ -48,6 +49,8 @@ const UploadMedia = ({
     try {
       const { uri } = await uploadFile(file)
       onChange(uri)
+      const audioURL = URL.createObjectURL(file)
+      setMediaUrl(audioURL)
     } catch (err) {
       console.log('err::', err)
     } finally {
@@ -67,8 +70,8 @@ const UploadMedia = ({
     <div className="mt-10 flex w-full items-center justify-center">
       {isMedia ? (
         <>
-          {value && (
-            <IPFSMedia src={getPartyDaoIpfsLink(value)} onCancel={onCancel} />
+          {mediaUrl && value && (
+            <IPFSMedia src={mediaUrl} onCancel={onCancel} />
           )}
         </>
       ) : (
