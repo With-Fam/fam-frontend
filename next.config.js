@@ -17,6 +17,7 @@ const nextConfig = {
       'media.discordapp.net',
       'i.imgur.com',
       'partydao.mypinata.cloud',
+      'euc.li',
     ],
     // remotePatterns: [
     //   {

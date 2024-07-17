@@ -1,17 +1,14 @@
+import { getPublicClientWithoutAlchemy } from '@/lib/viem'
 import { useEffect, useState } from 'react'
-import { Address, createPublicClient, http, isAddress } from 'viem'
+import { Address, isAddress } from 'viem'
 import { mainnet } from 'viem/chains'
 
 const useEnsName = (value: string): any => {
   const [ensName, setEnsName] = useState('')
 
-  const publicClient = createPublicClient({
-    chain: mainnet,
-    transport: http(),
-  })
-
   useEffect(() => {
     const init = async () => {
+      const publicClient = getPublicClientWithoutAlchemy(mainnet.id)
       try {
         if (!isAddress(value)) {
           setEnsName('')
