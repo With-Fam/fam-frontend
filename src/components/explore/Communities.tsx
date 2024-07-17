@@ -14,7 +14,7 @@ const Communities = ({ items }: CommunitiesProps): JSX.Element => {
           return (
             <div
               key={index}
-              className="rounder-2xl mx-auto h-auto w-full max-w-sm bg-white p-3 sm:mx-0 sm:w-auto sm:max-w-none"
+              className="mx-auto h-auto w-full max-w-sm rounded-2xl bg-white p-3 sm:mx-0 sm:w-auto sm:max-w-none"
             >
               <CommunityCard community={community} />
             </div>

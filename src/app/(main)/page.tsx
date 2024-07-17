@@ -1,24 +1,7 @@
-// Framework
 import type { Metadata } from 'next'
-
-// Local Component
-import {
-  CollectiveCulture,
-  FAQ,
-  FeatureWidgets,
-  Hero,
-  TrendingSection,
-} from '@/components/home'
-import { Suspense } from 'react'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Page
- */
+import { CollectiveCulture, FAQ, FeatureWidgets, Hero } from '@/components/home'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://app.withfam.xyz'),
   title: 'Your fam, onchain',
   description:
     'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
@@ -36,24 +19,15 @@ export const metadata: Metadata = {
     'Innovative Music Community',
     'Music Community Building',
   ],
-  openGraph: {
-    url: 'https://app.withfam.xyz',
-    title: 'Your fam, onchain',
-    description:
-      'Fam is a space for music communities to grow, collaborate and collectively fund creative projects',
-    images: ['/opengraph-image.png'],
-  },
 }
 
-const Home = (): JSX.Element => {
-  return (
-    <Suspense>
-      <Hero />
-      <CollectiveCulture />
-      <FeatureWidgets />
-      <FAQ />
-    </Suspense>
-  )
-}
+const Home = () => (
+  <>
+    <Hero />
+    <CollectiveCulture />
+    <FeatureWidgets />
+    <FAQ />
+  </>
+)
 
 export default Home

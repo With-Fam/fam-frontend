@@ -7,7 +7,7 @@ import {
   sepolia,
   zora,
   zoraSepolia,
-} from 'wagmi/chains'
+} from 'viem/chains'
 
 import { CHAIN_ID as chainIdType, Chain } from '@/types'
 
