@@ -10,3 +10,18 @@ export const DEPLOYMENT_ERROR = {
     'Oops! Looks like there are undefined founder allocation values. Please go back to the allocation step to ensure that valid allocation values are set.',
   MISMATCHING_NETWORK: 'Oops! Looks like there is a chain mismatch.',
 }
+
+export const MONTH_LABELS = [
+  'January',
+  'Feburuary',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]

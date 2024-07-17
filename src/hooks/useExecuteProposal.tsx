@@ -1,12 +1,13 @@
 import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
+import getProposalInfo from '@/lib/party/getProposalInfo'
 import { getPublicClient } from '@/lib/viem'
-import { Address, encodeFunctionData } from 'viem'
+import { TransactionType } from '@/modules/create-activity/types'
+import { Address } from 'viem'
 
 const useExecuteProposal = (): any => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
-
   const execute = async (proposal: any, community: Address) => {
     if (!walletClient) return
     const proposalId = proposal.proposalId
@@ -17,12 +18,18 @@ const useExecuteProposal = (): any => {
 
     try {
       const publicClient = getPublicClient(CHAIN_ID)
+      const proposalInfo = await getProposalInfo(proposal)
+      const proposedByFam =
+        proposalInfo?.type === TransactionType.ZORA_COLLECT ||
+        proposalInfo?.type === TransactionType.ZORA_CREATE ||
+        proposalInfo?.type === TransactionType.SEND_ETH
+
       const args = [
         proposalId,
         {
           maxExecutableTime: proposal.maxExecutableTime,
           proposalData: proposal.rawProposalData,
-          cancelDelay: 0,
+          cancelDelay: proposedByFam ? 0 : 300,
         },
         preciousTokens,
         preciousTokenIds,
@@ -30,17 +37,15 @@ const useExecuteProposal = (): any => {
         extraData,
       ] as any
 
-      const data = encodeFunctionData({
+      const gas = await publicClient.estimateContractGas({
+        address: community as Address,
         abi: partyAbi,
         functionName: 'execute',
+        account: walletClient.account?.address as Address,
         args,
       })
 
-      const gas = await publicClient.estimateGas({
-        account: walletClient.account?.address as Address,
-        to: walletClient.account?.address as Address,
-        data,
-      })
+      await walletClient.switchChain({ id: CHAIN_ID })
 
       const hash = await walletClient.writeContract({
         account: walletClient.account?.address as Address,

@@ -10,7 +10,6 @@ const balanceOf = async (contractAddress: Address, owner: Address) => {
     abi: erc721Abi,
     args: [owner as Address],
   })
-
   return response
 }
 

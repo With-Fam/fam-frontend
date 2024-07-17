@@ -1,4 +1,4 @@
-import { foundry } from 'wagmi/chains'
+import { foundry } from 'viem/chains'
 
 import { CHAIN_ID } from '@/types'
 

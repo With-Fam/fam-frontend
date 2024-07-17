@@ -6,7 +6,7 @@ import { decodeFunctionData } from 'viem'
 const getProposalInfo = async (proposal: any) => {
   try {
     const proposalData: any = proposal.proposalData[0]
-    const proposalHexdata = proposalData.data
+    const proposalHexdata = proposalData?.data
 
     if (proposalHexdata === '0x') {
       return {
