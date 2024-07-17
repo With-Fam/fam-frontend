@@ -1,5 +1,5 @@
 import { TransactionType } from '@/modules/create-activity/types'
-import { Address } from 'viem'
+import { Address, maxUint64 } from 'viem'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'next/navigation'
 import _get from 'lodash.get'
@@ -50,7 +50,11 @@ const useZoraCreateProposalForm = () => {
       title: values.title,
       description: values.description,
       pricePerEdition: values.pricePerEdition,
-      duration: values.duration * 60 * 60 * 24,
+      duration:
+        values.duration === 90
+          ? maxUint64
+          : parseInt(Number(Date.now() / 1000).toFixed(0)) +
+            values.duration * 60 * 60 * 24,
       payoutAddress: values.payoutAddress,
       customLimit: values.customLimit,
       customEditionSize: values.customEditionSize,

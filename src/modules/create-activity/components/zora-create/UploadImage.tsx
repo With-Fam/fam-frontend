@@ -8,7 +8,6 @@ import { Maybe } from '@/types'
 import { Paragraph } from '@/stories'
 import { Upload } from '@/components/icons'
 import Image from 'next/image'
-import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
 import { Icon } from '@/components/Icon'
 
 type UploadIPFSProps = {
@@ -27,6 +26,7 @@ const UploadImage = ({
   onChange,
   value,
 }: UploadIPFSProps): JSX.Element => {
+  const [mediaUrl, setMediaUrl] = useState<any>(null)
   const inputRef = useRef<Maybe<HTMLInputElement>>(null)
   const [{ loading, progress }, setUploadState] = useState<UploadState>({
     loading: false,
@@ -41,6 +41,8 @@ const UploadImage = ({
     try {
       const { uri } = await uploadFile(file)
       onChange(uri)
+      const imageUrl = URL.createObjectURL(file)
+      setMediaUrl(imageUrl)
     } catch (err) {
       console.log('err::', err)
     } finally {
@@ -54,11 +56,11 @@ const UploadImage = ({
   return (
     <div className="mt-10 flex w-full items-center justify-center rounded-[8px] border border-grey-light py-6">
       <div className="flex w-[400px] justify-between">
-        {value ? (
+        {value && mediaUrl ? (
           <>
             <div className="relative h-[80px] w-[80px] overflow-hidden rounded-[8px]">
               <Image
-                src={getPartyDaoIpfsLink(value)}
+                src={mediaUrl}
                 alt="not found image"
                 layout="fill"
                 className="!w-full object-cover"

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import React from 'react'
 import PartyCard from '@/components/Pages/ProfilePage/PartyCard'
 import { Loading, UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
@@ -9,26 +9,17 @@ import { Heading } from '@/stories'
 import { useParams } from 'next/navigation'
 import { Address } from 'viem'
 import { Paragraph } from '@zoralabs/zord'
-import UserName from '@/components/shared/UserName'
 import { Copy } from '@/components/icons'
+import truncateAddress from '@/lib/truncateAddress'
+import useCopyToClipboard from '@/hooks/useCopyToClipboard'
 
 const ProfilePage = () => {
   const { network, user } = useParams()
-  const [copySuccess, setCopySuccess] = useState(false)
-  const copiedTimeout = useRef<NodeJS.Timeout | null>(null)
   const { parties, loading, hasNextPage, loadMore } = useJoinedParties(
     parseInt(network as string, 10),
     user as Address
   )
-
-  const handleCopyClick = async () => {
-    await navigator.clipboard.writeText(user as Address)
-    setCopySuccess(true)
-
-    copiedTimeout.current = setTimeout(() => {
-      setCopySuccess(false)
-    }, 500)
-  }
+  const { copyToClipboard, copySuccess } = useCopyToClipboard()
 
   return (
     <main className="mx-auto mt-10 flex max-w-[936px] flex-col items-center px-2 pb-4">
@@ -38,10 +29,11 @@ const ProfilePage = () => {
       </Heading>
       <div className="mb-4 mt-2">
         <Paragraph as="p5" className="flex text-gray-500">
-          <span className="pr-1">
-            <UserName address={user as `0x${string}`} addressFallback />
-          </span>
-          <button onClick={handleCopyClick} aria-label="copy user name">
+          <span className="pr-1">{truncateAddress(user as Address)}</span>
+          <button
+            onClick={() => copyToClipboard(user as Address)}
+            aria-label="copy user name"
+          >
             <Copy color={copySuccess ? '#F54D18' : undefined} />
           </button>
         </Paragraph>
