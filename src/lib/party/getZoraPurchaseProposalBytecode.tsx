@@ -7,25 +7,26 @@ import {
 } from 'viem'
 import { zoraCreator1155ImplABI } from '@zoralabs/protocol-deployments'
 import getProposalBytecode from '@/lib/party/getProposalBytecode'
+import FAM from '@/constants/fam'
 
 const getZoraPurchaseProposalBytecode = (
   collectionAddress: Address,
   minter: Address,
   recipient: Address,
-  ethPrice: number = 0,
+  price: bigint,
   tokenId: bigint = 1n
 ) => {
-  const price = parseEther(ethPrice.toString())
   const zoraFee = parseEther('0.000777')
   const value = price + zoraFee
 
   const quantity = 1n
   const minterArguments = encodeAbiParameters(
     parseAbiParameters('address x, string y'),
-    [recipient, 'Collected on Fam']
+    [recipient, 'Collected on app.withfam.xyz']
   )
 
-  const mintReferral = recipient
+  const mintReferral = FAM
+
   const data = encodeFunctionData({
     abi: zoraCreator1155ImplABI,
     functionName: 'mintWithRewards',
