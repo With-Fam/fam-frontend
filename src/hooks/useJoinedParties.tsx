@@ -31,6 +31,14 @@ const useJoinedParties = (chainId: number, address: Address) => {
         if (!existingItem) joinedParties.push(partyInfo)
       })
 
+      joinedParties.sort((a, b) =>
+        b.blockNumber > a.blockNumber
+          ? 1
+          : b.blockNumber < a.blockNumber
+            ? -1
+            : 0
+      )
+
       setParties(joinedParties)
 
       setLoading(false)
