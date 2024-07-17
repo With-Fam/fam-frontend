@@ -1,7 +1,6 @@
 export { default as Dropdown } from './Dropdown'
 export { default as ExploreAll } from './ExploreAll'
 export { default as Heading } from './Heading'
-export { default as NavigationButton } from './NavigationButton'
 export { default as Paragraph } from './Paragraph'
 export { default as PollComponent } from './PollComponent'
 export { default as Toggle } from './Toggle'

@@ -1,7 +1,6 @@
 import { Flex, FlexProps } from '@zoralabs/zord'
 import React from 'react'
 
-import { icon } from './Icon.css'
 import { IconType, icons } from './icons'
 
 type IconProps = FlexProps & {
@@ -20,7 +19,7 @@ export const Icon = ({
 
   return (
     <Flex {..._props}>
-      <IconSVG fill={fill} className={icon({ size })} />
+      <IconSVG fill={fill} />
     </Flex>
   )
 }
