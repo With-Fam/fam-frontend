@@ -6,7 +6,7 @@ import { decodeFunctionData } from 'viem'
 const getProposalInfo = async (proposal: any) => {
   try {
     const proposalData: any = proposal.proposalData[0]
-    const proposalHexdata = proposalData.data
+    const proposalHexdata = proposalData?.data
 
     if (proposalHexdata === '0x') {
       return {
@@ -34,7 +34,7 @@ const getProposalInfo = async (proposal: any) => {
       }
     }
 
-    if (proposalHexdata.length === 2762) {
+    if (proposalHexdata.length === 2762 || proposalHexdata.length === 3338) {
       const decodedData = decodeFunctionData({
         abi: zoraCreator1155FactoryImplABI,
         data: proposalHexdata,
