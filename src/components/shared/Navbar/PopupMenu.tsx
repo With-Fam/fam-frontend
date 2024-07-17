@@ -42,9 +42,6 @@ const PopupMenu = (): JSX.Element => {
         document.removeEventListener('click', handleClick)
         document.removeEventListener('keydown', handleEscape)
       }
-    } else {
-      document.removeEventListener('click', handleClick)
-      document.removeEventListener('keydown', handleEscape)
     }
   }, [open])
 

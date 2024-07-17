@@ -1,8 +1,7 @@
 import { StateCreator } from 'zustand'
 import { PersistOptions } from 'zustand/middleware'
-import { IPFSUpload } from '@/hooks'
-import type { OrderedTraits } from '@/components/create-community/artwork/TraitsAccordian'
-import { GeneralFormValues, ArtworkFormValues } from '../components'
+
+import { GeneralFormValues } from '../components'
 import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
 import { Address } from 'viem'
 
@@ -50,14 +49,8 @@ export interface FormStoreState {
   setReservePrice: (
     auctionReservePrice: AuctionSettingsFormValues['auctionReservePrice']
   ) => void
-  setUpArtwork: ArtworkFormValues
-  setSetUpArtwork: (artwork: ArtworkFormValues) => void
-  ipfsUpload: IPFSUpload[]
-  setIpfsUpload: (ipfsUpload: IPFSUpload[]) => void
   deployedDao: DaoContractAddresses
   setDeployedDao: (deployedDao: DaoContractAddresses) => void
-  orderedLayers: OrderedTraits
-  setOrderedLayers: (orderedLayers: OrderedTraits) => void
   isUploadingToIPFS: boolean
   setIsUploadingToIPFS: (bool: boolean) => void
   resetForm: () => void

@@ -10,7 +10,7 @@ import { Upload } from '@/components/icons'
 import { Maybe } from '@/types'
 import { Paragraph } from '@/stories'
 import IPFSMedia from '@/components/ipfs/IPFSMedia'
-import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
+import UploadProgress from '@/modules/create-activity/components/zora-create/UploadProgress'
 
 type UploadIPFSProps = {
   value?: string
@@ -32,6 +32,7 @@ const UploadMedia = ({
   callback,
   isMedia,
 }: UploadIPFSProps): JSX.Element => {
+  const [mediaUrl, setMediaUrl] = useState<any>(null)
   const inputRef = useRef<Maybe<HTMLInputElement>>(null)
   const [{ loading, progress }, setUploadState] = useState<UploadState>({
     loading: false,
@@ -48,13 +49,14 @@ const UploadMedia = ({
     try {
       const { uri } = await uploadFile(file)
       onChange(uri)
-    } catch (err) {
-      console.log('err::', err)
-    } finally {
+      const audioURL = URL.createObjectURL(file)
+      setMediaUrl(audioURL)
       setUploadState((_state) => ({
         ..._state,
         loading: false,
       }))
+    } catch (err) {
+      console.log('err::', err)
     }
   }
 
@@ -66,11 +68,17 @@ const UploadMedia = ({
   return (
     <div className="mt-10 flex w-full items-center justify-center">
       {isMedia ? (
-        <>
-          {value && (
-            <IPFSMedia src={getPartyDaoIpfsLink(value)} onCancel={onCancel} />
-          )}
-        </>
+        loading ? (
+          <div className="flex gap-2 ">
+            <UploadProgress progress={progress} />
+          </div>
+        ) : (
+          <>
+            {mediaUrl && value && (
+              <IPFSMedia src={mediaUrl} onCancel={onCancel} />
+            )}
+          </>
+        )
       ) : (
         <label
           htmlFor={name}
@@ -92,13 +100,7 @@ const UploadMedia = ({
           ) : (
             <div className="flex h-auto w-full flex-col items-center justify-center gap-2 p-5">
               {loading ? (
-                <>
-                  <div className="mb-1 text-base font-medium text-gray-400">
-                    Upload progress {progress}%
-                  </div>
-
-                  <Loading />
-                </>
+                <UploadProgress progress={progress} />
               ) : (
                 <>
                   <div className="rounded-full bg-black px-3 py-2 font-abc text-white">

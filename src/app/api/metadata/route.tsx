@@ -1,9 +1,9 @@
-import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
+import { ipfsGatewayUrl } from '@/lib/ipfs-service'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
   const uri = request.nextUrl.searchParams.get('uri') as string
-  const ipfsLink = getPartyDaoIpfsLink(uri)
+  const ipfsLink = ipfsGatewayUrl(uri) as any
   const response = await fetch(ipfsLink)
   const data = await response.json()
 

@@ -40,6 +40,7 @@ const Advanced = ({ control }: any) => {
                   render={({ field }) => (
                     <InputSlider
                       label=""
+                      customValue={duration === 90 ? 'Unlimited' : ''}
                       value={field.value}
                       onChange={(value, index) => {
                         field.onChange(value, index)
@@ -47,7 +48,7 @@ const Advanced = ({ control }: any) => {
                       }}
                       min={7}
                       max={90}
-                      suffix=" days"
+                      suffix={duration === 90 ? '' : ' days'}
                     />
                   )}
                 />
