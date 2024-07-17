@@ -40,8 +40,14 @@ const getProposalInfo = async (proposal: any) => {
         data: proposalHexdata,
       })
 
-      const response = await fetch(`/api/metadata?uri=${decodedData.args[0]}`)
-      const metadata = await response.json()
+      let metadata
+      try {
+        const response = await fetch(`/api/metadata?uri=${decodedData.args[0]}`)
+        metadata = await response.json()
+      } catch (error) {
+        metadata = null
+      }
+
       return {
         collectionName: metadata?.name || '',
         collectionImage: metadata?.image || '',

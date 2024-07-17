@@ -2,6 +2,7 @@ import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import getProposalInfo from '@/lib/party/getProposalInfo'
+import getProposalType from '@/lib/party/getProposalType'
 import { getPublicClient } from '@/lib/viem'
 import { TransactionType } from '@/modules/create-activity/types'
 import { Address } from 'viem'
@@ -18,11 +19,11 @@ const useExecuteProposal = (): any => {
 
     try {
       const publicClient = getPublicClient(CHAIN_ID)
-      const proposalInfo = await getProposalInfo(proposal)
+      const proposalType = await getProposalType(proposal)
       const proposedByFam =
-        proposalInfo?.type === TransactionType.ZORA_COLLECT ||
-        proposalInfo?.type === TransactionType.ZORA_CREATE ||
-        proposalInfo?.type === TransactionType.SEND_ETH
+        proposalType === TransactionType.ZORA_COLLECT ||
+        proposalType === TransactionType.ZORA_CREATE ||
+        proposalType === TransactionType.SEND_ETH
 
       const args = [
         proposalId,
@@ -59,6 +60,7 @@ const useExecuteProposal = (): any => {
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
       return receipt
     } catch (error) {
+      console.log('ZIAD', error)
       return { error }
     }
   }
