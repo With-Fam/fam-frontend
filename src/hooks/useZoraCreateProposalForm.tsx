@@ -1,5 +1,5 @@
 import { TransactionType } from '@/modules/create-activity/types'
-import { Address } from 'viem'
+import { Address, maxUint64 } from 'viem'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'next/navigation'
 import _get from 'lodash.get'
