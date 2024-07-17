@@ -6,11 +6,11 @@ import ShareButton from '@/components/Pages/CommunityPage/Header/ShareButton'
 import Image from 'next/image'
 import JoinButton from '@/components/Pages/CommunityPage/Header/JoinButton'
 import { useParams } from 'next/navigation'
-import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
 import FinalizeButton from '@/components/Pages/CommunityPage/Header/FinalizeButton'
 import useCommunityButtons from '@/hooks/useCommunityButtons'
 import { Address } from 'viem'
+import { ipfsGatewayUrl } from '@/lib/ipfs-service'
 
 const Header = () => {
   const { community } = useParams()
@@ -32,7 +32,7 @@ const Header = () => {
       <div className="flex items-center gap-3">
         {partyInfo?.image && (
           <Image
-            src={getPartyDaoIpfsLink(partyInfo?.image)}
+            src={ipfsGatewayUrl(partyInfo?.image) as any}
             alt=""
             width={64}
             height={64}
