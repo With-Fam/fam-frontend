@@ -10,7 +10,6 @@ import { Upload } from '@/components/icons'
 import { Maybe } from '@/types'
 import { Paragraph } from '@/stories'
 import IPFSMedia from '@/components/ipfs/IPFSMedia'
-import getPartyDaoIpfsLink from '@/lib/getPartyDaoIpfsLink'
 
 type UploadIPFSProps = {
   value?: string
