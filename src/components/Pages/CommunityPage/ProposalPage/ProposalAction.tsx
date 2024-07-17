@@ -7,11 +7,12 @@ import useProposalState from '@/hooks/useProposalState'
 import { useParams } from 'next/navigation'
 import { Address } from 'viem'
 import VetoButton from '@/components/Pages/CommunityPage/ProposalPage/VetoButton'
+import VotedLabel from '@/components/Pages/CommunityPage/ProposalPage/VotedLabel'
 
 const ProposalAction = ({ proposal, getProposalDetail }: any) => {
   const { community } = useParams()
   const { vetoCountdown } = useProposalVetoTimer(proposal)
-  const { isActiveVoting, displayedPercent, needToPassNum } =
+  const { isActiveVoting, displayedPercent, needToPassNum, isVoter } =
     useVotingStatus(proposal)
   const { canApprove, canExecute, isCompleted, canVeto } = useProposalState(
     community,
@@ -25,7 +26,8 @@ const ProposalAction = ({ proposal, getProposalDetail }: any) => {
           <p className="text-[24px] text-green">
             {proposal.votes.length} <span className="text-[20px]">votes</span>
           </p>
-          {canApprove && (
+          {canApprove && isVoter && <VotedLabel />}
+          {canApprove && !isVoter && (
             <VoteButton
               proposal={proposal}
               community={community as Address}
@@ -39,7 +41,7 @@ const ProposalAction = ({ proposal, getProposalDetail }: any) => {
               callback={getProposalDetail}
             />
           )}
-          {!canExecute && !isCompleted && (
+          {!isActiveVoting && !canExecute && !isCompleted && (
             <div className="flex items-center justify-center rounded-full bg-orange-light px-2 py-1 text-[14px] text-orange">
               {vetoCountdown}
             </div>

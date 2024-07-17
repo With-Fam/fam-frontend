@@ -31,7 +31,7 @@ const UserAvatar = ({
     } else if (pfpImage) {
       return `#FFFFFF`
     } else {
-      return `transparent`
+      return 'transparent'
     }
   }, [address, pfpImage])
 
