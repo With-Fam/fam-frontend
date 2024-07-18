@@ -1,21 +1,14 @@
 import { Cross, ExitIcon, MemberIcon } from '@/components/icons'
 import MenuItem from '@/components/shared/Navbar/MenuItem'
-import { useCheckAuth } from '@/hooks/useCheckAuth'
-import { useSwitchChain } from 'wagmi'
 import { CHAIN_ID } from '@/constants/defaultChains'
+import { usePrivy } from '@privy-io/react-auth'
 
 type MenuListProps = {
   address: `0x${string}`
 }
 
 const MenuList = ({ address }: MenuListProps): JSX.Element => {
-  const { logout } = useCheckAuth()
-  const { chains } = useSwitchChain()
-
-  const currentChains: string[] = []
-  chains.map((chain: any) => {
-    currentChains.push(chain.network)
-  })
+  const { logout } = usePrivy()
 
   return (
     <ul className="mt-8 grid gap-6">

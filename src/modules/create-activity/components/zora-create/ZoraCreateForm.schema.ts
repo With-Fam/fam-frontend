@@ -1,7 +1,8 @@
 import { Address } from 'viem'
 
 export interface ZoraCreateValues {
-  collectionImage: string
+  ipfsImage: string
+  ipfsMedia: string
   title: string
   description: string
   pricePerEdition: number

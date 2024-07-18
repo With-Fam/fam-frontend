@@ -1,6 +1,5 @@
-import getContributedPartyEvents from '@/lib/party/getContributedPartyEvents'
-import getCreatedPartyEvents from '@/lib/party/getCreatedPartyEvents'
-import { ChainId } from '@/types/chain'
+import getNFTs from '@/lib/alchemy/getNFTs'
+import getJoinedTime from '@/lib/party/getJoinedTime'
 import { useEffect, useState } from 'react'
 import { Address } from 'viem'
 
@@ -14,24 +13,31 @@ const useJoinedParties = (chainId: number, address: Address) => {
   useEffect(() => {
     const init = async () => {
       setLoading(true)
-      const createdParties = await getCreatedPartyEvents(
-        address,
-        chainId as ChainId
+      const nfts: any = await getNFTs(address, '', chainId)
+      const parties = nfts.ownedNfts.filter(
+        (nft: any) =>
+          nft.tokenType === 'ERC721' && nft?.raw?.metadata?.party_card_url
       )
-      const contributedParties = await getContributedPartyEvents(
-        address,
-        chainId as ChainId
-      )
-      const joinedParties = [...contributedParties]
-      createdParties.map((partyInfo: any) => {
-        const existingItem = joinedParties.find(
-          (item: any) =>
-            partyInfo.party.toLowerCase() === item.party.toLowerCase()
-        )
-        if (!existingItem) joinedParties.push(partyInfo)
-      })
 
-      setParties(joinedParties)
+      const partyAddresses = parties.map((party: any) => party.contract.address)
+      const partyJoinedTimes: any = await getJoinedTime(partyAddresses, address)
+
+      const formattedParties: any = parties.map(
+        (party: any, index: number) => ({
+          blockNumber: party.mint.blockNumber,
+          joinedAt: partyJoinedTimes[index],
+          address: party.contract.address,
+          name: party.contract.name,
+          image: party.raw.metadata.image,
+          tokenId: party.tokenId,
+        })
+      )
+
+      const sortedParties = formattedParties.sort(
+        (a: any, b: any) => b.joinedAt - a.joinedAt
+      )
+
+      setParties(sortedParties)
 
       setLoading(false)
     }

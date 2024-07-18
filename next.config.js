@@ -1,6 +1,3 @@
-const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin')
-const withVanillaExtract = createVanillaExtractPlugin()
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -20,6 +17,7 @@ const nextConfig = {
       'media.discordapp.net',
       'i.imgur.com',
       'partydao.mypinata.cloud',
+      'euc.li',
     ],
     // remotePatterns: [
     //   {
@@ -63,4 +61,4 @@ const nextConfig = {
   },
 }
 
-module.exports = withVanillaExtract(nextConfig)
+module.exports = nextConfig
