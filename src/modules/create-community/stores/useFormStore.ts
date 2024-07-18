@@ -2,11 +2,9 @@
 
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { IPFSUpload } from '@/hooks'
 import { DaoContractAddresses } from './types'
 import { FormStoreState, AuctionSettingsFormValues } from './types'
-import { ArtworkFormValues, GeneralFormValues } from '../components'
-import type { OrderedTraits } from '@/components/create-community/artwork/TraitsAccordian'
+import { GeneralFormValues } from '../components'
 import { auctionSettingsDefaultValues, initialState } from './variables'
 import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
 
@@ -40,17 +38,9 @@ export const useFormStore = create(
             auctionReservePrice,
           },
         }),
-      setSetUpArtwork: (artwork: ArtworkFormValues) =>
-        set({ setUpArtwork: artwork }),
-      setIpfsUpload: (ipfsUpload: IPFSUpload[]) => set({ ipfsUpload }),
       setDeployedDao: (deployedDao: DaoContractAddresses) => {
         set({
           deployedDao,
-        })
-      },
-      setOrderedLayers: (orderedLayers: OrderedTraits) => {
-        set({
-          orderedLayers,
         })
       },
       setIsUploadingToIPFS: (isUploadingToIPFS: boolean) =>

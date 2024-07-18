@@ -2,22 +2,7 @@
 
 import { PropsWithChildren } from 'react'
 import { PrivyProvider } from '@privy-io/react-auth'
-import { createConfig, http } from 'wagmi'
 import { Toaster } from 'react-hot-toast'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { WagmiProvider } from '@privy-io/wagmi'
-import { base, baseSepolia } from 'wagmi/chains'
-import { mapChainIdToEndpoint } from '@/lib/alchemy/mapChainIdToEndpoint'
-
-const queryClient = new QueryClient()
-
-export const config = createConfig({
-  chains: [base, baseSepolia],
-  transports: {
-    [base.id]: http(mapChainIdToEndpoint(base.id)),
-    [baseSepolia.id]: http(mapChainIdToEndpoint(baseSepolia.id)),
-  },
-})
 
 export const WalletContext = ({ children }: PropsWithChildren): JSX.Element => {
   return (
@@ -34,12 +19,8 @@ export const WalletContext = ({ children }: PropsWithChildren): JSX.Element => {
         },
       }}
     >
-      <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={config}>
-          <Toaster />
-          {children}
-        </WagmiProvider>
-      </QueryClientProvider>
+      <Toaster />
+      {children}
     </PrivyProvider>
   )
 }

@@ -5,16 +5,17 @@ import Loader from './Loader.png'
 type Props = {
   title?: string
   description?: string
+  size?: number
 }
 
-export const Loading = ({ title, description }: Props): JSX.Element => (
+export const Loading = ({ title, description, size }: Props): JSX.Element => (
   <div className="flex grow flex-col items-center justify-center">
     <div className="space-y-2 text-center">
       <Image
         className="m-auto animate-spin"
         alt="loader"
-        width={40}
-        height={40}
+        width={size || 40}
+        height={size || 40}
         src={Loader}
       />
       {title && <Paragraph as="p2">{title}</Paragraph>}

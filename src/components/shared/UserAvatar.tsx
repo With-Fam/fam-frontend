@@ -1,14 +1,12 @@
 'use client'
 
-// Framework
 import Image from 'next/image'
 import { useMemo, useState } from 'react'
+import { gradientForAddress } from '@/components/shared/gradient'
+import { twMerge } from 'tailwind-merge'
+import useEnsAvatar from '@/hooks/useEnsAvatar'
+import { Address } from 'viem'
 
-// Third Parties
-import { useEnsAvatar, useEnsName } from 'wagmi'
-
-// Types
-import { CHAIN_ID } from '@/types'
 type UserAvatarProps = {
   address: string
   width: number
@@ -16,30 +14,13 @@ type UserAvatarProps = {
   className?: string
 }
 
-// Helpers
-import { gradientForAddress } from '@/components/shared/gradient'
-import { twMerge } from 'tailwind-merge'
-
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
-
 const UserAvatar = ({
   address,
   width,
   height,
   className,
 }: UserAvatarProps): JSX.Element => {
-  const { data: ensName } = useEnsName({
-    address: address as `0x${string}`,
-    chainId: CHAIN_ID.ETHEREUM,
-  })
-  const { data: ensAvatar } = useEnsAvatar({
-    name: ensName ?? undefined,
-    chainId: CHAIN_ID.ETHEREUM,
-  })
+  const { ensAvatar } = useEnsAvatar(address as Address)
   const [imageError, setImageError] = useState(false)
 
   const background = useMemo(() => {
@@ -47,7 +28,7 @@ const UserAvatar = ({
       const gradient = gradientForAddress(address)
       return `radial-gradient(75.29% 75.29% at 64.96% 24.36%, ${gradient[0]} 15.62%, ${gradient[1]} 39.58%, ${gradient[2]} 72.92%, ${gradient[3]} 90.62%, ${gradient[4]} 100%)`
     } else if (ensAvatar) {
-      return '#FFFFFF'
+      return `#FFFFFF`
     } else {
       return 'transparent'
     }
