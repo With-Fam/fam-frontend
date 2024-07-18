@@ -1,7 +1,14 @@
 # FAM
 
-Getting Started
-First, run the development server:
+### Getting Started
+
+#### Install dependencies
+
+```bash
+yarn install
+```
+
+#### Run development server
 
 npm run dev
 
