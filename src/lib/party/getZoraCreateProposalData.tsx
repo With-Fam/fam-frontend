@@ -9,6 +9,7 @@ const getZoraCreateProposalData = async (
   title: string,
   description: string,
   image: string,
+  media: string,
   pricePerToken: bigint,
   editionSize: bigint | number,
   limitPerAddress: bigint | number,
@@ -18,7 +19,8 @@ const getZoraCreateProposalData = async (
   const jsonString = JSON.stringify({
     name: title,
     description,
-    image,
+    image: image || media,
+    animation_url: media || image,
   })
   const metadata = new Blob([jsonString], { type: 'application/json' })
   const file = new File([metadata], 'metdata', { type: 'application/json' })
@@ -41,6 +43,7 @@ const getZoraCreateProposalData = async (
     hexEncodedSelector,
     encodedBytecodeProposalData as Address,
   ])
+
   const proposalStruct: any = {
     cancelDelay: '0',
     maxExecutableTime: getMaxExecutableTime(),

@@ -13,7 +13,8 @@ const useZoraCreateProposalForm = () => {
   const { setLoadingMessage, setLoading } = useCreateActivityProvider()
   const defaultValues = {
     target: community as Address,
-    collectionImage: '',
+    ipfsMedia: '',
+    ipfsImage: '',
     title: '',
     description: '',
     pricePerEdition: 0,
@@ -25,7 +26,8 @@ const useZoraCreateProposalForm = () => {
 
   const methods = useForm<ZoraCreateValues>({
     defaultValues: {
-      collectionImage: defaultValues.collectionImage,
+      ipfsMedia: defaultValues.ipfsMedia,
+      ipfsImage: defaultValues.ipfsImage,
       title: defaultValues.title,
       description: defaultValues.description,
       pricePerEdition: defaultValues.pricePerEdition,
@@ -43,7 +45,8 @@ const useZoraCreateProposalForm = () => {
       functionSignature: 'zoraCreate(address)',
       target: community as Address,
       value: '',
-      collectionImage: values.collectionImage,
+      ipfsImage: values.ipfsImage,
+      ipfsMedia: values.ipfsMedia,
       title: values.title,
       description: values.description,
       pricePerEdition: values.pricePerEdition,
