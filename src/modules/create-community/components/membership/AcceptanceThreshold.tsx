@@ -18,7 +18,7 @@ const AcceptanceThreshold = () => {
         Acceptance threshold{' '}
         <Tooltip
           id={'revenue-split-tooltip'}
-          message="This is the period between a vote passing and the action being completed onchain. This can be skipped if all founders accept"
+          message="The percentage of community members who need to accept a vote in order for it to pass"
           className="!z-[100]"
         >
           <Icon id="helpCircle" fill="#ffffff" />
