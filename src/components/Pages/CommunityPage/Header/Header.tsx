@@ -20,7 +20,7 @@ const Header = () => {
     canFinalize,
     canJoin,
     handleJoin,
-    getCrowdfundLifeCyle,
+    callback,
     joinLoading,
   } = useCommunityButtons(community as Address)
 
@@ -67,7 +67,7 @@ const Header = () => {
               {joinLoading ? 'Joining...' : 'Join'}
             </JoinButton>
           )}
-          {canFinalize && <FinalizeButton callback={getCrowdfundLifeCyle} />}
+          {canFinalize && <FinalizeButton callback={callback} />}
           {canCreateActivity && <ActivityButton />}
         </div>
       </div>

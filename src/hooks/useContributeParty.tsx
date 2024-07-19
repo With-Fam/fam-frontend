@@ -11,7 +11,7 @@ import getCrowdfundContract from '@/lib/party/getCrowdfundContract'
 import balanceOf from '@/lib/balanceOf'
 import { initialETHCrowdfundAbi } from '@/data/contract/abis/InitialETHCrowdfund'
 
-const useJoinParty = () => {
+const useContributeParty = () => {
   const { community } = useParams()
   const [joined, setJoined] = useState(false)
   const { walletClient } = usePrivyWalletClient()
@@ -19,7 +19,7 @@ const useJoinParty = () => {
   const publicClient = getPublicClient(CHAIN_ID)
   const [loading, setLoading] = useState(true)
 
-  const join = async () => {
+  const contribute = async () => {
     if (!walletClient || !connectedWallet) return
 
     setLoading(true)
@@ -87,10 +87,10 @@ const useJoinParty = () => {
 
   return {
     joined,
-    join,
+    contribute,
     checkJoining,
     loading,
   }
 }
 
-export default useJoinParty
+export default useContributeParty

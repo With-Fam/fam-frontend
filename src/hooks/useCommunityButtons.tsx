@@ -1,12 +1,27 @@
 import useIsHost from '@/hooks/useIsHost'
 import { Address } from 'viem'
-import useJoinParty from '@/hooks/useJoinParty'
+import useContributeParty from '@/hooks/useContributeParty'
 import useCrowdfund, { CrowdfundLifecycle } from '@/hooks/useCrowdfund'
 import { usePrivy } from '@privy-io/react-auth'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
+import useMembershipSale from '@/hooks/useMembershipSales'
+import useBatchContributeParty from '@/hooks/useBatchContributeParty'
 
 const useCommunityButtons = (community: Address) => {
-  const { join, checkJoining, joined, loading: joinLoading } = useJoinParty()
+  const {
+    contribute,
+    checkJoining,
+    joined,
+    loading: contributeLoading,
+  } = useContributeParty()
+  const { batchContribute, loading: batchContributeLoading } =
+    useBatchContributeParty()
+  const {
+    getMembershipSale,
+    activeSale,
+    loading: saleLoading,
+    membershipSale,
+  } = useMembershipSale(community)
   const {
     crowfundLifecyle,
     getCrowdfundLifeCyle,
@@ -20,7 +35,13 @@ const useCommunityButtons = (community: Address) => {
     connectedWallet as Address
   )
 
-  const loading = joinLoading || hostLoading || crowdfundLoading
+  const joinLoading = contributeLoading || batchContributeLoading
+  const loading =
+    contributeLoading ||
+    hostLoading ||
+    crowdfundLoading ||
+    saleLoading ||
+    batchContributeLoading
   const canCreateActivity =
     joined &&
     crowfundLifecyle === CrowdfundLifecycle.Finalized &&
@@ -28,18 +49,30 @@ const useCommunityButtons = (community: Address) => {
     !loading
 
   const canFinalize =
-    crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
-    isHost &&
-    joined &&
-    !loading
+    (crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
+      isHost &&
+      joined &&
+      !loading) ||
+    activeSale
 
   const canJoin =
-    crowfundLifecyle !== CrowdfundLifecycle.Finalized && !joined && !loading
+    (crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
+      !joined &&
+      !loading) ||
+    activeSale
 
   const handleJoin = async () => {
-    await join()
-    await checkJoining()
+    if (activeSale) await batchContribute(membershipSale)
+    else {
+      await contribute()
+      await checkJoining()
+    }
+    await callback()
+  }
+
+  const callback = async () => {
     await getCrowdfundLifeCyle()
+    await getMembershipSale()
   }
 
   return {
@@ -47,7 +80,7 @@ const useCommunityButtons = (community: Address) => {
     canFinalize,
     canJoin,
     canCreateActivity,
-    getCrowdfundLifeCyle,
+    callback,
     joinLoading,
   }
 }
