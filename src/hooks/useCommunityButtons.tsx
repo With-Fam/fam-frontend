@@ -42,24 +42,17 @@ const useCommunityButtons = (community: Address) => {
     crowdfundLoading ||
     saleLoading ||
     batchContributeLoading
+
+  const isNotFinalized = crowfundLifecyle !== CrowdfundLifecycle.Finalized
+
   const canCreateActivity =
-    joined &&
-    crowfundLifecyle === CrowdfundLifecycle.Finalized &&
-    isAuthenticated &&
-    !loading
+    joined && !isNotFinalized && isAuthenticated && !loading && !activeSale
 
   const canFinalize =
-    ((crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
-      joined &&
-      !loading) ||
-      activeSale) &&
-    isHost
+    ((isNotFinalized && joined && !loading) || activeSale) && isHost
 
   const canJoin =
-    (crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
-      !joined &&
-      !loading) ||
-    activeSale
+    (isNotFinalized || (!isNotFinalized && activeSale)) && !joined && !loading
 
   const handleJoin = async () => {
     if (activeSale) await batchContribute(membershipSale)
