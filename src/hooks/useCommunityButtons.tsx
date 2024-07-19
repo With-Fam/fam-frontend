@@ -1,21 +1,19 @@
 import useIsHost from '@/hooks/useIsHost'
 import { Address } from 'viem'
-import useContributeParty from '@/hooks/useContributeParty'
+import useJoinParty from '@/hooks/useJoinParty'
 import useCrowdfund, { CrowdfundLifecycle } from '@/hooks/useCrowdfund'
 import { usePrivy } from '@privy-io/react-auth'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import useMembershipSale from '@/hooks/useMembershipSales'
-import useBatchContributeParty from '@/hooks/useBatchContributeParty'
 
 const useCommunityButtons = (community: Address) => {
   const {
     contribute,
     checkJoining,
     joined,
-    loading: contributeLoading,
-  } = useContributeParty()
-  const { batchContribute, loading: batchContributeLoading } =
-    useBatchContributeParty()
+    loading: joinLoading,
+  } = useJoinParty()
+
   const {
     getMembershipSale,
     activeSale,
@@ -35,38 +33,21 @@ const useCommunityButtons = (community: Address) => {
     connectedWallet as Address
   )
 
-  const joinLoading = contributeLoading || batchContributeLoading
-  const loading =
-    contributeLoading ||
-    hostLoading ||
-    crowdfundLoading ||
-    saleLoading ||
-    batchContributeLoading
+  const loading = joinLoading || hostLoading || crowdfundLoading || saleLoading
+  const isNotFinalized = crowfundLifecyle !== CrowdfundLifecycle.Finalized
+
   const canCreateActivity =
-    joined &&
-    crowfundLifecyle === CrowdfundLifecycle.Finalized &&
-    isAuthenticated &&
-    !loading
+    joined && !isNotFinalized && isAuthenticated && !loading && !activeSale
 
   const canFinalize =
-    ((crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
-      joined &&
-      !loading) ||
-      activeSale) &&
-    isHost
+    ((isNotFinalized && joined && !loading) || activeSale) && isHost
 
   const canJoin =
-    (crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
-      !joined &&
-      !loading) ||
-    activeSale
+    (isNotFinalized || (!isNotFinalized && activeSale)) && !joined && !loading
 
   const handleJoin = async () => {
-    if (activeSale) await batchContribute(membershipSale)
-    else {
-      await contribute()
-      await checkJoining()
-    }
+    await contribute(membershipSale)
+    await checkJoining()
     await callback()
   }
 
