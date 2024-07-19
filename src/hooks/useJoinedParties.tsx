@@ -33,7 +33,16 @@ const useJoinedParties = (chainId: number, address: Address) => {
         })
       )
 
-      const sortedParties = formattedParties.sort(
+      const uniqueAddresses = new Set()
+      const uniqueFormattedParties = formattedParties.filter((party: any) => {
+        if (uniqueAddresses.has(party.address)) return false
+        else {
+          uniqueAddresses.add(party.address)
+          return true
+        }
+      })
+
+      const sortedParties = uniqueFormattedParties.sort(
         (a: any, b: any) => b.joinedAt - a.joinedAt
       )
 
