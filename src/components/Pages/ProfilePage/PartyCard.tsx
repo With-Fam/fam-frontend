@@ -14,7 +14,7 @@ const PartyCard = ({ partyInfo }: any) => {
   const { name } = useCommunity(partyInfo?.address)
 
   return (
-    <Link href={`/community/${network}/${partyInfo?.party}`}>
+    <Link href={`/community/${network}/${partyInfo?.address}`}>
       <div className="flex flex-row items-center gap-2 rounded-[8px] bg-white px-3 py-2 md:h-full md:flex-col">
         {partyInfo && (
           <>
