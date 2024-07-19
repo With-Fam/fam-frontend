@@ -49,11 +49,11 @@ const useCommunityButtons = (community: Address) => {
     !loading
 
   const canFinalize =
-    (crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
-      isHost &&
+    ((crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
       joined &&
       !loading) ||
-    activeSale
+      activeSale) &&
+    isHost
 
   const canJoin =
     (crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
@@ -82,6 +82,8 @@ const useCommunityButtons = (community: Address) => {
     canCreateActivity,
     callback,
     joinLoading,
+    activeSale,
+    membershipSale,
   }
 }
 
