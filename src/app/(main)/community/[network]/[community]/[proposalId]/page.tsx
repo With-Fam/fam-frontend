@@ -9,6 +9,7 @@ import ProposalStatus from '@/components/Pages/CommunityPage/ProposalStatus'
 import { Loading, UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
+import { PROPOSAL_STATUS } from '@/hooks/useProposalData'
 import useProposalDetail from '@/hooks/useProposalDetail'
 import useProposalVoteTimer from '@/hooks/useProposalVoteTimer'
 import useVotingStatus from '@/hooks/useVotingStatus'
@@ -32,8 +33,8 @@ export default function CommunityProposal(): JSX.Element {
   const { isActiveVoting } = useVotingStatus(proposalDetail)
   const { ready, authenticated } = usePrivy()
   const { connectedWallet } = useConnectedWallet()
-
   const isAuthenticated = ready && authenticated && connectedWallet
+  const isDefeated = status === PROPOSAL_STATUS.Defeated
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">
@@ -69,10 +70,12 @@ export default function CommunityProposal(): JSX.Element {
               </div>
             )}
           </div>
-          <ProposalAction
-            proposal={proposalDetail}
-            getProposalDetail={getProposalDetail}
-          />
+          {!isDefeated && (
+            <ProposalAction
+              proposal={proposalDetail}
+              getProposalDetail={getProposalDetail}
+            />
+          )}
           <div className="mt-8 flex items-center text-orange">
             <p className="text-[16px]">Action</p>{' '}
             <Icon id="arrowTopRight" fill="#f54d18" />
