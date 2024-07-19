@@ -42,7 +42,6 @@ const useCommunityButtons = (community: Address) => {
     crowdfundLoading ||
     saleLoading ||
     batchContributeLoading
-
   const isNotFinalized = crowfundLifecyle !== CrowdfundLifecycle.Finalized
 
   const canCreateActivity =
