@@ -32,6 +32,7 @@ const getJoinedTime = async (partyAddresses: Address[], user: Address) => {
     const batchResults = await batchRpcCall(batchRequests, endpoint)
 
     const joinedTimePromise = batchResults.map(async (result: any) => {
+      if (!result) return 0
       const joinedEvent = result.filter(
         (log: any) =>
           `0x${log.topics[2].slice(26)}`.toLowerCase() === user.toLowerCase()

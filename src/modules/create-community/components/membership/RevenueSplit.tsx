@@ -21,7 +21,7 @@ const RevenueSplit = () => {
         Revenue Split{' '}
         <Tooltip
           id={'revenue-split-tooltip'}
-          message="This is the period between a vote passing and the action being completed onchain. This can be skipped if all founders accept"
+          message="Revenue from memberships will be split between the founder(s) and community pool. Includes a 5% platform fee"
         >
           <Icon id="helpCircle" fill="#ffffff" />
         </Tooltip>
