@@ -2,12 +2,19 @@ import useFinalizeParty from '@/hooks/useFinalizeParty'
 import { useParams } from 'next/navigation'
 import { Address } from 'viem'
 
-const FinalizeButton = ({ callback = () => {} }) => {
+const FinalizeButton = ({
+  callback = () => {},
+  activeSale,
+  membershipSale,
+}: any) => {
   const { community } = useParams()
-  const { finalize, loading } = useFinalizeParty(community as Address)
+  const { finalize, loading, finalizeSale } = useFinalizeParty(
+    community as Address
+  )
 
   const onClick = async () => {
-    await finalize()
+    if (activeSale) await finalizeSale(membershipSale.saleId)
+    else await finalize()
     callback()
   }
 

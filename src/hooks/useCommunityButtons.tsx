@@ -4,9 +4,22 @@ import useJoinParty from '@/hooks/useJoinParty'
 import useCrowdfund, { CrowdfundLifecycle } from '@/hooks/useCrowdfund'
 import { usePrivy } from '@privy-io/react-auth'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
+import useMembershipSale from '@/hooks/useMembershipSales'
 
 const useCommunityButtons = (community: Address) => {
-  const { join, checkJoining, joined, loading: joinLoading } = useJoinParty()
+  const {
+    contribute,
+    checkJoining,
+    joined,
+    loading: joinLoading,
+  } = useJoinParty()
+
+  const {
+    getMembershipSale,
+    activeSale,
+    loading: saleLoading,
+    membershipSale,
+  } = useMembershipSale(community)
   const {
     crowfundLifecyle,
     getCrowdfundLifeCyle,
@@ -20,26 +33,27 @@ const useCommunityButtons = (community: Address) => {
     connectedWallet as Address
   )
 
-  const loading = joinLoading || hostLoading || crowdfundLoading
+  const loading = joinLoading || hostLoading || crowdfundLoading || saleLoading
+  const isNotFinalized = crowfundLifecyle !== CrowdfundLifecycle.Finalized
+
   const canCreateActivity =
-    joined &&
-    crowfundLifecyle === CrowdfundLifecycle.Finalized &&
-    isAuthenticated &&
-    !loading
+    joined && !isNotFinalized && isAuthenticated && !loading && !activeSale
 
   const canFinalize =
-    crowfundLifecyle !== CrowdfundLifecycle.Finalized &&
-    isHost &&
-    joined &&
-    !loading
+    ((isNotFinalized && joined && !loading) || activeSale) && isHost
 
   const canJoin =
-    crowfundLifecyle !== CrowdfundLifecycle.Finalized && !joined && !loading
+    (isNotFinalized || (!isNotFinalized && activeSale)) && !joined && !loading
 
   const handleJoin = async () => {
-    await join()
+    await contribute(membershipSale)
     await checkJoining()
+    await callback()
+  }
+
+  const callback = async () => {
     await getCrowdfundLifeCyle()
+    await getMembershipSale()
   }
 
   return {
@@ -47,8 +61,10 @@ const useCommunityButtons = (community: Address) => {
     canFinalize,
     canJoin,
     canCreateActivity,
-    getCrowdfundLifeCyle,
+    callback,
     joinLoading,
+    activeSale,
+    membershipSale,
   }
 }
 
