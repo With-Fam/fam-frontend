@@ -4,7 +4,6 @@ import React from 'react'
 import PartyCard from '@/components/Pages/ProfilePage/PartyCard'
 import { Loading, UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
-import useJoinedParties from '@/hooks/useJoinedParties'
 import { Heading } from '@/stories'
 import { useParams } from 'next/navigation'
 import { Address } from 'viem'
@@ -12,13 +11,11 @@ import { Paragraph } from '@zoralabs/zord'
 import { Copy } from '@/components/icons'
 import truncateAddress from '@/lib/truncateAddress'
 import useCopyToClipboard from '@/hooks/useCopyToClipboard'
+import useUserActivites from '@/hooks/useUserActivites'
 
 const ProfilePage = () => {
-  const { network, user } = useParams()
-  const { parties, loading, hasNextPage, loadMore } = useJoinedParties(
-    parseInt(network as string, 10),
-    user as Address
-  )
+  const { user } = useParams()
+  const { loading, joinedParties } = useUserActivites(user as Address)
   const { copyToClipboard, copySuccess } = useCopyToClipboard()
 
   return (
@@ -44,22 +41,11 @@ const ProfilePage = () => {
             <Loading />
           </div>
         ) : (
-          parties.map((data: any, i: number) => (
+          joinedParties.map((data: any, i: number) => (
             <PartyCard partyInfo={data} key={i} />
           ))
         )}
       </div>
-      {hasNextPage && !loading && (
-        <div className="mt-6 flex justify-center">
-          <button
-            type="button"
-            onClick={loadMore}
-            className="rounded-full bg-blue-light px-3 py-1 font-abcMedium text-white"
-          >
-            Load More
-          </button>
-        </div>
-      )}
     </main>
   )
 }

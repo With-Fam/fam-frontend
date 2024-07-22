@@ -1,5 +1,4 @@
 import { MONTH_LABELS } from '@/constants/consts'
-import useCommunity from '@/hooks/useCommunity'
 import useIsMobile from '@/hooks/useIsMobile'
 import { ipfsGatewayUrl } from '@/lib/ipfs-service'
 import { Paragraph } from '@/stories'
@@ -10,8 +9,7 @@ import { useParams } from 'next/navigation'
 const PartyCard = ({ partyInfo }: any) => {
   const { network } = useParams()
   const { isMobile } = useIsMobile()
-  const joinedDate = new Date(partyInfo.joinedAt)
-  const { name } = useCommunity(partyInfo?.address)
+  const joinedDate = new Date(partyInfo.block.timestamp * 1000)
 
   return (
     <Link href={`/community/${network}/${partyInfo?.address}`}>
@@ -29,7 +27,7 @@ const PartyCard = ({ partyInfo }: any) => {
             </div>
             <div className="space-y-2">
               <Paragraph as="p3" className="mt-2 text-wrap">
-                {name}
+                {partyInfo?.crowdfund?.opts_name}
               </Paragraph>
               {partyInfo && (
                 <Paragraph as="p5" className="text-grey">

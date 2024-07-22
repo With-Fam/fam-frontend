@@ -1,4 +1,6 @@
+import useConnectedWallet from '@/hooks/useConnectedWallet'
 import getZora1155Uri from '@/lib/zora/getZora1155Uri'
+import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const usePartyInfo = (community: any) => {
@@ -6,6 +8,8 @@ const usePartyInfo = (community: any) => {
   const [members, setMembers] = useState([])
   const [loading, setLoading] = useState(true)
   const [avatars, setAvatars] = useState(null)
+  const { connectedWallet } = useConnectedWallet()
+  const { user } = useParams()
 
   useEffect(() => {
     const init = async () => {
@@ -22,6 +26,8 @@ const usePartyInfo = (community: any) => {
       const addresses = members.memberships.map(
         (member: any) => member.userAddress
       )
+      if (connectedWallet) addresses.push(connectedWallet)
+      if (user) addresses.push(user)
       response = await fetch(
         `/api/party/avatars?addresses=${JSON.stringify(addresses)}`
       )
@@ -32,7 +38,7 @@ const usePartyInfo = (community: any) => {
 
     if (!community) return
     init()
-  }, [community])
+  }, [community, connectedWallet, user])
 
   return {
     partyInfo,
