@@ -19,7 +19,6 @@ const getZoraPurchaseProposalBytecode = async (
 ) => {
   const zoraFee = parseEther('0.000777')
   const value = price + zoraFee
-
   const name = await get721NFTName(recipient)
 
   const quantity = 1n
