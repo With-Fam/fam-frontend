@@ -71,6 +71,7 @@ export function ZoraCreate(): JSX.Element {
               <Link
                 href="https://support.zora.co/en/articles/1368641"
                 className="underline"
+                target="_blank"
               >
                 Learn more
               </Link>
