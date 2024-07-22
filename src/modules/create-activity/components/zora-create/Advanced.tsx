@@ -10,7 +10,26 @@ import LimitPerAddress from '@/modules/create-activity/components/zora-create/Li
 const Advanced = ({ control }: any) => {
   const { showAdvancedOfZoraCreate, setShowAdvancedOfZoraCreate } =
     useProposalStore()
-  const [duration, setDuration] = useState(7)
+
+  const durationScale = (scale: number) => {
+    switch (scale) {
+      case 1:
+        return '1 Day'
+      case 2:
+        return '7 Days'
+      case 3:
+        return '1 month'
+      case 4:
+        return '3 months'
+      case 5:
+        return '6 months'
+      case 6:
+        return 'Unlimited'
+      default:
+        return ''
+    }
+  }
+
   return (
     <>
       <button
@@ -40,22 +59,20 @@ const Advanced = ({ control }: any) => {
                   render={({ field }) => (
                     <InputSlider
                       label=""
-                      customValue={duration === 90 ? 'Unlimited' : ''}
+                      customValue={durationScale(field.value)}
                       value={field.value}
                       onChange={(value, index) => {
                         field.onChange(value, index)
-                        setDuration(value)
                       }}
-                      min={7}
-                      max={90}
-                      suffix={duration === 90 ? '' : ' days'}
+                      min={1}
+                      max={6}
                     />
                   )}
                 />
               </div>
             </div>
           </section>
-          <LimitPerAddress duration={duration} />
+          <LimitPerAddress />
           <TextInput
             name="payoutAddress"
             placeholder="Payout address"
