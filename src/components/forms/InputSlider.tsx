@@ -56,7 +56,7 @@ export function InputSlider({
         {label}
       </label>
       <div className="flex w-full gap-4">
-        <Paragraph as="p3" className="whitespace-nowrap">
+        <Paragraph as="p3" className="min-w-[80px] whitespace-nowrap">
           {customValue || value}
           {suffix}
         </Paragraph>
