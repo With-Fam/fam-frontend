@@ -24,7 +24,9 @@ const PartyCard = ({ partyInfo }: any) => {
   }, [partyInfo])
 
   return (
-    <Link href={`/community/${network}/${partyInfo?.address}`}>
+    <Link
+      href={`/community/${network}/${partyInfo?.crowdfund?.ethCrowdfund_party}`}
+    >
       <div className="flex flex-row items-center gap-2 rounded-[8px] bg-white px-3 py-2 md:h-full md:flex-col">
         {partyInfo && partyImage && (
           <>
