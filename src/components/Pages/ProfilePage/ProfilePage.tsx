@@ -12,15 +12,21 @@ import { Copy } from '@/components/icons'
 import truncateAddress from '@/lib/truncateAddress'
 import useCopyToClipboard from '@/hooks/useCopyToClipboard'
 import useUserActivites from '@/hooks/useUserActivites'
+import useAvatars from '@/hooks/useAvatars'
+import UserImage from '@/components/Pages/UserImage'
 
 const ProfilePage = () => {
   const { user } = useParams()
   const { loading, joinedParties } = useUserActivites(user as Address)
   const { copyToClipboard, copySuccess } = useCopyToClipboard()
+  const { avatars } = useAvatars([{ userAddress: user }]) as any
 
   return (
     <main className="mx-auto mt-10 flex max-w-[936px] flex-col items-center px-2 pb-4">
-      <UserAvatar address={user as Address} width={80} height={80} />
+      <UserImage
+        address={user as Address}
+        ensImage={avatars?.openSeaProfileImages?.[`${user}`]}
+      />
       <Heading as="h5" className="mt-3">
         <EnsAddress address={user as Address} />
       </Heading>
