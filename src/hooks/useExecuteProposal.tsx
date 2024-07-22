@@ -60,7 +60,6 @@ const useExecuteProposal = (): any => {
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
       return receipt
     } catch (error) {
-      console.log('ZIAD', error)
       return { error }
     }
   }
