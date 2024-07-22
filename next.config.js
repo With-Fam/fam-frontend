@@ -18,6 +18,9 @@ const nextConfig = {
       'i.imgur.com',
       'partydao.mypinata.cloud',
       'euc.li',
+      'ens.xyz',
+      'i.seadn.io',
+      'storage.googleapis.com',
     ],
     // remotePatterns: [
     //   {
