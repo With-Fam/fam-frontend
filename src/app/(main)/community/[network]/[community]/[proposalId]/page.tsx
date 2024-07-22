@@ -8,25 +8,25 @@ import ProposalInfo from '@/components/Pages/CommunityPage/ProposalPage/Proposal
 import ProposalStatus from '@/components/Pages/CommunityPage/ProposalStatus'
 import { Loading, UserAvatar } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
+import { useProposalProvider } from '@/contexts/ProposalProvider'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { PROPOSAL_STATUS } from '@/hooks/useProposalData'
-import useProposalDetail from '@/hooks/useProposalDetail'
 import useProposalVoteTimer from '@/hooks/useProposalVoteTimer'
 import useVotingStatus from '@/hooks/useVotingStatus'
 import getProposalStatus from '@/lib/getProposalStatus'
 import { usePrivy } from '@privy-io/react-auth'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 export default function CommunityProposal(): JSX.Element {
   const { proposalId } = useParams()
-  const searchParams = useSearchParams()
-  const blockNumber = searchParams.get('blockNumber')
   const { community, network } = useParams()
-  const { proposalDetail, getProposalDetail, loading } = useProposalDetail(
-    community,
-    proposalId,
-    blockNumber
-  )
+  const { proposals, proposalsLoading, getProposals } =
+    useProposalProvider() as any
+  const proposalDetail = proposals?.filter(
+    (proposal: any) =>
+      proposal.proposalId === parseInt(proposalId as string, 10)
+  )?.[0]
+
   const status = getProposalStatus(proposalDetail)
   const { push } = useRouter()
   const { voteCountdown } = useProposalVoteTimer(proposalDetail)
@@ -38,7 +38,7 @@ export default function CommunityProposal(): JSX.Element {
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">
-      {loading ? (
+      {proposalsLoading || !proposalDetail ? (
         <Loading />
       ) : (
         <>
@@ -73,7 +73,7 @@ export default function CommunityProposal(): JSX.Element {
           {!isDefeated && (
             <ProposalAction
               proposal={proposalDetail}
-              getProposalDetail={getProposalDetail}
+              getProposalDetail={getProposals}
             />
           )}
           <div className="mt-8 flex items-center text-orange">

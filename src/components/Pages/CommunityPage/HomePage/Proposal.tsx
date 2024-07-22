@@ -6,14 +6,13 @@ import { useProposalProvider } from '@/contexts/ProposalProvider'
 import useProposalComments from '@/hooks/useProposalComments'
 import { Paragraph } from '@/stories'
 import getProposalStatus from '@/lib/getProposalStatus'
-import dynamic from 'next/dynamic'
 import { useParams, useRouter } from 'next/navigation'
 import useVotingStatus from '@/hooks/useVotingStatus'
 import VoteCountdown from '@/components/Pages/CommunityPage/HomePage/VoteCountdown'
 import getDiffFormattedDuration from '@/lib/getDiffFormattedDuration'
-const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
-  ssr: false,
-})
+import MemberImage from '@/components/Pages/CommunityPage/MemberImage'
+import { useCommunityProvider } from '@/contexts/CommunityProvider'
+import truncateAddress from '@/lib/truncateAddress'
 
 const formatElapsedTime = (proposedTime: number) => {
   const now = Date.now()
@@ -46,6 +45,7 @@ const Proposal = ({ data, proposalIndex }: any) => {
   const status = getProposalStatus(data)
   const currentDateTime = Date.now()
   const { proposalComments } = useProposalComments(community, data.proposalId)
+  const { avatars } = useCommunityProvider() as any
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -57,18 +57,24 @@ const Proposal = ({ data, proposalIndex }: any) => {
 
   const goToProposal = () => {
     setSelectedProposalIndex(proposalIndex)
-    push(
-      `/community/${network}/${community}/${data.proposalId}?blockNumber=${data.createdBlockNumber}`
-    )
+    push(`/community/${network}/${community}/${data.proposalId}`)
   }
+
+  const proposerAddress = data.proposerAddress.toLowerCase()
+  const ensName =
+    avatars?.ensNames?.[`${proposerAddress}`] ||
+    avatars?.openSeaNames?.[`${proposerAddress}`]
 
   return (
     <section className="mb-4 rounded-md bg-white p-4">
       <div className="flex justify-between">
         <div className="flex items-center gap-1">
-          <UserAvatar address={data.proposerAddress} width={16} height={16} />
+          <MemberImage
+            address={proposerAddress}
+            ensImage={avatars?.openSeaProfileImages?.[`${proposerAddress}`]}
+          />
           <Paragraph as="p5" className="text-gray-dark">
-            <EnsAddress address={data.proposerAddress} />
+            {ensName || truncateAddress(proposerAddress)}
           </Paragraph>
           <p className="font-abc text-[12px] text-grey">
             {getDiffFormattedDuration(
