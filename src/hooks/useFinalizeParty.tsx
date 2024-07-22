@@ -19,6 +19,8 @@ const useFinalizeParty = (community: Address) => {
     try {
       if (!walletClient) return
       setLoading(true)
+      await walletClient.switchChain({ id: CHAIN_ID })
+
       const sellPartyCard = SELL_PARTY_CARD_AUTHORITY[CHAIN_ID]
       const publicClient = getPublicClient(CHAIN_ID)
 
@@ -50,6 +52,7 @@ const useFinalizeParty = (community: Address) => {
     try {
       if (!walletClient) return
       setLoading(true)
+      await walletClient.switchChain({ id: CHAIN_ID })
       const crowdfund = await getCrowdfundContract(community)
       const publicClient = getPublicClient(CHAIN_ID)
 
