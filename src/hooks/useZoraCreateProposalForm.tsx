@@ -18,7 +18,7 @@ const useZoraCreateProposalForm = () => {
     title: '',
     description: '',
     pricePerEdition: 0,
-    duration: 7,
+    duration: 1,
     payoutAddress: community as Address,
     customLimit: 1,
     customEditionSize: 1000,
