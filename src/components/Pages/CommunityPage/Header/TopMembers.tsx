@@ -1,6 +1,9 @@
-import { UserAvatar } from '@/components/shared'
+import MemberImage from '@/components/Pages/CommunityPage/MemberImage'
+import { useCommunityProvider } from '@/contexts/CommunityProvider'
 
 const TopMembers = ({ topMembers, membersNum }: any) => {
+  const { avatars } = useCommunityProvider() as any
+
   return (
     <div className="flex items-center gap-2">
       <div className="relative flex">
@@ -13,7 +16,12 @@ const TopMembers = ({ topMembers, membersNum }: any) => {
               zIndex: `${5 * i}`,
             }}
           >
-            <UserAvatar address={member.userAddress} width={16} height={16} />
+            <MemberImage
+              address={member.userAddress}
+              ensImage={
+                avatars?.openSeaProfileImages?.[`${member.userAddress}`]
+              }
+            />
           </div>
         ))}
       </div>

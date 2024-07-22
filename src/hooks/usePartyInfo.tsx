@@ -5,6 +5,7 @@ const usePartyInfo = (community: any) => {
   const [partyInfo, setPartyInfo] = useState<any>(null)
   const [members, setMembers] = useState([])
   const [loading, setLoading] = useState(true)
+  const [avatars, setAvatars] = useState(null)
 
   useEffect(() => {
     const init = async () => {
@@ -17,6 +18,15 @@ const usePartyInfo = (community: any) => {
       response = await fetch(`/api/party/members?party=${community}`)
       const members = await response.json()
       setMembers(members.memberships)
+
+      const addresses = members.memberships.map(
+        (member: any) => member.userAddress
+      )
+      response = await fetch(
+        `/api/party/avatars?addresses=${JSON.stringify(addresses)}`
+      )
+      const data = await response.json()
+      setAvatars(data)
       setLoading(false)
     }
 
@@ -28,6 +38,7 @@ const usePartyInfo = (community: any) => {
     partyInfo,
     members,
     loading,
+    avatars,
   }
 }
 
