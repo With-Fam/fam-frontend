@@ -38,7 +38,7 @@ export default function CommunityProposal(): JSX.Element {
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">
-      {proposalsLoading || proposalDetail ? (
+      {proposalsLoading || !proposalDetail ? (
         <Loading />
       ) : (
         <>
