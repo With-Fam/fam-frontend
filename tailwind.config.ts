@@ -33,6 +33,7 @@ const config: Config = {
         white: {
           secondary: '#D9D9D9',
           DEFAULT: '#ffffff',
+          primary: '#fafafa',
         },
         orange: {
           DEFAULT: '#F54D18',
