@@ -25,7 +25,7 @@ const getZoraPurchaseProposalBytecode = async (
   const quantity = 1n
   const minterArguments = encodeAbiParameters(
     parseAbiParameters('address x, string y'),
-    [recipient, `Collected ${name} by on Fam`]
+    [recipient, `Collected by ${name} on Fam`]
   )
 
   const mintReferral = FAM
