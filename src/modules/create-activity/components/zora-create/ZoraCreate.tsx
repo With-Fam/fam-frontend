@@ -69,8 +69,9 @@ export function ZoraCreate(): JSX.Element {
             <Paragraph as="p4" className="text-grey">
               Set your price to 0 ETH to earn creator rewards on Zora.{' '}
               <Link
-                href="https://support.zora.co/en/articles/1368641"
+                href="https://support.zora.co/en/articles/1368641#rewards_split_on_mints_with_no_list_price"
                 className="underline"
+                target="_blank"
               >
                 Learn more
               </Link>
