@@ -21,6 +21,7 @@ const nextConfig = {
       'ens.xyz',
       'i.seadn.io',
       'storage.googleapis.com',
+      'openseauserdata.com',
     ],
     // remotePatterns: [
     //   {
