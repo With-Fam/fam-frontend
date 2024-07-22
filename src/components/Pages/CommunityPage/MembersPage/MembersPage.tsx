@@ -2,11 +2,9 @@
 
 import Member from '@/components/Pages/CommunityPage/MembersPage/Member'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
-import useAvatars from '@/hooks/useAvatars'
 
 const MembersPage = (): JSX.Element => {
-  const { members } = useCommunityProvider() as any
-  const { avatars } = useAvatars(members) as any
+  const { members, avatars } = useCommunityProvider() as any
 
   return (
     <section

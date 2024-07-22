@@ -57,9 +57,7 @@ const Proposal = ({ data, proposalIndex }: any) => {
 
   const goToProposal = () => {
     setSelectedProposalIndex(proposalIndex)
-    push(
-      `/community/${network}/${community}/${data.proposalId}?blockNumber=${data.createdBlockNumber}`
-    )
+    push(`/community/${network}/${community}/${data.proposalId}`)
   }
 
   const proposerAddress = data.proposerAddress.toLowerCase()
