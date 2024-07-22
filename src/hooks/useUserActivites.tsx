@@ -11,7 +11,7 @@ const useUserActivites = (userAddress: Address) => {
     const init = async () => {
       setLoading(true)
       const response = await fetch(
-        `/api/party/activiy?userAddress=${userAddress}`
+        `/api/party/activity?userAddress=${userAddress}`
       )
 
       const data = await response.json()
