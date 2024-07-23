@@ -9,28 +9,36 @@ import getProposalStatus from '@/lib/getProposalStatus'
 import { useParams, useRouter } from 'next/navigation'
 import useVotingStatus from '@/hooks/useVotingStatus'
 import VoteCountdown from '@/components/Pages/CommunityPage/HomePage/VoteCountdown'
-import getDiffFormattedDuration from '@/lib/getDiffFormattedDuration'
 import MemberImage from '@/components/Pages/CommunityPage/MemberImage'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
 import truncateAddress from '@/lib/truncateAddress'
 
 const formatElapsedTime = (proposedTime: number) => {
   const now = Date.now()
-  const elapsed = now - proposedTime * 1000 // Convert to milliseconds
+  const elapsed = now - proposedTime * 1000
 
   const seconds = Math.floor(elapsed / 1000)
   const minutes = Math.floor(seconds / 60)
   const hours = Math.floor(minutes / 60)
   const days = Math.floor(hours / 24)
+  const weeks = Math.floor(days / 7)
+  const months = Math.floor(days / 28)
 
-  if (seconds < 60) {
+  const oneMinutes = 1000 * 60
+  const oneDay = 24 * 60 * 60 * 1000
+  const oneWeek = 7 * 24 * 60 * 60 * 1000
+  const oneMonth = 4 * 7 * 60 * 60 * 1000
+
+  if (elapsed < oneMinutes) {
     return '< 1m ago'
-  } else if (minutes < 60) {
-    return `${minutes}m ago`
-  } else if (hours < 24) {
+  } else if (elapsed < oneDay) {
     return `${hours}h ago`
-  } else {
+  } else if (elapsed < oneWeek) {
     return `${days}d ago`
+  } else if (elapsed < oneMonth) {
+    return `${weeks}w ago`
+  } else {
+    return `${months}mo ago`
   }
 }
 
@@ -76,13 +84,7 @@ const Proposal = ({ data, proposalIndex }: any) => {
           <Paragraph as="p5" className="text-gray-dark">
             {ensName || truncateAddress(proposerAddress)}
           </Paragraph>
-          <p className="font-abc text-[12px] text-grey">
-            {getDiffFormattedDuration(
-              currentDateTime,
-              data.proposedTime * 1000
-            )}{' '}
-            ago
-          </p>
+          <p className="font-abc text-[12px] text-grey">{elapsedTime}</p>
         </div>
         <div className="flex items-center gap-1">
           <ProposalStatus status={status} />
