@@ -6,7 +6,6 @@ import Image from 'next/image'
 
 const Description = () => {
   const { partyInfo } = useCommunityProvider() as any
-
   return (
     <div className="p-3">
       <div className="flex items-center gap-2">
