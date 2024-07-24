@@ -18,7 +18,7 @@ const useZoraCreateProposalForm = () => {
     title: '',
     description: '',
     pricePerEdition: 0,
-    duration: 7,
+    duration: 1,
     payoutAddress: community as Address,
     customLimit: 1,
     customEditionSize: 1000,
@@ -38,6 +38,24 @@ const useZoraCreateProposalForm = () => {
     },
   })
 
+  const durationValue = (duration: number) => {
+    const currentEpochTime = parseInt(Number(Date.now() / 1000).toFixed(0))
+    switch (duration) {
+      case 1:
+        return currentEpochTime + 1 * 60 * 60 * 24
+      case 2:
+        return currentEpochTime + 7 * 60 * 60 * 24
+      case 3:
+        return currentEpochTime + 30 * 60 * 60 * 24
+      case 4:
+        return currentEpochTime + 3 * 30 * 60 * 60 * 24
+      case 5:
+        return currentEpochTime + 6 * 30 * 60 * 60 * 24
+      case 6:
+        return maxUint64
+    }
+  }
+
   const onSubmit = async (values: ZoraCreateValues) => {
     setLoading(true)
     const builderTransaction = {
@@ -50,11 +68,7 @@ const useZoraCreateProposalForm = () => {
       title: values.title,
       description: values.description,
       pricePerEdition: values.pricePerEdition,
-      duration:
-        values.duration === 90
-          ? maxUint64
-          : parseInt(Number(Date.now() / 1000).toFixed(0)) +
-            values.duration * 60 * 60 * 24,
+      duration: durationValue(values.duration),
       payoutAddress: values.payoutAddress,
       customLimit: values.customLimit,
       customEditionSize: values.customEditionSize,

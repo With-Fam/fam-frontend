@@ -1,10 +1,9 @@
 'use client'
 
-import { CHAIN_ID } from '@/constants/defaultChains'
-import { getPublicClient } from '@/lib/viem'
 import { useEffect, useState } from 'react'
-import erc721Abi from '@/lib/abi/erc721Abi.json'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
+import get721Metadata from '@/lib/zora/get721Metadata'
+import get721NFTName from '@/lib/zora/get721NFTName'
 
 const useCommunity = (community: any): any => {
   const [data, setData] = useState(null)
@@ -13,24 +12,9 @@ const useCommunity = (community: any): any => {
 
   useEffect(() => {
     const init = async () => {
-      const publicClient = getPublicClient(CHAIN_ID)
-
-      let response = await publicClient.readContract({
-        address: community,
-        functionName: 'contractURI',
-        abi: erc721Abi,
-      })
-
-      const result = await fetch(response as string)
-      const data = await result.json()
+      const data = await get721Metadata(community)
       setData(data)
-
-      response = await publicClient.readContract({
-        address: community,
-        functionName: 'name',
-        abi: erc721Abi,
-      })
-
+      const response = await get721NFTName(community)
       setName(response as string)
     }
 

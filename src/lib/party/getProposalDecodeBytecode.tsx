@@ -3,6 +3,7 @@ import { AbiCoder } from 'ethers'
 import { pad, toHex } from 'viem'
 
 const getProposalDecodeBytecode = (rawProposalData: any) => {
+  if (rawProposalData.length === 1162) return { data: '' }
   const hexEncodedSelector = pad(toHex(ProposalType.ArbitraryCalls), {
     size: 4,
   })
@@ -10,13 +11,14 @@ const getProposalDecodeBytecode = (rawProposalData: any) => {
   const encodedBytecodeProposalData = rawProposalData.slice(
     hexEncodedSelector.length
   )
+
   const abiCoder = AbiCoder.defaultAbiCoder()
 
   const decodedData = abiCoder.decode(
     [
       'tuple(address payable target,uint256 value,bytes data,bool optional,bytes32 expectedResultHash)[]',
     ],
-    `0x${encodedBytecodeProposalData}`
+    `${encodedBytecodeProposalData}`
   )
 
   const decodedBytecodeProposalData = decodedData[0][0]

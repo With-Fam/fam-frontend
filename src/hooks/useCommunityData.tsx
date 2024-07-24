@@ -3,12 +3,13 @@ import { useParams } from 'next/navigation'
 
 const useCommunityData = () => {
   const { community } = useParams()
-  const { partyInfo, members, loading } = usePartyInfo(community)
+  const { partyInfo, members, loading, avatars } = usePartyInfo(community)
 
   return {
     partyInfo,
     members,
     loading,
+    avatars,
   }
 }
 
