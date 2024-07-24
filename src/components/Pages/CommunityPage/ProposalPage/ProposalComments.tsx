@@ -15,7 +15,7 @@ const ProposalComments = ({ proposal }: any) => {
   return (
     <>
       <div className="mt-4 space-y-6">
-        {proposalComments.map((comment: any) => (
+        {proposalComments?.map((comment: any) => (
           <div className="flex justify-between" key={comment.id}>
             <div className="flex gap-2">
               <UserAvatar

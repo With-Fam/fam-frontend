@@ -1,7 +1,6 @@
 import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
-import getProposalInfo from '@/lib/party/getProposalInfo'
 import getProposalType from '@/lib/party/getProposalType'
 import { getPublicClient } from '@/lib/viem'
 import { TransactionType } from '@/modules/create-activity/types'
