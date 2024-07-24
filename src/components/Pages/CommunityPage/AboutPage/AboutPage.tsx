@@ -5,9 +5,11 @@ import PoolAddress from './PoolAddress'
 
 const AboutPage = () => {
   return (
-    <main className="relative mx-auto max-w-[936px] rounded-md bg-white p-4">
-      <Pool />
-      <PoolAddress />
+    <main className="relative max-w-[936px] p-4 md:mx-auto">
+      <div className="rounded-md bg-white p-3">
+        <Pool />
+        <PoolAddress />
+      </div>
     </main>
   )
 }
