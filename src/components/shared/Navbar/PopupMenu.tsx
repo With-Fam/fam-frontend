@@ -8,27 +8,14 @@ import MenuUserRow from '@/components/shared/Navbar/MenuUserRow'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { Address } from 'viem'
 import UserImage from '@/components/Pages/UserImage'
+import useUserAvatar from '@/hooks/useUserAvatar'
 
 const PopupMenu = (): JSX.Element => {
   const { connectedWallet } = useConnectedWallet()
   const [open, setOpen] = useState(false)
   const popoverRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
-  const [userAvatar, setUserAvatar] = useState<any>(null)
-
-  useEffect(() => {
-    const init = async () => {
-      const addresses = [connectedWallet]
-      const response = await fetch(
-        `/api/party/avatars?addresses=${JSON.stringify(addresses)}`
-      )
-      const data = await response.json()
-      setUserAvatar(data)
-    }
-
-    if (!connectedWallet) return
-    init()
-  }, [connectedWallet])
+  const { userAvatar } = useUserAvatar()
 
   useEffect(() => {
     setOpen(false)
@@ -72,7 +59,11 @@ const PopupMenu = (): JSX.Element => {
           width={48}
           height={48}
           address={connectedWallet as Address}
-          ensImage={userAvatar?.openSeaProfileImages?.[`${connectedWallet}`]}
+          ensImage={
+            userAvatar?.openSeaProfileImages?.[
+              `${connectedWallet?.toLowerCase()}`
+            ]
+          }
         />
       </button>
       <motion.div

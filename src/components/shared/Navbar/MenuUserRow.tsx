@@ -10,6 +10,8 @@ import useEthBalance from '@/hooks/useEthBalance'
 import WalletComponent from '@/components/shared/Navbar/WalletComponent'
 import { Address } from 'viem'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
+import useUserAvatar from '@/hooks/useUserAvatar'
+import UserImage from '@/components/Pages/UserImage'
 
 const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
   ssr: false,
@@ -24,6 +26,7 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
   const copiedTimeout = useRef<NodeJS.Timeout | null>(null)
   const { connectedWallet } = useConnectedWallet()
   const { ethBalance } = useEthBalance(connectedWallet as Address)
+  const { userAvatar } = useUserAvatar()
 
   const handleCopyClick = async () => {
     await navigator.clipboard.writeText(address)
@@ -44,7 +47,16 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
     <div className="border-gray-light flex w-full justify-between rounded-xl border p-4">
       <div className="flex items-center gap-2">
         <Link href="/profile" passHref aria-label="go to profile page">
-          <UserAvatar address={address} width={40} height={40} />
+          <UserImage
+            width={40}
+            height={40}
+            address={connectedWallet as Address}
+            ensImage={
+              userAvatar?.openSeaProfileImages?.[
+                `${connectedWallet?.toLowerCase()}`
+              ]
+            }
+          />
         </Link>
         <div className="flex flex-1 flex-col justify-center">
           <Paragraph as="p4" className="font-abcMedium">
