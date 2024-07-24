@@ -8,7 +8,7 @@ const useUserAvatar = (address: Address) => {
     const init = async () => {
       const addresses = [address]
       const response = await fetch(
-        `/api/party/avatars?addresses=${JSON.stringify(address)}`
+        `/api/party/avatars?addresses=${JSON.stringify(addresses)}`
       )
       const data = await response.json()
       setUserAvatar(data)
