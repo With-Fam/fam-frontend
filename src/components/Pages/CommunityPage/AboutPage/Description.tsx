@@ -1,3 +1,4 @@
+import Socials from '@/components/Pages/CommunityPage/AboutPage/Socials'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
 import { ipfsGatewayUrl } from '@/lib/ipfs-service'
 import { Paragraph } from '@/stories'
@@ -7,7 +8,7 @@ const Description = () => {
   const { partyInfo } = useCommunityProvider() as any
 
   return (
-    <>
+    <div className="p-3">
       <div className="flex items-center gap-2">
         {partyInfo?.image && (
           <Image
@@ -21,10 +22,11 @@ const Description = () => {
           {partyInfo?.name || ''}
         </p>
       </div>
-      <Paragraph as="p3" className="break-all p-3 font-abcMedium">
+      <Paragraph as="p3" className="break-all font-abcMedium">
         {partyInfo?.description}
       </Paragraph>
-    </>
+      <Socials />
+    </div>
   )
 }
 
