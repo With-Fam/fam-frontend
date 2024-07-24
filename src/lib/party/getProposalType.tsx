@@ -6,7 +6,8 @@ const getProposalType = async (proposal: any) => {
     const proposalHexdata = proposalData?.data
 
     if (proposalHexdata === '0x') return TransactionType.SEND_ETH
-    if (proposalHexdata.length === 650) return TransactionType.ZORA_COLLECT
+    if (proposalHexdata.length === 650 || proposalHexdata.length === 714)
+      return TransactionType.ZORA_COLLECT
     if (proposalHexdata.length === 3338) return TransactionType.ZORA_CREATE
 
     return null

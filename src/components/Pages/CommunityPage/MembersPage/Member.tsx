@@ -1,14 +1,11 @@
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
-import EnsAddress from '@/components/shared/EnsAddress'
 import { useParams } from 'next/navigation'
 import useIsHost from '@/hooks/useIsHost'
 import { CHAIN_ID } from '@/constants/defaultChains'
-const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
-  ssr: false,
-})
+import MemberImage from '@/components/Pages/CommunityPage/MembersPage/MemberImage'
+import truncateAddress from '@/lib/truncateAddress'
 
-const Member = ({ data }: any) => {
+const Member = ({ data, ensName, ensImage }: any) => {
   const { community } = useParams()
   const { isHost } = useIsHost(community, data.userAddress)
 
@@ -19,12 +16,9 @@ const Member = ({ data }: any) => {
       className="mb-2 block rounded-lg bg-white p-4 sm:flex sm:items-center sm:justify-between"
     >
       <div className="mb-4 flex items-center justify-start gap-2 sm:mb-0">
-        <UserAvatar width={32} height={32} address={data.userAddress} />
+        <MemberImage address={data.userAddress} ensImage={ensImage} />
         <p className="font-abcMedium text-[20px]">
-          <EnsAddress
-            className="flex items-center gap-1"
-            address={data.userAddress}
-          />
+          {ensName || truncateAddress(data.userAddress)}
         </p>
         {isHost && (
           <div className="rounded-full bg-orange-light px-3 py-1">

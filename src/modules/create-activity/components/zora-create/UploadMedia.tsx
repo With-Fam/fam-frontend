@@ -66,7 +66,9 @@ const UploadMedia = ({
   }
 
   return (
-    <div className="mt-10 flex w-full items-center justify-center">
+    <div
+      className={`mt-10 flex w-full items-center justify-center rounded-[8px] py-6 ${isMedia && 'bg-white'}`}
+    >
       {isMedia ? (
         loading ? (
           <div className="flex gap-2 ">

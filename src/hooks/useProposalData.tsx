@@ -16,15 +16,13 @@ export enum PROPOSAL_STATUS {
 const useProposalData = () => {
   const [proposal, setProposal] = useState()
   const { community } = useParams()
-  const { proposals, loading, nextOffset, getProposals } =
-    useProposals(community)
+  const { proposals, loading, getProposals } = useProposals(community)
   const [selectedProposalIndex, setSelectedProposalIndex] = useState(0)
 
   return {
     proposal,
     setProposal,
     proposalsLoading: loading,
-    nextOffset,
     getProposals,
     setSelectedProposalIndex,
     proposals,
