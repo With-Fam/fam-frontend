@@ -3,14 +3,14 @@ import { pad, toHex, concatHex, Address, zeroAddress } from 'viem'
 import { ProposalType } from '@/types/partyTypes'
 import getZoraPurchaseProposalBytecode from '@/lib/party/getZoraPurchaseProposalBytecode'
 
-const getZoraCollectProposalData = (
+const getZoraCollectProposalData = async (
   collectionAddress: Address = zeroAddress,
   minter: Address = zeroAddress,
   recipient: Address = zeroAddress,
   price: bigint,
   tokenId: bigint = 1n
 ) => {
-  const encodedBytecodeProposalData = getZoraPurchaseProposalBytecode(
+  const encodedBytecodeProposalData = await getZoraPurchaseProposalBytecode(
     collectionAddress,
     minter,
     recipient,

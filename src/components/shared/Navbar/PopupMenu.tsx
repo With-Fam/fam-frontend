@@ -5,15 +5,17 @@ import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import MenuList from '@/components/shared/Navbar/MenuList'
 import MenuUserRow from '@/components/shared/Navbar/MenuUserRow'
-import { UserAvatar } from '@/components/shared'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { Address } from 'viem'
+import UserImage from '@/components/Pages/UserImage'
+import useUserAvatar from '@/hooks/useUserAvatar'
 
 const PopupMenu = (): JSX.Element => {
   const { connectedWallet } = useConnectedWallet()
   const [open, setOpen] = useState(false)
   const popoverRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
+  const { userAvatar } = useUserAvatar(connectedWallet as Address)
 
   useEffect(() => {
     setOpen(false)
@@ -53,10 +55,15 @@ const PopupMenu = (): JSX.Element => {
   return (
     <div className="pointer-events-auto relative h-12">
       <button onClick={() => setOpen(true)} aria-label="open users menu">
-        <UserAvatar
+        <UserImage
           width={48}
           height={48}
-          address={connectedWallet as string}
+          address={connectedWallet as Address}
+          ensImage={
+            userAvatar?.openSeaProfileImages?.[
+              `${connectedWallet?.toLowerCase()}`
+            ]
+          }
         />
       </button>
       <motion.div

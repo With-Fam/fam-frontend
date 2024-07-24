@@ -1,14 +1,6 @@
-// Types
 import type { PropsWithChildren } from 'react'
-
-// Local Components
 import { Navbar, Footer } from '@/components/shared'
 
-/*--------------------------------------------------------------------*/
-
-/**
- * Component
- */
 const MainLayout = ({ children }: PropsWithChildren): JSX.Element => (
   <>
     <Navbar />

@@ -7,8 +7,7 @@ import { useCommunityProvider } from '@/contexts/CommunityProvider'
 import { useProposalProvider } from '@/contexts/ProposalProvider'
 
 const HomePage = () => {
-  const { proposals, proposalsLoading, getProposals, nextOffset } =
-    useProposalProvider() as any
+  const { proposals, proposalsLoading } = useProposalProvider() as any
   const { partyInfo } = useCommunityProvider() as any
 
   const isEmpty = proposals.length === 0
@@ -36,17 +35,6 @@ const HomePage = () => {
         ))
       )}
       {proposalsLoading && <Loading />}
-      {nextOffset !== -1 && !proposalsLoading && (
-        <div className="flex justify-center">
-          <button
-            type="button"
-            onClick={() => getProposals(nextOffset)}
-            className="rounded-full bg-blue-light px-3 py-1 font-abcMedium text-white"
-          >
-            Load More
-          </button>
-        </div>
-      )}
     </main>
   )
 }

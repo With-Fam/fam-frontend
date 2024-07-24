@@ -8,8 +8,9 @@ import {
 import { zoraCreator1155ImplABI } from '@zoralabs/protocol-deployments'
 import getProposalBytecode from '@/lib/party/getProposalBytecode'
 import FAM from '@/constants/fam'
+import get721NFTName from '@/lib/zora/get721NFTName'
 
-const getZoraPurchaseProposalBytecode = (
+const getZoraPurchaseProposalBytecode = async (
   collectionAddress: Address,
   minter: Address,
   recipient: Address,
@@ -18,11 +19,12 @@ const getZoraPurchaseProposalBytecode = (
 ) => {
   const zoraFee = parseEther('0.000777')
   const value = price + zoraFee
+  const name = await get721NFTName(recipient)
 
   const quantity = 1n
   const minterArguments = encodeAbiParameters(
     parseAbiParameters('address x, string y'),
-    [recipient, 'Collected on app.withfam.xyz']
+    [recipient, `Collected by ${name} on Fam`]
   )
 
   const mintReferral = FAM

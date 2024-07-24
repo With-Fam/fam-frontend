@@ -54,8 +54,8 @@ const UploadImage = ({
   }
 
   return (
-    <div className="mt-10 flex w-full items-center justify-center rounded-[8px] border border-grey-light py-6">
-      <div className="flex w-[400px] justify-between">
+    <div className="mt-4 flex w-full items-center justify-center rounded-[8px] bg-white py-6">
+      <div className="flex w-full justify-between px-4 md:w-[400px]">
         {value && mediaUrl ? (
           <>
             <div className="relative h-[80px] w-[80px] overflow-hidden rounded-[8px]">
@@ -71,7 +71,10 @@ const UploadImage = ({
             </button>
           </>
         ) : (
-          <label htmlFor={name} className="flex w-full justify-between">
+          <label
+            htmlFor={name}
+            className="flex w-full items-center justify-between"
+          >
             {loading ? (
               <>
                 <div className="mb-1 text-base font-medium text-gray-400">
@@ -82,9 +85,11 @@ const UploadImage = ({
               </>
             ) : (
               <>
-                <Upload className="h-8 w-8 rounded-full bg-gray-300 p-2 text-gray-500" />
+                <div className="cursor-pointer rounded-[8px] border border-grey-light p-6">
+                  <Upload className="h-8 w-8 rounded-full bg-grey-light p-2 text-gray-500" />
+                </div>
                 <div className="flex flex-col items-start gap-1">
-                  <Paragraph as="p3" className="font-abc text-grey">
+                  <Paragraph as="p4" className="font-abc text-grey">
                     Add a thumbnail
                   </Paragraph>
                   <Paragraph as="p6" className="font-abc text-grey">

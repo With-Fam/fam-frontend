@@ -9,6 +9,8 @@ import useZoraCreateProposalForm from '@/hooks/useZoraCreateProposalForm'
 import UploadMedia from '@/modules/create-activity/components/zora-create/UploadMedia'
 import { useState } from 'react'
 import UploadImage from '@/modules/create-activity/components/zora-create/UploadImage'
+import { Paragraph } from '@/stories'
+import Link from 'next/link'
 
 export function ZoraCreate(): JSX.Element {
   const { methods, onSubmit } = useZoraCreateProposalForm()
@@ -63,6 +65,18 @@ export function ZoraCreate(): JSX.Element {
             placeholder="0 ETH"
             min={0}
           />
+          <div className="w-full text-left">
+            <Paragraph as="p4" className="text-grey">
+              Set your price to 0 ETH to earn creator rewards on Zora.{' '}
+              <Link
+                href="https://support.zora.co/en/articles/1368641#rewards_split_on_mints_with_no_list_price"
+                className="underline"
+                target="_blank"
+              >
+                Learn more
+              </Link>
+            </Paragraph>
+          </div>
         </div>
         <Advanced control={control} />
         <AddActionButton />
