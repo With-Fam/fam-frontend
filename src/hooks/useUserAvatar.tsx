@@ -1,23 +1,22 @@
-import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { useEffect, useState } from 'react'
+import { Address } from 'viem'
 
-const useUserAvatar = () => {
-  const { connectedWallet } = useConnectedWallet()
+const useUserAvatar = (address: Address) => {
   const [userAvatar, setUserAvatar] = useState<any>(null)
 
   useEffect(() => {
     const init = async () => {
-      const addresses = [connectedWallet]
+      const addresses = [address]
       const response = await fetch(
-        `/api/party/avatars?addresses=${JSON.stringify(addresses)}`
+        `/api/party/avatars?addresses=${JSON.stringify(address)}`
       )
       const data = await response.json()
       setUserAvatar(data)
     }
 
-    if (!connectedWallet) return
+    if (!address) return
     init()
-  }, [connectedWallet])
+  }, [address])
 
   return {
     userAvatar,

@@ -15,7 +15,7 @@ const PopupMenu = (): JSX.Element => {
   const [open, setOpen] = useState(false)
   const popoverRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
-  const { userAvatar } = useUserAvatar()
+  const { userAvatar } = useUserAvatar(connectedWallet as Address)
 
   useEffect(() => {
     setOpen(false)

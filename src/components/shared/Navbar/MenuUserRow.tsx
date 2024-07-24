@@ -13,10 +13,6 @@ import useConnectedWallet from '@/hooks/useConnectedWallet'
 import useUserAvatar from '@/hooks/useUserAvatar'
 import UserImage from '@/components/Pages/UserImage'
 
-const UserAvatar = dynamic(() => import('@/components/shared/UserAvatar'), {
-  ssr: false,
-})
-
 type MenuUserRowProps = {
   address: `0x${string}`
 }
@@ -26,7 +22,7 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
   const copiedTimeout = useRef<NodeJS.Timeout | null>(null)
   const { connectedWallet } = useConnectedWallet()
   const { ethBalance } = useEthBalance(connectedWallet as Address)
-  const { userAvatar } = useUserAvatar()
+  const { userAvatar } = useUserAvatar(connectedWallet as Address)
 
   const handleCopyClick = async () => {
     await navigator.clipboard.writeText(address)
