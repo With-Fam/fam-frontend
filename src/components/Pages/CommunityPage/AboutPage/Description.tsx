@@ -1,15 +1,30 @@
+import { useCommunityProvider } from '@/contexts/CommunityProvider'
+import { ipfsGatewayUrl } from '@/lib/ipfs-service'
 import { Paragraph } from '@/stories'
+import Image from 'next/image'
 
 const Description = () => {
+  const { partyInfo } = useCommunityProvider() as any
+
   return (
-    <Paragraph as="p3" className="mt-4 font-abcMedium">
-      {`PC Music Club is the onchain extension of the PC Music collective, known
-      for redefining pop culture and digital aesthetics. Members become not just
-      fans but co-creators in our community and are able to vote on our future
-      projects, exclusive releases, and even the collective's artistic
-      direction. As a member, you'll have access to exclusive NFTs, from
-      one-of-a-kind digital vinyls to tokens that unlock real-world experiences`}
-    </Paragraph>
+    <>
+      <div className="flex items-center gap-2">
+        {partyInfo?.image && (
+          <Image
+            src={ipfsGatewayUrl(partyInfo?.image) as any}
+            alt=""
+            width={64}
+            height={64}
+          />
+        )}
+        <p className="text-md font-abcWide md:text-2xl">
+          {partyInfo?.name || ''}
+        </p>
+      </div>
+      <Paragraph as="p3" className="break-all p-3 font-abcMedium">
+        {partyInfo?.description}
+      </Paragraph>
+    </>
   )
 }
 
