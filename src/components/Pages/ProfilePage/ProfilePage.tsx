@@ -2,7 +2,7 @@
 
 import React from 'react'
 import PartyCard from '@/components/Pages/ProfilePage/PartyCard'
-import { Loading, UserAvatar } from '@/components/shared'
+import { Loading } from '@/components/shared'
 import EnsAddress from '@/components/shared/EnsAddress'
 import { Heading } from '@/stories'
 import { useParams } from 'next/navigation'
@@ -12,20 +12,20 @@ import { Copy } from '@/components/icons'
 import truncateAddress from '@/lib/truncateAddress'
 import useCopyToClipboard from '@/hooks/useCopyToClipboard'
 import useUserActivites from '@/hooks/useUserActivites'
-import useAvatars from '@/hooks/useAvatars'
 import UserImage from '@/components/Pages/UserImage'
+import useUserAvatar from '@/hooks/useUserAvatar'
 
 const ProfilePage = () => {
-  const { user } = useParams()
+  const { user } = useParams() as any
   const { loading, joinedParties } = useUserActivites(user as Address)
   const { copyToClipboard, copySuccess } = useCopyToClipboard()
-  const { avatars } = useAvatars([{ userAddress: user }]) as any
+  const { userAvatar } = useUserAvatar(user)
 
   return (
     <main className="mx-auto mt-10 flex max-w-[936px] flex-col items-center px-2 pb-4">
       <UserImage
         address={user as Address}
-        ensImage={avatars?.openSeaProfileImages?.[`${user}`]}
+        ensImage={userAvatar?.openSeaProfileImages?.[`${user?.toLowerCase()}`]}
       />
       <Heading as="h5" className="mt-3">
         <EnsAddress address={user as Address} />
