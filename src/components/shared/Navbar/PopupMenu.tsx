@@ -71,9 +71,10 @@ const PopupMenu = (): JSX.Element => {
         animate={open ? 'open' : 'closed'}
         variants={variants}
         ref={popoverRef}
-        className="border-gray-light fixed left-0 top-auto h-max w-full
-        rounded-3xl border-[1px] bg-white
-        p-6 sm:absolute sm:bottom-auto sm:left-auto sm:right-0 sm:w-[375px] md:top-full"
+        className="border-gray-light fixed left-4
+        top-auto h-max w-[calc(100vw-32px)] rounded-3xl border-[1px] bg-white
+        p-6 sm:absolute sm:bottom-auto sm:left-auto sm:right-0
+        sm:w-[375px] md:top-full"
       >
         <MenuUserRow address={connectedWallet as Address} />
         <MenuList address={connectedWallet as Address} />

@@ -17,17 +17,15 @@ const formatElapsedTime = (proposedTime: number) => {
   const now = Date.now()
   const elapsed = now - proposedTime * 1000
 
-  const seconds = Math.floor(elapsed / 1000)
-  const minutes = Math.floor(seconds / 60)
-  const hours = Math.floor(minutes / 60)
-  const days = Math.floor(hours / 24)
-  const weeks = Math.floor(days / 7)
-  const months = Math.floor(days / 28)
-
   const oneMinutes = 1000 * 60
   const oneDay = 24 * 60 * 60 * 1000
   const oneWeek = 7 * 24 * 60 * 60 * 1000
-  const oneMonth = 4 * 7 * 60 * 60 * 1000
+  const oneMonth = 4 * 7 * 24 * 60 * 60 * 1000
+
+  const hours = Math.floor(elapsed / 60 / oneMinutes)
+  const days = Math.floor(elapsed / oneDay)
+  const weeks = Math.floor(elapsed / oneWeek)
+  const months = Math.floor(elapsed / oneMonth)
 
   if (elapsed < oneMinutes) {
     return '< 1m ago'
@@ -51,7 +49,6 @@ const Proposal = ({ data, proposalIndex }: any) => {
   const { setSelectedProposalIndex } = useProposalProvider() as any
   const { isActiveVoting } = useVotingStatus(data)
   const status = getProposalStatus(data)
-  const currentDateTime = Date.now()
   const { proposalComments } = useProposalComments(community, data.proposalId)
   const { avatars } = useCommunityProvider() as any
 
@@ -65,7 +62,9 @@ const Proposal = ({ data, proposalIndex }: any) => {
 
   const goToProposal = () => {
     setSelectedProposalIndex(proposalIndex)
-    push(`/community/${network}/${community}/${data.proposalId}`)
+    push(
+      `/community/${network}/${community}/${data.proposalId}?pageNum=${data.pageNum}`
+    )
   }
 
   const proposerAddress = data.proposerAddress.toLowerCase()

@@ -40,7 +40,7 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
   }, [])
 
   return (
-    <div className="border-gray-light flex w-full justify-between rounded-xl border p-4">
+    <div className="border-gray-light flex w-full justify-between rounded-xl border p-2 md:p-4">
       <div className="flex items-center gap-2">
         <Link href="/profile" passHref aria-label="go to profile page">
           <UserImage

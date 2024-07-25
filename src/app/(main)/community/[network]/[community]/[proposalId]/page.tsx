@@ -18,8 +18,7 @@ import { usePrivy } from '@privy-io/react-auth'
 import { useParams, useRouter } from 'next/navigation'
 
 export default function CommunityProposal(): JSX.Element {
-  const { proposalId } = useParams()
-  const { community, network } = useParams()
+  const { community, network, proposalId } = useParams() as any
   const { proposals, proposalsLoading, getProposals } =
     useProposalProvider() as any
   const proposalDetail = proposals?.filter(
