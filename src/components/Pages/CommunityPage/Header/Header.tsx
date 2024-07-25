@@ -44,9 +44,6 @@ const Header = () => {
           <p className="text-md font-abcWide md:text-2xl">
             {partyInfo?.name || ''}
           </p>
-          <p className="md:text-md break-all font-abcWide text-sm text-grey md:break-normal	">
-            {partyInfo?.description || ''}
-          </p>
           <div className="block md:hidden">
             <TopMembers
               topMembers={members.slice(0, 3)}
