@@ -49,7 +49,6 @@ const Proposal = ({ data, proposalIndex }: any) => {
   const { setSelectedProposalIndex } = useProposalProvider() as any
   const { isActiveVoting } = useVotingStatus(data)
   const status = getProposalStatus(data)
-  const currentDateTime = Date.now()
   const { proposalComments } = useProposalComments(community, data.proposalId)
   const { avatars } = useCommunityProvider() as any
 
@@ -63,7 +62,9 @@ const Proposal = ({ data, proposalIndex }: any) => {
 
   const goToProposal = () => {
     setSelectedProposalIndex(proposalIndex)
-    push(`/community/${network}/${community}/${data.proposalId}`)
+    push(
+      `/community/${network}/${community}/${data.proposalId}?pageNum=${data.pageNum}`
+    )
   }
 
   const proposerAddress = data.proposerAddress.toLowerCase()
