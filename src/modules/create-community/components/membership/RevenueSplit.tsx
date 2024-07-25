@@ -21,7 +21,7 @@ const RevenueSplit = () => {
         Revenue Split{' '}
         <Tooltip
           id={'revenue-split-tooltip'}
-          message="Revenue from memberships will be split between the founder(s) and community pool. Includes a 5% platform fee"
+          message="Revenue from memberships will be split between the founder(s) and community pool."
         >
           <Icon id="helpCircle" fill="#ffffff" />
         </Tooltip>

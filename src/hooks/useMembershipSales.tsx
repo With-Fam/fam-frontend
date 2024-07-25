@@ -15,7 +15,7 @@ const useMembershipSale = (community: Address) => {
 
     const data = await response.json()
     const sales = data.membershipSales
-    const activeSale = sales.filter((sale: any) => !sale?.finalizedTimestamp)
+    const activeSale = sales?.filter((sale: any) => !sale?.finalizedTimestamp)
     if (activeSale?.length) {
       setMembershipSale(activeSale[0])
       setActiveSale(true)
