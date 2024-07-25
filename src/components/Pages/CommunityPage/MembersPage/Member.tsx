@@ -1,14 +1,9 @@
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
-import useIsHost from '@/hooks/useIsHost'
 import { CHAIN_ID } from '@/constants/defaultChains'
 import MemberImage from '@/components/Pages/CommunityPage/MembersPage/MemberImage'
 import truncateAddress from '@/lib/truncateAddress'
 
-const Member = ({ data, ensName, ensImage }: any) => {
-  const { community } = useParams()
-  const { isHost } = useIsHost(community, data.userAddress)
-
+const Member = ({ data, ensName, ensImage, isHost }: any) => {
   return (
     <Link
       href={`/profile/${CHAIN_ID}/${data.userAddress}`}
