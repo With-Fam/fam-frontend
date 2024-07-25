@@ -8,7 +8,6 @@ import { useFormStore } from '@/modules/create-community/stores'
 const MembershipConfirmation = () => {
   const { membership } = useFormStore()
   const { isMobile } = useIsMobile()
-
   return (
     <ConfirmDropDown text="Memberships">
       <div className="px-4 py-6 ">
