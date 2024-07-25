@@ -6,7 +6,7 @@ const DifficultyPill = ({ threshold }: { threshold: number }) => {
   const isHard = threshold >= 66
   return (
     <div
-      className={`rounded-full ${isEasy ? 'bg-green-light text-green' : 'bg-orange-light text-orange'} w-[90px] px-2 py-1`}
+      className={`rounded-full text-center ${isEasy ? 'bg-green-light text-green' : 'bg-orange-light text-orange'} w-[90px] px-2 py-1`}
     >
       {isEasy && 'Easy'}
       {isMedium && 'Medium'}

@@ -1,7 +1,3 @@
-/**
- * Component
- */
-
 import { Button } from '@/components/shared'
 
 interface ContinueButtonProps {
@@ -16,7 +12,7 @@ const ContinueButton = ({
   <div className="mt-4 flex h-20 w-full justify-end">
     <Button
       type="submit"
-      className="fixed bottom-4 left-4 right-4 sm:relative sm:top-8"
+      className="fixed bottom-4 left-4 right-4 z-[100] sm:relative sm:top-8"
     >
       {loading ? (
         <span>

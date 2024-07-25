@@ -1,3 +1,5 @@
+import useIsMobile from '@/hooks/useIsMobile'
+import truncateAddress from '@/lib/truncateAddress'
 import ConfirmDropDown from '@/modules/create-community/components/confirm/ConfirmDropDown'
 import ConfirmItem from '@/modules/create-community/components/confirm/ConfirmItem'
 import ConfirmTitle from '@/modules/create-community/components/confirm/ConfirmTitle'
@@ -5,6 +7,7 @@ import { useFormStore } from '@/modules/create-community/stores'
 
 const MembershipConfirmation = () => {
   const { membership } = useFormStore()
+  const { isMobile } = useIsMobile()
   return (
     <ConfirmDropDown text="Memberships">
       <div className="px-4 py-6 ">
@@ -22,7 +25,9 @@ const MembershipConfirmation = () => {
           <div className="mt-2 space-y-2">
             {membership.founders.map((founder, i) => (
               <p key={`${founder.founderAddress}-${i}`}>
-                {founder.founderAddress}
+                {isMobile
+                  ? truncateAddress(founder.founderAddress)
+                  : founder.founderAddress}
               </p>
             ))}
           </div>

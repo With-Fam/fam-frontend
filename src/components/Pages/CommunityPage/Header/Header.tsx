@@ -28,8 +28,8 @@ const Header = () => {
 
   return (
     <section
-      className="relative mx-auto max-w-[936px]
-      space-y-6 px-4 pb-0 sm:pb-2"
+      className="relative space-y-6 px-4
+      pb-0 sm:pb-2 md:mx-auto md:max-w-[936px]"
     >
       <div className="flex items-center gap-3">
         {partyInfo?.image && (
@@ -43,9 +43,6 @@ const Header = () => {
         <div className="grow space-y-1">
           <p className="text-md font-abcWide md:text-2xl">
             {partyInfo?.name || ''}
-          </p>
-          <p className="md:text-md break-normal font-abcWide text-sm text-grey	">
-            {partyInfo?.description || ''}
           </p>
           <div className="block md:hidden">
             <TopMembers
