@@ -15,13 +15,10 @@ import useProposalVoteTimer from '@/hooks/useProposalVoteTimer'
 import useVotingStatus from '@/hooks/useVotingStatus'
 import getProposalStatus from '@/lib/getProposalStatus'
 import { usePrivy } from '@privy-io/react-auth'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
 
 export default function CommunityProposal(): JSX.Element {
   const { community, network, proposalId } = useParams() as any
-  const searchParams = useSearchParams()
-  const pageNum = searchParams.get('pageNum') as any
   const { proposals, proposalsLoading, getProposals } =
     useProposalProvider() as any
   const proposalDetail = proposals?.filter(
@@ -37,10 +34,6 @@ export default function CommunityProposal(): JSX.Element {
   const { connectedWallet } = useConnectedWallet()
   const isAuthenticated = ready && authenticated && connectedWallet
   const isDefeated = status === PROPOSAL_STATUS.Defeated
-
-  useEffect(() => {
-    if (pageNum) getProposals(parseInt(pageNum) * 20)
-  }, [pageNum])
 
   return (
     <main className="relative mx-auto mt-8 max-w-[936px] px-2 pb-4">

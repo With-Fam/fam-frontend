@@ -46,7 +46,7 @@ const Proposal = ({ data, proposalIndex }: any) => {
   )
   const { push } = useRouter()
   const { network, community } = useParams()
-  const { setSelectedProposalIndex, proposals } = useProposalProvider() as any
+  const { setSelectedProposalIndex } = useProposalProvider() as any
   const { isActiveVoting } = useVotingStatus(data)
   const status = getProposalStatus(data)
   const { proposalComments } = useProposalComments(community, data.proposalId)
@@ -62,9 +62,8 @@ const Proposal = ({ data, proposalIndex }: any) => {
 
   const goToProposal = () => {
     setSelectedProposalIndex(proposalIndex)
-    const pageNum = Number(proposals?.length / 20).toFixed(0)
     push(
-      `/community/${network}/${community}/${data.proposalId}?pageNum=${parseInt(pageNum, 10) - 1}`
+      `/community/${network}/${community}/${data.proposalId}?pageNum=${data.pageNum}`
     )
   }
 
