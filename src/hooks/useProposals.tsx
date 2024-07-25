@@ -4,35 +4,44 @@ import { useCallback, useEffect, useState } from 'react'
 const useProposals = (party: any) => {
   const [proposals, setProposals] = useState<any>([])
   const [loading, setLoading] = useState(true)
+  const [nextOffset, setNextOffset] = useState(0)
 
-  const getProposals = useCallback(async () => {
-    if (!party) return
-    setLoading(true)
-    let allProposals = [] as any
-    let nextOffset = 0
-    while (1) {
+  const getProposals = useCallback(
+    async (offset: number) => {
+      if (!party) return
+      if (offset === nextOffset && offset !== 0) return
+      setLoading(true)
       const response = await fetch(
-        `/api/proposals?party=${party}&nextOffset=${nextOffset}`
+        `/api/proposals?party=${party}&nextOffset=${offset}`
       )
       const data = await response.json()
-      if (data?.proposals)
-        allProposals = allProposals.concat(...data?.proposals)
-      if (!data.nextProposalOffset) break
-
-      nextOffset = data.nextProposalOffset
-    }
-    setProposals(getSortedUniqueProposals(allProposals))
-    setLoading(false)
-  }, [party])
+      if (data?.proposals) {
+        setProposals((prev: any) => {
+          const newProposals = [...prev, ...data?.proposals]
+          const uniqueProposals = getSortedUniqueProposals(newProposals)
+          return uniqueProposals
+        })
+      }
+      if (!data.nextProposalOffset) {
+        setNextOffset(-1)
+        setLoading(false)
+        return
+      }
+      setNextOffset(data.nextProposalOffset)
+      setLoading(false)
+    },
+    [party]
+  )
 
   useEffect(() => {
-    getProposals()
+    getProposals(nextOffset)
   }, [getProposals])
 
   return {
     proposals,
     getProposals,
     loading,
+    nextOffset,
   }
 }
 
