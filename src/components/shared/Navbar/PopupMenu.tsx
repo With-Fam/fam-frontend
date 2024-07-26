@@ -10,6 +10,7 @@ import { Address } from 'viem'
 import UserImage from '@/components/Pages/UserImage'
 import useUserAvatar from '@/hooks/useUserAvatar'
 import getEnsPfpLink from '@/lib/getEnsPfpLink'
+import getUserAvatar from '@/lib/getUserAvatar'
 
 const PopupMenu = (): JSX.Element => {
   const { connectedWallet } = useConnectedWallet()
@@ -60,14 +61,10 @@ const PopupMenu = (): JSX.Element => {
           width={48}
           height={48}
           address={connectedWallet as Address}
-          ensImage={
-            getEnsPfpLink(
-              userAvatar?.ensNames?.[`${connectedWallet?.toLowerCase()}`]
-            ) ||
-            userAvatar?.openSeaProfileImages?.[
-              `${connectedWallet?.toLowerCase()}`
-            ]
-          }
+          ensImage={getUserAvatar(
+            userAvatar,
+            connectedWallet?.toLocaleLowerCase() as Address
+          )}
         />
       </button>
       <motion.div
