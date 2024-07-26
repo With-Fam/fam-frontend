@@ -12,7 +12,7 @@ const MintPeriod = () => {
         labelIcon="helpCircle"
         tooltip="Once the mint period finishes your community can start voting. You can propose additional membership mints in the future"
       />
-      <div className="absolute bottom-3 right-3 flex h-10 items-center gap-1 rounded-full border bg-grey-light px-4">
+      <div className="absolute right-3 top-8 flex h-10 items-center gap-1 rounded-full border bg-grey-light px-4">
         <p className="text-md font-abcMedium text-black">Days</p>
       </div>
     </div>
