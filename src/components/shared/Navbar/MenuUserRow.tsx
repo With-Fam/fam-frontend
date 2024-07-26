@@ -13,6 +13,7 @@ import useConnectedWallet from '@/hooks/useConnectedWallet'
 import useUserAvatar from '@/hooks/useUserAvatar'
 import UserImage from '@/components/Pages/UserImage'
 import getEnsPfpLink from '@/lib/getEnsPfpLink'
+import getUserAvatar from '@/lib/getUserAvatar'
 
 type MenuUserRowProps = {
   address: `0x${string}`
@@ -48,14 +49,10 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
             width={40}
             height={40}
             address={connectedWallet as Address}
-            ensImage={
-              getEnsPfpLink(
-                userAvatar?.ensNames?.[`${connectedWallet?.toLowerCase()}`]
-              ) ||
-              userAvatar?.openSeaProfileImages?.[
-                `${connectedWallet?.toLowerCase()}`
-              ]
-            }
+            ensImage={getUserAvatar(
+              userAvatar,
+              connectedWallet?.toLocaleLowerCase() as Address
+            )}
           />
         </Link>
         <div className="flex flex-1 flex-col justify-center">

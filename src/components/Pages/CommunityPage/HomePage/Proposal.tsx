@@ -13,6 +13,7 @@ import MemberImage from '@/components/Pages/CommunityPage/MemberImage'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
 import truncateAddress from '@/lib/truncateAddress'
 import getEnsPfpLink from '@/lib/getEnsPfpLink'
+import getUserAvatar from '@/lib/getUserAvatar'
 
 const formatElapsedTime = (proposedTime: number) => {
   const now = Date.now()
@@ -79,10 +80,7 @@ const Proposal = ({ data, proposalIndex }: any) => {
         <div className="flex items-center gap-1">
           <MemberImage
             address={proposerAddress}
-            ensImage={
-              getEnsPfpLink(avatars?.ensNames?.[`${proposerAddress}`]) ||
-              avatars?.openSeaProfileImages?.[`${proposerAddress}`]
-            }
+            ensImage={getUserAvatar(avatars, proposerAddress)}
           />
           <Paragraph as="p5" className="text-gray-dark">
             {ensName || truncateAddress(proposerAddress)}
