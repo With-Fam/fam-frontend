@@ -77,7 +77,6 @@ const useCreateProposal: any = (community: Address) => {
       if (
         type === TransactionType.ZORA_CREATE &&
         title &&
-        description &&
         ipfsMedia &&
         typeof customEditionSize !== 'undefined' &&
         typeof customLimit !== 'undefined' &&
