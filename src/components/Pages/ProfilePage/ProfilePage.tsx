@@ -15,6 +15,7 @@ import useUserActivites from '@/hooks/useUserActivites'
 import UserImage from '@/components/Pages/UserImage'
 import useUserAvatar from '@/hooks/useUserAvatar'
 import getEnsPfpLink from '@/lib/getEnsPfpLink'
+import getUserAvatar from '@/lib/getUserAvatar'
 
 const ProfilePage = () => {
   const { user } = useParams() as any
@@ -26,10 +27,7 @@ const ProfilePage = () => {
     <main className="mx-auto mt-10 flex max-w-[936px] flex-col items-center px-2 pb-4 pt-[90px] md:pt-[110px]">
       <UserImage
         address={user as Address}
-        ensImage={
-          getEnsPfpLink(userAvatar?.ensNames?.[`${user?.toLowerCase()}`]) ||
-          userAvatar?.openSeaProfileImages?.[`${user?.toLowerCase()}`]
-        }
+        ensImage={getUserAvatar(userAvatar, user?.toLowerCase())}
       />
       <Heading as="h5" className="mt-3">
         <EnsAddress address={user as Address} />
