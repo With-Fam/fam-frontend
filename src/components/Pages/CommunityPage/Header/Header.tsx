@@ -33,12 +33,14 @@ const Header = () => {
     >
       <div className="flex items-center gap-3">
         {partyInfo?.image && (
-          <Image
-            src={ipfsGatewayUrl(partyInfo?.image) as any}
-            alt=""
-            width={64}
-            height={64}
-          />
+          <div className="relative flex h-[64px] w-[64px] items-center justify-center overflow-hidden rounded-full">
+            <Image
+              src={ipfsGatewayUrl(partyInfo?.image) as any}
+              alt=""
+              width={80}
+              height={80}
+            />
+          </div>
         )}
         <div className="grow space-y-1">
           <p className="text-md font-abcWide md:text-2xl">

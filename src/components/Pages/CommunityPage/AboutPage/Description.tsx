@@ -10,12 +10,14 @@ const Description = () => {
     <div className="p-3">
       <div className="flex items-center gap-2">
         {partyInfo?.image && (
-          <Image
-            src={ipfsGatewayUrl(partyInfo?.image) as any}
-            alt=""
-            width={64}
-            height={64}
-          />
+          <div className="relative flex h-[64px] w-[64px] items-center justify-center overflow-hidden rounded-full">
+            <Image
+              src={ipfsGatewayUrl(partyInfo?.image) as any}
+              alt=""
+              width={80}
+              height={80}
+            />
+          </div>
         )}
         <p className="text-md font-abcWide md:text-2xl">
           {partyInfo?.name || ''}
