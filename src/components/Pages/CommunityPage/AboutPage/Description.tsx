@@ -21,7 +21,7 @@ const Description = () => {
           {partyInfo?.name || ''}
         </p>
       </div>
-      <Paragraph as="p3" className="break-all font-abcMedium">
+      <Paragraph as="p3" className="mt-3 break-all font-abc">
         {partyInfo?.description}
       </Paragraph>
       <Socials />
