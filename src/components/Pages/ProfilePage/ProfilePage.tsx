@@ -23,7 +23,7 @@ const ProfilePage = () => {
   const { userAvatar } = useUserAvatar(user)
 
   return (
-    <main className="mx-auto mt-10 flex max-w-[936px] flex-col items-center px-2 pb-4">
+    <main className="mx-auto mt-10 flex max-w-[936px] flex-col items-center px-2 pb-4 pt-[90px] md:pt-[110px]">
       <UserImage
         address={user as Address}
         ensImage={
