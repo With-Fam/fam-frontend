@@ -1,5 +1,6 @@
 import MemberImage from '@/components/Pages/CommunityPage/MemberImage'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
+import getEnsPfpLink from '@/lib/getEnsPfpLink'
 
 const TopMembers = ({ topMembers, membersNum }: any) => {
   const { avatars } = useCommunityProvider() as any
@@ -19,6 +20,7 @@ const TopMembers = ({ topMembers, membersNum }: any) => {
             <MemberImage
               address={member.userAddress}
               ensImage={
+                getEnsPfpLink(avatars?.ensNames?.[`${member.userAddress}`]) ||
                 avatars?.openSeaProfileImages?.[`${member.userAddress}`]
               }
             />

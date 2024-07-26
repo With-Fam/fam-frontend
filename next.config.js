@@ -22,6 +22,7 @@ const nextConfig = {
       'i.seadn.io',
       'storage.googleapis.com',
       'openseauserdata.com',
+      'metadata.ens.domains',
     ],
     // remotePatterns: [
     //   {

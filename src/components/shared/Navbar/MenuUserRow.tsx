@@ -12,6 +12,7 @@ import { Address } from 'viem'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import useUserAvatar from '@/hooks/useUserAvatar'
 import UserImage from '@/components/Pages/UserImage'
+import getEnsPfpLink from '@/lib/getEnsPfpLink'
 
 type MenuUserRowProps = {
   address: `0x${string}`
@@ -48,6 +49,9 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
             height={40}
             address={connectedWallet as Address}
             ensImage={
+              getEnsPfpLink(
+                userAvatar?.ensNames?.[`${connectedWallet?.toLowerCase()}`]
+              ) ||
               userAvatar?.openSeaProfileImages?.[
                 `${connectedWallet?.toLowerCase()}`
               ]

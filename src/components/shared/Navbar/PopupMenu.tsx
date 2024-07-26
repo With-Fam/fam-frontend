@@ -9,6 +9,7 @@ import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { Address } from 'viem'
 import UserImage from '@/components/Pages/UserImage'
 import useUserAvatar from '@/hooks/useUserAvatar'
+import getEnsPfpLink from '@/lib/getEnsPfpLink'
 
 const PopupMenu = (): JSX.Element => {
   const { connectedWallet } = useConnectedWallet()
@@ -60,6 +61,9 @@ const PopupMenu = (): JSX.Element => {
           height={48}
           address={connectedWallet as Address}
           ensImage={
+            getEnsPfpLink(
+              userAvatar?.ensNames?.[`${connectedWallet?.toLowerCase()}`]
+            ) ||
             userAvatar?.openSeaProfileImages?.[
               `${connectedWallet?.toLowerCase()}`
             ]
