@@ -13,6 +13,7 @@ import useConnectedWallet from '@/hooks/useConnectedWallet'
 import useUserAvatar from '@/hooks/useUserAvatar'
 import UserImage from '@/components/Pages/UserImage'
 import getEnsPfpLink from '@/lib/getEnsPfpLink'
+import truncateAddress from '@/lib/truncateAddress'
 import getUserAvatar from '@/lib/getUserAvatar'
 
 type MenuUserRowProps = {
@@ -61,7 +62,7 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
           </Paragraph>
           <Paragraph as="p5" className="flex text-gray-500">
             <span className="pr-1">
-              <EnsAddress address={address as `0x${string}`} addressFallback />
+              {truncateAddress(connectedWallet as Address)}
             </span>
             <button onClick={handleCopyClick} aria-label="copy user name">
               <Copy color={copySuccess ? '#F54D18' : undefined} />
