@@ -1,6 +1,5 @@
 import MemberImage from '@/components/Pages/CommunityPage/MemberImage'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
-import getEnsPfpLink from '@/lib/getEnsPfpLink'
 import getUserAvatar from '@/lib/getUserAvatar'
 
 const TopMembers = ({ topMembers, membersNum }: any) => {
