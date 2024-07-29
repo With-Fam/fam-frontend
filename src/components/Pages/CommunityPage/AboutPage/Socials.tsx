@@ -4,9 +4,19 @@ import Link from 'next/link'
 
 const Socials = () => {
   const { partyInfo } = useCommunityProvider() as any
+
   return (
     <section className="flex items-center gap-2 pt-4">
-      <Link href={partyInfo?.external_url || '#'} target="_blank">
+      <Link
+        href={
+          partyInfo?.external_url
+            ? partyInfo.external_url.startsWith('http')
+              ? partyInfo.external_url
+              : `https://${partyInfo.external_url}`
+            : '#'
+        }
+        target="_blank"
+      >
         <WebsiteIcon />
       </Link>
     </section>
