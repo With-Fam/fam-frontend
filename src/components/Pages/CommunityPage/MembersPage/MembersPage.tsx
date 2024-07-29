@@ -2,6 +2,8 @@
 
 import Member from '@/components/Pages/CommunityPage/MembersPage/Member'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
+import getEnsPfpLink from '@/lib/getEnsPfpLink'
+import getUserAvatar from '@/lib/getUserAvatar'
 import { useMemo } from 'react'
 
 const MembersPage = (): JSX.Element => {
@@ -27,7 +29,7 @@ const MembersPage = (): JSX.Element => {
               avatars?.ensNames?.[`${member.userAddress}`] ||
               avatars?.openSeaNames?.[`${member.userAddress}`]
             }
-            ensImage={avatars?.openSeaProfileImages?.[`${member.userAddress}`]}
+            ensImage={getUserAvatar(avatars, member.userAddress)}
             isHost={hosts?.[`${member.userAddress.toLowerCase()}`]}
           />
         ))}
