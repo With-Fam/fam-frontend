@@ -1,5 +1,6 @@
 import WebsiteIcon from '@/components/Pages/CommunityPage/AboutPage/WebsiteIcon'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
+import formatPartyExternalUrl from '@/lib/formatPartyExternalUrl'
 import Link from 'next/link'
 
 const Socials = () => {
@@ -8,13 +9,7 @@ const Socials = () => {
   return (
     <section className="flex items-center gap-2 pt-4">
       <Link
-        href={
-          partyInfo?.external_url
-            ? partyInfo.external_url.startsWith('http')
-              ? partyInfo.external_url
-              : `https://${partyInfo.external_url}`
-            : '#'
-        }
+        href={formatPartyExternalUrl(partyInfo?.external_url)}
         target="_blank"
       >
         <WebsiteIcon />
