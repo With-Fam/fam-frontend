@@ -12,6 +12,9 @@ import { Address } from 'viem'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import useUserAvatar from '@/hooks/useUserAvatar'
 import UserImage from '@/components/Pages/UserImage'
+import getEnsPfpLink from '@/lib/getEnsPfpLink'
+import truncateAddress from '@/lib/truncateAddress'
+import getUserAvatar from '@/lib/getUserAvatar'
 
 type MenuUserRowProps = {
   address: `0x${string}`
@@ -47,11 +50,10 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
             width={40}
             height={40}
             address={connectedWallet as Address}
-            ensImage={
-              userAvatar?.openSeaProfileImages?.[
-                `${connectedWallet?.toLowerCase()}`
-              ]
-            }
+            ensImage={getUserAvatar(
+              userAvatar,
+              connectedWallet?.toLocaleLowerCase() as Address
+            )}
           />
         </Link>
         <div className="flex flex-1 flex-col justify-center">
@@ -60,7 +62,7 @@ const MenuUserRow = ({ address }: MenuUserRowProps): JSX.Element => {
           </Paragraph>
           <Paragraph as="p5" className="flex text-gray-500">
             <span className="pr-1">
-              <EnsAddress address={address as `0x${string}`} addressFallback />
+              {truncateAddress(connectedWallet as Address)}
             </span>
             <button onClick={handleCopyClick} aria-label="copy user name">
               <Copy color={copySuccess ? '#F54D18' : undefined} />

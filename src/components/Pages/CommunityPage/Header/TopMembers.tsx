@@ -1,5 +1,6 @@
 import MemberImage from '@/components/Pages/CommunityPage/MemberImage'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
+import getUserAvatar from '@/lib/getUserAvatar'
 
 const TopMembers = ({ topMembers, membersNum }: any) => {
   const { avatars } = useCommunityProvider() as any
@@ -18,9 +19,7 @@ const TopMembers = ({ topMembers, membersNum }: any) => {
           >
             <MemberImage
               address={member.userAddress}
-              ensImage={
-                avatars?.openSeaProfileImages?.[`${member.userAddress}`]
-              }
+              ensImage={getUserAvatar(avatars, member.userAddress)}
             />
           </div>
         ))}
