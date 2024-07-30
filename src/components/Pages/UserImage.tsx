@@ -20,7 +20,7 @@ const UserImage = ({
   height = 80,
 }: UserImageProps): JSX.Element => {
   const [imageError, setImageError] = useState(false)
-  const { zoraPfp } = useZoraPfp(address, ensImage)
+  const { zoraPfp } = useZoraPfp(address, imageError, ensImage)
 
   return (
     <>

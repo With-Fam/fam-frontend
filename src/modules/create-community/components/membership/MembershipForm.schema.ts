@@ -16,7 +16,11 @@ export interface MembershipFormValues extends FounderFormValues {
 }
 
 export const membershipValidationSchema = Yup.object({
-  membershipPrice: Yup.number().required(),
-  mintPeriod: Yup.number().optional(),
+  membershipPrice: Yup.number()
+    .required('Membership price can not be empty.')
+    .typeError('Membership price should be number.'),
+  mintPeriod: Yup.number()
+    .required('Mint period can not be empty.')
+    .typeError('Mint period should be number.'),
   revenueSplit: Yup.number().optional(),
 })

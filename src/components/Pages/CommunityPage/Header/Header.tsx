@@ -11,6 +11,7 @@ import FinalizeButton from '@/components/Pages/CommunityPage/Header/FinalizeButt
 import useCommunityButtons from '@/hooks/useCommunityButtons'
 import { Address } from 'viem'
 import { ipfsGatewayUrl } from '@/lib/ipfs-service'
+import PartyImage from '@/components/Pages/PartyImage'
 
 const Header = () => {
   const { community } = useParams()
@@ -32,14 +33,7 @@ const Header = () => {
       pb-0 sm:pb-2 md:mx-auto md:max-w-[936px]"
     >
       <div className="flex items-center gap-3">
-        {partyInfo?.image && (
-          <Image
-            src={ipfsGatewayUrl(partyInfo?.image) as any}
-            alt=""
-            width={64}
-            height={64}
-          />
-        )}
+        {partyInfo?.image && <PartyImage imageUrl={partyInfo?.image} />}
         <div className="grow space-y-1">
           <p className="text-md font-abcWide md:text-2xl">
             {partyInfo?.name || ''}
