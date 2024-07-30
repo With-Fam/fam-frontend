@@ -40,7 +40,7 @@ const useCommunityButtons = (community: Address) => {
     joined && !isNotFinalized && isAuthenticated && !loading
 
   const canFinalize =
-    ((isNotFinalized && joined) || activeSale) && isHost && !loading
+    ((isNotFinalized && joined && !loading) || activeSale) && isHost
 
   const canJoin =
     (isNotFinalized || (!isNotFinalized && activeSale)) && !joined && !loading
