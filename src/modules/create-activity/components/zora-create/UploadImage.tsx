@@ -55,7 +55,7 @@ const UploadImage = ({
 
   return (
     <div className="mt-4 flex w-full items-center justify-center rounded-[8px] bg-white py-6">
-      <div className="flex w-full justify-between px-4 md:w-[400px]">
+      <div className="flex w-full justify-between px-8 md:w-[600px] md:px-4">
         {value && mediaUrl ? (
           <>
             <div className="relative h-[80px] w-[80px] overflow-hidden rounded-[8px]">
@@ -73,7 +73,7 @@ const UploadImage = ({
         ) : (
           <label
             htmlFor={name}
-            className="flex w-full items-center justify-between"
+            className="flex w-full items-center justify-start gap-8"
           >
             {loading ? (
               <>

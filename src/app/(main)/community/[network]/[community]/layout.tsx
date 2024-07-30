@@ -4,7 +4,9 @@ import type { PropsWithChildren } from 'react'
 
 const RootLayout = ({ children }: PropsWithChildren): JSX.Element => (
   <CommunityProvider>
-    <ProposalProvider>{children}</ProposalProvider>
+    <ProposalProvider>
+      <div className="pt-[110px]">{children}</div>
+    </ProposalProvider>
   </CommunityProvider>
 )
 
