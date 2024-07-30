@@ -37,7 +37,7 @@ const useCommunityButtons = (community: Address) => {
   const isNotFinalized = crowfundLifecyle !== CrowdfundLifecycle.Finalized
 
   const canCreateActivity =
-    joined && !isNotFinalized && isAuthenticated && !loading && !activeSale
+    joined && !isNotFinalized && isAuthenticated && !loading
 
   const canFinalize =
     ((isNotFinalized && joined && !loading) || activeSale) && isHost
