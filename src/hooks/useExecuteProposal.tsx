@@ -1,4 +1,4 @@
-import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
+import { CHAIN, CHAIN_ID, PUBLIC_IS_TESTNET } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import getProposalType from '@/lib/party/getProposalType'
@@ -24,12 +24,16 @@ const useExecuteProposal = (): any => {
         proposalType === TransactionType.ZORA_CREATE ||
         proposalType === TransactionType.SEND_ETH
 
+      const isAddMemberProposal = proposalType === TransactionType.ADD_MEMBER
+      const partyCanceldelayValue =
+        isAddMemberProposal && !PUBLIC_IS_TESTNET ? 3628800 : 300
+
       const args = [
         proposalId,
         {
           maxExecutableTime: proposal.maxExecutableTime,
           proposalData: proposal.rawProposalData,
-          cancelDelay: proposedByFam ? 0 : 300,
+          cancelDelay: proposedByFam ? 0 : partyCanceldelayValue,
         },
         preciousTokens,
         preciousTokenIds,
@@ -59,6 +63,8 @@ const useExecuteProposal = (): any => {
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
       return receipt
     } catch (error) {
+      console.log('ZIAD', error)
+
       return { error }
     }
   }
