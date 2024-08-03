@@ -25,3 +25,6 @@ export const MONTH_LABELS = [
   'November',
   'December',
 ]
+
+export const PARTY_PROPOSAL_ADD_MEMBER_CANCELDELAY = 3628800
+export const PARTY_PROPOSAL_CANCELDELAY = 300
