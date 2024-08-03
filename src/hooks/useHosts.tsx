@@ -19,12 +19,14 @@ const useHosts = (members: any) => {
         functionName: 'isHost',
       }
 
+      const temp = [...members]
+
       const contracts = [] as any
 
-      for (let i = 0; i < members.length; i++) {
+      for (let i = 0; i < temp.length; i++) {
         contracts.push({
           ...wagmiContract,
-          args: [members[i].userAddress as Address],
+          args: [temp[i].userAddress as Address],
         })
       }
 
@@ -33,10 +35,9 @@ const useHosts = (members: any) => {
       })
 
       const hostsdata = {} as any
-      members.map(
-        (member: any, index: number) =>
-          (hostsdata[`${member.userAddress}`] = results[index].result)
-      )
+      for (let j = 0; j < temp.length; j++) {
+        hostsdata[`${temp[j].userAddress.toLowerCase()}`] = results[j].result
+      }
 
       setHosts(hostsdata)
     }
