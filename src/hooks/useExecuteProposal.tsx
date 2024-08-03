@@ -1,4 +1,8 @@
-import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
+import {
+  PARTY_PROPOSAL_ADD_MEMBER_CANCELDELAY,
+  PARTY_PROPOSAL_CANCELDELAY,
+} from '@/constants/consts'
+import { CHAIN, CHAIN_ID, PUBLIC_IS_TESTNET } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import getProposalType from '@/lib/party/getProposalType'
@@ -24,12 +28,18 @@ const useExecuteProposal = (): any => {
         proposalType === TransactionType.ZORA_CREATE ||
         proposalType === TransactionType.SEND_ETH
 
+      const isAddMemberProposal = proposalType === TransactionType.ADD_MEMBER
+      const partyCancelDelayValue =
+        isAddMemberProposal && !PUBLIC_IS_TESTNET
+          ? PARTY_PROPOSAL_ADD_MEMBER_CANCELDELAY
+          : PARTY_PROPOSAL_CANCELDELAY
+
       const args = [
         proposalId,
         {
           maxExecutableTime: proposal.maxExecutableTime,
           proposalData: proposal.rawProposalData,
-          cancelDelay: proposedByFam ? 0 : 300,
+          cancelDelay: proposedByFam ? 0 : partyCancelDelayValue,
         },
         preciousTokens,
         preciousTokenIds,
