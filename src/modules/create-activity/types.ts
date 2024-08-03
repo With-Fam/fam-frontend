@@ -10,6 +10,7 @@ export enum TransactionType {
   CUSTOM = 'custom',
   UPGRADE = 'upgrade',
   UPDATE_MINTER = 'update-minter',
+  ADD_MEMBER = 'add-member',
 }
 
 export interface TransactionTypeProps {
