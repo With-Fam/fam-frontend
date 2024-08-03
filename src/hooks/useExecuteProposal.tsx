@@ -25,7 +25,7 @@ const useExecuteProposal = (): any => {
         proposalType === TransactionType.SEND_ETH
 
       const isAddMemberProposal = proposalType === TransactionType.ADD_MEMBER
-      const partyCanceldelayValue =
+      const partyCancelDelayValue =
         isAddMemberProposal && !PUBLIC_IS_TESTNET ? 3628800 : 300
 
       const args = [
@@ -33,7 +33,7 @@ const useExecuteProposal = (): any => {
         {
           maxExecutableTime: proposal.maxExecutableTime,
           proposalData: proposal.rawProposalData,
-          cancelDelay: proposedByFam ? 0 : partyCanceldelayValue,
+          cancelDelay: proposedByFam ? 0 : partyCancelDelayValue,
         },
         preciousTokens,
         preciousTokenIds,
