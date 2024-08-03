@@ -2,8 +2,8 @@
 
 import Member from '@/components/Pages/CommunityPage/MembersPage/Member'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
-import getEnsPfpLink from '@/lib/getEnsPfpLink'
 import getUserAvatar from '@/lib/getUserAvatar'
+import getUserEnsName from '@/lib/getUserEnsName'
 import { useMemo } from 'react'
 
 const MembersPage = (): JSX.Element => {
@@ -14,6 +14,7 @@ const MembersPage = (): JSX.Element => {
       return hosts[b?.userAddress] - hosts[a?.userAddress]
     })
   }, [hosts])
+
   return (
     <section
       className="relative mx-auto max-w-[936px]
@@ -25,10 +26,7 @@ const MembersPage = (): JSX.Element => {
           <Member
             data={member}
             key={member.id}
-            ensName={
-              avatars?.ensNames?.[`${member.userAddress}`] ||
-              avatars?.openSeaNames?.[`${member.userAddress}`]
-            }
+            ensName={getUserEnsName(avatars, member.userAddress)}
             ensImage={getUserAvatar(avatars, member.userAddress)}
             isHost={hosts?.[`${member.userAddress.toLowerCase()}`]}
           />
