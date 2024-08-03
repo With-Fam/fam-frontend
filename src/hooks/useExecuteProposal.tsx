@@ -1,3 +1,7 @@
+import {
+  PARTY_PROPOSAL_ADD_MEMBER_CANCELDELAY,
+  PARTY_PROPOSAL_CANCELDELAY,
+} from '@/constants/consts'
 import { CHAIN, CHAIN_ID, PUBLIC_IS_TESTNET } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
@@ -26,7 +30,9 @@ const useExecuteProposal = (): any => {
 
       const isAddMemberProposal = proposalType === TransactionType.ADD_MEMBER
       const partyCancelDelayValue =
-        isAddMemberProposal && !PUBLIC_IS_TESTNET ? 3628800 : 300
+        isAddMemberProposal && !PUBLIC_IS_TESTNET
+          ? PARTY_PROPOSAL_ADD_MEMBER_CANCELDELAY
+          : PARTY_PROPOSAL_CANCELDELAY
 
       const args = [
         proposalId,
@@ -63,8 +69,6 @@ const useExecuteProposal = (): any => {
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
       return receipt
     } catch (error) {
-      console.log('ZIAD', error)
-
       return { error }
     }
   }
