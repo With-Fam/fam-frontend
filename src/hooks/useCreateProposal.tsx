@@ -72,7 +72,6 @@ const useCreateProposal: any = (community: Address) => {
         })
 
         proposalData = await getZoraCollectProposalData(
-          collectionInfo.collectionAddress as Address,
           token.contract.name,
           parameters
         )

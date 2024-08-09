@@ -22,7 +22,7 @@ const useExecuteProposal = (): any => {
 
     try {
       const publicClient = getPublicClient(CHAIN_ID)
-      const proposalType = await getProposalType(proposal)
+      const proposalType = getProposalType(proposal)
       const proposedByFam =
         proposalType === TransactionType.ZORA_COLLECT ||
         proposalType === TransactionType.ZORA_CREATE ||
