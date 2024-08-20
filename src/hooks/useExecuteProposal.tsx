@@ -8,7 +8,8 @@ import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import getProposalType from '@/lib/party/getProposalType'
 import { getPublicClient } from '@/lib/viem'
 import { TransactionType } from '@/modules/create-activity/types'
-import { Address } from 'viem'
+import toast from 'react-hot-toast'
+import { Address, formatEther } from 'viem'
 
 const useExecuteProposal = (): any => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -27,6 +28,21 @@ const useExecuteProposal = (): any => {
         proposalType === TransactionType.ZORA_COLLECT ||
         proposalType === TransactionType.ZORA_CREATE ||
         proposalType === TransactionType.SEND_ETH
+
+      if (proposalType === TransactionType.ZORA_COLLECT) {
+        const ethAmount = parseFloat(
+          formatEther(proposal.proposalData[0].value)
+        )
+        const balance = await publicClient.getBalance({
+          address: community as Address,
+        })
+        const communityEthAmount = parseFloat(formatEther(balance))
+
+        if (ethAmount >= communityEthAmount) {
+          toast.error('Community has no enough eth.')
+          return { error: true }
+        }
+      }
 
       const isAddMemberProposal = proposalType === TransactionType.ADD_MEMBER
       const partyCancelDelayValue =
