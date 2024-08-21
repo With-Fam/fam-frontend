@@ -1,21 +1,15 @@
 import getMaxExecutableTime from '@/lib/party/getMaxExecutableTime'
-import { pad, toHex, concatHex, Address, zeroAddress } from 'viem'
+import { pad, toHex, concatHex, Address } from 'viem'
 import { ProposalType } from '@/types/partyTypes'
 import getZoraPurchaseProposalBytecode from '@/lib/party/getZoraPurchaseProposalBytecode'
 
 const getZoraCollectProposalData = async (
-  collectionAddress: Address = zeroAddress,
-  minter: Address = zeroAddress,
-  recipient: Address = zeroAddress,
-  price: bigint,
-  tokenId: bigint = 1n
+  collectionName: any,
+  parameters: any
 ) => {
   const encodedBytecodeProposalData = await getZoraPurchaseProposalBytecode(
-    collectionAddress,
-    minter,
-    recipient,
-    price,
-    tokenId
+    collectionName,
+    parameters
   )
   const hexEncodedSelector = pad(toHex(ProposalType.ArbitraryCalls), {
     size: 4,

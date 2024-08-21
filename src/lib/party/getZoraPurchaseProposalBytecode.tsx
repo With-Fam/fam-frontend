@@ -1,42 +1,23 @@
-import {
-  Address,
-  encodeAbiParameters,
-  encodeFunctionData,
-  parseAbiParameters,
-  parseEther,
-} from 'viem'
-import { zoraCreator1155ImplABI } from '@zoralabs/protocol-deployments'
+import { encodeFunctionData } from 'viem'
 import getProposalBytecode from '@/lib/party/getProposalBytecode'
 import FAM from '@/constants/fam'
-import get721NFTName from '@/lib/zora/get721NFTName'
 
 const getZoraPurchaseProposalBytecode = async (
-  collectionAddress: Address,
-  minter: Address,
-  recipient: Address,
-  price: bigint,
-  tokenId: bigint = 1n
+  collectionName: any,
+  parameters: any
 ) => {
-  const zoraFee = parseEther('0.000777')
-  const value = price + zoraFee
-  const name = await get721NFTName(recipient)
-
-  const quantity = 1n
-  const minterArguments = encodeAbiParameters(
-    parseAbiParameters('address x, string y'),
-    [recipient, `Collected by ${name} on Fam`]
-  )
-
-  const mintReferral = FAM
+  const { abi, functionName, args, value, address: minterAddress } = parameters
+  args[5] = `Collected by ${collectionName} on Fam`
+  args[4] = FAM
 
   const data = encodeFunctionData({
-    abi: zoraCreator1155ImplABI,
-    functionName: 'mintWithRewards',
-    args: [minter, tokenId, quantity, minterArguments, mintReferral],
+    abi,
+    functionName,
+    args,
   })
 
   const encodedBytecodeProposalData = getProposalBytecode(
-    collectionAddress,
+    minterAddress,
     value,
     data
   )
