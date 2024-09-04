@@ -1,4 +1,8 @@
-import { ZORA_CREATE_METHOD_ID } from '@/constants/consts'
+import {
+  ZORA_FIXED_COLLECT_METHOD_ID,
+  ZORA_CREATE_METHOD_ID,
+  ZORA_TIMED_COLLECT_METHOD_ID,
+} from '@/constants/consts'
 import { TransactionType } from '@/modules/create-activity/types'
 
 const getProposalType = (proposal: any) => {
@@ -10,9 +14,8 @@ const getProposalType = (proposal: any) => {
 
     if (proposalHexdata === '0x') return TransactionType.SEND_ETH
     if (
-      proposalHexdata.length === 650 ||
-      proposalHexdata.length === 714 ||
-      proposalHexdata.length === 522
+      methodId === ZORA_FIXED_COLLECT_METHOD_ID ||
+      methodId === ZORA_TIMED_COLLECT_METHOD_ID
     )
       return TransactionType.ZORA_COLLECT
     if (methodId === ZORA_CREATE_METHOD_ID) return TransactionType.ZORA_CREATE
