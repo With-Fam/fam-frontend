@@ -10,7 +10,6 @@ const getZoraCollectProposalData = async (
   value: any,
   minterAddress: any
 ) => {
-  
   const encodedBytecodeProposalData = await getZoraPurchaseProposalBytecode(
     abi,
     args,

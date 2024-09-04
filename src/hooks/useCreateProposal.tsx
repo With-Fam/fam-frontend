@@ -9,19 +9,13 @@ import {
 import { TransactionType } from '@/modules/create-activity/types'
 import getZoraCreateProposalData from '@/lib/party/getZoraCreateProposalData'
 import getSendEthProposalData from '@/lib/party/getSendEthProposalData'
-import getZoraCollectProposalData from '@/lib/party/getZoraCollectProposalData'
 import { getPublicClient } from '@/lib/viem'
 import { usePrivy } from '@privy-io/react-auth'
-import { Address, encodeAbiParameters, isAddress, maxUint256, parseAbiParameters, parseEther } from 'viem'
+import { Address, isAddress, maxUint256, parseEther } from 'viem'
 import getEnsAddress from '@/lib/getEnsAddress'
 import handleTxError from '@/lib/handleTxError'
 import getCollectionInfoFromZoraLink from '@/lib/getCollectionInfoFromZoraLink'
-import getToken from '@/lib/zora/getToken'
-import getCollectorClient from '@/lib/zora/getCollectorClient'
-import getSaleConfig from '@/lib/zora/getSaleConfig'
-import FAM from '@/constants/fam'
-import { zoraCreator1155ImplABI } from '@zoralabs/protocol-deployments'
-import { SALE_STRATEGY } from '@/constants/addresses'
+import getZoraCollectProposal from '@/lib/getZoraCollectProposal'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -65,55 +59,11 @@ const useCreateProposal: any = (community: Address) => {
         )
           return false
 
-        const { token } = await getToken(
+        proposalData = await getZoraCollectProposal(
           collectionInfo.collectionAddress,
-          '1155',
-          collectionInfo.tokenId
-        ) as any
-
-        let salesConfig = token?.salesConfig
-
-        if (!salesConfig) salesConfig = await getSaleConfig(collectionInfo.collectionAddress, collectionInfo.tokenId)
-        
-        const collectorClient = getCollectorClient()
-
-        if (!salesConfig) {
-          const { parameters } = await collectorClient.mint({
-            tokenContract: collectionInfo.collectionAddress,
-            mintType: '1155',
-            quantityToMint: 1,
-            minterAccount: target,
-            tokenId: collectionInfo.tokenId,
-          })
-  
-          const { abi, functionName, args, value, address: minterAddress } = parameters
-          args[5] = `Collected by ${token.contract.name} on Fam`
-          args[4] = FAM
-          
-          proposalData = await getZoraCollectProposalData(
-            abi,
-            args,
-            functionName,
-            value,
-            minterAddress
-          )
-        } else {
-          const zoraFee = parseEther('0.000777')
-          const value = salesConfig.pricePerToken + zoraFee
-          const minterArguments = encodeAbiParameters(
-            parseAbiParameters('address x, string y'),
-            [target, `Collected by ${token.contract.name} on Fam`]
-          )
-        
-          const args = [SALE_STRATEGY[CHAIN.id], collectionInfo.tokenId, 1, minterArguments, FAM]
-          proposalData = await getZoraCollectProposalData(
-            zoraCreator1155ImplABI,
-            args,
-            "mintWithRewards",
-            value,
-            SALE_STRATEGY[CHAIN.id]
-          )
-        }
+          collectionInfo.tokenId,
+          target
+        )
       }
 
       if (
