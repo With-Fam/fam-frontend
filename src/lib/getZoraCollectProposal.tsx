@@ -55,11 +55,11 @@ const getZoraCollectProposal = async (
     [target, `Collected by ${token.contract.name} on Fam`]
   )
 
-  const args = [SALE_STRATEGY[CHAIN.id], tokenId, 1, minterArguments, FAM]
+  const args = [SALE_STRATEGY[CHAIN.id], tokenId, 1, [FAM], minterArguments]
   const proposalData = await getZoraCollectProposalData(
     zoraCreator1155ImplABI,
     args,
-    'mintWithRewards',
+    'mint',
     value,
     collectionAddress
   )
