@@ -19,6 +19,7 @@ import getCollectionInfoFromZoraLink from '@/lib/getCollectionInfoFromZoraLink'
 import getToken from '@/lib/zora/getToken'
 import getCollectorClient from '@/lib/zora/getCollectorClient'
 import getSaleConfig from '@/lib/zora/getSaleConfig'
+import FAM from '@/constants/fam'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -74,19 +75,31 @@ const useCreateProposal: any = (community: Address) => {
         
         const collectorClient = getCollectorClient()
 
-        const { parameters } = await collectorClient.mint({
-          tokenContract: collectionInfo.collectionAddress,
-          mintType: '1155',
-          quantityToMint: 1,
-          minterAccount: target,
-          tokenId: collectionInfo.tokenId,
+        if (!salesConfig) {
+          const { parameters } = await collectorClient.mint({
+            tokenContract: collectionInfo.collectionAddress,
+            mintType: '1155',
+            quantityToMint: 1,
+            minterAccount: target,
+            tokenId: collectionInfo.tokenId,
+          })
+  
+          const { abi, functionName, args, value, address: minterAddress } = parameters
+          args[5] = `Collected by ${token.contract.name} on Fam`
+          args[4] = FAM
           
-        })
-
-        proposalData = await getZoraCollectProposalData(
-          token.contract.name,
-          parameters
-        )
+          proposalData = await getZoraCollectProposalData(
+            abi,
+            args,
+            functionName,
+            value,
+            minterAddress
+          )
+        } else {
+          const zoraFee = parseEther('0.000777')
+          const value = salesConfig.pricePerToken + zoraFee
+          const parameters = 
+        }
       }
 
       if (
