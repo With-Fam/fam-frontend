@@ -12,7 +12,7 @@ import getSendEthProposalData from '@/lib/party/getSendEthProposalData'
 import getZoraCollectProposalData from '@/lib/party/getZoraCollectProposalData'
 import { getPublicClient } from '@/lib/viem'
 import { usePrivy } from '@privy-io/react-auth'
-import { Address, isAddress, maxUint256, parseEther } from 'viem'
+import { Address, encodeAbiParameters, isAddress, maxUint256, parseAbiParameters, parseEther } from 'viem'
 import getEnsAddress from '@/lib/getEnsAddress'
 import handleTxError from '@/lib/handleTxError'
 import getCollectionInfoFromZoraLink from '@/lib/getCollectionInfoFromZoraLink'
@@ -20,6 +20,8 @@ import getToken from '@/lib/zora/getToken'
 import getCollectorClient from '@/lib/zora/getCollectorClient'
 import getSaleConfig from '@/lib/zora/getSaleConfig'
 import FAM from '@/constants/fam'
+import { zoraCreator1155ImplABI } from '@zoralabs/protocol-deployments'
+import { SALE_STRATEGY } from '@/constants/addresses'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -98,7 +100,19 @@ const useCreateProposal: any = (community: Address) => {
         } else {
           const zoraFee = parseEther('0.000777')
           const value = salesConfig.pricePerToken + zoraFee
-          const parameters = 
+          const minterArguments = encodeAbiParameters(
+            parseAbiParameters('address x, string y'),
+            [target, `Collected by ${token.contract.name} on Fam`]
+          )
+        
+          const args = [SALE_STRATEGY[CHAIN.id], collectionInfo.tokenId, 1, minterArguments, FAM]
+          proposalData = await getZoraCollectProposalData(
+            zoraCreator1155ImplABI,
+            args,
+            "mintWithRewards",
+            value,
+            SALE_STRATEGY[CHAIN.id]
+          )
         }
       }
 
