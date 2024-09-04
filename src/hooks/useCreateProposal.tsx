@@ -17,6 +17,8 @@ import getEnsAddress from '@/lib/getEnsAddress'
 import handleTxError from '@/lib/handleTxError'
 import getCollectionInfoFromZoraLink from '@/lib/getCollectionInfoFromZoraLink'
 import getToken from '@/lib/zora/getToken'
+import getCollectorClient from '@/lib/zora/getCollectorClient'
+import getSaleConfig from '@/lib/zora/getSaleConfig'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -60,15 +62,25 @@ const useCreateProposal: any = (community: Address) => {
         )
           return false
 
-        const { token, prepareMint } = await getToken(
+        const { token } = await getToken(
           collectionInfo.collectionAddress,
           '1155',
           collectionInfo.tokenId
-        )
+        ) as any
 
-        const { parameters } = prepareMint({
+        let salesConfig = token?.salesConfig
+
+        if (!salesConfig) salesConfig = await getSaleConfig(collectionInfo.collectionAddress, collectionInfo.tokenId)
+        
+        const collectorClient = getCollectorClient()
+
+        const { parameters } = await collectorClient.mint({
+          tokenContract: collectionInfo.collectionAddress,
+          mintType: '1155',
+          quantityToMint: 1,
           minterAccount: target,
-          quantityToMint: 1n,
+          tokenId: collectionInfo.tokenId,
+          
         })
 
         proposalData = await getZoraCollectProposalData(
