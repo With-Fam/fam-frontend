@@ -47,7 +47,7 @@ const getZoraCreateProposalData = async (
       },
       payoutRecipient: payoutAddress,
     },
-    account: recipient!,
+    account: recipient,
   })
 
   const encodedBytecodeProposalData = getZoraCreateProposalBytecode(parameters)

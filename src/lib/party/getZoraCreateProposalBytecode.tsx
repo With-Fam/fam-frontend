@@ -1,9 +1,7 @@
 import { encodeFunctionData } from 'viem'
 import getProposalBytecode from './getProposalBytecode'
 
-const getZoraCreateProposalBytecode = (
-  parameters: any
-) => {
+const getZoraCreateProposalBytecode = (parameters: any) => {
   const { abi, args, value, address: minterAddress } = parameters
   const data = encodeFunctionData({
     abi,
@@ -13,7 +11,7 @@ const getZoraCreateProposalBytecode = (
 
   const encodedBytecodeProposalData = getProposalBytecode(
     minterAddress,
-    value,
+    value || 0n,
     data
   )
   return encodedBytecodeProposalData
