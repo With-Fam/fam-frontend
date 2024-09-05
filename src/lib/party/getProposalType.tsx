@@ -1,3 +1,4 @@
+import { ZORA_CREATE_METHOD_ID } from '@/constants/consts'
 import { TransactionType } from '@/modules/create-activity/types'
 
 const getProposalType = (proposal: any) => {
@@ -6,7 +7,7 @@ const getProposalType = (proposal: any) => {
     const proposalHexdata = proposalData?.data
 
     const methodId = proposalHexdata.substring(0, 10)
-  
+
     if (proposalHexdata === '0x') return TransactionType.SEND_ETH
     if (
       proposalHexdata.length === 650 ||
@@ -14,7 +15,7 @@ const getProposalType = (proposal: any) => {
       proposalHexdata.length === 522
     )
       return TransactionType.ZORA_COLLECT
-    if (proposalHexdata.length === 3338) return TransactionType.ZORA_CREATE
+    if (methodId === ZORA_CREATE_METHOD_ID) return TransactionType.ZORA_CREATE
     if ((proposalHexdata.length - 586) % 192 === 0)
       return TransactionType.ADD_MEMBER
 
