@@ -21,6 +21,7 @@ const getProposalType = (proposal: any) => {
 
     return null
   } catch (error) {
+    console.error(error)
     return null
   }
 }

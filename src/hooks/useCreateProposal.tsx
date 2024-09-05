@@ -90,7 +90,7 @@ const useCreateProposal: any = (community: Address) => {
         if (editionSize === EDITON_SIZE.ONEOFONE) sizeEdition = 1
         if (editionSize === EDITON_SIZE.FIXED) sizeEdition = customEditionSize
 
-        let sizeLimit: bigint | number = 0
+        let sizeLimit: number = 0
         if (limitPerAddress === LIMIT.CUSTOM) sizeLimit = customLimit
 
         const payoutEnsAddress = await getEnsAddress(payoutAddress)
