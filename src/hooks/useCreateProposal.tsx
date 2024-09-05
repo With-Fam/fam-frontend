@@ -9,14 +9,13 @@ import {
 import { TransactionType } from '@/modules/create-activity/types'
 import getZoraCreateProposalData from '@/lib/party/getZoraCreateProposalData'
 import getSendEthProposalData from '@/lib/party/getSendEthProposalData'
-import getZoraCollectProposalData from '@/lib/party/getZoraCollectProposalData'
 import { getPublicClient } from '@/lib/viem'
 import { usePrivy } from '@privy-io/react-auth'
 import { Address, isAddress, maxUint256, parseEther } from 'viem'
 import getEnsAddress from '@/lib/getEnsAddress'
 import handleTxError from '@/lib/handleTxError'
 import getCollectionInfoFromZoraLink from '@/lib/getCollectionInfoFromZoraLink'
-import getToken from '@/lib/zora/getToken'
+import getZoraCollectProposal from '@/lib/getZoraCollectProposal'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -60,20 +59,10 @@ const useCreateProposal: any = (community: Address) => {
         )
           return false
 
-        const { token, prepareMint } = await getToken(
+        proposalData = await getZoraCollectProposal(
           collectionInfo.collectionAddress,
-          '1155',
-          collectionInfo.tokenId
-        )
-
-        const { parameters } = prepareMint({
-          minterAccount: target,
-          quantityToMint: 1n,
-        })
-
-        proposalData = await getZoraCollectProposalData(
-          token.contract.name,
-          parameters
+          collectionInfo.tokenId,
+          target
         )
       }
 
@@ -90,7 +79,7 @@ const useCreateProposal: any = (community: Address) => {
         if (editionSize === EDITON_SIZE.ONEOFONE) sizeEdition = 1
         if (editionSize === EDITON_SIZE.FIXED) sizeEdition = customEditionSize
 
-        let sizeLimit: bigint | number = 0
+        let sizeLimit: number = 0
         if (limitPerAddress === LIMIT.CUSTOM) sizeLimit = customLimit
 
         const payoutEnsAddress = await getEnsAddress(payoutAddress)
