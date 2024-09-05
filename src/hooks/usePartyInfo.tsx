@@ -14,26 +14,31 @@ const usePartyInfo = (community: any) => {
   useEffect(() => {
     const init = async () => {
       setLoading(true)
-      const contractUri = await getZora1155Uri(community)
-      let response = await fetch(contractUri as string)
-      const metadata = await response.json()
-      setPartyInfo(metadata)
+      try {
+        const contractUri = await getZora1155Uri(community)
+        let response = await fetch(contractUri as string)
+        const metadata = await response.json()
+        setPartyInfo(metadata)
 
-      response = await fetch(`/api/party/members?party=${community}`)
-      const members = await response.json()
-      setMembers(members.memberships)
+        response = await fetch(`/api/party/members?party=${community}`)
+        const members = await response.json()
+        setMembers(members.memberships)
 
-      const addresses = members.memberships.map(
-        (member: any) => member.userAddress
-      )
-      if (connectedWallet) addresses.push(connectedWallet)
-      if (user) addresses.push(user)
-      response = await fetch(
-        `/api/party/avatars?addresses=${JSON.stringify(addresses)}`
-      )
-      const data = await response.json()
-      setAvatars(data)
-      setLoading(false)
+        const addresses = members.memberships.map(
+          (member: any) => member.userAddress
+        )
+        if (connectedWallet) addresses.push(connectedWallet)
+        if (user) addresses.push(user)
+        response = await fetch(
+          `/api/party/avatars?addresses=${JSON.stringify(addresses)}`
+        )
+        const data = await response.json()
+        setAvatars(data)
+        setLoading(false)
+      } catch (error) {
+        console.error(error)
+        setLoading(false)
+      }
     }
 
     if (!community) return

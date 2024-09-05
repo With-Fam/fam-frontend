@@ -1,15 +1,13 @@
 import { encodeFunctionData } from 'viem'
 import getProposalBytecode from '@/lib/party/getProposalBytecode'
-import FAM from '@/constants/fam'
 
 const getZoraPurchaseProposalBytecode = async (
-  collectionName: any,
-  parameters: any
+  abi: any,
+  args: any,
+  functionName: any,
+  value: any,
+  minterAddress: any
 ) => {
-  const { abi, functionName, args, value, address: minterAddress } = parameters
-  args[5] = `Collected by ${collectionName} on Fam`
-  args[4] = FAM
-
   const data = encodeFunctionData({
     abi,
     functionName,

@@ -34,3 +34,11 @@ export const PARTY_PROPOSAL_CANCELDELAY = 300
 export const ZORA_CREATE_METHOD_ID = toFunctionSelector(
   'function createContract(string,string,(uint32,uint32,address),address,bytes[])'
 )
+
+export const ZORA_TIMED_COLLECT_METHOD_ID = toFunctionSelector(
+  'function mint(address,uint256,address,uint256,address,string)'
+)
+
+export const ZORA_FIXED_COLLECT_METHOD_ID = toFunctionSelector(
+  'function mint(address,uint256,uint256,address[],bytes)'
+)
