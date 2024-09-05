@@ -5,6 +5,8 @@ const getProposalType = (proposal: any) => {
     const proposalData: any = proposal.proposalData[0]
     const proposalHexdata = proposalData?.data
 
+    const methodId = proposalHexdata.substring(0, 10)
+  
     if (proposalHexdata === '0x') return TransactionType.SEND_ETH
     if (
       proposalHexdata.length === 650 ||
