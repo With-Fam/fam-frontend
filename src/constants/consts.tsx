@@ -1,3 +1,5 @@
+import { toFunctionSelector } from 'viem'
+
 export const DEPLOYMENT_ERROR = {
   MISSING_IPFS_ARTWORK: `Oops! It looks like your artwork wasn't correctly uploaded to ipfs. Please go back to the artwork step to re-upload your artwork before proceeding.`,
   MISMATCHING_SIGNER:
@@ -28,3 +30,15 @@ export const MONTH_LABELS = [
 
 export const PARTY_PROPOSAL_ADD_MEMBER_CANCELDELAY = 3628800
 export const PARTY_PROPOSAL_CANCELDELAY = 300
+
+export const ZORA_CREATE_METHOD_ID = toFunctionSelector(
+  'function createContract(string,string,(uint32,uint32,address),address,bytes[])'
+)
+
+export const ZORA_TIMED_COLLECT_METHOD_ID = toFunctionSelector(
+  'function mint(address,uint256,address,uint256,address,string)'
+)
+
+export const ZORA_FIXED_COLLECT_METHOD_ID = toFunctionSelector(
+  'function mint(address,uint256,uint256,address[],bytes)'
+)
