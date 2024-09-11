@@ -1,4 +1,3 @@
-import { SALE_STRATEGY } from '@/constants/addresses'
 import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import { partyAbi } from '@/data/contract/abis/Party'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
@@ -10,14 +9,13 @@ import {
 import { TransactionType } from '@/modules/create-activity/types'
 import getZoraCreateProposalData from '@/lib/party/getZoraCreateProposalData'
 import getSendEthProposalData from '@/lib/party/getSendEthProposalData'
-import getZoraCollectProposalData from '@/lib/party/getZoraCollectProposalData'
 import { getPublicClient } from '@/lib/viem'
 import { usePrivy } from '@privy-io/react-auth'
 import { Address, isAddress, maxUint256, parseEther } from 'viem'
 import getEnsAddress from '@/lib/getEnsAddress'
 import handleTxError from '@/lib/handleTxError'
 import getCollectionInfoFromZoraLink from '@/lib/getCollectionInfoFromZoraLink'
-import getSaleConfig from '@/lib/zora/getSaleConfig'
+import getZoraCollectProposal from '@/lib/getZoraCollectProposal'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -60,17 +58,11 @@ const useCreateProposal: any = (community: Address) => {
           !collectionInfo.tokenId
         )
           return false
-        const saleConfig = await getSaleConfig(
+
+        proposalData = await getZoraCollectProposal(
           collectionInfo.collectionAddress,
-          collectionInfo.tokenId
-        )
-        const tokenPrice = saleConfig.pricePerToken
-        proposalData = await getZoraCollectProposalData(
-          collectionInfo.collectionAddress as Address,
-          SALE_STRATEGY[CHAIN.id],
-          target,
-          tokenPrice,
-          collectionInfo.tokenId
+          collectionInfo.tokenId,
+          target
         )
       }
 
@@ -87,7 +79,7 @@ const useCreateProposal: any = (community: Address) => {
         if (editionSize === EDITON_SIZE.ONEOFONE) sizeEdition = 1
         if (editionSize === EDITON_SIZE.FIXED) sizeEdition = customEditionSize
 
-        let sizeLimit: bigint | number = 0
+        let sizeLimit: number = 0
         if (limitPerAddress === LIMIT.CUSTOM) sizeLimit = customLimit
 
         const payoutEnsAddress = await getEnsAddress(payoutAddress)

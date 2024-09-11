@@ -1,14 +1,21 @@
 import { TransactionType } from '@/modules/create-activity/types'
 import getZora1155Uri from '@/lib/zora/getZora1155Uri'
-import { zoraCreator1155FactoryImplABI } from '@zoralabs/protocol-deployments'
-import { decodeFunctionData } from 'viem'
+import {
+  zoraCreator1155FactoryImplABI,
+  zoraCreator1155ImplABI,
+} from '@zoralabs/protocol-deployments'
+import { Address, decodeFunctionData } from 'viem'
+import getProposalType from '@/lib/party/getProposalType'
+import zoraTimedSaleStrategyABI from '@/lib/abi/abi-zoraTimeSaleStrategy.json'
 
 const getProposalInfo = async (proposal: any) => {
   try {
     const proposalData: any = proposal.proposalData[0]
     const proposalHexdata = proposalData?.data
 
-    if (proposalHexdata === '0x') {
+    const proposalType = getProposalType(proposal)
+
+    if (proposalType === TransactionType.SEND_ETH) {
       return {
         value: proposalData.value,
         receiver: proposalData.target,
@@ -18,8 +25,19 @@ const getProposalInfo = async (proposal: any) => {
       }
     }
 
-    if (proposalHexdata.length === 650) {
-      const collectionAddress = proposalData.target
+    if (proposalType === TransactionType.ZORA_COLLECT) {
+      let decodedData: any = null
+      try {
+        decodedData = decodeFunctionData({
+          abi: zoraTimedSaleStrategyABI,
+          data: proposalHexdata,
+        })
+      } catch (error) {
+        console.error(error)
+      }
+
+      const collectionAddress =
+        (decodedData?.args?.[2] as Address) || proposalData?.target
 
       const contractUri = await getZora1155Uri(collectionAddress)
       const response = await fetch(`/api/metadata?uri=${contractUri}`)
@@ -34,7 +52,7 @@ const getProposalInfo = async (proposal: any) => {
       }
     }
 
-    if (proposalHexdata.length === 3338) {
+    if (proposalType === TransactionType.ZORA_CREATE) {
       const decodedData = decodeFunctionData({
         abi: zoraCreator1155FactoryImplABI,
         data: proposalHexdata,
