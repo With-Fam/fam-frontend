@@ -36,6 +36,7 @@ const useCreateParty = () => {
     const price = ethers.parseEther(membership.membershipPrice.toString())
     try {
       const publicClient = getPublicClient(chainId)
+      // TODO: new lib for getCreateInitialArgs
       const crowdfundOpts = {
         disableContributingForExistingCard: true,
         duration: 86400 * membership.mintPeriod,

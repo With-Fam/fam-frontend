@@ -38,6 +38,7 @@ const useDeploy = () => {
       return
     }
 
+    // TODO: create a new lib for getDeployedPartyAddress
     const managerInterface = new Interface(partyFactoryAbi)
 
     const deployEvent = (transaction as any)?.logs.find(
