@@ -1,10 +1,7 @@
 import {
   ATOMIC_MANUAL_PARTY,
   GOVERNANCE_OPT_FEE_RECIPIENT,
-  METADATA_PROVIDER,
-  PARTY_FACTORY,
   PARTY_IMPLEMENTATION,
-  PARTY_OPT_AUTHORITIES,
 } from '@/constants/addresses'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { useFormStore } from '@/modules/create-community'
@@ -12,14 +9,12 @@ import { getPublicClient } from '@/lib/viem'
 import getViemNetwork from '@/lib/viem/getViemNetwork'
 import { CHAIN_ID } from '@/constants/defaultChains'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
-import { isAddress, toBytes } from 'viem'
+import { isAddress } from 'viem'
 import getEnsAddress from '@/lib/getEnsAddress'
-import getEncodedPartyMetadata from '@/lib/party/getEncodedPartyMetadata'
-import { PARTY_FACTORY_ABI } from '@/lib/abi/abi-PartyFactory'
 import { atomicManualPartyAbi } from '@/lib/abi/atomicManualPartyAbi'
 
 const useCreatePartyManual = () => {
-  const { general, membership, vetoPeriod } = useFormStore()
+  const { membership, vetoPeriod } = useFormStore()
   const { connectedWallet: address } = useConnectedWallet()
   const { walletClient } = usePrivyWalletClient()
 
