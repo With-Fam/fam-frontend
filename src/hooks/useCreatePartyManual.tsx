@@ -1,4 +1,5 @@
 import {
+  ATOMIC_MANUAL_PARTY,
   GOVERNANCE_OPT_FEE_RECIPIENT,
   METADATA_PROVIDER,
   PARTY_FACTORY,
@@ -15,6 +16,7 @@ import { isAddress, toBytes } from 'viem'
 import getEnsAddress from '@/lib/getEnsAddress'
 import getEncodedPartyMetadata from '@/lib/party/getEncodedPartyMetadata'
 import { PARTY_FACTORY_ABI } from '@/lib/abi/abi-PartyFactory'
+import { atomicManualPartyAbi } from '@/lib/abi/atomicManualPartyAbi'
 
 const useCreatePartyManual = () => {
   const { general, membership, vetoPeriod } = useFormStore()
@@ -66,19 +68,24 @@ const useCreatePartyManual = () => {
         customizationPresetId: '0',
       }
 
+      const partyMemberVotingPowers = [1000000n]
+      const partyMembers = [address]
+
       const rageQuitTimestamp = 1715603725
       const args = [
         PARTY_IMPLEMENTATION[CHAIN_ID],
-        PARTY_OPT_AUTHORITIES[CHAIN_ID],
         partyOpts,
         [], // preciousTokens
         [], // preciousTokenIds
         rageQuitTimestamp,
+        partyMembers,
+        partyMemberVotingPowers,
+        partyMembers,
       ]
       console.log('args', args)
       const contractConfig = {
-        address: PARTY_FACTORY[CHAIN_ID],
-        abi: PARTY_FACTORY_ABI,
+        address: ATOMIC_MANUAL_PARTY[CHAIN_ID],
+        abi: atomicManualPartyAbi,
         chain: getViemNetwork(CHAIN_ID),
         functionName: 'createParty' as const,
         args,
