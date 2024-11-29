@@ -2,6 +2,7 @@ import {
   ATOMIC_MANUAL_PARTY,
   GOVERNANCE_OPT_FEE_RECIPIENT,
   PARTY_IMPLEMENTATION,
+  PARTY_OPT_AUTHORITIES,
 } from '@/constants/addresses'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { useFormStore } from '@/modules/create-community'
@@ -65,6 +66,7 @@ const useCreatePartyManual = () => {
 
       const partyMemberVotingPowers = [1000000n]
       const partyMembers = [address]
+      const authorities = PARTY_OPT_AUTHORITIES[CHAIN_ID]
 
       const rageQuitTimestamp = 1715603725
       const args = [
@@ -75,7 +77,7 @@ const useCreatePartyManual = () => {
         rageQuitTimestamp,
         partyMembers,
         partyMemberVotingPowers,
-        partyMembers,
+        authorities,
       ]
       console.log('args', args)
       const contractConfig = {
