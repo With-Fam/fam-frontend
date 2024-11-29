@@ -1,11 +1,11 @@
-# Instructions for Join Fam Authority
+# Instructions for AtomicManualParty
 
-goal: add Join Fam Authority to the array of authorities in a Party setup
+goal: create a Party from scratch without a crowdfund. Initialize the Party with an array of members and their voting powers.
 
-1. locate the authority array used in the creation of a new party.
-2. Add the JoinFamAuthority address to the array from baseSepolia.
-3. Create a party locally with the new authorities array.
-4. Verify on basescan events that the authority was added.
-5. use the join method on the authority
-   - verify on basescan that the user has been added to the party
-   - verify in fam / party the user can create a new proposal in the party
+Documentation: https://docs.partydao.org/docs/partys/AtomicManualParty
+
+1. locate the existing code being used to create a new fam (party) via the crowdfund factory
+2. copy it for AtomicManualParty
+3. update the create button to use the new AtomicManualParty hooks / libs you've just created (tag them).
+4. verify a proposal can be created and executed after creating the Party using the new code.
+5. remove the legacy Crowdfund code.
