@@ -23,6 +23,8 @@ import type { CreateSection } from '@/modules/create-community/types'
 import { usePrivy } from '@privy-io/react-auth'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
+import useDeployHypersub from '@/hooks/useDeployHypersub'
+import { Address, TransactionReceipt } from 'viem'
 
 export interface CreateCommunityContextType {
   loading: boolean
@@ -31,6 +33,10 @@ export interface CreateCommunityContextType {
   next: () => void
   prev: () => void
   title: string
+  deployHypersub?: (
+    partyAddress: Address
+  ) => Promise<TransactionReceipt | { error: unknown } | undefined>
+  hypersubAddress?: string | null
 }
 
 const CreateCommunityContext = createContext<CreateCommunityContextType>({
@@ -40,6 +46,8 @@ const CreateCommunityContext = createContext<CreateCommunityContextType>({
   next: () => null,
   prev: () => null,
   title: '',
+  deployHypersub: undefined,
+  hypersubAddress: null,
 })
 
 let sections: CreateSection[] = []
@@ -50,6 +58,7 @@ const CreateCommunityProvider = ({
   const { authenticated, ready } = usePrivy()
   const { connectedWallet: address } = useConnectedWallet()
   const [loading, setLoading] = useState<boolean>(true)
+  const { deployHypersub, hypersubAddress } = useDeployHypersub()
   const {
     activeSection,
     general: gDefault,
@@ -154,6 +163,8 @@ const CreateCommunityProvider = ({
           next,
           prev,
           title: sections[activeSection]?.title,
+          deployHypersub,
+          hypersubAddress,
         }}
       >
         <ErrorBox
@@ -174,6 +185,8 @@ const CreateCommunityProvider = ({
         next,
         prev,
         title: sections[activeSection]?.title,
+        deployHypersub,
+        hypersubAddress,
       }}
     >
       <CreateContextNavigation
