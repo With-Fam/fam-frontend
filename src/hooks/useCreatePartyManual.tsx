@@ -91,7 +91,7 @@ const useCreatePartyManual = () => {
         args,
       }
 
-      const txHash = await walletClient.writeContract(contractConfig)
+      const txHash = await walletClient.writeContract(contractConfig as any)
 
       let transaction
       if (txHash) {
