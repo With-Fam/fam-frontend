@@ -14,6 +14,7 @@ import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { isAddress, toBytes } from 'viem'
 import getEnsAddress from '@/lib/getEnsAddress'
 import getEncodedPartyMetadata from '@/lib/party/getEncodedPartyMetadata'
+import { PARTY_FACTORY_ABI } from '@/lib/abi/abi-PartyFactory'
 
 const useCreatePartyManual = () => {
   const { general, membership, vetoPeriod } = useFormStore()
@@ -47,6 +48,7 @@ const useCreatePartyManual = () => {
         hosts,
         passThresholdBps: passThresholdBps,
         voteDuration: vetoPeriod,
+        totalVotingPower,
       }
 
       const proposalEngineOpts = {
@@ -57,51 +59,32 @@ const useCreatePartyManual = () => {
       }
 
       const partyOpts = {
-        authorities: PARTY_OPT_AUTHORITIES[CHAIN_ID],
-        customizationPresetId: 1n,
-        governanceOpts,
-        name: general.daoName,
-        proposalEngineOpts,
-        symbol: general.daoSymbol,
+        governance: governanceOpts,
+        proposalEngine: proposalEngineOpts,
+        name: 'PARTY',
+        symbol: 'FAM',
+        customizationPresetId: '0',
       }
 
-      const metadata = {
-        name: general.daoName,
-        description: toBytes(general.projectDescription as string),
-        externalURL: toBytes(general.daoWebsite as string),
-        image: toBytes(general.daoAvatar as string),
-        banner: toBytes(general.daoAvatar as string),
-        animationURL: toBytes(general.daoAvatar as string),
-        collectionName: general.daoName,
-        collectionDescription: toBytes(general.projectDescription as string),
-        collectionExternalURL: toBytes(general.daoWebsite as string),
-        royaltyReceiver: address,
-        royaltyAmount: 0,
-        renderingMethod: 0,
-      }
-
-      const encodedMetadata = getEncodedPartyMetadata(metadata)
-
+      const rageQuitTimestamp = 1715603725
+      const args = [
+        PARTY_IMPLEMENTATION[CHAIN_ID],
+        PARTY_OPT_AUTHORITIES[CHAIN_ID],
+        partyOpts,
+        [], // preciousTokens
+        [], // preciousTokenIds
+        rageQuitTimestamp,
+      ]
+      console.log('args', args)
       const contractConfig = {
         address: PARTY_FACTORY[CHAIN_ID],
+        abi: PARTY_FACTORY_ABI,
         chain: getViemNetwork(CHAIN_ID),
-        functionName: 'createPartyWithMetadata',
-        args: [
-          PARTY_IMPLEMENTATION[CHAIN_ID],
-          PARTY_OPT_AUTHORITIES[CHAIN_ID],
-          partyOpts,
-          [], // preciousTokens
-          [], // preciousTokenIds
-          0, // rageQuitTimestamp
-          METADATA_PROVIDER[CHAIN_ID],
-          encodedMetadata,
-        ],
+        functionName: 'createParty' as const,
+        args,
       }
 
-      const { request } = await publicClient.simulateContract(
-        contractConfig as any
-      )
-      const txHash = await walletClient.writeContract(request as any)
+      const txHash = await walletClient.writeContract(contractConfig)
 
       let transaction
       if (txHash) {
@@ -111,6 +94,7 @@ const useCreatePartyManual = () => {
       }
       return transaction
     } catch (error) {
+      console.error('error', error)
       return { error }
     }
   }
