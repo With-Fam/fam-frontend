@@ -1,13 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  Address,
-  zeroAddress,
-  decodeEventLog,
-  parseAbiItem,
-  parseEventLogs,
-} from 'viem'
+import { Address, parseEventLogs } from 'viem'
 import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { getPublicClient } from '@/lib/viem'
@@ -15,6 +9,7 @@ import toast from 'react-hot-toast'
 import handleTxError from '@/lib/handleTxError'
 import { hypersubFactoryAbi } from '@/lib/abi/hypersubFactoryAbi'
 import { HYPERSUB_FACTORY } from '@/constants/addresses'
+import { getDeployArgs, getDeployArgsArray } from '@/lib/hypersub/getDeployArgs'
 
 const useDeployHypersub = () => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -29,27 +24,9 @@ const useDeployHypersub = () => {
       await walletClient.switchChain({ id: CHAIN_ID })
       const publicClient = getPublicClient(CHAIN_ID)
 
-      // Prepare contract arguments for Hypersub deployment
-      const name = 'FAM SUBSCRIPTION'
-      const symbol = 'FAM'
-      const contractUri = 'ipfs://'
-      const tokenUri = 'ipfs://'
-      const tokensPerSecond = 1
-      const minimumPurchaseSeconds = 1
-      const rewardBps = 500
-      const erc20Address = zeroAddress
-      const feeConfigId = 0
-      const args = [
-        name,
-        symbol,
-        contractUri,
-        tokenUri,
-        BigInt(tokensPerSecond),
-        BigInt(minimumPurchaseSeconds),
-        rewardBps,
-        erc20Address,
-        BigInt(feeConfigId),
-      ] as const
+      // Get deployment arguments
+      const deployArgs = getDeployArgs()
+      const args = getDeployArgsArray(deployArgs)
 
       // Simulate the transaction first
       const { request } = await publicClient.simulateContract({
@@ -73,19 +50,13 @@ const useDeployHypersub = () => {
         abi: hypersubFactoryAbi,
       })
 
-      console.log('deploymentLogs', deploymentLogs)
-
       // Find the Deployment event
       const deployEvent = deploymentLogs.find(
         (log) => log.eventName === 'Deployment'
       )
 
-      console.log('deployEvent', deployEvent)
-
       if (deployEvent) {
         const deployedAddress = deployEvent.args.deployment as Address
-        console.log('deployedAddress', deployedAddress)
-
         setHypersubAddress(deployedAddress)
         toast.success('Hypersub deployed successfully!')
       }
