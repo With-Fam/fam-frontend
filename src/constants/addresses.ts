@@ -141,3 +141,9 @@ export const SALE_STRATEGY = {
   [CHAIN_ID.BASE_SEPOLIA]:
     '0xd34872BE0cdb6b09d45FCa067B07f04a1A9aE1aE' as AddressType,
 }
+
+export const MANAGE_FAM_AUTHORITY = {
+  [CHAIN_ID.BASE]: '0x8eaC17a5A609976507734e979873d7c3B3eEbeb6' as AddressType,
+  [CHAIN_ID.BASE_SEPOLIA]:
+    '0x8eaC17a5A609976507734e979873d7c3B3eEbeb6' as AddressType,
+}
