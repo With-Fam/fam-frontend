@@ -15,7 +15,6 @@ const useSetHypersub = (partyAddress?: Address) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isHypersubSet, setIsHypersubSet] = useState<boolean>(false)
 
-  // Check if hypersub is already set for this party
   const checkHypersubSet = async () => {
     if (!partyAddress || !walletClient) return false
 
@@ -28,7 +27,6 @@ const useSetHypersub = (partyAddress?: Address) => {
         args: [partyAddress],
       })
 
-      // If the hypersub address is not the zero address, it means it's set
       const isSet =
         hypersubAddress !== '0x0000000000000000000000000000000000000000'
       setIsHypersubSet(isSet)
