@@ -26,7 +26,6 @@ export function getDeployArgs(): HypersubDeployArgs {
   }
 }
 
-// Convert the args object to an array in the correct order for the contract call
 export function getDeployArgsArray(args: HypersubDeployArgs) {
   return [
     args.name,
