@@ -24,11 +24,9 @@ const useDeployHypersub = () => {
       await walletClient.switchChain({ id: CHAIN_ID })
       const publicClient = getPublicClient(CHAIN_ID)
 
-      // Get deployment arguments
       const deployArgs = getDeployArgs()
       const args = getDeployArgsArray(deployArgs)
 
-      // Simulate the transaction first
       const { request } = await publicClient.simulateContract({
         address: HYPERSUB_FACTORY[CHAIN_ID],
         abi: hypersubFactoryAbi,
@@ -37,20 +35,15 @@ const useDeployHypersub = () => {
         args,
       })
 
-      // Execute the transaction
       const hash = await walletClient.writeContract(request)
-
-      // Wait for transaction receipt
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
 
-      // Parse the deployment event logs
       const deploymentLogs = parseEventLogs({
         logs: receipt.logs,
         eventName: 'Deployment',
         abi: hypersubFactoryAbi,
       })
 
-      // Find the Deployment event
       const deployEvent = deploymentLogs.find(
         (log) => log.eventName === 'Deployment'
       )
