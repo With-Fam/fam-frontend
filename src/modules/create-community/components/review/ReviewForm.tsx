@@ -31,7 +31,6 @@ export function ReviewForm(): JSX.Element {
 
     setIsLoading(true)
     try {
-      // First link the hypersub to the party
       toast.loading('Linking Hypersub to Party...')
       const result = await setHypersub(hypersubAddress)
 
@@ -41,8 +40,6 @@ export function ReviewForm(): JSX.Element {
 
       toast.dismiss()
       toast.success('Hypersub linked successfully!')
-
-      // Then navigate to the community page
       setFulfilledSections('deployed')
       const successUrl = `/community/${CHAIN_ID}/${deployedDao.token}?created=true`
       push(successUrl)
