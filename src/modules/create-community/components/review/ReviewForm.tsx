@@ -8,39 +8,34 @@ import ContinueButton from '@/components/ContinueButton'
 import { useRouter } from 'next/navigation'
 import { CheckMark } from '@/components/icons'
 import AddressCopy from '@/modules/create-community/components/review/AddressCopy'
-import { AddressType } from '@/types'
 import { CHAIN_ID } from '@/constants/defaultChains'
+import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
+import { Address } from 'viem'
 
 export function ReviewForm(): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { deployedDao, setFulfilledSections, general } = useFormStore()
+  const { deployedDao, setFulfilledSections } = useFormStore()
+  const { hypersubAddress } = useCreateCommunityProvider()
   const { push } = useRouter()
   const methods = useForm()
 
-  const { handleSubmit } = methods
-
-  const handleDeployMetadata = async () => {
+  const handleComplete = async () => {
     setIsLoading(true)
     setFulfilledSections('deployed')
 
     try {
-      toast.remove()
-      toast.success('DAO Deployed!')
-      setIsLoading(false)
-
-      const successUrl =
-        `/community/${CHAIN_ID}/${deployedDao.token}?created=true` as any
+      const successUrl = `/community/${CHAIN_ID}/${deployedDao.token}?created=true`
       push(successUrl)
     } catch {
       setIsLoading(false)
-      toast.error('Deployment error, try again!')
+      toast.error('Navigation error, try again!')
     }
   }
 
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={handleSubmit(handleDeployMetadata)}
+        onSubmit={methods.handleSubmit(handleComplete)}
         className="mt-2 md:mt-10"
       >
         <div className="mx-auto max-w-[636px] rounded-lg">
@@ -51,8 +46,15 @@ export function ReviewForm(): JSX.Element {
             </span>
           </div>
 
-          <div className="space-y-2">
-            <AddressCopy address={deployedDao.token as AddressType} />
+          <div className="space-y-4">
+            <div>
+              <p className="mb-2 text-sm text-grey">Party Address</p>
+              <AddressCopy address={deployedDao.token as Address} />
+            </div>
+            <div>
+              <p className="mb-2 text-sm text-grey">Hypersub Address</p>
+              <AddressCopy address={hypersubAddress as Address} />
+            </div>
           </div>
           <ContinueButton title="Done" loading={isLoading} />
         </div>
