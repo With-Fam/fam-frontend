@@ -17,9 +17,7 @@ const schema = z.object({
   }),
 })
 
-type DeployHypersubFormValues = {
-  confirm: boolean
-}
+type DeployHypersubFormValues = z.infer<typeof schema>
 
 export function DeployHypersubButton(): JSX.Element {
   const { wallet } = useConnectedWallet()
@@ -29,15 +27,11 @@ export function DeployHypersubButton(): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
 
   const methods = useForm<DeployHypersubFormValues>({
-    defaultValues: {
-      confirm: false,
-    },
+    defaultValues: { confirm: false },
     resolver: zodResolver(schema),
   })
 
-  const { handleSubmit } = methods
-
-  const handleDeployHypersub = async () => {
+  const handleDeploy = async () => {
     if (!deployHypersub) {
       toast.error('Deploy function not available')
       return
@@ -54,7 +48,7 @@ export function DeployHypersubButton(): JSX.Element {
 
       toast.dismiss()
       toast.success('Hypersub deployed successfully!')
-      next() // Move to the next step
+      next()
     } catch (error) {
       toast.dismiss()
       toast.error('Failed to deploy Hypersub')
@@ -66,7 +60,7 @@ export function DeployHypersubButton(): JSX.Element {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(handleDeployHypersub)}>
+      <form onSubmit={methods.handleSubmit(handleDeploy)}>
         {isCorrectChain ? (
           <ContinueButton title="Deploy Hypersub" loading={isLoading} />
         ) : (

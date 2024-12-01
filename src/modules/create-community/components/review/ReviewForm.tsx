@@ -10,7 +10,6 @@ import { CheckMark } from '@/components/icons'
 import AddressCopy from '@/modules/create-community/components/review/AddressCopy'
 import { CHAIN_ID } from '@/constants/defaultChains'
 import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
-import { SuccessView } from './SuccessView'
 import { Address } from 'viem'
 
 export function ReviewForm(): JSX.Element {
@@ -20,47 +19,30 @@ export function ReviewForm(): JSX.Element {
   const { push } = useRouter()
   const methods = useForm()
 
-  const { handleSubmit } = methods
-
-  const handleDeployMetadata = async () => {
+  const handleComplete = async () => {
     setIsLoading(true)
     setFulfilledSections('deployed')
 
     try {
-      toast.remove()
-      toast.success('DAO Deployed!')
-      setIsLoading(false)
-
-      const successUrl =
-        `/community/${CHAIN_ID}/${deployedDao.token}?created=true` as any
+      const successUrl = `/community/${CHAIN_ID}/${deployedDao.token}?created=true`
       push(successUrl)
     } catch {
       setIsLoading(false)
-      toast.error('Deployment error, try again!')
+      toast.error('Navigation error, try again!')
     }
-  }
-
-  // Show success view if both party and hypersub are deployed
-  if (deployedDao?.token && hypersubAddress) {
-    return (
-      <SuccessView
-        partyAddress={deployedDao.token as Address}
-        hypersubAddress={hypersubAddress}
-      />
-    )
   }
 
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={handleSubmit(handleDeployMetadata)}
+        onSubmit={methods.handleSubmit(handleComplete)}
         className="mt-2 md:mt-10"
       >
         <div className="mx-auto max-w-[636px] rounded-lg">
           <div className="mb-5 flex items-center text-green-600">
             <CheckMark className="mr-2 h-6 w-6" />
             <span className="font-bold text-black">
-              Successfully deployed Party
+              Successfully deployed contracts
             </span>
           </div>
 
@@ -69,8 +51,12 @@ export function ReviewForm(): JSX.Element {
               <p className="mb-2 text-sm text-grey">Party Address</p>
               <AddressCopy address={deployedDao.token as Address} />
             </div>
+            <div>
+              <p className="mb-2 text-sm text-grey">Hypersub Address</p>
+              <AddressCopy address={hypersubAddress as Address} />
+            </div>
           </div>
-          <ContinueButton title="Continue" loading={isLoading} />
+          <ContinueButton title="Done" loading={isLoading} />
         </div>
       </form>
     </FormProvider>
