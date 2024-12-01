@@ -1,13 +1,13 @@
 import { DEPLOYMENT_ERROR } from '@/constants/consts'
 import { partyFactoryAbi } from '@/data/contract/abis/PartyFactory'
-import useCreatePartyManual from '@/hooks/useCreatePartyManual'
+import useCreateParty from '@/hooks/useCreateParty'
 import { useFormStore } from '@/modules/create-community'
 import { Interface } from 'ethers'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 const useDeploy = () => {
-  const { createPartyManual } = useCreatePartyManual()
+  const { createInitialETHCrowdfund } = useCreateParty()
   const {
     setActiveSection,
     activeSection,
@@ -19,13 +19,12 @@ const useDeploy = () => {
     useState<boolean>(false)
   const [deploymentError, setDeploymentError] = useState<string | undefined>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-
   const handleDeploy = async () => {
     setIsLoading(true)
     setDeploymentError(undefined)
 
     setIsPendingTransaction(true)
-    const transaction = await createPartyManual()
+    const transaction = await createInitialETHCrowdfund()
     const error = (transaction as any)?.error
 
     if (error) {
@@ -75,7 +74,7 @@ const useDeploy = () => {
     setIsPendingTransaction(false)
     setIsLoading(false)
     setFulfilledSections('DAO DONE')
-    console.log('activeSection', activeSection)
+    console.log('big success...')
     setActiveSection(activeSection + 1)
   }
 
