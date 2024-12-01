@@ -15,28 +15,6 @@ const useSetHypersub = (partyAddress?: Address) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isHypersubSet, setIsHypersubSet] = useState<boolean>(false)
 
-  const checkHypersubSet = async () => {
-    if (!partyAddress || !walletClient) return false
-
-    try {
-      const publicClient = getPublicClient(CHAIN_ID)
-      const hypersubAddress = await publicClient.readContract({
-        address: MANAGE_FAM_AUTHORITY[CHAIN_ID],
-        abi: manageFamAuthorityAbi,
-        functionName: 'partyToHypersub',
-        args: [partyAddress],
-      })
-
-      const isSet =
-        hypersubAddress !== '0x0000000000000000000000000000000000000000'
-      setIsHypersubSet(isSet)
-      return isSet
-    } catch (error) {
-      console.error('Error checking hypersub status:', error)
-      return false
-    }
-  }
-
   const setHypersub = async (hypersubAddress: Address) => {
     if (!walletClient || !partyAddress) return
 
@@ -79,7 +57,6 @@ const useSetHypersub = (partyAddress?: Address) => {
   return {
     setHypersub,
     isHypersubSet,
-    checkHypersubSet,
     isLoading,
   }
 }
