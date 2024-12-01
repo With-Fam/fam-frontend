@@ -23,6 +23,9 @@ import type { CreateSection } from '@/modules/create-community/types'
 import { usePrivy } from '@privy-io/react-auth'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
+import useDeployHypersub from '@/hooks/useDeployHypersub'
+import { Address, TransactionReceipt } from 'viem'
+import { DeployHypersubButton } from '@/modules/create-community/components/hypersub/DeployHypersubButton'
 
 export interface CreateCommunityContextType {
   loading: boolean
@@ -31,6 +34,10 @@ export interface CreateCommunityContextType {
   next: () => void
   prev: () => void
   title: string
+  deployHypersub?: () => Promise<
+    TransactionReceipt | { error: unknown } | undefined
+  >
+  hypersubAddress?: Address
 }
 
 const CreateCommunityContext = createContext<CreateCommunityContextType>({
@@ -40,6 +47,8 @@ const CreateCommunityContext = createContext<CreateCommunityContextType>({
   next: () => null,
   prev: () => null,
   title: '',
+  deployHypersub: undefined,
+  hypersubAddress: undefined,
 })
 
 let sections: CreateSection[] = []
@@ -50,6 +59,7 @@ const CreateCommunityProvider = ({
   const { authenticated, ready } = usePrivy()
   const { connectedWallet: address } = useConnectedWallet()
   const [loading, setLoading] = useState<boolean>(true)
+  const { deployHypersub, hypersubAddress } = useDeployHypersub()
   const {
     activeSection,
     general: gDefault,
@@ -123,14 +133,21 @@ const CreateCommunityProvider = ({
       content: <ConfirmForm />,
     }
 
-    const deploy: CreateSection = {
+    const hypersub: CreateSection = {
       order: 3,
+      title: 'Hypersub',
+      key: 'hypersub',
+      content: <DeployHypersubButton />,
+    }
+
+    const deploy: CreateSection = {
+      order: 4,
       title: 'Confirm',
       key: 'deploy',
       content: <ReviewForm />,
     }
 
-    return [general, membership, review, deploy]
+    return [general, membership, review, hypersub, deploy]
   }, [
     auctionSettings,
     vetoPower,
@@ -154,6 +171,8 @@ const CreateCommunityProvider = ({
           next,
           prev,
           title: sections[activeSection]?.title,
+          deployHypersub,
+          hypersubAddress,
         }}
       >
         <ErrorBox
@@ -174,6 +193,8 @@ const CreateCommunityProvider = ({
         next,
         prev,
         title: sections[activeSection]?.title,
+        deployHypersub,
+        hypersubAddress,
       }}
     >
       <CreateContextNavigation
