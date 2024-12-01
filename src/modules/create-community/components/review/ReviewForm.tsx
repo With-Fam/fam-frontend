@@ -8,12 +8,15 @@ import ContinueButton from '@/components/ContinueButton'
 import { useRouter } from 'next/navigation'
 import { CheckMark } from '@/components/icons'
 import AddressCopy from '@/modules/create-community/components/review/AddressCopy'
-import { AddressType } from '@/types'
 import { CHAIN_ID } from '@/constants/defaultChains'
+import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
+import { SuccessView } from './SuccessView'
+import { Address } from 'viem'
 
 export function ReviewForm(): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { deployedDao, setFulfilledSections, general } = useFormStore()
+  const { deployedDao, setFulfilledSections } = useFormStore()
+  const { hypersubAddress } = useCreateCommunityProvider()
   const { push } = useRouter()
   const methods = useForm()
 
@@ -37,6 +40,16 @@ export function ReviewForm(): JSX.Element {
     }
   }
 
+  // Show success view if both party and hypersub are deployed
+  if (deployedDao?.token && hypersubAddress) {
+    return (
+      <SuccessView
+        partyAddress={deployedDao.token as Address}
+        hypersubAddress={hypersubAddress}
+      />
+    )
+  }
+
   return (
     <FormProvider {...methods}>
       <form
@@ -47,14 +60,17 @@ export function ReviewForm(): JSX.Element {
           <div className="mb-5 flex items-center text-green-600">
             <CheckMark className="mr-2 h-6 w-6" />
             <span className="font-bold text-black">
-              Successfully deployed contracts
+              Successfully deployed Party
             </span>
           </div>
 
-          <div className="space-y-2">
-            <AddressCopy address={deployedDao.token as AddressType} />
+          <div className="space-y-4">
+            <div>
+              <p className="mb-2 text-sm text-grey">Party Address</p>
+              <AddressCopy address={deployedDao.token as Address} />
+            </div>
           </div>
-          <ContinueButton title="Done" loading={isLoading} />
+          <ContinueButton title="Continue" loading={isLoading} />
         </div>
       </form>
     </FormProvider>

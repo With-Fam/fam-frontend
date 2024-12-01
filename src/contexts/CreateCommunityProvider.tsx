@@ -25,6 +25,7 @@ import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { MembershipFormValues } from '@/modules/create-community/components/membership/MembershipForm.schema'
 import useDeployHypersub from '@/hooks/useDeployHypersub'
 import { Address, TransactionReceipt } from 'viem'
+import { DeployHypersubButton } from '@/modules/create-community/components/hypersub/DeployHypersubButton'
 
 export interface CreateCommunityContextType {
   loading: boolean
@@ -33,10 +34,10 @@ export interface CreateCommunityContextType {
   next: () => void
   prev: () => void
   title: string
-  deployHypersub?: (
-    partyAddress: Address
-  ) => Promise<TransactionReceipt | { error: unknown } | undefined>
-  hypersubAddress?: string | null
+  deployHypersub?: () => Promise<
+    TransactionReceipt | { error: unknown } | undefined
+  >
+  hypersubAddress?: Address
 }
 
 const CreateCommunityContext = createContext<CreateCommunityContextType>({
@@ -47,7 +48,7 @@ const CreateCommunityContext = createContext<CreateCommunityContextType>({
   prev: () => null,
   title: '',
   deployHypersub: undefined,
-  hypersubAddress: null,
+  hypersubAddress: undefined,
 })
 
 let sections: CreateSection[] = []
@@ -132,14 +133,21 @@ const CreateCommunityProvider = ({
       content: <ConfirmForm />,
     }
 
-    const deploy: CreateSection = {
+    const hypersub: CreateSection = {
       order: 3,
+      title: 'Hypersub',
+      key: 'hypersub',
+      content: <DeployHypersubButton />,
+    }
+
+    const deploy: CreateSection = {
+      order: 4,
       title: 'Confirm',
       key: 'deploy',
       content: <ReviewForm />,
     }
 
-    return [general, membership, review, deploy]
+    return [general, membership, review, hypersub, deploy]
   }, [
     auctionSettings,
     vetoPower,

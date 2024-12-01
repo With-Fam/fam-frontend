@@ -1,7 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Address, zeroAddress } from 'viem'
+import {
+  Address,
+  zeroAddress,
+  decodeEventLog,
+  parseAbiItem,
+  parseEventLogs,
+} from 'viem'
 import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { getPublicClient } from '@/lib/viem'
@@ -15,7 +21,7 @@ const useDeployHypersub = () => {
   const [hypersubAddress, setHypersubAddress] = useState<Address>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const deployHypersub = async (partyAddress: Address) => {
+  const deployHypersub = async () => {
     if (!walletClient) return
 
     setIsLoading(true)
@@ -60,16 +66,26 @@ const useDeployHypersub = () => {
       // Wait for transaction receipt
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
 
-      // Get the deployed Hypersub address from the transaction logs
-      const deployEvent = receipt.logs.find(
-        (log: any) =>
-          log?.topics[0]?.toLowerCase() ===
-          // You'll need to add the correct event topic hash for HypersubDeployed
-          '0x...'
+      // Parse the deployment event logs
+      const deploymentLogs = parseEventLogs({
+        logs: receipt.logs,
+        eventName: 'Deployment',
+        abi: hypersubFactoryAbi,
+      })
+
+      console.log('deploymentLogs', deploymentLogs)
+
+      // Find the Deployment event
+      const deployEvent = deploymentLogs.find(
+        (log) => log.eventName === 'Deployment'
       )
 
+      console.log('deployEvent', deployEvent)
+
       if (deployEvent) {
-        const deployedAddress = deployEvent.address as Address
+        const deployedAddress = deployEvent.args.deployment as Address
+        console.log('deployedAddress', deployedAddress)
+
         setHypersubAddress(deployedAddress)
         toast.success('Hypersub deployed successfully!')
       }

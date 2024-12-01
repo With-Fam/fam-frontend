@@ -7,7 +7,9 @@ import ContinueButton from '@/components/ContinueButton'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { CHAIN_ID } from '@/constants/defaultChains'
 import SwitchNetworkButton from '@/components/SwitchNetworkButton'
+import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
 import { z } from 'zod'
+import { useState } from 'react'
 
 const schema = z.object({
   confirm: z.boolean({
@@ -23,6 +25,8 @@ export function DeployHypersubButton(): JSX.Element {
   const { wallet } = useConnectedWallet()
   const walletChainId = parseInt(wallet?.chainId.split(':')[1] as string, 10)
   const isCorrectChain = walletChainId === CHAIN_ID
+  const { deployHypersub, next } = useCreateCommunityProvider()
+  const [isLoading, setIsLoading] = useState(false)
 
   const methods = useForm<DeployHypersubFormValues>({
     defaultValues: {
@@ -34,12 +38,29 @@ export function DeployHypersubButton(): JSX.Element {
   const { handleSubmit } = methods
 
   const handleDeployHypersub = async () => {
+    if (!deployHypersub) {
+      toast.error('Deploy function not available')
+      return
+    }
+
+    setIsLoading(true)
     try {
       toast.loading('Deploying Hypersub...')
-      // Add deployment logic here
+      const result = await deployHypersub()
+
+      if (!result || 'error' in result) {
+        throw result?.error || new Error('Failed to deploy')
+      }
+
+      toast.dismiss()
+      toast.success('Hypersub deployed successfully!')
+      next() // Move to the next step
     } catch (error) {
       toast.dismiss()
       toast.error('Failed to deploy Hypersub')
+      console.error('Deploy error:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -47,7 +68,7 @@ export function DeployHypersubButton(): JSX.Element {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(handleDeployHypersub)}>
         {isCorrectChain ? (
-          <ContinueButton title="Deploy Hypersub" loading={false} />
+          <ContinueButton title="Deploy Hypersub" loading={isLoading} />
         ) : (
           <SwitchNetworkButton />
         )}

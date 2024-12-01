@@ -75,6 +75,7 @@ const useDeploy = () => {
     setIsPendingTransaction(false)
     setIsLoading(false)
     setFulfilledSections('DAO DONE')
+    console.log('activeSection', activeSection)
     setActiveSection(activeSection + 1)
   }
 

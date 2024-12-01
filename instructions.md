@@ -9,4 +9,5 @@ Documentation: https://docs.partydao.org/docs/partys/AtomicManualParty
 3. new hook useDeployHypersub.tsx. 2 exports: deployHypersub and hypersubAddress.
 4. update CreateCommunityProvider.tsx to use the new useDeployHypersub hook.
 5. add a new section to CreateCommunityProvider.tsx after the deploy section called "Hypersub".
-6. onBothSuccess, show both the hypersub and the party address with the done button.
+6. add onClick functionality to the DeployHypersubButton.tsx so that it calls the deployHypersub function in the useDeployHypersub hook.
+7. onBothSuccess, show both the hypersub and the party address with the done button.
