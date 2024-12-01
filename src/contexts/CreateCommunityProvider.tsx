@@ -142,7 +142,7 @@ const CreateCommunityProvider = ({
 
     const deploy: CreateSection = {
       order: 4,
-      title: 'Confirm',
+      title: 'Deploy',
       key: 'deploy',
       content: <ReviewForm />,
     }

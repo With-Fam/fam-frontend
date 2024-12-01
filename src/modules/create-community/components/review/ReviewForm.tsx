@@ -11,24 +11,46 @@ import AddressCopy from '@/modules/create-community/components/review/AddressCop
 import { CHAIN_ID } from '@/constants/defaultChains'
 import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
 import { Address } from 'viem'
+import useSetHypersub from '@/hooks/useSetHypersub'
 
 export function ReviewForm(): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { deployedDao, setFulfilledSections } = useFormStore()
   const { hypersubAddress } = useCreateCommunityProvider()
+  const { setHypersub, isLoading: isSettingHypersub } = useSetHypersub(
+    deployedDao?.token
+  )
   const { push } = useRouter()
   const methods = useForm()
 
   const handleComplete = async () => {
-    setIsLoading(true)
-    setFulfilledSections('deployed')
+    if (!hypersubAddress || !deployedDao?.token) {
+      toast.error('Hypersub or Party address not available')
+      return
+    }
 
+    setIsLoading(true)
     try {
+      // First link the hypersub to the party
+      toast.loading('Linking Hypersub to Party...')
+      const result = await setHypersub(hypersubAddress)
+
+      if (!result || 'error' in result) {
+        throw result?.error || new Error('Failed to link Hypersub')
+      }
+
+      toast.dismiss()
+      toast.success('Hypersub linked successfully!')
+
+      // Then navigate to the community page
+      setFulfilledSections('deployed')
       const successUrl = `/community/${CHAIN_ID}/${deployedDao.token}?created=true`
       push(successUrl)
-    } catch {
+    } catch (error) {
+      toast.dismiss()
       setIsLoading(false)
-      toast.error('Navigation error, try again!')
+      toast.error('Failed to complete setup. Please try again.')
+      console.error('Setup error:', error)
     }
   }
 
@@ -56,7 +78,10 @@ export function ReviewForm(): JSX.Element {
               <AddressCopy address={hypersubAddress as Address} />
             </div>
           </div>
-          <ContinueButton title="Done" loading={isLoading} />
+          <ContinueButton
+            title="Complete Setup"
+            loading={isLoading || isSettingHypersub}
+          />
         </div>
       </form>
     </FormProvider>
