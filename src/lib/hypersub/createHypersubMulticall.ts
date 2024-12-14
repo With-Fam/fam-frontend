@@ -25,36 +25,31 @@ export const createHypersubMulticall = async ({
 }): Promise<CreateHypersubMulticallResult> => {
   try {
     const publicClient = getPublicClient(CHAIN_ID)
-
-    // Create splits and get calldata
     const {
       hostsSplitCalldata,
       partyAndHostsSplitCalldata,
       partyAndHostsSplitAddress,
     } = await createSplits({ founderAddresses, partyAddress, ownerAddress })
-
-    // Get hypersub calldata
     const hypersubCalldata = getDeployHypersubCallData()
-
-    // Execute multicall
+    const calls = [
+      {
+        target: PUSH_SPLIT_FACTORY[CHAIN_ID],
+        allowFailure: false,
+        callData: hostsSplitCalldata,
+      },
+      {
+        target: PUSH_SPLIT_FACTORY[CHAIN_ID],
+        allowFailure: false,
+        callData: partyAndHostsSplitCalldata,
+      },
+      {
+        target: HYPERSUB_FACTORY[CHAIN_ID],
+        allowFailure: false,
+        callData: hypersubCalldata,
+      },
+    ]
     const hash = await executeMulticall({
-      calls: [
-        {
-          target: PUSH_SPLIT_FACTORY[CHAIN_ID],
-          allowFailure: false,
-          callData: hostsSplitCalldata,
-        },
-        {
-          target: PUSH_SPLIT_FACTORY[CHAIN_ID],
-          allowFailure: false,
-          callData: partyAndHostsSplitCalldata,
-        },
-        {
-          target: HYPERSUB_FACTORY[CHAIN_ID],
-          allowFailure: false,
-          callData: hypersubCalldata,
-        },
-      ],
+      calls,
       walletClient,
     })
 
