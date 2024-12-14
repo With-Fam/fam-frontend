@@ -33,7 +33,6 @@ const useDeploy = () => {
     setIsPendingTransaction(true)
 
     try {
-      // First create the party
       const partyResult = await createParty()
       if (partyResult.error || !partyResult.partyAddress || !walletClient) {
         throw partyResult.error || new Error('Failed to create party')
