@@ -4,10 +4,21 @@ import { useFormStore } from '@/modules/create-community'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
+import { useCreateHypersubMulticall } from './useCreateHypersubMulticall'
+import useConnectedWallet from './useConnectedWallet'
+import { Address } from 'viem'
 
 const useDeploy = () => {
-  const { createPartyAndHypersub } = useCreatePartyManual()
+  const { createParty } = useCreatePartyManual()
+  const { membership } = useFormStore()
+  const { connectedWallet: address } = useConnectedWallet()
   const { setHypersubAddress } = useCreateCommunityProvider()
+  const { createHypersubMulticall } = useCreateHypersubMulticall({
+    founderAddresses: membership.founders.map(
+      (f) => f.founderAddress as Address
+    ),
+    ownerAddress: address as Address,
+  })
   const {
     setActiveSection,
     activeSection,
@@ -23,39 +34,43 @@ const useDeploy = () => {
   const handleDeploy = async () => {
     setIsLoading(true)
     setDeploymentError(undefined)
-
     setIsPendingTransaction(true)
-    const result = await createPartyAndHypersub()
 
-    if (result.error) {
-      if ((result.error as any).name === 'ChainMismatchError') {
-        setDeploymentError(DEPLOYMENT_ERROR.MISMATCHING_NETWORK)
-      } else {
-        setDeploymentError(DEPLOYMENT_ERROR.GENERIC)
+    try {
+      // First create the party
+      const partyResult = await createParty()
+      if (partyResult.error || !partyResult.partyAddress) {
+        throw partyResult.error || new Error('Failed to create party')
       }
+
+      // Then create hypersub and split
+      const hypersubResult = await createHypersubMulticall()
+      if (hypersubResult.error || !hypersubResult.hypersubAddress) {
+        throw hypersubResult.error || new Error('Failed to create hypersub')
+      }
+
+      setDeployedDao({
+        token: partyResult.partyAddress,
+      })
+      setHypersubAddress(hypersubResult.hypersubAddress)
+
+      toast.remove()
+      toast.success('Community Deployed!')
+
+      setIsPendingTransaction(false)
+      setIsLoading(false)
+      setFulfilledSections('DAO DONE')
+      setActiveSection(activeSection + 1)
+    } catch (error) {
+      console.error('Deployment error:', error)
+      setDeploymentError(
+        (error as any)?.name === 'ChainMismatchError'
+          ? DEPLOYMENT_ERROR.MISMATCHING_NETWORK
+          : DEPLOYMENT_ERROR.GENERIC
+      )
       setIsLoading(false)
       setIsPendingTransaction(false)
-      return
     }
-
-    if (!result.partyAddress || !result.hypersubAddress) {
-      setDeploymentError(DEPLOYMENT_ERROR.GENERIC)
-      setIsPendingTransaction(false)
-      return
-    }
-
-    setDeployedDao({
-      token: result.partyAddress,
-    })
-    setHypersubAddress(result.hypersubAddress)
-
-    toast.remove()
-    toast.success('Community Deployed!')
-
-    setIsPendingTransaction(false)
-    setIsLoading(false)
-    setFulfilledSections('DAO DONE')
-    setActiveSection(activeSection + 1)
   }
 
   return {
