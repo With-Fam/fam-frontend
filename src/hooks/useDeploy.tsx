@@ -4,21 +4,17 @@ import { useFormStore } from '@/modules/create-community'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
-import { useCreateHypersubMulticall } from './useCreateHypersubMulticall'
 import useConnectedWallet from './useConnectedWallet'
 import { Address } from 'viem'
+import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
+import { createHypersubMulticall } from '@/lib/hypersub/createHypersubMulticall'
 
 const useDeploy = () => {
   const { createParty } = useCreatePartyManual()
   const { membership } = useFormStore()
   const { connectedWallet: address } = useConnectedWallet()
   const { setHypersubAddress } = useCreateCommunityProvider()
-  const { createHypersubMulticall } = useCreateHypersubMulticall({
-    founderAddresses: membership.founders.map(
-      (f) => f.founderAddress as Address
-    ),
-    ownerAddress: address as Address,
-  })
+  const { walletClient } = usePrivyWalletClient()
   const {
     setActiveSection,
     activeSection,
@@ -39,12 +35,17 @@ const useDeploy = () => {
     try {
       // First create the party
       const partyResult = await createParty()
-      if (partyResult.error || !partyResult.partyAddress) {
+      if (partyResult.error || !partyResult.partyAddress || !walletClient) {
         throw partyResult.error || new Error('Failed to create party')
       }
 
-      // Then create hypersub and split
-      const hypersubResult = await createHypersubMulticall()
+      const hypersubResult = await createHypersubMulticall({
+        founderAddresses: membership.founders.map(
+          (f) => f.founderAddress as Address
+        ),
+        ownerAddress: address as Address,
+        walletClient,
+      })
       if (hypersubResult.error || !hypersubResult.hypersubAddress) {
         throw hypersubResult.error || new Error('Failed to create hypersub')
       }
