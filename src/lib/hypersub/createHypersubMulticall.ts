@@ -1,16 +1,11 @@
-import { Address, multicall3Abi, WalletClient, parseEventLogs } from 'viem'
-import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
-import {
-  HYPERSUB_FACTORY,
-  MULTICALL,
-  PUSH_SPLIT_FACTORY,
-} from '@/constants/addresses'
+import { Address, WalletClient, parseEventLogs } from 'viem'
+import { CHAIN_ID } from '@/constants/defaultChains'
+import { HYPERSUB_FACTORY, PUSH_SPLIT_FACTORY } from '@/constants/addresses'
 import { getDeployHypersubCallData } from './getDeployHypersubCallData'
 import { getPublicClient } from '@/lib/viem'
-import { getEqualSplitParams } from '../split/getEqualSplitParams'
-import { getCreateSplitCallData } from '../split/getCreateSplitCallData'
-import { getDeterministicAddress } from '../split/getDeterministicAddress'
 import { hypersubFactoryAbi } from '../abi/hypersubFactoryAbi'
+import { createSplits } from '../split/createSplits'
+import { executeMulticall } from '../multicall/executeMulticall'
 
 export interface CreateHypersubMulticallResult {
   hypersubAddress?: Address
@@ -29,68 +24,41 @@ export const createHypersubMulticall = async ({
   walletClient: WalletClient
 }): Promise<CreateHypersubMulticallResult> => {
   try {
-    if (!walletClient.account) {
-      throw new Error('Wallet client account is required')
-    }
     const publicClient = getPublicClient(CHAIN_ID)
 
-    // Create equal split for hosts
-    const hostsSplitParams = getEqualSplitParams(founderAddresses)
-    const hostsSplitAddress = await getDeterministicAddress({
-      splitParams: hostsSplitParams,
-    })
+    // Create splits and get calldata
+    const {
+      hostsSplitCalldata,
+      partyAndHostsSplitCalldata,
+      partyAndHostsSplitAddress,
+    } = await createSplits({ founderAddresses, partyAddress, ownerAddress })
 
-    // Create 50/50 split between party and hosts split
-    const partyAndHostsSplitParams = getEqualSplitParams([
-      partyAddress,
-      hostsSplitAddress,
-    ])
-    const partyAndHostsSplitAddress = await getDeterministicAddress({
-      splitParams: partyAndHostsSplitParams,
-    })
-
-    // Create calldata for both splits and hypersub
-    const hostsSplitCalldata = getCreateSplitCallData({
-      splitParams: hostsSplitParams,
-      creator: ownerAddress,
-    })
-
-    const partyAndHostsSplitCalldata = getCreateSplitCallData({
-      splitParams: partyAndHostsSplitParams,
-      creator: ownerAddress,
-    })
-
+    // Get hypersub calldata
     const hypersubCalldata = getDeployHypersubCallData()
 
-    const calls = [
-      {
-        target: PUSH_SPLIT_FACTORY[CHAIN_ID],
-        allowFailure: false,
-        callData: hostsSplitCalldata,
-      },
-      {
-        target: PUSH_SPLIT_FACTORY[CHAIN_ID],
-        allowFailure: false,
-        callData: partyAndHostsSplitCalldata,
-      },
-      {
-        target: HYPERSUB_FACTORY[CHAIN_ID],
-        allowFailure: false,
-        callData: hypersubCalldata,
-      },
-    ]
-
-    const hash = await walletClient.writeContract({
-      address: MULTICALL,
-      abi: multicall3Abi,
-      functionName: 'aggregate3',
-      args: [calls],
-      chain: CHAIN,
-      account: walletClient.account,
+    // Execute multicall
+    const hash = await executeMulticall({
+      calls: [
+        {
+          target: PUSH_SPLIT_FACTORY[CHAIN_ID],
+          allowFailure: false,
+          callData: hostsSplitCalldata,
+        },
+        {
+          target: PUSH_SPLIT_FACTORY[CHAIN_ID],
+          allowFailure: false,
+          callData: partyAndHostsSplitCalldata,
+        },
+        {
+          target: HYPERSUB_FACTORY[CHAIN_ID],
+          allowFailure: false,
+          callData: hypersubCalldata,
+        },
+      ],
+      walletClient,
     })
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash })
-
     const hypersubLogs = parseEventLogs({
       logs: receipt.logs,
       abi: hypersubFactoryAbi,
