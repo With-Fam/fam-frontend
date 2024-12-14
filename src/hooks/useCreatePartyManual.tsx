@@ -21,7 +21,11 @@ export interface DeploymentResult {
   error?: unknown
 }
 
-const useCreatePartyManual = () => {
+interface CreatePartyManualResult {
+  createPartyAndHypersub: () => Promise<DeploymentResult>
+}
+
+const useCreatePartyManual = (): CreatePartyManualResult => {
   const { membership, vetoPeriod } = useFormStore()
   const { connectedWallet: address } = useConnectedWallet()
   const { walletClient } = usePrivyWalletClient()
@@ -32,16 +36,12 @@ const useCreatePartyManual = () => {
     try {
       const publicClient = getPublicClient(CHAIN_ID)
 
-      const partyMemberVotingPowers = [1000000n]
       const partyMembers = [address] as Address[]
-      const rageQuitTimestamp = 1715603725
 
       const partyCallData = await getPartyCallData({
         membership,
         vetoPeriod,
         partyMembers,
-        partyMemberVotingPowers,
-        rageQuitTimestamp,
       })
 
       const hypersubCallData = getDeployHypersubCallData()
@@ -73,14 +73,12 @@ const useCreatePartyManual = () => {
         hash: txHash,
       })
 
-      // Parse Party deployment event
       const partyLogs = parseEventLogs({
         logs: receipt.logs,
         abi: atomicManualPartyAbi,
         eventName: 'AtomicManualPartyCreated',
       })
 
-      // Parse Hypersub deployment event
       const hypersubLogs = parseEventLogs({
         logs: receipt.logs,
         abi: hypersubFactoryAbi,
@@ -90,8 +88,6 @@ const useCreatePartyManual = () => {
       const partyEvent = partyLogs[0]
       const hypersubEvent = hypersubLogs[0]
 
-      console.log('partyEvent', partyEvent)
-      console.log('hypersubEvent', hypersubEvent)
       return {
         partyAddress: partyEvent?.args?.party as Address | undefined,
         hypersubAddress: hypersubEvent?.args?.deployment as Address | undefined,

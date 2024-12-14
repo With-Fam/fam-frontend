@@ -37,16 +37,12 @@ export interface GetPartyCallDataParams {
   membership: any
   vetoPeriod: number
   partyMembers: Address[]
-  partyMemberVotingPowers: bigint[]
-  rageQuitTimestamp: number
 }
 
 export const getPartyCallData = async ({
   membership,
   vetoPeriod,
   partyMembers,
-  partyMemberVotingPowers,
-  rageQuitTimestamp,
 }: GetPartyCallDataParams): Promise<Address> => {
   const totalVotingPower = 100000000000000000000n
 
@@ -94,6 +90,8 @@ export const getPartyCallData = async ({
   const authorities = PARTY_OPT_AUTHORITIES[CHAIN_ID] as Address[]
   const preciousTokens = [] as Address[]
   const preciousTokenIds = [] as bigint[]
+  const rageQuitTimestamp = 1715603725
+  const partyMemberVotingPowers = [1000000n]
 
   return encodeFunctionData({
     abi: atomicManualPartyAbi,
