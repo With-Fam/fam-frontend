@@ -1,14 +1,20 @@
 import { Address } from 'viem'
-import { SplitParams } from './getCreateSplitCallData'
 
-export const getEqualSplitParams = (recipients: Address[]): SplitParams => {
-  const count = BigInt(recipients.length)
-  const allocation = 1000000n / count
+export interface SplitParams {
+  recipients: readonly Address[]
+  allocations: readonly bigint[]
+  totalAllocation: bigint
+  distributionIncentive: number
+}
 
+export const getEqualSplitParams = (
+  addresses: readonly Address[]
+): SplitParams => {
+  const allocation = BigInt(1e6 / addresses.length)
   return {
-    recipients,
-    allocations: recipients.map(() => allocation),
-    totalAllocation: 1000000n,
+    recipients: addresses,
+    allocations: addresses.map(() => allocation),
+    totalAllocation: BigInt(1e6),
     distributionIncentive: 0,
   }
 }

@@ -44,6 +44,7 @@ const useDeploy = () => {
         ),
         ownerAddress: address as Address,
         walletClient,
+        partyAddress: partyResult.partyAddress,
       })
       if (hypersubResult.error || !hypersubResult.hypersubAddress) {
         throw hypersubResult.error || new Error('Failed to create hypersub')
