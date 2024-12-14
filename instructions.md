@@ -13,8 +13,9 @@ current state: Hypersub funds recipient is set to the connected wallet. No split
 5. Call the getCreateSplitCallData function in useCreatePartyManual hook for the split between array of hosts.
 6. Add a new step to the Multicall3 transaction in the Create provider. First, create the party. Then, in the multicall3 step, create the host split and deploy the hypersub.
 7. read the deterministic address from the push split factory for the split between array of hosts.
-8. read the deterministic address from the push split factory for the split between the party and the host split.
-9. use the split between the party address and the host split for the hypersub funds recipient.
+8. create a split between the hosts split and the party address. include this call in the same tx for multicall3.
+9. read the deterministic address from the push split factory for the split between the party and the host split.
+10. use the split between the party address and the host split for the hypersub funds recipient.
 
 ### Resources
 

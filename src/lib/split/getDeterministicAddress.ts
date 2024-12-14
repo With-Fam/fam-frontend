@@ -1,22 +1,18 @@
-import { Address, PublicClient } from 'viem'
-import { pushSplitFactoryAbi } from '../abi/PushSplitFactoryAbi'
-import { PUSH_SPLIT_FACTORY } from '@/constants/addresses'
+import { Address, zeroAddress } from 'viem'
 import { CHAIN_ID } from '@/constants/defaultChains'
-import { SplitParams } from './getCreateSplitCallData'
+import { PUSH_SPLIT_FACTORY } from '@/constants/addresses'
+import { pushSplitFactoryAbi } from '@/lib/abi/PushSplitFactoryAbi'
+import { SplitParams } from './getEqualSplitParams'
+import { getPublicClient } from '@/lib/viem'
 
 export const getDeterministicAddress = async ({
-  publicClient,
   splitParams,
-  owner,
 }: {
-  publicClient: PublicClient
   splitParams: SplitParams
-  owner: Address
 }): Promise<Address> => {
   const { recipients, allocations, totalAllocation, distributionIncentive } =
     splitParams
-
-  const address = await publicClient.readContract({
+  return getPublicClient(CHAIN_ID).readContract({
     address: PUSH_SPLIT_FACTORY[CHAIN_ID],
     abi: pushSplitFactoryAbi,
     functionName: 'predictDeterministicAddress',
@@ -27,9 +23,7 @@ export const getDeterministicAddress = async ({
         totalAllocation,
         distributionIncentive,
       },
-      owner,
+      zeroAddress,
     ],
   })
-
-  return address as Address
 }
