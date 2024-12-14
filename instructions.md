@@ -12,6 +12,10 @@ current state: First I click & sign "Create my Community" (party deployment). Af
 4. Clicking "Create my Community" will call the createPartyAndHypersub function.
 5. create a function getDeployHypersubCallData to get the call data for the Hypersub deployment. Reference getPartyCallData for an example generation of the call data. Reference useDeployHypersub to see the call data for the Hypersub deployment.
 6. Add the getDeployHypersubCallData function to the createPartyAndHypersub function in the Call[] for Multicall3.
+7. Remove the step after "Create my Community" in the deploy provider where "Deploy Hypersub" is clicked.
+8. createPartyAndHypersub - call setHypersubAddress with the hypersub address from the logs in the multicall3 transaction.
+9. Update the addresses shown on the success page to pull from the logs in the multicall3 transaction.
+10. Remove the Deploy Hypersub button and remove any unused code imported in the component.
 
 ### Resources
 

@@ -8,17 +8,25 @@ import { useFormStore } from '@/modules/create-community'
 import { getPublicClient } from '@/lib/viem'
 import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
-import { Address } from 'viem'
+import { Address, parseEventLogs } from 'viem'
 import { multicall3Abi } from '@/lib/abi/multicall3Abi'
 import { getPartyCallData } from '@/lib/party/getPartyCallData'
 import { getDeployHypersubCallData } from '@/lib/hypersub/getDeployHypersubCallData'
+import { hypersubFactoryAbi } from '@/lib/abi/hypersubFactoryAbi'
+import { atomicManualPartyAbi } from '@/lib/abi/atomicManualPartyAbi'
+
+export interface DeploymentResult {
+  partyAddress?: Address
+  hypersubAddress?: Address
+  error?: unknown
+}
 
 const useCreatePartyManual = () => {
   const { membership, vetoPeriod } = useFormStore()
   const { connectedWallet: address } = useConnectedWallet()
   const { walletClient } = usePrivyWalletClient()
 
-  const createPartyAndHypersub = async () => {
+  const createPartyAndHypersub = async (): Promise<DeploymentResult> => {
     if (!walletClient) return { error: 'Wallet client not found' }
 
     try {
@@ -61,13 +69,33 @@ const useCreatePartyManual = () => {
         account: address as Address,
       })
 
-      let transaction
-      if (txHash) {
-        transaction = await publicClient.waitForTransactionReceipt({
-          hash: txHash,
-        })
+      const receipt = await publicClient.waitForTransactionReceipt({
+        hash: txHash,
+      })
+
+      // Parse Party deployment event
+      const partyLogs = parseEventLogs({
+        logs: receipt.logs,
+        abi: atomicManualPartyAbi,
+        eventName: 'AtomicManualPartyCreated',
+      })
+
+      // Parse Hypersub deployment event
+      const hypersubLogs = parseEventLogs({
+        logs: receipt.logs,
+        abi: hypersubFactoryAbi,
+        eventName: 'Deployment',
+      })
+
+      const partyEvent = partyLogs[0]
+      const hypersubEvent = hypersubLogs[0]
+
+      console.log('partyEvent', partyEvent)
+      console.log('hypersubEvent', hypersubEvent)
+      return {
+        partyAddress: partyEvent?.args?.party as Address | undefined,
+        hypersubAddress: hypersubEvent?.args?.deployment as Address | undefined,
       }
-      return transaction
     } catch (error) {
       console.error('error', error)
       return { error }

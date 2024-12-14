@@ -1,13 +1,13 @@
 import { DEPLOYMENT_ERROR } from '@/constants/consts'
-import { partyFactoryAbi } from '@/data/contract/abis/PartyFactory'
 import useCreatePartyManual from '@/hooks/useCreatePartyManual'
 import { useFormStore } from '@/modules/create-community'
-import { Interface } from 'ethers'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
 
 const useDeploy = () => {
   const { createPartyAndHypersub } = useCreatePartyManual()
+  const { setHypersubAddress } = useCreateCommunityProvider()
   const {
     setActiveSection,
     activeSection,
@@ -25,11 +25,10 @@ const useDeploy = () => {
     setDeploymentError(undefined)
 
     setIsPendingTransaction(true)
-    const transaction = await createPartyAndHypersub()
-    const error = (transaction as any)?.error
+    const result = await createPartyAndHypersub()
 
-    if (error) {
-      if ((error as any).name === 'ChainMismatchError') {
+    if (result.error) {
+      if ((result.error as any).name === 'ChainMismatchError') {
         setDeploymentError(DEPLOYMENT_ERROR.MISMATCHING_NETWORK)
       } else {
         setDeploymentError(DEPLOYMENT_ERROR.GENERIC)
@@ -39,38 +38,19 @@ const useDeploy = () => {
       return
     }
 
-    const managerInterface = new Interface(partyFactoryAbi)
-
-    const deployEvent = (transaction as any)?.logs.find(
-      (log: any) =>
-        log?.topics[0]?.toLowerCase() ===
-        '0x2c83cc7f2e67cf5f6cc54d64518c7769f402efa96e5e1b24cfab3cfbdca271ea'
-    )
-
-    let parsedEvent
-    try {
-      parsedEvent = managerInterface.parseLog({
-        topics: deployEvent?.topics || [],
-        data: deployEvent?.data || '',
-      })
-    } catch {}
-
-    const deployedAddresses = parsedEvent?.args
-
-    if (!deployedAddresses) {
+    if (!result.partyAddress || !result.hypersubAddress) {
       setDeploymentError(DEPLOYMENT_ERROR.GENERIC)
       setIsPendingTransaction(false)
       return
     }
 
     setDeployedDao({
-      token: deployedAddresses[0],
+      token: result.partyAddress,
     })
+    setHypersubAddress(result.hypersubAddress)
 
-    if (deployedAddresses) {
-      toast.remove()
-      toast.success('DAO Deployed!')
-    }
+    toast.remove()
+    toast.success('Community Deployed!')
 
     setIsPendingTransaction(false)
     setIsLoading(false)
