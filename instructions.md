@@ -1,12 +1,53 @@
-# Instructions for Linking a Hypersub to a Party on Fam
+# Instructions for Multicall Fam Creation
 
-goal: call setHypersub in the CreateCommunityProvider after deploying both the Party and the Hypersub.
+goal: combine calls to deploy both the Party and the Hypersub one single transaction with Multicall3.
 
-1. create a new button <SetHypersubButton> in the CreateCommunity experience. Reference <DeployHypersubButton /> for button UX & styling.
-2. create a new ABI file for the ManageFamAuthority contract. ex. src/lib/abi/manageFamAuthorityAbi.ts
-3. add ManageFamAuthority address to the constants.ts file.
-4. new hook useSetHypersub.tsx. 2 exports: setHypersub and isHypersubSet.
-5. update CreateCommunityProvider.tsx to use the new useSetHypersub hook.
-6. add a new section to CreateCommunityProvider.tsx after the deploy section called "SetHypersub".
-7. add onClick functionality to the SetHypersubButton.tsx so that it calls the setHypersub function in the useSetHypersub hook.
-8. onSuccess, show both the hypersub and the party address with the done button.
+current state: First I click & sign "Create my Community" (party deployment). Afterwards, I click a button and sign for "Deploy Hypersub".
+
+### Solution
+
+1. Add the ABI for Multicall3 to src/lib/abi/multicall3Abi.ts
+2. Create a function `createPartyAndHypersub` to deploy both the Party and the Hypersub in one single transaction with Multicall3.
+3. Call the createPartyAndHypersub function in useCreatePartyManual hook.
+4. Clicking "Create my Community" will call the createPartyAndHypersub function.
+5. create a function getDeployHypersubCallData to get the call data for the Hypersub deployment. Reference getPartyCallData for an example generation of the call data. Reference useDeployHypersub to see the call data for the Hypersub deployment.
+6. Add the getDeployHypersubCallData function to the createPartyAndHypersub function in the Call[] for Multicall3.
+7. Remove the step after "Create my Community" in the deploy provider where "Deploy Hypersub" is clicked.
+8. createPartyAndHypersub - call setHypersubAddress with the hypersub address from the logs in the multicall3 transaction.
+9. Update the addresses shown on the success page to pull from the logs in the multicall3 transaction.
+10. Remove the Deploy Hypersub button and remove any unused code imported in the component.
+
+### Resources
+
+Multicall3 Address on all chains
+
+```
+0xcA11bde05977b3631167028862bE2a173976CA11
+```
+
+Multicall3 ABI
+
+```
+[
+  "struct Call { address target; bytes callData; }",
+  "struct Call3 { address target; bool allowFailure; bytes callData; }",
+  "struct Call3Value { address target; bool allowFailure; uint256 value; bytes callData; }",
+  "struct Result { bool success; bytes returnData; }",
+  "function aggregate(Call[] calldata calls) public payable returns (uint256 blockNumber, bytes[] memory returnData)",
+  "function aggregate3(Call3[] calldata calls) public payable returns (Result[] memory returnData)",
+  "function aggregate3Value(Call3Value[] calldata calls) public payable returns (Result[] memory returnData)",
+  "function blockAndAggregate(Call[] calldata calls) public payable returns (uint256 blockNumber, bytes32 blockHash, Result[] memory returnData)",
+  "function getBasefee() view returns (uint256 basefee)",
+  "function getBlockHash(uint256 blockNumber) view returns (bytes32 blockHash)",
+  "function getBlockNumber() view returns (uint256 blockNumber)",
+  "function getChainId() view returns (uint256 chainid)",
+  "function getCurrentBlockCoinbase() view returns (address coinbase)",
+  "function getCurrentBlockDifficulty() view returns (uint256 difficulty)",
+  "function getCurrentBlockGasLimit() view returns (uint256 gaslimit)",
+  "function getCurrentBlockTimestamp() view returns (uint256 timestamp)",
+  "function getEthBalance(address addr) view returns (uint256 balance)",
+  "function getLastBlockHash() view returns (bytes32 blockHash)",
+  "function tryAggregate(bool requireSuccess, Call[] calldata calls) public payable returns (Result[] memory returnData)",
+  "function tryBlockAndAggregate(bool requireSuccess, Call[] calldata calls) public payable returns (uint256 blockNumber, bytes32 blockHash, Result[] memory returnData)",
+] as const
+```

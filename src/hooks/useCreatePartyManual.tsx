@@ -1,109 +1,104 @@
 import {
   ATOMIC_MANUAL_PARTY,
-  GOVERNANCE_OPT_FEE_RECIPIENT,
-  PARTY_IMPLEMENTATION,
-  PARTY_OPT_AUTHORITIES,
+  HYPERSUB_FACTORY,
+  MULTICALL,
 } from '@/constants/addresses'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { useFormStore } from '@/modules/create-community'
 import { getPublicClient } from '@/lib/viem'
-import getViemNetwork from '@/lib/viem/getViemNetwork'
-import { CHAIN_ID } from '@/constants/defaultChains'
+import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
-import { isAddress } from 'viem'
-import getEnsAddress from '@/lib/getEnsAddress'
+import { Address, parseEventLogs } from 'viem'
+import { multicall3Abi } from '@/lib/abi/multicall3Abi'
+import { getPartyCallData } from '@/lib/party/getPartyCallData'
+import { getDeployHypersubCallData } from '@/lib/hypersub/getDeployHypersubCallData'
+import { hypersubFactoryAbi } from '@/lib/abi/hypersubFactoryAbi'
 import { atomicManualPartyAbi } from '@/lib/abi/atomicManualPartyAbi'
 
-const useCreatePartyManual = () => {
+export interface DeploymentResult {
+  partyAddress?: Address
+  hypersubAddress?: Address
+  error?: unknown
+}
+
+interface CreatePartyManualResult {
+  createPartyAndHypersub: () => Promise<DeploymentResult>
+}
+
+const useCreatePartyManual = (): CreatePartyManualResult => {
   const { membership, vetoPeriod } = useFormStore()
   const { connectedWallet: address } = useConnectedWallet()
   const { walletClient } = usePrivyWalletClient()
 
-  const createPartyManual = async () => {
+  const createPartyAndHypersub = async (): Promise<DeploymentResult> => {
     if (!walletClient) return { error: 'Wallet client not found' }
-
-    const totalVotingPower = 100000000000000000000n
-    const passThreshold =
-      ((membership.threshold / 100) * Number(totalVotingPower)) / 1e18
-    const BPS_MULTIPLIER = 100
-    const passThresholdBps = passThreshold * BPS_MULTIPLIER
 
     try {
       const publicClient = getPublicClient(CHAIN_ID)
 
-      const hostsPromise = membership.founders.map(async (founder) => {
-        if (isAddress(founder.founderAddress)) return founder.founderAddress
-        const ensAddress = await getEnsAddress(founder.founderAddress)
-        return ensAddress
+      const partyMembers = [address] as Address[]
+
+      const partyCallData = await getPartyCallData({
+        membership,
+        vetoPeriod,
+        partyMembers,
       })
 
-      const hosts = await Promise.all(hostsPromise)
+      const hypersubCallData = getDeployHypersubCallData()
 
-      const governanceOpts = {
-        executionDelay: vetoPeriod,
-        feeBps: 250,
-        feeRecipient: GOVERNANCE_OPT_FEE_RECIPIENT[CHAIN_ID],
-        hosts,
-        passThresholdBps: passThresholdBps,
-        voteDuration: vetoPeriod,
-        totalVotingPower,
-      }
-
-      const proposalEngineOpts = {
-        allowArbCallsToSpendPartyEth: true,
-        allowOperators: true,
-        distributionsConfig: 1,
-        enableAddAuthorityProposal: true,
-      }
-
-      const partyOpts = {
-        governance: governanceOpts,
-        proposalEngine: proposalEngineOpts,
-        name: 'PARTY',
-        symbol: 'FAM',
-        customizationPresetId: '0',
-      }
-
-      const partyMemberVotingPowers = [1000000n]
-      const partyMembers = [address]
-      const authorities = PARTY_OPT_AUTHORITIES[CHAIN_ID]
-
-      const rageQuitTimestamp = 1715603725
-      const args = [
-        PARTY_IMPLEMENTATION[CHAIN_ID],
-        partyOpts,
-        [], // preciousTokens
-        [], // preciousTokenIds
-        rageQuitTimestamp,
-        partyMembers,
-        partyMemberVotingPowers,
-        authorities,
+      const calls = [
+        {
+          target: ATOMIC_MANUAL_PARTY[CHAIN_ID],
+          callData: partyCallData,
+          allowFailure: false,
+        },
+        {
+          target: HYPERSUB_FACTORY[CHAIN_ID],
+          callData: hypersubCallData,
+          allowFailure: false,
+        },
       ]
-      console.log('args', args)
-      const contractConfig = {
-        address: ATOMIC_MANUAL_PARTY[CHAIN_ID],
+
+      console.log('calls', calls)
+      const txHash = await walletClient.writeContract({
+        address: MULTICALL,
+        abi: multicall3Abi,
+        functionName: 'aggregate3',
+        args: [calls],
+        chain: CHAIN,
+        account: address as Address,
+      })
+
+      const receipt = await publicClient.waitForTransactionReceipt({
+        hash: txHash,
+      })
+
+      const partyLogs = parseEventLogs({
+        logs: receipt.logs,
         abi: atomicManualPartyAbi,
-        chain: getViemNetwork(CHAIN_ID),
-        functionName: 'createParty' as const,
-        args,
-      }
+        eventName: 'AtomicManualPartyCreated',
+      })
 
-      const txHash = await walletClient.writeContract(contractConfig as any)
+      const hypersubLogs = parseEventLogs({
+        logs: receipt.logs,
+        abi: hypersubFactoryAbi,
+        eventName: 'Deployment',
+      })
 
-      let transaction
-      if (txHash) {
-        transaction = await publicClient.waitForTransactionReceipt({
-          hash: txHash,
-        })
+      const partyEvent = partyLogs[0]
+      const hypersubEvent = hypersubLogs[0]
+
+      return {
+        partyAddress: partyEvent?.args?.party as Address | undefined,
+        hypersubAddress: hypersubEvent?.args?.deployment as Address | undefined,
       }
-      return transaction
     } catch (error) {
       console.error('error', error)
       return { error }
     }
   }
 
-  return { createPartyManual }
+  return { createPartyAndHypersub }
 }
 
 export default useCreatePartyManual
