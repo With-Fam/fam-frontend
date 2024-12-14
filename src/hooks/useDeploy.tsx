@@ -7,7 +7,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 const useDeploy = () => {
-  const { createPartyManual } = useCreatePartyManual()
+  const { createPartyAndHypersub } = useCreatePartyManual()
   const {
     setActiveSection,
     activeSection,
@@ -25,7 +25,7 @@ const useDeploy = () => {
     setDeploymentError(undefined)
 
     setIsPendingTransaction(true)
-    const transaction = await createPartyManual()
+    const transaction = await createPartyAndHypersub()
     const error = (transaction as any)?.error
 
     if (error) {

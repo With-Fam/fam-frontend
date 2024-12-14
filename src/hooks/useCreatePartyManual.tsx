@@ -1,94 +1,52 @@
-import {
-  ATOMIC_MANUAL_PARTY,
-  GOVERNANCE_OPT_FEE_RECIPIENT,
-  PARTY_IMPLEMENTATION,
-  PARTY_OPT_AUTHORITIES,
-} from '@/constants/addresses'
+import { ATOMIC_MANUAL_PARTY, MULTICALL } from '@/constants/addresses'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { useFormStore } from '@/modules/create-community'
 import { getPublicClient } from '@/lib/viem'
-import getViemNetwork from '@/lib/viem/getViemNetwork'
-import { CHAIN_ID } from '@/constants/defaultChains'
+import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
-import { isAddress } from 'viem'
-import getEnsAddress from '@/lib/getEnsAddress'
-import { atomicManualPartyAbi } from '@/lib/abi/atomicManualPartyAbi'
+import { Address } from 'viem'
+import { multicall3Abi } from '@/lib/abi/multicall3Abi'
+import { getPartyCallData } from '@/lib/party/getPartyCallData'
 
 const useCreatePartyManual = () => {
   const { membership, vetoPeriod } = useFormStore()
   const { connectedWallet: address } = useConnectedWallet()
   const { walletClient } = usePrivyWalletClient()
 
-  const createPartyManual = async () => {
+  const createPartyAndHypersub = async () => {
     if (!walletClient) return { error: 'Wallet client not found' }
-
-    const totalVotingPower = 100000000000000000000n
-    const passThreshold =
-      ((membership.threshold / 100) * Number(totalVotingPower)) / 1e18
-    const BPS_MULTIPLIER = 100
-    const passThresholdBps = passThreshold * BPS_MULTIPLIER
 
     try {
       const publicClient = getPublicClient(CHAIN_ID)
 
-      const hostsPromise = membership.founders.map(async (founder) => {
-        if (isAddress(founder.founderAddress)) return founder.founderAddress
-        const ensAddress = await getEnsAddress(founder.founderAddress)
-        return ensAddress
-      })
-
-      const hosts = await Promise.all(hostsPromise)
-
-      const governanceOpts = {
-        executionDelay: vetoPeriod,
-        feeBps: 250,
-        feeRecipient: GOVERNANCE_OPT_FEE_RECIPIENT[CHAIN_ID],
-        hosts,
-        passThresholdBps: passThresholdBps,
-        voteDuration: vetoPeriod,
-        totalVotingPower,
-      }
-
-      const proposalEngineOpts = {
-        allowArbCallsToSpendPartyEth: true,
-        allowOperators: true,
-        distributionsConfig: 1,
-        enableAddAuthorityProposal: true,
-      }
-
-      const partyOpts = {
-        governance: governanceOpts,
-        proposalEngine: proposalEngineOpts,
-        name: 'PARTY',
-        symbol: 'FAM',
-        customizationPresetId: '0',
-      }
-
       const partyMemberVotingPowers = [1000000n]
-      const partyMembers = [address]
-      const authorities = PARTY_OPT_AUTHORITIES[CHAIN_ID]
-
+      const partyMembers = [address] as Address[]
       const rageQuitTimestamp = 1715603725
-      const args = [
-        PARTY_IMPLEMENTATION[CHAIN_ID],
-        partyOpts,
-        [], // preciousTokens
-        [], // preciousTokenIds
-        rageQuitTimestamp,
+
+      const partyCallData = await getPartyCallData({
+        membership,
+        vetoPeriod,
         partyMembers,
         partyMemberVotingPowers,
-        authorities,
-      ]
-      console.log('args', args)
-      const contractConfig = {
-        address: ATOMIC_MANUAL_PARTY[CHAIN_ID],
-        abi: atomicManualPartyAbi,
-        chain: getViemNetwork(CHAIN_ID),
-        functionName: 'createParty' as const,
-        args,
-      }
+        rageQuitTimestamp,
+      })
 
-      const txHash = await walletClient.writeContract(contractConfig as any)
+      const calls = [
+        {
+          target: ATOMIC_MANUAL_PARTY[CHAIN_ID],
+          callData: partyCallData,
+        },
+      ]
+
+      console.log('calls', calls)
+      const txHash = await walletClient.writeContract({
+        address: MULTICALL,
+        abi: multicall3Abi,
+        functionName: 'aggregate',
+        args: [calls],
+        chain: CHAIN,
+        account: address as Address,
+      })
 
       let transaction
       if (txHash) {
@@ -103,7 +61,7 @@ const useCreatePartyManual = () => {
     }
   }
 
-  return { createPartyManual }
+  return { createPartyAndHypersub }
 }
 
 export default useCreatePartyManual
