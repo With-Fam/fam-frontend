@@ -9,10 +9,11 @@ current state: Hypersub funds recipient is set to the connected wallet. No split
 1. Add the ABI for 0xSplits to src/lib/abi/PushSplitFactoryAbi.ts
 2. Add the Addresses for the PushSplitFactory to src/constants/addresses.ts
 3. Create a function `getCreateSplitCallData` to get the call data for the split deployment.
-4. Call the getCreateSplitCallData function in useCreatePartyManual hook for both splits.
-5. read the deterministic address from the push split factory for the split between array of hosts.
-6. read the deterministic address from the push split factory for the split between the party and the host split.
-7. use the split between the party address and the host split for the hypersub funds recipient.
+4. Create a function `getDeterministicAddress` to get the deterministic address of a split on the PushSplitFactory use a publicClient to read from the PushSplitFactory contract.
+5. Call the getCreateSplitCallData function in useCreatePartyManual hook for the split between array of hosts.
+6. read the deterministic address from the push split factory for the split between array of hosts.
+7. read the deterministic address from the push split factory for the split between the party and the host split.
+8. use the split between the party address and the host split for the hypersub funds recipient.
 
 ### Resources
 
