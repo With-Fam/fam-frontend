@@ -1,4 +1,8 @@
-import { ATOMIC_MANUAL_PARTY, MULTICALL } from '@/constants/addresses'
+import {
+  ATOMIC_MANUAL_PARTY,
+  HYPERSUB_FACTORY,
+  MULTICALL,
+} from '@/constants/addresses'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { useFormStore } from '@/modules/create-community'
 import { getPublicClient } from '@/lib/viem'
@@ -7,6 +11,7 @@ import useConnectedWallet from '@/hooks/useConnectedWallet'
 import { Address } from 'viem'
 import { multicall3Abi } from '@/lib/abi/multicall3Abi'
 import { getPartyCallData } from '@/lib/party/getPartyCallData'
+import { getDeployHypersubCallData } from '@/lib/hypersub/getDeployHypersubCallData'
 
 const useCreatePartyManual = () => {
   const { membership, vetoPeriod } = useFormStore()
@@ -31,10 +36,18 @@ const useCreatePartyManual = () => {
         rageQuitTimestamp,
       })
 
+      const hypersubCallData = getDeployHypersubCallData()
+
       const calls = [
         {
           target: ATOMIC_MANUAL_PARTY[CHAIN_ID],
           callData: partyCallData,
+          allowFailure: false,
+        },
+        {
+          target: HYPERSUB_FACTORY[CHAIN_ID],
+          callData: hypersubCallData,
+          allowFailure: false,
         },
       ]
 
@@ -42,7 +55,7 @@ const useCreatePartyManual = () => {
       const txHash = await walletClient.writeContract({
         address: MULTICALL,
         abi: multicall3Abi,
-        functionName: 'aggregate',
+        functionName: 'aggregate3',
         args: [calls],
         chain: CHAIN,
         account: address as Address,
