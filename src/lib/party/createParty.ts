@@ -3,15 +3,12 @@ import { CHAIN, CHAIN_ID } from '@/constants/defaultChains'
 import {
   ATOMIC_MANUAL_PARTY,
   PARTY_IMPLEMENTATION,
+  PARTY_OPT_AUTHORITIES,
 } from '@/constants/addresses'
 import { atomicManualPartyAbi } from '@/lib/abi/atomicManualPartyAbi'
 import { getPublicClient } from '@/lib/viem'
 import getEnsAddress from '@/lib/getEnsAddress'
-import {
-  getPartyGovernanceOpts,
-  getPartyOpts,
-  getPartyAuthorities,
-} from './partyConfig'
+import { getPartyGovernanceOpts, getPartyOpts } from './partyConfig'
 
 export interface CreatePartyParams {
   founders: { founderAddress: string }[]
@@ -46,7 +43,7 @@ export const createParty = async ({
 }: CreatePartyParams): Promise<CreatePartyResult> => {
   try {
     const publicClient = getPublicClient(CHAIN_ID)
-    const partyMembers = [ownerAddress] as const
+    const partyMembers = [ownerAddress] as Address[]
     const totalVotingPower = 100000000000000000000n
     const hosts = await resolveFounderAddresses(founders)
 
@@ -60,13 +57,13 @@ export const createParty = async ({
 
     const args = [
       PARTY_IMPLEMENTATION[CHAIN_ID],
-      partyOpts,
-      [] as Address[],
-      [] as bigint[],
-      1715603725,
-      partyMembers,
-      [1000000n] as const,
-      getPartyAuthorities(),
+      partyOpts as any,
+      [] as readonly Address[],
+      [] as readonly bigint[],
+      1715603725 as const,
+      partyMembers as readonly Address[],
+      [1000000n] as readonly [bigint],
+      PARTY_OPT_AUTHORITIES[CHAIN_ID] as readonly Address[],
     ] as const
 
     const hash = await walletClient.writeContract({

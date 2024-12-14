@@ -1,9 +1,6 @@
 import { Address } from 'viem'
 import { CHAIN_ID } from '@/constants/defaultChains'
-import {
-  GOVERNANCE_OPT_FEE_RECIPIENT,
-  PARTY_OPT_AUTHORITIES,
-} from '@/constants/addresses'
+import { GOVERNANCE_OPT_FEE_RECIPIENT } from '@/constants/addresses'
 
 export interface PartyGovernanceOpts {
   hosts: readonly Address[]
@@ -67,7 +64,3 @@ export const getPartyOpts = (
   symbol: 'FAM',
   customizationPresetId: 0n,
 })
-
-export const getPartyAuthorities = (): readonly Address[] => {
-  return PARTY_OPT_AUTHORITIES[CHAIN_ID] as const
-}
