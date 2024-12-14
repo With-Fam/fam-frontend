@@ -1,4 +1,3 @@
-import { Address } from 'viem'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
 import { useFormStore } from '@/modules/create-community'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
