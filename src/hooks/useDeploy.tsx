@@ -7,11 +7,10 @@ import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
 import useConnectedWallet from './useConnectedWallet'
 import { Address } from 'viem'
 import usePrivyWalletClient from '@/hooks/usePrivyWalletClient'
-import { createHypersubMulticall } from '@/lib/hypersub/createHypersubMulticall'
+import { createHypersub } from '@/lib/hypersub/createHypersub'
 
 const useDeploy = () => {
   const { createParty } = useCreatePartyManual()
-  const { membership } = useFormStore()
   const { connectedWallet: address } = useConnectedWallet()
   const { setHypersubAddress } = useCreateCommunityProvider()
   const { walletClient } = usePrivyWalletClient()
@@ -38,13 +37,9 @@ const useDeploy = () => {
         throw partyResult.error || new Error('Failed to create party')
       }
 
-      const hypersubResult = await createHypersubMulticall({
-        founderAddresses: membership.founders.map(
-          (f) => f.founderAddress as Address
-        ),
+      const hypersubResult = await createHypersub({
         ownerAddress: address as Address,
         walletClient,
-        partyAddress: partyResult.partyAddress,
       })
       if (hypersubResult.error || !hypersubResult.hypersubAddress) {
         throw hypersubResult.error || new Error('Failed to create hypersub')

@@ -1,4 +1,4 @@
-import { CROWDFUND_PARTY_FACTORY } from '@/constants/addresses'
+import { ATOMIC_MANUAL_PARTY } from '@/constants/addresses'
 import { ethGetLogs } from '@/lib/alchemy/eth_getLogs'
 import { Address } from 'viem'
 
@@ -10,7 +10,7 @@ const getAllParties = async (chainId: ChainId) => {
   ]
   const response = await ethGetLogs(
     chainId,
-    CROWDFUND_PARTY_FACTORY[chainId] as Address,
+    ATOMIC_MANUAL_PARTY[chainId] as Address,
     topics
   )
   const results: Address[] = response?.map(
