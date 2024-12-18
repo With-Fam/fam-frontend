@@ -2,7 +2,7 @@ import { Address, encodeFunctionData } from 'viem'
 import { hypersubFactoryAbi } from '../abi/hypersubFactoryAbi'
 import { getDeployArgs } from './getDeployArgs'
 
-export const getDeployHypersubCallData = (): Address => {
+export const getDeployHypersubCallData = (fundsRecipient: Address): Address => {
   const deployArgs = getDeployArgs()
   const args = [
     deployArgs.name,

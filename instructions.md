@@ -16,6 +16,8 @@ current state: Hypersub funds recipient is set to the connected wallet. No split
 8. create a split between the hosts split and the party address. include this call in the same tx for multicall3.
 9. read the deterministic address from the push split factory for the split between the party and the host split.
 10. use the split between the party address and the host split for the hypersub funds recipient.
+11. multicall - call updateFeeRecipient on the hypersub contract with the split between the party address and the host split.
+12. multicall - call transferOwnership on the hypersub contract with the connected wallet.
 
 ### Resources
 

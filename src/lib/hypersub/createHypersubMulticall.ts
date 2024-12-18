@@ -6,6 +6,7 @@ import { getPublicClient } from '@/lib/viem'
 import { hypersubFactoryAbi } from '../abi/hypersubFactoryAbi'
 import { createSplits } from '../split/createSplits'
 import { executeMulticall } from '../multicall/executeMulticall'
+import { getUpdateFeeRecipientCallData } from './getUpdateFeeRecipientCallData'
 
 export interface CreateHypersubMulticallResult {
   hypersubAddress?: Address
@@ -30,8 +31,11 @@ export const createHypersubMulticall = async ({
       partyAndHostsSplitCalldata,
       partyAndHostsSplitAddress,
     } = await createSplits({ founderAddresses, partyAddress, ownerAddress })
-    const hypersubCalldata = getDeployHypersubCallData()
-    const calls = [
+
+    const hypersubCalldata = getDeployHypersubCallData(
+      partyAndHostsSplitAddress
+    )
+    const deploymentCalls = [
       {
         target: PUSH_SPLIT_FACTORY[CHAIN_ID],
         allowFailure: false,
@@ -48,19 +52,46 @@ export const createHypersubMulticall = async ({
         callData: hypersubCalldata,
       },
     ]
-    const hash = await executeMulticall({
-      calls,
+
+    const deployHash = await executeMulticall({
+      calls: deploymentCalls,
       walletClient,
     })
 
-    const receipt = await publicClient.waitForTransactionReceipt({ hash })
+    const deployReceipt = await publicClient.waitForTransactionReceipt({
+      hash: deployHash,
+    })
     const hypersubLogs = parseEventLogs({
-      logs: receipt.logs,
+      logs: deployReceipt.logs,
       abi: hypersubFactoryAbi,
       eventName: 'Deployment',
     })
 
-    return { hypersubAddress: hypersubLogs[0]?.args?.deployment as Address }
+    const hypersubAddress = hypersubLogs[0]?.args?.deployment as Address
+    if (!hypersubAddress) {
+      throw new Error('Failed to get hypersub address')
+    }
+
+    console.log('hypersubAddress', hypersubAddress)
+
+    const updateFeeRecipientCalldata = getUpdateFeeRecipientCallData({
+      feeRecipient: partyAndHostsSplitAddress,
+    })
+
+    const updateHash = await executeMulticall({
+      calls: [
+        {
+          target: hypersubAddress,
+          allowFailure: false,
+          callData: updateFeeRecipientCalldata,
+        },
+      ],
+      walletClient,
+    })
+
+    await publicClient.waitForTransactionReceipt({ hash: updateHash })
+
+    return { hypersubAddress }
   } catch (error) {
     console.error('error', error)
     return { error }
