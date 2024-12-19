@@ -1,36 +1,22 @@
-import { useProposalMetadata } from '@/hooks/useProposalMetadata'
+import useProposalInfo from '@/hooks/useProposalInfo'
+import { TransactionType } from '@/modules/create-activity/types'
+import ZoraProposal from './ZoraProposal'
+import SendEth from './SendEth'
 
-interface ProposalInfoProps {
-  proposal: {
-    id: string
-    party: {
-      address: string
-    }
-  }
-}
-
-export const ProposalInfo = ({ proposal }: ProposalInfoProps) => {
-  const { metadata, loading, error } = useProposalMetadata(
-    proposal.party.address,
-    proposal.id
-  )
-
-  if (loading) {
-    return <div>Loading proposal details...</div>
-  }
-
-  if (error) {
-    return <div>Error loading proposal details</div>
-  }
+const ProposalInfo = ({ proposal }: any) => {
+  const { proposalInfo } = useProposalInfo(proposal)
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold">
-        {metadata?.title || 'Untitled Proposal'}
-      </h1>
-      <p className="text-gray-600">
-        {metadata?.description || 'No description available'}
-      </p>
+    <div className="mt-8">
+      {(proposalInfo?.type === TransactionType.ZORA_COLLECT ||
+        proposalInfo?.type === TransactionType.ZORA_CREATE) && (
+        <ZoraProposal info={proposalInfo} />
+      )}
+      {proposalInfo?.type === TransactionType.SEND_ETH && (
+        <SendEth info={proposalInfo} />
+      )}
     </div>
   )
 }
+
+export default ProposalInfo

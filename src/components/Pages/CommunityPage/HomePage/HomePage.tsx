@@ -5,20 +5,14 @@ import { PointyTopIcon } from '@/components/icons'
 import { Loading } from '@/components/shared'
 import { useCommunityProvider } from '@/contexts/CommunityProvider'
 import { useProposalProvider } from '@/contexts/ProposalProvider'
-import { useProposalMetadata } from '@/hooks/useProposalMetadata'
-import { useParams } from 'next/navigation'
-import { Address } from 'viem'
 
 const HomePage = () => {
   const { proposals, proposalsLoading, getProposals, nextOffset } =
     useProposalProvider() as any
-  const { community } = useParams()
   const { partyInfo } = useCommunityProvider() as any
-  const { metadata: proposalMetadata, loading: metadataLoading } =
-    useProposalMetadata(community as Address)
   const isEmpty = proposals.length === 0
 
-  if ((proposalsLoading || metadataLoading) && isEmpty) return <Loading />
+  if (proposalsLoading && isEmpty) return <Loading />
 
   return (
     <main className="relative mx-auto max-w-[936px] px-4 pb-4">
@@ -36,14 +30,14 @@ const HomePage = () => {
           <Proposal
             key={proposal.proposalId}
             data={proposal}
-            metadata={proposalMetadata?.[proposal.proposalId]}
+            metadata={proposal.stackMetadata}
             proposalIndex={index}
           />
         ))
       )}
 
-      {(proposalsLoading || metadataLoading) && <Loading />}
-      {nextOffset !== -1 && !proposalsLoading && !metadataLoading && (
+      {proposalsLoading && <Loading />}
+      {nextOffset !== -1 && !proposalsLoading && (
         <div className="flex justify-center">
           <button
             type="button"
