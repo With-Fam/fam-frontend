@@ -134,9 +134,6 @@ const useCreateProposal: any = (community: Address) => {
 
           const proposalId = proposalLogs[0]?.args?.proposalId?.toString()
 
-          console.log('proposalId', proposalId)
-
-          console.log('tracking new proposal')
           await trackNewProposal({
             title,
             description,
