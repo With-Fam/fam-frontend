@@ -14,10 +14,8 @@ const HomePage = () => {
     useProposalProvider() as any
   const { community } = useParams()
   const { partyInfo } = useCommunityProvider() as any
-  console.log('partyInfo', community)
   const { metadata: proposalMetadata, loading: metadataLoading } =
     useProposalMetadata(community as Address)
-  console.log('proposalMetadata', proposalMetadata)
   const isEmpty = proposals.length === 0
 
   if ((proposalsLoading || metadataLoading) && isEmpty) return <Loading />
