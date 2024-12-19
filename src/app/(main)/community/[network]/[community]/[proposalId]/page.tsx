@@ -25,7 +25,6 @@ export default function CommunityProposal(): JSX.Element {
     (proposal: any) =>
       proposal.proposalId === parseInt(proposalId as string, 10)
   )?.[0]
-  console.log('proposalDetail', proposalDetail)
 
   const status = getProposalStatus(proposalDetail)
   const { push } = useRouter()
