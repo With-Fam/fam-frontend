@@ -1,6 +1,7 @@
 import useProposals from '@/hooks/useProposals'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import { Address } from 'viem'
 
 export enum PROPOSAL_STATUS {
   Invalid,
