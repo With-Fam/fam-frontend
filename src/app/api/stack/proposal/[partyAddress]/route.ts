@@ -8,7 +8,6 @@ export async function GET(
 ): Promise<NextResponse> {
   try {
     const { partyAddress } = params
-    console.log('partyAddress', partyAddress)
     const response = await stack.getEvents({
       query: stack
         .eventsQuery()
