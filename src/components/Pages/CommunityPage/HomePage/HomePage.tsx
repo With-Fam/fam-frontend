@@ -30,10 +30,12 @@ const HomePage = () => {
           <Proposal
             key={proposal.proposalId}
             data={proposal}
+            metadata={proposal.stackMetadata}
             proposalIndex={index}
           />
         ))
       )}
+
       {proposalsLoading && <Loading />}
       {nextOffset !== -1 && !proposalsLoading && (
         <div className="flex justify-center">

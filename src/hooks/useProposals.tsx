@@ -1,9 +1,9 @@
 import getSortedUniqueProposals from '@/lib/getSortedUniqueProposals'
 import { useSearchParams } from 'next/navigation'
-import {} from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
+import { Address } from 'viem'
 
-const useProposals = (party: any) => {
+const useProposals = (party: Address) => {
   const [proposals, setProposals] = useState<any>([])
   const [loading, setLoading] = useState(true)
   const [nextOffset, setNextOffset] = useState(0)
@@ -15,28 +15,44 @@ const useProposals = (party: any) => {
       if (!party) return
       if (offset === nextOffset && offset !== 0) return
       setLoading(true)
-      const response = await fetch(
-        `/api/proposals?party=${party}&nextOffset=${offset}`
-      )
-      const data = await response.json()
-      if (data?.proposals) {
-        const proposalsWithPageNum = data?.proposals?.map((proposal: any) => ({
-          ...proposal,
-          pageNum: offset / 20,
-        }))
-        setProposals((prev: any) => {
-          const newProposals = [...prev, ...proposalsWithPageNum]
-          const uniqueProposals = getSortedUniqueProposals(newProposals)
-          return uniqueProposals
-        })
-      }
-      if (!data.nextProposalOffset) {
-        setNextOffset(-1)
+
+      try {
+        const response = await fetch(
+          `/api/proposals?party=${party}&nextOffset=${offset}`
+        )
+        const data = await response.json()
+
+        const stackResponse = await fetch(`/api/stack/proposal/${party}`)
+        const stackData = await stackResponse.json()
+        console.log('stackData', stackData)
+
+        if (data?.proposals) {
+          const proposalsWithMetadata = data.proposals.map(
+            (proposal: any, index: number) => ({
+              ...proposal,
+              pageNum: offset / 20,
+              name: stackData[index].metadata.title,
+            })
+          )
+
+          setProposals((prev: any) => {
+            const newProposals = [...prev, ...proposalsWithMetadata]
+            const uniqueProposals = getSortedUniqueProposals(newProposals)
+            return uniqueProposals
+          })
+        }
+
+        if (!data.nextProposalOffset) {
+          setNextOffset(-1)
+          setLoading(false)
+          return
+        }
+        setNextOffset(data.nextProposalOffset)
+      } catch (error) {
+        console.error('Error fetching proposals:', error)
+      } finally {
         setLoading(false)
-        return
       }
-      setNextOffset(data.nextProposalOffset)
-      setLoading(false)
     },
     [party]
   )
@@ -47,7 +63,7 @@ const useProposals = (party: any) => {
       return
     }
     getProposals(nextOffset)
-  }, [pageNum])
+  }, [pageNum, getProposals, nextOffset])
 
   return {
     proposals,

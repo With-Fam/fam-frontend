@@ -42,7 +42,20 @@ const formatElapsedTime = (proposedTime: number) => {
   }
 }
 
-const Proposal = ({ data, proposalIndex }: any) => {
+interface ProposalMetadata {
+  title: string
+  description: string
+  proposalId: string
+  txHash: string
+}
+
+interface ProposalProps {
+  data: any
+  metadata?: ProposalMetadata
+  proposalIndex: number
+}
+
+const Proposal = ({ data, metadata, proposalIndex }: ProposalProps) => {
   const [elapsedTime, setElapsedTime] = useState(
     formatElapsedTime(data.proposedTime)
   )
@@ -91,14 +104,19 @@ const Proposal = ({ data, proposalIndex }: any) => {
           <ProposalStatus status={status} />
         </div>
       </div>
-      <div className="mt-4 flex justify-between">
+      <div className="mt-4 flex flex-col gap-2">
         <button
-          className="font-abcMedium text-black"
+          className="text-left font-abcMedium text-black"
           type="button"
           onClick={goToProposal}
         >
-          {data.name}
+          {metadata?.title || data.name}
         </button>
+        {metadata?.description && (
+          <p className="line-clamp-2 text-sm text-gray-600">
+            {metadata.description}
+          </p>
+        )}
         {isActiveVoting && <VoteCountdown proposal={data} />}
       </div>
       <div className="mt-4 flex justify-between">

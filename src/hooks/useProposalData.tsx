@@ -1,6 +1,7 @@
 import useProposals from '@/hooks/useProposals'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import { Address } from 'viem'
 
 export enum PROPOSAL_STATUS {
   Invalid,
@@ -16,8 +17,9 @@ export enum PROPOSAL_STATUS {
 const useProposalData = () => {
   const [proposal, setProposal] = useState()
   const { community } = useParams()
-  const { proposals, loading, getProposals, nextOffset } =
-    useProposals(community)
+  const { proposals, loading, getProposals, nextOffset } = useProposals(
+    community as Address
+  )
   const [selectedProposalIndex, setSelectedProposalIndex] = useState(0)
 
   return {
