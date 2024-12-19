@@ -17,13 +17,11 @@ const useProposals = (party: Address) => {
       setLoading(true)
 
       try {
-        // Fetch on-chain proposals
         const response = await fetch(
           `/api/proposals?party=${party}&nextOffset=${offset}`
         )
         const data = await response.json()
 
-        // Fetch Stack metadata
         const stackResponse = await fetch(`/api/stack/proposal/${party}`)
         const stackData = await stackResponse.json()
         console.log('stackData', stackData)
