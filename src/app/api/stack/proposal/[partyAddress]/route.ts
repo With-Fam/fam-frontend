@@ -18,7 +18,6 @@ export async function GET(
         .offset(0)
         .build(),
     })
-    console.log('STACK response', response)
 
     if (!response?.length) {
       return NextResponse.json({ error: 'Proposal not found' }, { status: 404 })
