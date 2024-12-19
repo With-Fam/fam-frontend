@@ -11,4 +11,5 @@ current state: There are inputs for title and description in the create activity
 3. add a trackNewProposal function in the src/lib/stack/ directory.
 4. Add the trackNewProposal function to the create activity page.
 5. get proposalId from the transaction receipt and pass the correct value to the trackNewProposal function.
-6. dashboard - show title and description for a proposal using stack SDK
+6. getPartyProposals - new lib in the src/lib/stack/ directory. use the Stack SDK to get the proposals for a party. Be sure to make a new API endpoint to access the stack ENV variables.
+7. dashboard - show title and description for a proposal using stack SDK
