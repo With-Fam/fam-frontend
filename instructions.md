@@ -1,12 +1,12 @@
 # Instructions for Simplified Create Experience
 
-goal: Remove multicall3 and the creation of splits. Second step only creates the hypersub.
+goal: Track title and description for each proposal using the Stack SDK.
 
-current state: First, create the party. Then, call multicall3 to create 2 splits and deploy the hypersub. Then, call setHypersub on the ManageFamAuthority.
+current state: There are inputs for title and description in the create activity page. However, the title and description are not being tracked.
 
 ### Solution
 
-1. After party is created, call deploySubscription on the HypersubFactory instead of multicall3.
-2. Remove unused code for multicall3 and splits.
-3. remove unused function getDeployHypersubCallData and any unused imports.
-4. remove unused ABI for multicall3 and splits.
+1. Install the Stack SDK. create a client.ts file in the src/lib/stack folder.
+2. Add any ENV required.
+3. add a trackNewProposal function in the src/lib/stack/ directory.
+4. Add the trackNewProposal function to the create activity page.
