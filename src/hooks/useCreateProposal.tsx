@@ -11,7 +11,13 @@ import getZoraCreateProposalData from '@/lib/party/getZoraCreateProposalData'
 import getSendEthProposalData from '@/lib/party/getSendEthProposalData'
 import { getPublicClient } from '@/lib/viem'
 import { usePrivy } from '@privy-io/react-auth'
-import { Address, isAddress, maxUint256, parseEther } from 'viem'
+import {
+  Address,
+  isAddress,
+  maxUint256,
+  parseEther,
+  parseEventLogs,
+} from 'viem'
 import getEnsAddress from '@/lib/getEnsAddress'
 import handleTxError from '@/lib/handleTxError'
 import getCollectionInfoFromZoraLink from '@/lib/getCollectionInfoFromZoraLink'
@@ -120,10 +126,21 @@ const useCreateProposal: any = (community: Address) => {
         })
 
         if (transaction && title && description) {
+          const proposalLogs = parseEventLogs({
+            logs: transaction.logs,
+            abi: partyAbi,
+            eventName: 'Proposed',
+          })
+
+          const proposalId = proposalLogs[0]?.args?.proposalId?.toString()
+
+          console.log('proposalId', proposalId)
+
+          console.log('tracking new proposal')
           await trackNewProposal({
             title,
             description,
-            proposalId: txHash,
+            proposalId,
             partyAddress: community,
             txHash,
           })
