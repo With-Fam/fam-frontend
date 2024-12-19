@@ -10,3 +10,4 @@ current state: There are inputs for title and description in the create activity
 2. Add any ENV required.
 3. add a trackNewProposal function in the src/lib/stack/ directory.
 4. Add the trackNewProposal function to the create activity page.
+5. get proposalId from the transaction receipt and pass the correct value to the trackNewProposal function.

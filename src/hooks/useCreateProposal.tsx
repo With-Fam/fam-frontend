@@ -16,6 +16,7 @@ import getEnsAddress from '@/lib/getEnsAddress'
 import handleTxError from '@/lib/handleTxError'
 import getCollectionInfoFromZoraLink from '@/lib/getCollectionInfoFromZoraLink'
 import getZoraCollectProposal from '@/lib/getZoraCollectProposal'
+import { trackNewProposal } from '@/lib/stack/trackNewProposal'
 
 const useCreateProposal: any = (community: Address) => {
   const { walletClient } = usePrivyWalletClient(CHAIN)
@@ -117,6 +118,16 @@ const useCreateProposal: any = (community: Address) => {
         transaction = await publicClient.waitForTransactionReceipt({
           hash: txHash,
         })
+
+        if (transaction && title && description) {
+          await trackNewProposal({
+            title,
+            description,
+            proposalId: txHash,
+            partyAddress: community,
+            txHash,
+          })
+        }
       }
       return transaction
     } catch (err: any) {
