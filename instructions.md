@@ -1,15 +1,26 @@
-# Instructions for Simplified Create Experience
+# Instructions for Link Existing Hypersub
 
-goal: Manage title and description for each proposal using the Stack SDK.
+goal: Add the ability to link an existing hypersub to a Fam instead of creating a new hypersub.
 
-current state: There are inputs for title and description in the create activity page. However, the title and description are not being tracked.
+current state: You must create a new hypersub for each Fam. There is no way to link an existing hypersub to a Fam.
 
 ### Solution
 
-1. Install the Stack SDK. create a client.ts file in the src/lib/stack folder.
-2. Add any ENV required.
-3. add a trackNewProposal function in the src/lib/stack/ directory.
-4. Add the trackNewProposal function to the create activity page.
-5. get proposalId from the transaction receipt and pass the correct value to the trackNewProposal function.
-6. getPartyProposals - new lib in the src/lib/stack/ directory. use the Stack SDK to get the proposals for a party. Be sure to make a new API endpoint to access the stack ENV variables.
-7. dashboard - show title and description for a proposal using stack SDK
+1. <HypersubDropdown> - new component - state default
+2. src/modules/create-community/components/membership/Advanced.tsx - add the HypersubDropdown component
+3. Figma - Link Existing Hypersub - expanded
+4. Figma - Link Existing Hypersub - tooltip - Implement the tooltip for Link Existing Hypersub dropdown - text: Link any Hypersub that you are the owner of. The Founder split of revenue from memberships will accrue to the Hypersub contract
+5. hook - useOwnerHypersubs - create a hook for the Dropdown to use to get the Hypersub subscription contracts which I am the owner of. See resources for more details.
+6. deploy provider - use the useOwnerHypersubs hook
+
+## Resources
+
+### useOwnerHypersubs
+
+contracts - array of hypersub contracts I am the owner of hypersub contracts
+
+- chainId
+- address
+- image
+- title
+- description
