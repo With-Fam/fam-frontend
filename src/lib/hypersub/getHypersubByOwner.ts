@@ -2,6 +2,9 @@ import { hypersubFactoryAbi } from '@/lib/abi/hypersubFactoryAbi'
 import { hypersubAbi } from '@/lib/abi/hypersubAbi'
 import { Address, createPublicClient, http, parseEventLogs } from 'viem'
 import { baseSepolia } from 'viem/chains'
+import { getPublicClient } from '@/lib/viem'
+import { CHAIN_ID } from '@/constants/defaultChains'
+import { HYPERSUB_FACTORY } from '@/constants/addresses'
 
 interface Hypersub {
   id: string
@@ -14,10 +17,9 @@ const options = {
   headers: { 'X-Dune-Api-Key': process.env.DUNE_API_KEY as string },
 }
 
-const getHypersubByOwner = async (owner: string): Promise<Hypersub[]> => {
-  // 1. Get all hypersub addresses from Dune
+const getHypersubByOwner = async (owner: Address): Promise<Hypersub[]> => {
   const response = await fetch(
-    'https://api.dune.com/api/echo/v1/transactions/evm/0xcfBf34d385EA2d5Eb947063b67eA226dcDA3DC38?chain_ids=84532&to=0x3E4996Dc97B05C7e5379A2f6F4B844643BB1D9F2',
+    `https://api.dune.com/api/echo/v1/transactions/evm/${owner}?chain_ids=${CHAIN_ID}&to=${HYPERSUB_FACTORY[CHAIN_ID]}`,
     options
   )
   const data = await response.json()
@@ -44,15 +46,8 @@ const getHypersubByOwner = async (owner: string): Promise<Hypersub[]> => {
     []
   )
 
-  console.log('Found hypersub addresses:', hypersubAddresses)
+  const publicClient = getPublicClient(CHAIN_ID)
 
-  // 2. Set up public client for multicall
-  const publicClient = createPublicClient({
-    chain: baseSepolia,
-    transport: http(),
-  })
-
-  // 3. Prepare multicall contracts
   const contracts = hypersubAddresses.flatMap((address: Address) => [
     {
       address,
@@ -66,12 +61,10 @@ const getHypersubByOwner = async (owner: string): Promise<Hypersub[]> => {
     },
   ])
 
-  // 4. Execute multicall
   const results = await publicClient.multicall({
     contracts,
   })
 
-  // 5. Process results
   const hypersubs: Hypersub[] = []
   for (let i = 0; i < hypersubAddresses.length; i++) {
     const nameResult = results[i * 2]

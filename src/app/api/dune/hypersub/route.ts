@@ -7,7 +7,7 @@ export async function GET(
 ): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(request.url)
-    const owner = searchParams.get('owner')
+    const owner = searchParams.get('owner') as Address
 
     if (!owner) {
       return NextResponse.json(
