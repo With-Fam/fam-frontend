@@ -11,6 +11,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import Tooltip from '@/components/shared/Tooltip'
+import { useEffect, useState } from 'react'
+import useConnectedWallet from '@/hooks/useConnectedWallet'
 
 interface Hypersub {
   id: string
@@ -18,21 +20,39 @@ interface Hypersub {
   imageUrl: string
 }
 
-// Sample data - replace with your actual data
-const hyperSubs: Hypersub[] = [
-  {
-    id: '1',
-    title: 'Fam Club',
-    imageUrl: '/placeholder.svg?height=24&width=24',
-  },
-  {
-    id: '2',
-    title: 'Real Friends',
-    imageUrl: '/placeholder.svg?height=24&width=24',
-  },
-]
-
 export default function HypersubDropdown() {
+  const [hyperSubs, setHyperSubs] = useState<Hypersub[]>([])
+  const [loading, setLoading] = useState(false)
+  const { connectedWallet: address } = useConnectedWallet()
+
+  useEffect(() => {
+    const fetchHyperSubs = async () => {
+      if (!address) return
+
+      try {
+        setLoading(true)
+        const response = await fetch(`/api/dune/hypersub?owner=${address}`)
+        if (!response.ok) {
+          throw new Error('Failed to fetch hypersub data')
+        }
+        const data = await response.json()
+        // Transform the data into the format we need
+        const formattedData = data.map((item: any) => ({
+          id: item.id,
+          title: item.title || 'Untitled Hypersub',
+          imageUrl: item.imageUrl || '/assets/images/fam-default-card.jpg',
+        }))
+        setHyperSubs(formattedData)
+      } catch (error) {
+        console.error('Error fetching hypersubs:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchHyperSubs()
+  }, [address])
+
   return (
     <section className="mt-4 rounded-xl bg-white">
       <div className="w-full space-y-2 px-4">
@@ -48,7 +68,7 @@ export default function HypersubDropdown() {
             <Icon id="helpCircle" fill="#ffffff" />
           </Tooltip>
         </div>
-        <Select>
+        <Select disabled={loading}>
           <SelectTrigger className="h-[55px] w-full rounded-xl border-grey text-grey">
             <div className="flex items-center gap-2 text-lg">
               <Image
@@ -58,7 +78,9 @@ export default function HypersubDropdown() {
                 height={33}
                 className="rounded-md"
               />
-              <SelectValue placeholder="Select Hypersub" />
+              <SelectValue
+                placeholder={loading ? 'Loading...' : 'Select Hypersub'}
+              />
             </div>
           </SelectTrigger>
           <SelectContent className="rounded-xl border-grey">
