@@ -14,34 +14,6 @@ const options = {
   headers: { 'X-Dune-Api-Key': process.env.DUNE_API_KEY as string },
 }
 
-const isValidHttpUrl = (uri: string) => {
-  try {
-    const url = new URL(uri)
-    return url.protocol === 'http:' || url.protocol === 'https:'
-  } catch {
-    return false
-  }
-}
-
-const getMetadataFromUri = async (uri: string): Promise<{ image?: string }> => {
-  if (!isValidHttpUrl(uri)) {
-    console.log('Invalid URI format:', uri)
-    return {}
-  }
-
-  try {
-    const response = await fetch(uri)
-    if (!response.ok) {
-      console.log('Failed to fetch metadata from URI:', uri)
-      return {}
-    }
-    return await response.json()
-  } catch (error) {
-    console.log('Error fetching metadata from URI:', uri, error)
-    return {}
-  }
-}
-
 const getHypersubByOwner = async (owner: string): Promise<Hypersub[]> => {
   // 1. Get all hypersub addresses from Dune
   const response = await fetch(
@@ -115,11 +87,7 @@ const getHypersubByOwner = async (owner: string): Promise<Hypersub[]> => {
     const name =
       nameResult.status === 'success' ? nameResult.result : `Hypersub ${i + 1}`
 
-    let imageUrl = '/assets/images/fam-default-card.jpg'
-    if (uriResult.status === 'success' && uriResult.result) {
-      const metadata = await getMetadataFromUri(uriResult.result)
-      imageUrl = metadata.image || imageUrl
-    }
+    const imageUrl = '/assets/images/fam-default-card.jpg'
 
     hypersubs.push({
       id: address,
