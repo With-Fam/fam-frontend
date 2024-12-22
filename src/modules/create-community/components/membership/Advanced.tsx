@@ -3,6 +3,7 @@ import { Icon } from '@/components/Icon'
 import AcceptanceThreshold from './AcceptanceThreshold'
 import VetoPeriod from '@/modules/create-community/components/membership/VetoPeriod'
 import { useFormStore } from '@/modules/create-community/stores'
+import HypersubDropdown from './HypersubDropdown'
 
 const Advanced = () => {
   const { setShowAdvanced, showAdvanced } = useFormStore()
@@ -22,10 +23,11 @@ const Advanced = () => {
         )}
       </button>
       {showAdvanced && (
-        <>
+        <div className="space-y-6">
           <AcceptanceThreshold />
           <VetoPeriod />
-        </>
+          <HypersubDropdown />
+        </div>
       )}
     </>
   )
