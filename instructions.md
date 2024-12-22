@@ -12,7 +12,7 @@ current state: You must create a new hypersub for each Fam. There is no way to l
 4. Figma - Link Existing Hypersub - tooltip - Implement the tooltip for Link Existing Hypersub dropdown - text: Link any Hypersub that you are the owner of. The Founder split of revenue from memberships will accrue to the Hypersub contract
 5. hypersubAbi.ts - add the hypersub abi (see below)
 6. getHypersubByOwner - add multicall to get the contractUri and title of the Hypersub.
-7. hook - useOwnerHypersubs - create a hook for the Dropdown to use to get the Hypersub subscription contracts which I am the owner of. See resources for more details.
+7. hook - useOwnerHypersubs - create a hook for the Dropdown to use to get the Hypersub subscription contracts which I am the owner of. See resources for more details. consider using tanstack query.
 8. deploy provider - use the useOwnerHypersubs hook
 
 ## Resources

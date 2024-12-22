@@ -11,47 +11,12 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import Tooltip from '@/components/shared/Tooltip'
-import { useEffect, useState } from 'react'
-import useConnectedWallet from '@/hooks/useConnectedWallet'
-
-interface Hypersub {
-  id: string
-  title: string
-  imageUrl: string
-}
+import useOwnerHypersubs from '@/hooks/useOwnerHypersubs'
+import { Address } from 'viem'
 
 export default function HypersubDropdown() {
-  const [hyperSubs, setHyperSubs] = useState<Hypersub[]>([])
-  const [loading, setLoading] = useState(false)
-  const { connectedWallet: address } = useConnectedWallet()
-
-  useEffect(() => {
-    const fetchHyperSubs = async () => {
-      if (!address) return
-
-      try {
-        setLoading(true)
-        const response = await fetch(`/api/dune/hypersub?owner=${address}`)
-        if (!response.ok) {
-          throw new Error('Failed to fetch hypersub data')
-        }
-        const data = await response.json()
-        // Transform the data into the format we need
-        const formattedData = data.map((item: any) => ({
-          id: item.id,
-          title: item.title || 'Untitled Hypersub',
-          imageUrl: item.imageUrl || '/assets/images/fam-default-card.jpg',
-        }))
-        setHyperSubs(formattedData)
-      } catch (error) {
-        console.error('Error fetching hypersubs:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchHyperSubs()
-  }, [address])
+  const { hypersubs, loading, error, selectedHypersub, setSelectedHypersub } =
+    useOwnerHypersubs()
 
   return (
     <section className="mt-4 rounded-xl bg-white">
@@ -68,24 +33,47 @@ export default function HypersubDropdown() {
             <Icon id="helpCircle" fill="#ffffff" />
           </Tooltip>
         </div>
-        <Select disabled={loading}>
-          <SelectTrigger className="h-[55px] w-full rounded-xl border-grey text-grey">
+        <Select
+          disabled={loading}
+          onValueChange={(value: Address) => {
+            console.log('SWEETMAN VALUE', value)
+            if (value) setSelectedHypersub(value)
+          }}
+        >
+          <SelectTrigger
+            className={`h-[55px] w-full rounded-xl border-grey ${
+              selectedHypersub ? 'text-black' : 'text-grey'
+            }`}
+          >
             <div className="flex items-center gap-2 text-lg">
-              <Image
-                src="/assets/images/fam-default-card.jpg"
-                alt=""
-                width={33}
-                height={33}
-                className="rounded-md"
-              />
+              {!selectedHypersub && (
+                <Image
+                  src={
+                    selectedHypersub?.imageUrl ||
+                    '/assets/images/fam-default-card.jpg'
+                  }
+                  alt=""
+                  width={33}
+                  height={33}
+                  className="rounded-md"
+                />
+              )}
               <SelectValue
-                placeholder={loading ? 'Loading...' : 'Select Hypersub'}
-              />
+                placeholder={
+                  loading
+                    ? 'Loading...'
+                    : error
+                      ? 'Error loading hypersubs'
+                      : 'Select Hypersub'
+                }
+              >
+                {selectedHypersub?.title}
+              </SelectValue>
             </div>
           </SelectTrigger>
           <SelectContent className="rounded-xl border-grey">
             <SelectGroup>
-              {hyperSubs.map((sub) => (
+              {hypersubs.map((sub) => (
                 <SelectItem
                   key={sub.id}
                   value={sub.id}
@@ -93,7 +81,7 @@ export default function HypersubDropdown() {
                 >
                   <div className="flex items-center gap-2">
                     <Image
-                      src="/assets/images/fam-default-card.jpg"
+                      src={sub.imageUrl}
                       alt=""
                       width={33}
                       height={33}
