@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import getHypersubByOwner from '@/lib/hypersub/getHypersubByOwner'
+import { Address } from 'viem'
 
 export async function GET(
   request: Request,
