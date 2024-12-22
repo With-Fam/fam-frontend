@@ -1,7 +1,6 @@
 import { hypersubFactoryAbi } from '@/lib/abi/hypersubFactoryAbi'
 import { hypersubAbi } from '@/lib/abi/hypersubAbi'
 import { Address, createPublicClient, http, parseEventLogs } from 'viem'
-import { CHAIN_ID } from '@/constants/defaultChains'
 import { baseSepolia } from 'viem/chains'
 
 interface Hypersub {
@@ -82,7 +81,7 @@ const getHypersubByOwner = async (owner: string): Promise<Hypersub[]> => {
   })
 
   // 3. Prepare multicall contracts
-  const contracts = hypersubAddresses.flatMap((address) => [
+  const contracts = hypersubAddresses.flatMap((address: Address) => [
     {
       address,
       abi: hypersubAbi,
@@ -92,11 +91,6 @@ const getHypersubByOwner = async (owner: string): Promise<Hypersub[]> => {
       address,
       abi: hypersubAbi,
       functionName: 'contractURI',
-    },
-    {
-      address,
-      abi: hypersubAbi,
-      functionName: 'owner',
     },
   ])
 
@@ -108,28 +102,14 @@ const getHypersubByOwner = async (owner: string): Promise<Hypersub[]> => {
   // 5. Process results
   const hypersubs: Hypersub[] = []
   for (let i = 0; i < hypersubAddresses.length; i++) {
-    const nameResult = results[i * 3]
-    const uriResult = results[i * 3 + 1]
-    const ownerResult = results[i * 3 + 2]
+    const nameResult = results[i * 2]
+    const uriResult = results[i * 2 + 1]
 
     console.log('Processing hypersub:', {
       address: hypersubAddresses[i],
       nameResult,
       uriResult,
-      ownerResult,
     })
-
-    // Skip if not the owner
-    if (
-      ownerResult.status !== 'success' ||
-      ownerResult.result?.toLowerCase() !== owner.toLowerCase()
-    ) {
-      console.log(
-        'Skipping - not owner or failed owner check:',
-        hypersubAddresses[i]
-      )
-      continue
-    }
 
     const address = hypersubAddresses[i]
     const name =
