@@ -1,9 +1,11 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import { Address } from 'viem'
 import useConnectedWallet from '@/hooks/useConnectedWallet'
 
 interface Hypersub {
-  id: string
+  id: Address
   title: string
   imageUrl: string
   chainId: number
@@ -15,15 +17,14 @@ interface UseOwnerHypersubsResult {
   loading: boolean
   error: Error | null
   refetch: () => Promise<void>
-  selectedHypersub: Address | null
-  setSelectedHypersub: (hypersub: Address) => void
+  selectedHypersub: Hypersub | null
+  setSelectedHypersub: (address: Address) => void
 }
 
 export const useOwnerHypersubs = (): UseOwnerHypersubsResult => {
   const [hypersubs, setHypersubs] = useState<Hypersub[]>([])
-  const [selectedHypersub, setSelectedHypersub] = useState<Hypersub | null>(
-    null
-  )
+  const [selectedHypersub, setSelectedHypersubState] =
+    useState<Hypersub | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
   const { connectedWallet: address } = useConnectedWallet()
@@ -53,6 +54,11 @@ export const useOwnerHypersubs = (): UseOwnerHypersubsResult => {
   useEffect(() => {
     fetchHypersubs()
   }, [address])
+
+  const setSelectedHypersub = (address: Address) => {
+    const hypersub = hypersubs.find((h) => h.id === address)
+    setSelectedHypersubState(hypersub || null)
+  }
 
   return {
     hypersubs,

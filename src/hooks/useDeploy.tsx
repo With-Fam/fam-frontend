@@ -12,7 +12,7 @@ import { createHypersub } from '@/lib/hypersub/createHypersub'
 const useDeploy = () => {
   const { createParty } = useCreatePartyManual()
   const { connectedWallet: address } = useConnectedWallet()
-  const { setHypersubAddress } = useCreateCommunityProvider()
+  const { hypersubAddress, setHypersubAddress } = useCreateCommunityProvider()
   const { walletClient } = usePrivyWalletClient()
   const {
     setActiveSection,
@@ -36,20 +36,21 @@ const useDeploy = () => {
       if (partyResult.error || !partyResult.partyAddress || !walletClient) {
         throw partyResult.error || new Error('Failed to create party')
       }
-
-      const hypersubResult = await createHypersub({
-        ownerAddress: address as Address,
-        walletClient,
-      })
-      if (hypersubResult.error || !hypersubResult.hypersubAddress) {
-        throw hypersubResult.error || new Error('Failed to create hypersub')
-      }
-
       setDeployedDao({
         token: partyResult.partyAddress,
       })
-      setHypersubAddress(hypersubResult.hypersubAddress)
 
+      if (!hypersubAddress) {
+        const hypersubResult = await createHypersub({
+          ownerAddress: address as Address,
+          walletClient,
+        })
+        if (hypersubResult.error || !hypersubResult.hypersubAddress) {
+          throw hypersubResult.error || new Error('Failed to create hypersub')
+        }
+
+        setHypersubAddress(hypersubResult.hypersubAddress)
+      }
       toast.remove()
       toast.success('Community Deployed!')
 

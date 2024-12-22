@@ -11,12 +11,13 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import Tooltip from '@/components/shared/Tooltip'
-import useOwnerHypersubs from '@/hooks/useOwnerHypersubs'
+import { useCreateCommunityProvider } from '@/contexts/CreateCommunityProvider'
 import { Address } from 'viem'
+import useOwnerHypersubs from '@/hooks/useOwnerHypersubs'
 
 export default function HypersubDropdown() {
-  const { hypersubs, loading, error, selectedHypersub, setSelectedHypersub } =
-    useOwnerHypersubs()
+  const { hypersubAddress, setHypersubAddress } = useCreateCommunityProvider()
+  const { hypersubs, loading, error } = useOwnerHypersubs()
 
   return (
     <section className="mt-4 rounded-xl bg-white">
@@ -36,22 +37,18 @@ export default function HypersubDropdown() {
         <Select
           disabled={loading}
           onValueChange={(value: Address) => {
-            console.log('SWEETMAN VALUE', value)
-            if (value) setSelectedHypersub(value)
+            setHypersubAddress(value)
           }}
         >
           <SelectTrigger
             className={`h-[55px] w-full rounded-xl border-grey ${
-              selectedHypersub ? 'text-black' : 'text-grey'
+              hypersubAddress ? 'text-black' : 'text-grey'
             }`}
           >
             <div className="flex items-center gap-2 text-lg">
-              {!selectedHypersub && (
+              {!hypersubAddress && (
                 <Image
-                  src={
-                    selectedHypersub?.imageUrl ||
-                    '/assets/images/fam-default-card.jpg'
-                  }
+                  src={'/assets/images/fam-default-card.jpg'}
                   alt=""
                   width={33}
                   height={33}
@@ -66,9 +63,7 @@ export default function HypersubDropdown() {
                       ? 'Error loading hypersubs'
                       : 'Select Hypersub'
                 }
-              >
-                {selectedHypersub?.title}
-              </SelectValue>
+              />
             </div>
           </SelectTrigger>
           <SelectContent className="rounded-xl border-grey">
